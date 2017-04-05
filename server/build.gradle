@@ -22,22 +22,23 @@ repositories {
 
 dependencies {
     // tag::jetty[]
-    compile "org.springframework.boot:spring-boot-starter-web"
+    compile 'org.springframework.boot:spring-boot-starter-web'
     // end::jetty[]
 
     // tag::actuator[]
-    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
     // end::actuator[]
 
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.mariadb.jdbc:mariadb-java-client'
 
-    testCompile "junit:junit"
-    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile 'junit:junit'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
     reports {
         junitXml.enabled = true
-        junitXml.destination = "$buildDir/test-results"
+        junitXml.destination = '$buildDir/test-results'
     }
 }

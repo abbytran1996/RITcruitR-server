@@ -39,7 +39,8 @@ public class StudentsController {
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
 
-        Student savedStudent = studentDAO.save(updatedStudent);
+        updatedStudent.setId(id);
+        studentDAO.save(updatedStudent);
 
         return ResponseEntity.ok().build();
     }
