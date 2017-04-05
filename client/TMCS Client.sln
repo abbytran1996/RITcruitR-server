@@ -13,6 +13,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TMCS_Client", "TMCS Client\
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TMCS Client\TMCS_Client\TMCS_Client.projitems*{6b222cfd-30b5-45d6-be74-2a7fb1482997}*SharedItemsImports = 4
+		TMCS Client\TMCS_Client\TMCS_Client.projitems*{8a2da51a-3fa4-49fa-a098-9b24a9f5a1a5}*SharedItemsImports = 4
+		TMCS Client\TMCS_Client\TMCS_Client.projitems*{a811281f-30ac-4f29-8e5d-ad3c76f03f2d}*SharedItemsImports = 4
 		TMCS Client\TMCS_Client\TMCS_Client.projitems*{da105af3-b178-4459-8d95-60910799cfba}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
