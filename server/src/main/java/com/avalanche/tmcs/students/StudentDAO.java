@@ -1,7 +1,9 @@
-package com.avalanche.tmcs.models;
+package com.avalanche.tmcs.students;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * Provides an interface to manipulate the Student database table
@@ -11,5 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface StudentDAO extends CrudRepository<Student, Long> {
-    Student findById(long id);
+    Optional<Student> findById(long id);
 }

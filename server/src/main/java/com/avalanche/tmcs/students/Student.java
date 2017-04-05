@@ -1,4 +1,4 @@
-package com.avalanche.tmcs.models;
+package com.avalanche.tmcs.students;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -27,7 +27,8 @@ public class Student {
     private String lastName;
 
     // TODO: Uncomment when we write the Skills model
-    // private List<Skill> skills
+    // @OneToMany(mappedBy = "student")
+    // private Set<Skill> skills = new HashSet<>();
 
     @NotNull
     // Emails have something, then an @ sign, then something, then a period, then something
@@ -54,7 +55,6 @@ public class Student {
     // Pretty sure we agreed to handle them later
 
     public long getId() {
-
         return id;
     }
 
