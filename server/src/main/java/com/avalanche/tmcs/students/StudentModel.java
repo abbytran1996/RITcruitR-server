@@ -14,7 +14,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name="students")
-public class Student {
+public class StudentModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -123,11 +123,11 @@ public class Student {
         if(this == o) {
             return true;
         }
-        if(!(o instanceof Student)) {
+        if(!(o instanceof StudentModel)) {
             return false;
         }
 
-        Student student = (Student) o;
+        StudentModel student = (StudentModel) o;
 
         return id == student.id && email.equals(student.email);
     }
