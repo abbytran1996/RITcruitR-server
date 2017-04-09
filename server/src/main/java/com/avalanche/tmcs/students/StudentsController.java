@@ -24,7 +24,7 @@ public class StudentsController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public ResponseEntity<?> addStudent(@RequestBody StudentModel newStudent) {
+    public ResponseEntity<String> addStudent(@RequestBody StudentModel newStudent) {
         StudentModel savedStudent = studentDAO.save(newStudent);
 
         URI location = ServletUriComponentsBuilder
