@@ -17,6 +17,7 @@ namespace TMCS_Client.Droid {
             base.OnCreate(savedInstanceState);
 
             // Create your application here
+            SetContentView(Resource.Layout.StudentSignup);
         }
     }
 }
