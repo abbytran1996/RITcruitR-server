@@ -29,13 +29,14 @@ public class StudentsController {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
+                .path("/{id}")
                 .buildAndExpand(savedStudent.getId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody StudentModel updatedStudent) {
         validateStudentId(id);
 
