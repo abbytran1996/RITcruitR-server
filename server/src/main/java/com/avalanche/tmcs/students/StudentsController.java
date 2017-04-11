@@ -18,14 +18,16 @@ public class StudentsController {
     private StudentDAO studentDAO;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public StudentModel getStudent(@PathVariable long id) {
+    public Student getStudent(@PathVariable long id) {
         validateStudentId(id);
-        return studentDAO.findOne(id);
+        StudentModel student = studentDAO.findOne(id);
+        return new Student(student);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<String> addStudent(@RequestBody StudentModel newStudent) {
-        StudentModel savedStudent = studentDAO.save(newStudent);
+    public ResponseEntity<String> addStudent(@RequestBody Student newStudent) {
+        StudentModel studentModel = new StudentModel(newStudent);
+        StudentModel savedStudent = studentDAO.save(studentModel);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -37,11 +39,13 @@ public class StudentsController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody StudentModel updatedStudent) {
+    public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
 
-        updatedStudent.setId(id);
-        studentDAO.save(updatedStudent);
+        StudentModel studentModel = new StudentModel(updatedStudent);
+
+        studentModel.setId(id);
+        studentDAO.save(studentModel);
 
         return ResponseEntity.ok().build();
     }

@@ -22,9 +22,12 @@ namespace TMCS_Client.Droid {
             var button = FindViewById<Button>(Resource.Id.student_new_submit);
 
             button.Click += (sender, e) => {
-                var passwordField = FindViewById<EditText>(Resource.Id.student_new_password);
-                var passwordConfirmationField = FindViewById<EditText>(Resource.Id.student_new_passwordConfirm);
+                var password = FindViewById<EditText>(Resource.Id.student_new_password).Text;
+                var passwordConfirmation = FindViewById<EditText>(Resource.Id.student_new_passwordConfirm).Text;
                 
+                if(password != passwordConfirmation) {
+
+                }
             };
         }
     }
