@@ -23,7 +23,7 @@ public class StudentsController {
         return studentDAO.findOne(id);
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> addStudent(@RequestBody StudentModel newStudent) {
         StudentModel savedStudent = studentDAO.save(newStudent);
 
@@ -35,7 +35,7 @@ public class StudentsController {
         return ResponseEntity.created(location).build();
     }
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody StudentModel updatedStudent) {
         validateStudentId(id);
 

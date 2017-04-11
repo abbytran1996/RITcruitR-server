@@ -18,6 +18,15 @@ namespace TMCS_Client.Droid {
 
             // Create your application here
             SetContentView(Resource.Layout.StudentSignup);
+
+            var button = FindViewById<Button>(Resource.Id.student_new_submit);
+
+            button.Click += delegate {
+                var passwordField = FindViewById<EditText>(Resource.Id.student_new_password);
+                var passwordConfirmationField = FindViewById<EditText>(Resource.Id.student_new_passwordConfirm);
+
+
+            };
         }
     }
 }

@@ -26,5 +26,3 @@ namespace TMCS_Client.Droid {
         }
     }
 }
-
-
