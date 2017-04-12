@@ -1,40 +1,109 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6750" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
-  <dependencies>
-    <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6735" />
-  </dependencies>
-  <scenes>
-    <!--View Controller-->
-    <scene sceneID="tne-QT-ifu">
-      <objects>
-        <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
-          <layoutGuides>
-            <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ" />
-            <viewControllerLayoutGuide type="bottom" id="wfy-db-euE" />
-          </layoutGuides>
-          <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600" />
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" />
-            <subviews>
-              <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oBE-Ac-vcx">
-                <rect key="frame" x="224" y="285" width="152" height="30" />
-                <state key="normal" title="Hello World, Click Me!">
-                  <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite" />
-                </state>
-              </button>
-            </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite" />
-            <constraints>
-              <constraint firstItem="oBE-Ac-vcx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HiD-uS-i16" />
-              <constraint firstItem="oBE-Ac-vcx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="YgX-7e-bMc" />
-            </constraints>
-          </view>
-          <connections>
-            <outlet property="Button" destination="oBE-Ac-vcx" id="OkX-0Z-gth" />
-          </connections>
-        </viewController>
-        <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder" />
-      </objects>
-    </scene>
-  </scenes>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6750" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="178">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6735"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="177">
+            <objects>
+                <navigationController id="178" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="180">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="257" destination="187" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="181" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-424" y="78"/>
+        </scene>
+        <scene sceneID="186">
+            <objects>
+                <viewController id="187" sceneMemberID="viewController" customClass="LoginViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="184"/>
+                        <viewControllerLayoutGuide type="bottom" id="185"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="188">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="259" translatesAutoresizingMaskIntoConstraints="NO" opaque="NO">
+                                <rect key="frame" x="164" y="335" width="46" height="30"/>
+                                <state key="normal" title="Login"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RecruitR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="260" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="129" y="121" width="118" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="29" weight="semibold"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="261" translatesAutoresizingMaskIntoConstraints="NO" placeholder="Email...">
+                                <rect key="frame" x="37" y="242" width="300" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="262" translatesAutoresizingMaskIntoConstraints="NO" placeholder="Password...">
+                                <rect key="frame" x="37" y="280" width="300" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="265" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="95" y="465" width="184" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                </accessibility>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="268" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="156" y="487" width="64" height="30"/>
+                                <state key="normal" title="Register"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES"/>
+                            </button>
+                        </subviews>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="259"/>
+                                <exclude reference="260"/>
+                                <exclude reference="261"/>
+                                <exclude reference="262"/>
+                                <exclude reference="265"/>
+                                <exclude reference="268"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="259"/>
+                                <include reference="260"/>
+                                <include reference="261"/>
+                                <include reference="262"/>
+                                <include reference="265"/>
+                                <include reference="268"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem title="Login" id="256" key="navigationItem"/>
+                    <connections>
+                        <outlet property="btnLogin" destination="259" id="name-outlet-259"/>
+                        <outlet property="lblAppLogo" destination="260" id="name-outlet-260"/>
+                        <outlet property="txtBoxUsername" destination="261" id="name-outlet-261"/>
+                        <outlet property="txtBoxPassword" destination="262" id="name-outlet-262"/>
+                        <outlet property="lblRegister" destination="265" id="name-outlet-265"/>
+                        <outlet property="btnRegister" destination="268" id="name-outlet-268"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="189" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="67" y="76"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedScreenMetrics key="destination" type="retina47"/>
+    </simulatedMetricsContainer>
 </document>
