@@ -26,7 +26,7 @@ namespace TMCS_Client.Droid {
                 var passwordConfirmation = FindViewById<EditText>(Resource.Id.student_new_passwordConfirm).Text;
                 
                 if(password != passwordConfirmation) {
-
+                    Toast.MakeText(this.ApplicationContext, "Passwords do not match", ToastLength.Long);
                 }
             };
         }

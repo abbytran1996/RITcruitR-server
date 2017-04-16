@@ -14,6 +14,8 @@ public class Student {
     private String school;
     private String phoneNumber;
 
+    public Student() {}
+
     public Student(StudentModel other) {
         firstName = other.getFirstName();
         lastName = other.getLastName();
