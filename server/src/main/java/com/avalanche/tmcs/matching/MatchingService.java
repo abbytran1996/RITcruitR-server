@@ -21,9 +21,11 @@ public class MatchingService {
     }
 
     /**
+     * Registers the given job posting with the matching service
+     * <p>This adds the job posting to the skills index and calculates the best matches for this job posting</p>
+     * <p>The expectation is that this method will be called when a job posting is registered</p>
      *
-     *
-     * @param posting
+     * @param posting The job posting to register
      */
     // void registerJobPosting(JobPostingModel posting) {
     //      TODO: Uncomment when we have job postings

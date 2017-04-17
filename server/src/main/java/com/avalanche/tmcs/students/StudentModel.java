@@ -1,10 +1,14 @@
 package com.avalanche.tmcs.students;
 
+import com.avalanche.tmcs.matching.SkillModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class to represent a student in the database
@@ -27,8 +31,9 @@ public class StudentModel {
     private String lastName;
 
     // TODO: Uncomment when we write the Skills model
-    // @OneToMany(mappedBy = "student")
-    // private Set<Skill> skills = new HashSet<>();
+    //@ManyToMany
+    //@JoinColumn(name="student_skill_id")
+    //private Set<SkillModel> skills = new HashSet<>();
 
     @NotNull
     // Emails have something, then an @ sign, then something, then a period, then something
