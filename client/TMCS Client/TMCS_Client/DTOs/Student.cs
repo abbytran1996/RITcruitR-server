@@ -7,12 +7,12 @@ namespace TMCS_Client.DTOs {
     /// The DTO for a student
     /// </summary>
     class Student {
-        public string PhoneNumber { get; set; }
-        public string School { get; set; }
-        public DateTime GraduationDate { get; set; }
-        public string Email { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public List<string> PreferredStates { get; set; }
+        public string phoneNumber { get; set; }
+        public string school { get; set; }
+        public DateTime graduationDate { get; set; }
+        public string email { get; set; }
+        public string lastName { get; set; }
+        public string firstName { get; set; }
+        public List<string> preferredStates { get; set; }
     }
 }

@@ -27,7 +27,8 @@ public class StudentsController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<String> addStudent(@RequestBody Student newStudent) {
+    public ResponseEntity<String> addStudent(@RequestBody NewStudent newStudent) {
+        // TODO: Create a new user account
         StudentModel studentModel = new StudentModel(newStudent);
         StudentModel savedStudent = studentDAO.save(studentModel);
 

@@ -43,13 +43,13 @@ namespace TMCS_Client.DTOs {
             // Create student
             var newStudent = new NewStudent();
 
-            newStudent.FirstName = firstName;
-            newStudent.LastName = lastName;
-            newStudent.Email = email;
-            newStudent.School = school;
-            newStudent.GraduationDate = date;
-            newStudent.PhoneNumber = phoneNumber;
-            newStudent.PreferredStates = preferredStates;
+            newStudent.firstName = firstName;
+            newStudent.lastName = lastName;
+            newStudent.email = email;
+            newStudent.school = school;
+            newStudent.graduationDate = date;
+            newStudent.phoneNumber = phoneNumber;
+            newStudent.preferredStates = preferredStates;
             newStudent.password = password;
 
             return newStudent;
