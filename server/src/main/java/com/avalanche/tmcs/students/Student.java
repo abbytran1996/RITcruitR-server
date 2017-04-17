@@ -3,6 +3,8 @@ package com.avalanche.tmcs.students;
 import java.sql.Date;
 
 /**
+ * The Student DTO used to transfer data to the frontend
+ *
  * @author David Dubois
  * @since 10-Apr-17.
  */

@@ -7,6 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import javax.servlet.Filter;
+
 
 /**
  * @author ddubois
@@ -23,5 +26,12 @@ public class Application {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> LOG.info("Started spring boot application");
+    }
+
+    @Bean
+    public Filter logFilter() {
+        return new CommonsRequestLoggingFilter() {
+            protected boolean shouldLog(javax.servlet.http.HttpServletRequest request) {return true;}
+        };
     }
 }

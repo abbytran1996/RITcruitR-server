@@ -8,6 +8,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 /**
+ * Defines and implements the API for interacting with Students
+ *
  * @author ddubois
  * @since 05-Apr-17.
  */

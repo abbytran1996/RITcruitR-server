@@ -54,6 +54,8 @@ public class StudentModel {
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
 
+    public StudentModel() {}
+
     public StudentModel(Student other) {
         firstName = other.getFirstName();
         lastName = other.getLastName();

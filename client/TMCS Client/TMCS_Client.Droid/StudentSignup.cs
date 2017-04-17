@@ -51,7 +51,7 @@ namespace TMCS_Client.Droid {
                     var newStudent = NewStudent.createAndValidate(firstName, lastName, email, school, graduationDate, phoneNumber, null, password, passwordConfirmation);
                     controller.addStudent(newStudent);
                 } catch(Exception ex) {
-                    Toast.MakeText(ApplicationContext, ex.Message, ToastLength.Short).Show();
+                    Toast.MakeText(ApplicationContext, ex.Message, ToastLength.Long).Show();
                 }
             };
         }
