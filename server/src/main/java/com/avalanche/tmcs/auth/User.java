@@ -103,4 +103,13 @@ public class User {
             throw new ValidationException("Email cannot be empty");
         }
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

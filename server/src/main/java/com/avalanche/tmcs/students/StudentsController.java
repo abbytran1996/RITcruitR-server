@@ -2,7 +2,9 @@ package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -45,17 +47,20 @@ public class StudentsController {
         User newUser = new User(newStudent.getEmail(), newStudent.getPassword(), newStudent.getPasswordConfirm(), studentRole);
 
         userService.save(newUser);
-        securityService.login(newUser.getUsername(), newUser.getPassword());
+        if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
+            newStudent.setUser(newUser);
+            Student savedStudent = studentDAO.save(newStudent.toStudent());
 
-        Student savedStudent = studentDAO.save(newStudent);
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(savedStudent.getId())
+                    .toUri();
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedStudent.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+            return ResponseEntity.created(location).build();
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
