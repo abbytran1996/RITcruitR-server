@@ -11,14 +11,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class JobPosting {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
     private String positionTitle;
 
-    @NotNull
     private String description;
 
     // @ManyToMany
@@ -33,18 +29,16 @@ public class JobPosting {
     // @JoinColumn(name = "id")
     // private Recruiter recruiter;
 
-    @NotNull
     private String location;
 
-    @NotNull
     private long phaseTimeout;
 
-    @NotNull
     private String problemStatement;
 
-    @NotNull
     private String url;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -53,6 +47,7 @@ public class JobPosting {
         this.id = id;
     }
 
+    @NotNull
     public String getPositionTitle() {
         return positionTitle;
     }
@@ -61,6 +56,7 @@ public class JobPosting {
         this.positionTitle = positionTitle;
     }
 
+    @NotNull
     public String getDescription() {
         return description;
     }
@@ -69,6 +65,7 @@ public class JobPosting {
         this.description = description;
     }
 
+    @NotNull
     public String getLocation() {
         return location;
     }
@@ -77,6 +74,7 @@ public class JobPosting {
         this.location = location;
     }
 
+    @NotNull
     public long getPhaseTimeout() {
         return phaseTimeout;
     }
@@ -85,6 +83,7 @@ public class JobPosting {
         this.phaseTimeout = phaseTimeout;
     }
 
+    @NotNull
     public String getProblemStatement() {
         return problemStatement;
     }
@@ -93,6 +92,7 @@ public class JobPosting {
         this.problemStatement = problemStatement;
     }
 
+    @NotNull
     public String getUrl() {
         return url;
     }
