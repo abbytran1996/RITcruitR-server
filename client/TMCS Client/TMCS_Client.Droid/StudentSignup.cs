@@ -60,6 +60,7 @@ namespace TMCS_Client.Droid {
 
                 var schoolsList = new List<String>();
                 schoolsList.AddRange(schools.Split(','));
+                schoolsList.RemoveAll(str => str.Trim().Length == 0);
                 
                 try {
                     var newStudent = NewStudent.createAndValidate(firstName, lastName, email, school, graduationDate, phoneNumber, schoolsList, password, passwordConfirmation);
