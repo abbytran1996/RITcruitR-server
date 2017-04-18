@@ -425,6 +425,8 @@ paket-files/
 __pycache__/
 *.pyc
 
+**.DS_Store
+
 # Cake - Uncomment if you are using it
 # tools/**
 # !tools/packages.config

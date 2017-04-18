@@ -9,6 +9,6 @@ import java.util.List;
  * @author David Dubois
  * @since 16-Apr-17.
  */
-public interface MatchesDAO extends CrudRepository<Match, Long> {
+public interface MatchDAO extends CrudRepository<Match, Long> {
     List<Match> findAllByStudent(Student student);
 }

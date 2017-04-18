@@ -20,13 +20,10 @@ public class User {
 
     public User() {}
 
-    public User(String username, String password, String passwordConfirm, Role studentRole) {
+    public User(String username, String password, String passwordConfirm) {
         setUsername(username);
         setPassword(password);
         setPasswordConfirm(passwordConfirm);
-
-        roles = new HashSet<>();
-        roles.add(studentRole);
 
         validateNewUser();
     }
@@ -111,5 +108,12 @@ public class User {
                 ", username='" + username + '\'' +
                 ", roles=" + roles +
                 '}';
+    }
+
+    public void addRole(Role role) {
+        if(roles == null) {
+            roles = new HashSet<>();
+        }
+        roles.add(role);
     }
 }

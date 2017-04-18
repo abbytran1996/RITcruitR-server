@@ -79,7 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/student_new_schoolName"
-            android:tag="School name" />
+            android:tag="School name"
+            android:inputType="text" />
         <TextView
             android:text="Expected Graduation Date"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -110,17 +111,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView8" />
-        <EditText
+        <MultiAutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/student_new_states"
-            android:tag="States you would work in" />
+            android:tag="Preferred States"
+            android:inputType="text" />
         <TextView
             android:text="What's the size of your desired company?"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView9" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/student_new_companySize" />
         <Button
             android:text="Submit"
             android:layout_width="match_parent"

@@ -1,8 +1,10 @@
 package com.avalanche.tmcs.students;
 
+import com.avalanche.tmcs.matching.Skill;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,5 +15,5 @@ import java.util.Optional;
  */
 @Transactional
 public interface StudentDAO extends CrudRepository<Student, Long> {
-    Optional<Student> findById(long id);
+    List<Student> findAllBySkillsContains(Skill skill);
 }

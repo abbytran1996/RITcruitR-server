@@ -25,14 +25,11 @@ public class StudentsController {
 
     private SecurityService securityService;
 
-    private RoleDAO roleDAO;
-
     @Autowired
-    public StudentsController(StudentDAO studentDAO, UserService userService, SecurityService securityService, RoleDAO roleDAO) {
+    public StudentsController(StudentDAO studentDAO, UserService userService, SecurityService securityService) {
         this.studentDAO = studentDAO;
         this.userService = userService;
         this.securityService = securityService;
-        this.roleDAO = roleDAO;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -43,12 +40,12 @@ public class StudentsController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> addStudent(@RequestBody NewStudent newStudent) {
-        Role studentRole = roleDAO.findByName("student");
-        User newUser = new User(newStudent.getEmail(), newStudent.getPassword(), newStudent.getPasswordConfirm(), studentRole);
+        User newUser = new User(newStudent.getEmail(), newStudent.getPassword(), newStudent.getPasswordConfirm());
 
-        userService.save(newUser);
+        userService.save(newUser, UserService.RoleName.Student);
         if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
             newStudent.setUser(newUser);
+            newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
 
             URI location = ServletUriComponentsBuilder

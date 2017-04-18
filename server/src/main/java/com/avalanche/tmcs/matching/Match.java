@@ -19,9 +19,7 @@ public class Match {
 
     private Student student;
 
-    // TODO: Uncomment when job postings exist
-    //@NotNull
-    //private JobPosting job;
+    private JobPosting job;
 
     private float matchStrength;
 
@@ -32,7 +30,8 @@ public class Match {
     }
 
     @NotNull
-    @OneToOne
+    @ManyToOne
+    @JoinTable(name = "matches_students", joinColumns = @JoinColumn(name = "match_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     public Student getStudent() {
         return student;
     }
@@ -52,5 +51,16 @@ public class Match {
 
     public void setMatchStrength(float matchStrength) {
         this.matchStrength = matchStrength;
+    }
+
+    @NotNull
+    @ManyToOne
+    @JoinTable(name = "matches_jobs", joinColumns = @JoinColumn(name = "match_id"), inverseJoinColumns = @JoinColumn(name = "job_id"))
+    public JobPosting getJob() {
+        return job;
+    }
+
+    public void setJob(JobPosting job) {
+        this.job = job;
     }
 }
