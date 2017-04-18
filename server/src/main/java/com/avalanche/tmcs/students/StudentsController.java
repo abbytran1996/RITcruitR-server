@@ -17,14 +17,21 @@ import java.net.URI;
 @RestController
 @RequestMapping("/students")
 public class StudentsController {
-    @Autowired
     private StudentDAO studentDAO;
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private SecurityService securityService;
+
+    private RoleDAO roleDAO;
+
+    @Autowired
+    public StudentsController(StudentDAO studentDAO, UserService userService, SecurityService securityService, RoleDAO roleDAO) {
+        this.studentDAO = studentDAO;
+        this.userService = userService;
+        this.securityService = securityService;
+        this.roleDAO = roleDAO;
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Student getStudent(@PathVariable long id) {
@@ -34,11 +41,8 @@ public class StudentsController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> addStudent(@RequestBody NewStudent newStudent) {
-        // TODO: Create a new user account
-        User newUser = new User();
-        newUser.setUsername(newStudent.getEmail());
-        newUser.setPassword(newStudent.getPassword());
-        newUser.setPasswordConfirm(newStudent.getPasswordConfirm());
+        Role studentRole = roleDAO.findByName("student");
+        User newUser = new User(newStudent.getEmail(), newStudent.getPassword(), newStudent.getPasswordConfirm(), studentRole);
 
         userService.save(newUser);
         securityService.login(newUser.getUsername(), newUser.getPassword());
@@ -54,7 +58,7 @@ public class StudentsController {
         return ResponseEntity.created(location).build();
     }
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
 

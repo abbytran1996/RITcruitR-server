@@ -1,12 +1,15 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class to represent a student in the database
@@ -17,47 +20,31 @@ import java.sql.Date;
 @Entity
 @Table(name="students")
 public class Student {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
     private String firstName;
 
-    @NotNull
     private String lastName;
 
-    // TODO: Uncomment when we write the Skills model
-    //@ManyToMany
-    //@JoinColumn(name="student_skill_id")
-    //private Set<SkillModel> skills = new HashSet<>();
+    private Set<Skill> skills;
 
-    @NotNull
-    // Emails have something, then an @ sign, then something, then a period, then something
-    // This is possibly overly broad, but students have to validate their email addresses with a confirmation email so
-    // this is mostly a sanity check to ensure things aren't horrible
-    // Also I wanted to use JPA validation annotations
-    @Pattern(regexp = "^.+@.+\\..+$")
     private String email;
 
-    // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
-    // so their graduation dates are in the future implicitly.
-    @Future
     private Date graduationDate;
 
-    @NotNull
     private String school;
 
-    @OneToOne
-    @NotNull
     private User user;
 
     private String phoneNumber;
 
+    private Set<String> preferredStates;
+
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -66,6 +53,7 @@ public class Student {
         this.id = id;
     }
 
+    @NotNull
     public String getFirstName() {
         return firstName;
     }
@@ -74,6 +62,7 @@ public class Student {
         this.firstName = firstName;
     }
 
+    @NotNull
     public String getLastName() {
         return lastName;
     }
@@ -82,6 +71,12 @@ public class Student {
         this.lastName = lastName;
     }
 
+    @NotNull
+    // Emails have something, then an @ sign, then something, then a period, then something
+    // This is possibly overly broad, but students have to validate their email addresses with a confirmation email so
+    // this is mostly a sanity check to ensure things aren't horrible
+    // Also I wanted to use JPA validation annotations
+    @Pattern(regexp = "^.+@.+\\..+$")
     public String getEmail() {
         return email;
     }
@@ -90,6 +85,9 @@ public class Student {
         this.email = email;
     }
 
+    // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
+    // so their graduation dates are in the future implicitly.
+    @Future
     public Date getGraduationDate() {
         return graduationDate;
     }
@@ -98,6 +96,7 @@ public class Student {
         this.graduationDate = graduationDate;
     }
 
+    @NotNull
     public String getSchool() {
         return school;
     }
@@ -114,12 +113,32 @@ public class Student {
         this.phoneNumber = phoneNumber;
     }
 
+    @OneToOne
+    @NotNull
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "student_skill", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public Set<String> getPreferredStates() {
+        return preferredStates;
+    }
+
+    public void setPreferredStates(Set<String> preferredStates) {
+        this.preferredStates = preferredStates;
     }
 
     @Override

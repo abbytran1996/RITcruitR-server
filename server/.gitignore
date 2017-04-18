@@ -432,3 +432,4 @@ __pycache__/
 # End of https://www.gitignore.io/api/intellij,visualstudio,java,gradle,xamarinstudio,vim,sublimetext,visualstudiocode
 
 $buildDir/
+!src/main/java

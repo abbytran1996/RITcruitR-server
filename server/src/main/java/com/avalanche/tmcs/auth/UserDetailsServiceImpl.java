@@ -18,8 +18,12 @@ import java.util.Set;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
     private UserDAO userRepository;
+
+    @Autowired
+    public UserDetailsServiceImpl(UserDAO userDAO) {
+        this.userRepository = userDAO;
+    }
 
     @Override
     @Transactional(readOnly = true)

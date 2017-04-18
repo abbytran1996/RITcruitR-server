@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.auth;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -15,6 +16,17 @@ public class User {
     private String password;
     private String passwordConfirm;
     private Set<Role> roles;
+
+    public User() {}
+
+    public User(String username, String password, String passwordConfirm, Role studentRole) {
+        setUsername(username);
+        setPassword(password);
+        setPasswordConfirm(passwordConfirm);
+
+        roles = new HashSet<>();
+        roles.add(studentRole);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
