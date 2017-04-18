@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.auth;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,6 +27,8 @@ public class User {
 
         roles = new HashSet<>();
         roles.add(studentRole);
+
+        validateNewUser();
     }
 
     @Id
@@ -43,9 +46,6 @@ public class User {
     }
 
     public void setUsername(String username) {
-        if(username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be empty");
-        }
         this.username = username;
     }
 
@@ -54,10 +54,6 @@ public class User {
     }
 
     public void setPassword(String password) {
-        if(passwordConfirm != null && !passwordConfirm.equals(password)) {
-            throw new IllegalArgumentException("Password and password confirmation must match");
-        }
-        // TODO: Password size and complexity rules
         this.password = password;
     }
 
@@ -67,9 +63,6 @@ public class User {
     }
 
     public void setPasswordConfirm(String passwordConfirm) {
-        if(password != null && !password.equals(passwordConfirm)) {
-            throw new IllegalArgumentException("Password and password confirmation must match");
-        }
         this.passwordConfirm = passwordConfirm;
     }
 
@@ -81,5 +74,33 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * Checks that the password and password confirm match, and that neither are null. Also checks that the username is
+     * not null, and that the password is at least eight characters long
+     */
+    public void validateNewUser() {
+        if(password == null || password.isEmpty()) {
+            throw new ValidationException("Password cannot be empty");
+        }
+
+        if(password.length() < 8) {
+            throw new ValidationException("Password must be at least eight characters long");
+        }
+
+        if(passwordConfirm == null || passwordConfirm.isEmpty()) {
+            throw new ValidationException("Password confirmation cannot be empty");
+        }
+
+        if(!password.equals(passwordConfirm)) {
+            throw new ValidationException("Password and password confirmation must match");
+        }
+
+        if(username == null || username.isEmpty()) {
+            // We use emails as usernames
+            // This code is no longer portable to any application that does not use emails as usernames but all well
+            throw new ValidationException("Email cannot be empty");
+        }
     }
 }

@@ -73,7 +73,7 @@ public class Student {
 
     @NotNull
     // Emails have something, then an @ sign, then something, then a period, then something
-    // This is possibly overly broad, but students have to validate their email addresses with a confirmation email so
+    // This is possibly overly broad, but students have to validateNewUser their email addresses with a confirmation email so
     // this is mostly a sanity check to ensure things aren't horrible
     // Also I wanted to use JPA validation annotations
     @Pattern(regexp = "^.+@.+\\..+$")
@@ -133,6 +133,7 @@ public class Student {
         this.skills = skills;
     }
 
+    @ElementCollection
     public Set<String> getPreferredStates() {
         return preferredStates;
     }

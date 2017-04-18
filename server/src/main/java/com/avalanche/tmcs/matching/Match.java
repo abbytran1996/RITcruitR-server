@@ -15,29 +15,29 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="matches")
 public class Match {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
-    @OneToOne
     private Student student;
 
     // TODO: Uncomment when job postings exist
-    @NotNull
-    private JobPosting job;
+    //@NotNull
+    //private JobPosting job;
 
-    @NotNull
     private float matchStrength;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
 
+    @NotNull
+    @OneToOne
     public Student getStudent() {
         return student;
     }
 
+    @NotNull
     public float getMatchStrength() {
         return matchStrength;
     }
