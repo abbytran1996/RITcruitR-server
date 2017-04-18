@@ -27,7 +27,7 @@ public class MatchingService {
      *
      * @param posting The job posting to register
      */
-    // void registerJobPosting(JobPostingModel posting) {
+    // void registerJobPosting(JobPosting posting) {
     //      TODO: Uncomment when we have job postings
     // }
 }

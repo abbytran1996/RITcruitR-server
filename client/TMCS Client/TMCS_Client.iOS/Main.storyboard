@@ -35,6 +35,7 @@
                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="259" translatesAutoresizingMaskIntoConstraints="NO" opaque="NO">
                                 <rect key="frame" x="164" y="335" width="46" height="30"/>
                                 <state key="normal" title="Login"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RecruitR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="260" translatesAutoresizingMaskIntoConstraints="NO">
                                 <rect key="frame" x="129" y="121" width="118" height="28"/>
