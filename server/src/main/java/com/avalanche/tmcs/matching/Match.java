@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.matching;
 
-import com.avalanche.tmcs.students.StudentModel;
+import com.avalanche.tmcs.job_posting.JobPosting;
+import com.avalanche.tmcs.students.Student;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,30 +14,30 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="matches")
-public class MatchModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class Match {
     private long id;
 
-    @NotNull
-    @OneToOne
-    private StudentModel student;
+    private Student student;
 
     // TODO: Uncomment when job postings exist
     //@NotNull
     //private JobPosting job;
 
-    @NotNull
     private float matchStrength;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
 
-    public StudentModel getStudent() {
+    @NotNull
+    @OneToOne
+    public Student getStudent() {
         return student;
     }
 
+    @NotNull
     public float getMatchStrength() {
         return matchStrength;
     }
@@ -45,7 +46,7 @@ public class MatchModel {
         this.id = id;
     }
 
-    public void setStudent(StudentModel student) {
+    public void setStudent(Student student) {
         this.student = student;
     }
 

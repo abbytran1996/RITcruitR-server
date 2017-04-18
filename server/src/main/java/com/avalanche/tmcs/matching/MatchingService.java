@@ -1,6 +1,8 @@
 package com.avalanche.tmcs.matching;
 
-import com.avalanche.tmcs.students.StudentModel;
+import com.avalanche.tmcs.students.Student;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Matches students and job postings
@@ -8,7 +10,15 @@ import com.avalanche.tmcs.students.StudentModel;
  * @author David Dubois
  * @since 16-Apr-17.
  */
+@Service
 public class MatchingService {
+    private MatchesDAO matchesDAO;
+
+    @Autowired
+    public MatchingService(MatchesDAO matchesDAO) {
+        this.matchesDAO = matchesDAO;
+    }
+
     /**
      * Registeres the given student with the matching student
      * <p>This adds the student to the skills index and calculates the best matches for this student</p>
@@ -16,8 +26,8 @@ public class MatchingService {
      *
      * @param student The student to register
      */
-    void resgisterStudent(StudentModel student) {
-
+    void resgisterStudent(Student student) {
+        // TODO: Write more of this when JobPosting is more done
     }
 
     /**

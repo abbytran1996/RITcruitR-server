@@ -9,6 +9,8 @@ namespace TMCS_Client.DTOs {
     class NewStudent : Student {
         public string password { get; set; }
 
+        public string passwordConfirm { get; set; }
+
         // I want this to be private so you have to use the method which validates the student
         private NewStudent() { }
 
@@ -49,6 +51,7 @@ namespace TMCS_Client.DTOs {
             newStudent.phoneNumber = phoneNumber;
             newStudent.preferredStates = preferredStates;
             newStudent.password = password;
+            newStudent.passwordConfirm = passwordConfirm;
 
             return newStudent;
         }
