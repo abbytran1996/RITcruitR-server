@@ -7,12 +7,10 @@ namespace TMCS_Client.DTOs {
     /// The DTO sent to the server when a new student is added
     /// </summary>
     class NewStudent : Student {
-        private string password;
+        public string password { get; set; }
 
         // I want this to be private so you have to use the method which validates the student
         private NewStudent() { }
-
-        public string Password { get => password; }
 
         /// <summary>
         /// Creates a new NewStudent object, validating that all the information is correct
