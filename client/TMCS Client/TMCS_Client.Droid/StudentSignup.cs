@@ -17,13 +17,19 @@ namespace TMCS_Client.Droid {
     [Activity(Label = "StudentSignup")]
     public class StudentSignup : Activity {
         private StudentController controller = new StudentController();
-    
-        public object NetStudent { get; private set; }
+
+        private static String[] STATES = new String[] {
+            "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida",
+            "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
+            "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",
+            "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
+            "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+            "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+        };
 
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
-
-            // Create your application here
+            
             SetContentView(Resource.Layout.StudentSignup);
 
             FindViewById<EditText>(Resource.Id.student_new_firstName).FocusChange += validateTextNotNull;
@@ -33,6 +39,10 @@ namespace TMCS_Client.Droid {
             FindViewById<EditText>(Resource.Id.student_new_graduationDate).FocusChange += validateTextNotNull;
             FindViewById<EditText>(Resource.Id.student_new_password).FocusChange += validateTextNotNull;
             FindViewById<EditText>(Resource.Id.student_new_passwordConfirm).FocusChange += validateTextNotNull;
+
+            var states = FindViewById<MultiAutoCompleteTextView>(Resource.Id.student_new_states);
+            states.Adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleDropDownItem1Line, STATES);
+            states.SetTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
             var button = FindViewById<Button>(Resource.Id.student_new_submit);
 
@@ -46,9 +56,13 @@ namespace TMCS_Client.Droid {
                 var phoneNumber = FindViewById<EditText>(Resource.Id.student_new_phoneNumber).Text;
                 var password = FindViewById<EditText>(Resource.Id.student_new_password).Text;
                 var passwordConfirmation = FindViewById<EditText>(Resource.Id.student_new_passwordConfirm).Text;
+                var schools = FindViewById<EditText>(Resource.Id.student_new_states).Text;
+
+                var schoolsList = new List<String>();
+                schoolsList.AddRange(schools.Split(','));
                 
                 try {
-                    var newStudent = NewStudent.createAndValidate(firstName, lastName, email, school, graduationDate, phoneNumber, null, password, passwordConfirmation);
+                    var newStudent = NewStudent.createAndValidate(firstName, lastName, email, school, graduationDate, phoneNumber, schoolsList, password, passwordConfirmation);
                     controller.addStudent(newStudent);
                 } catch(Exception ex) {
                     Toast.MakeText(ApplicationContext, ex.Message, ToastLength.Long).Show();

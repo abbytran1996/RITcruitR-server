@@ -49,6 +49,7 @@ public class StudentsController {
         userService.save(newUser);
         if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
             newStudent.setUser(newUser);
+            newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
 
             URI location = ServletUriComponentsBuilder
