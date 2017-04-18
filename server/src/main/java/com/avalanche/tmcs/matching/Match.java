@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
 
 import javax.persistence.*;
@@ -23,8 +24,8 @@ public class Match {
     private Student student;
 
     // TODO: Uncomment when job postings exist
-    //@NotNull
-    //private JobPosting job;
+    @NotNull
+    private JobPosting job;
 
     @NotNull
     private float matchStrength;

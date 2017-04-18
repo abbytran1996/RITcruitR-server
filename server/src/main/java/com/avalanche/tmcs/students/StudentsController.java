@@ -1,6 +1,6 @@
 package com.avalanche.tmcs.students;
 
-import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.auth.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,12 @@ public class StudentsController {
     @Autowired
     private StudentDAO studentDAO;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SecurityService securityService;
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Student getStudent(@PathVariable long id) {
         validateStudentId(id);
@@ -33,6 +39,9 @@ public class StudentsController {
         newUser.setUsername(newStudent.getEmail());
         newUser.setPassword(newStudent.getPassword());
         newUser.setPasswordConfirm(newStudent.getPasswordConfirm());
+
+        userService.save(newUser);
+        securityService.login(newUser.getUsername(), newUser.getPassword());
 
         Student savedStudent = studentDAO.save(newStudent);
 

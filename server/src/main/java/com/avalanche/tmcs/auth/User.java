@@ -31,6 +31,9 @@ public class User {
     }
 
     public void setUsername(String username) {
+        if(username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be empty");
+        }
         this.username = username;
     }
 
@@ -39,6 +42,10 @@ public class User {
     }
 
     public void setPassword(String password) {
+        if(passwordConfirm != null && !passwordConfirm.equals(password)) {
+            throw new IllegalArgumentException("Password and password confirmation must match");
+        }
+        // TODO: Password size and complexity rules
         this.password = password;
     }
 
@@ -48,6 +55,9 @@ public class User {
     }
 
     public void setPasswordConfirm(String passwordConfirm) {
+        if(password != null && !password.equals(passwordConfirm)) {
+            throw new IllegalArgumentException("Password and password confirmation must match");
+        }
         this.passwordConfirm = passwordConfirm;
     }
 
