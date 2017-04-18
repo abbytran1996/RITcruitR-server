@@ -6,12 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * Provides an interface to manipulate the StudentModel database table
+ * Provides an interface to manipulate the Student database table
  *
  * @author David Dubois
  * @since 5-Apr-2017
  */
 @Transactional
-public interface StudentDAO extends CrudRepository<StudentModel, Long> {
-    Optional<StudentModel> findById(long id);
+public interface StudentDAO extends CrudRepository<Student, Long> {
+    Optional<Student> findById(long id);
 }

@@ -1,6 +1,6 @@
 package com.avalanche.tmcs.matching;
 
-import com.avalanche.tmcs.students.StudentModel;
+import com.avalanche.tmcs.students.Student;
 
 /**
  * Matches students and job postings
@@ -16,7 +16,7 @@ public class MatchingService {
      *
      * @param student The student to register
      */
-    void resgisterStudent(StudentModel student) {
+    void resgisterStudent(Student student) {
 
     }
 

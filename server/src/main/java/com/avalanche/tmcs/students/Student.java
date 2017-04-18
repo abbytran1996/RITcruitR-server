@@ -1,77 +1,145 @@
 package com.avalanche.tmcs.students;
 
+import com.avalanche.tmcs.auth.User;
+
+import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 /**
- * The Student DTO used to transfer data to the frontend
+ * Class to represent a student in the database
  *
  * @author David Dubois
- * @since 10-Apr-17.
+ * @since 05-Apr-17.
  */
+@Entity
+@Table(name="students")
 public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @NotNull
     private String firstName;
+
+    @NotNull
     private String lastName;
+
+    // TODO: Uncomment when we write the Skills model
+    //@ManyToMany
+    //@JoinColumn(name="student_skill_id")
+    //private Set<SkillModel> skills = new HashSet<>();
+
+    @NotNull
+    // Emails have something, then an @ sign, then something, then a period, then something
+    // This is possibly overly broad, but students have to validate their email addresses with a confirmation email so
+    // this is mostly a sanity check to ensure things aren't horrible
+    // Also I wanted to use JPA validation annotations
+    @Pattern(regexp = "^.+@.+\\..+$")
     private String email;
+
+    // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
+    // so their graduation dates are in the future implicitly.
+    @Future
     private Date graduationDate;
+
+    @NotNull
     private String school;
+
+    @OneToOne
+    @NotNull
+    private User user;
+
     private String phoneNumber;
 
-    public Student() {}
+    // TODO: Figure out what the job preferences and notification preferences will look like
+    // Pretty sure we agreed to handle them later
 
-    public Student(StudentModel other) {
-        firstName = other.getFirstName();
-        lastName = other.getLastName();
-        email = other.getEmail();
-        graduationDate = other.getGraduationDate();
-        school = other.getSchool();
-        phoneNumber = other.getPhoneNumber();
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Date getGraduationDate() {
-        return graduationDate;
-    }
-
-    public String getSchool() {
-        return school;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getGraduationDate() {
+        return graduationDate;
     }
 
     public void setGraduationDate(Date graduationDate) {
         this.graduationDate = graduationDate;
     }
 
+    public String getSchool() {
+        return school;
+    }
+
     public void setSchool(String school) {
         this.school = school;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(!(o instanceof Student)) {
+            return false;
+        }
+
+        Student student = (Student) o;
+
+        return id == student.id && email.equals(student.email);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + email.hashCode();
+        return result;
     }
 }

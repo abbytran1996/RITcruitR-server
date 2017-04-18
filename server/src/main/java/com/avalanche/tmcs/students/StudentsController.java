@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.students;
 
+import com.avalanche.tmcs.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +23,18 @@ public class StudentsController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Student getStudent(@PathVariable long id) {
         validateStudentId(id);
-        StudentModel student = studentDAO.findOne(id);
-        return new Student(student);
+        return studentDAO.findOne(id);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> addStudent(@RequestBody NewStudent newStudent) {
         // TODO: Create a new user account
-        StudentModel studentModel = new StudentModel(newStudent);
-        StudentModel savedStudent = studentDAO.save(studentModel);
+        User newUser = new User();
+        newUser.setUsername(newStudent.getEmail());
+        newUser.setPassword(newStudent.getPassword());
+        newUser.setPasswordConfirm(newStudent.getPasswordConfirm());
+
+        Student savedStudent = studentDAO.save(newStudent);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -45,10 +49,8 @@ public class StudentsController {
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
 
-        StudentModel studentModel = new StudentModel(updatedStudent);
-
-        studentModel.setId(id);
-        studentDAO.save(studentModel);
+        updatedStudent.setId(id);
+        studentDAO.save(updatedStudent);
 
         return ResponseEntity.ok().build();
     }
