@@ -30,8 +30,8 @@ namespace TMCS_Client.DTOs {
         /// nothing needs to happen in the OS-specific classes</param>
         /// <returns>The created student</returns>
         public static NewStudent createAndValidate(string firstName, string lastName, string email, string school,
-            string graduationDate, string phoneNumber, List<string> preferredStates, string password, 
-            string passwordConfirm) {
+            string graduationDate, string phoneNumber, List<string> preferredStates, string preferredCompanySize,
+            string password, string passwordConfirm) {
 
             // Validation
             if(password != passwordConfirm) {
@@ -50,6 +50,7 @@ namespace TMCS_Client.DTOs {
             newStudent.graduationDate = date;
             newStudent.phoneNumber = phoneNumber;
             newStudent.preferredStates = preferredStates;
+            newStudent.preferredCompanySize = preferredCompanySize;
             newStudent.password = password;
             newStudent.passwordConfirm = passwordConfirm;
 

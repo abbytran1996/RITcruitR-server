@@ -123,6 +123,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView9" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/student_new_companySize" />
         <Button
             android:text="Submit"
             android:layout_width="match_parent"

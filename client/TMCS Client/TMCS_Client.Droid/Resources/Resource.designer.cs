@@ -66,6 +66,9 @@ namespace TMCS_Client.Droid
 			// aapt resource value: 0x7f050001
 			public const int studentSignupButton = 2131034113;
 			
+			// aapt resource value: 0x7f050015
+			public const int student_new_companySize = 2131034133;
+			
 			// aapt resource value: 0x7f050007
 			public const int student_new_email = 2131034119;
 			
@@ -93,8 +96,8 @@ namespace TMCS_Client.Droid
 			// aapt resource value: 0x7f050013
 			public const int student_new_states = 2131034131;
 			
-			// aapt resource value: 0x7f050015
-			public const int student_new_submit = 2131034133;
+			// aapt resource value: 0x7f050016
+			public const int student_new_submit = 2131034134;
 			
 			// aapt resource value: 0x7f050000
 			public const int textView1 = 2131034112;
