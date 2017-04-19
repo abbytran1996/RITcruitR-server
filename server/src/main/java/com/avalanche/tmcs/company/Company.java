@@ -13,9 +13,9 @@ public class Company {
 
     private long id;
 
-    private String firstName;
+    //private String firstName;
 
-    private String lastName;
+    //private String lastName;
 
     private String companyName;
 
@@ -40,6 +40,7 @@ public class Company {
         this.id = id;
     }
 
+    /* Not sure if I need these...
     @NotNull
     public String getFirstName() {
         return firstName;
@@ -57,6 +58,8 @@ public class Company {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+    */
+
 
     @NotNull
     public String getCompanyName(){
@@ -91,7 +94,7 @@ public class Company {
         return companyDescription;
     }
 
-    public void setCompanyDescription(){
+    public void setCompanyDescription(String companyDescription){
         this.companyDescription = companyDescription;
     }
 

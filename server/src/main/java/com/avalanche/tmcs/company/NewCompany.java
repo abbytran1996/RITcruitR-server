@@ -21,29 +21,18 @@ public class NewCompany extends Company {
      * Creates a new Company
      * returns new company object
      */
+    //may need to reference other attributes to company
 
     public Company toCompany(){
         Company company = new Company();
 
         company.setEmail(getEmail());
+        company.setEmail(getEmail());
+        company.setId(getId());
+        company.setCompanyName(getCompanyName());
+        company.setCompanyDescription(getCompanyDescription());
+        company.setPhoneNumber(getPhoneNumber());
+
+        return company;
     }
 }
-
-
-
-
-     /*   Student student = new Student();
-
-        student.setEmail(getEmail());
-        student.setFirstName(getFirstName());
-        student.setLastName(getLastName());
-        student.setGraduationDate(getGraduationDate());
-        student.setPhoneNumber(getPhoneNumber());
-        student.setPreferredStates(getPreferredStates());
-        student.setSchool(getSchool());
-        student.setSkills(getSkills());
-        student.setUser(getUser());
-
-        return student;
-
-        */
