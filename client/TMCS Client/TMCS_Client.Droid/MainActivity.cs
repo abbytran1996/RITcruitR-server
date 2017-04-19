@@ -18,9 +18,9 @@ namespace TMCS_Client.Droid {
 
             // Get our button from the layout resource,
             // and attach an event to it
-            Button button = FindViewById<Button>(Resource.Id.studentSignupButton);
+            var newStudentButton = FindViewById<Button>(Resource.Id.studentSignupButton);
 
-            button.Click += delegate {
+            newStudentButton.Click += delegate {
                 StartActivity(typeof(StudentSignup));
             };
         }
