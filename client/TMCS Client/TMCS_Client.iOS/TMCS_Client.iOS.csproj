@@ -142,6 +142,14 @@
     <Compile Include="LoginViewController.designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewController.cs" />
+    <Compile Include="ViewController.designer.cs">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmployerRegistration.cs" />
+    <Compile Include="EmployerRegistration.designer.cs">
+      <DependentUpon>EmployerRegistration.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\TMCS_Client\TMCS_Client.projitems" Label="Shared" Condition="Exists('..\TMCS_Client\TMCS_Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

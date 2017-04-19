@@ -5,18 +5,6 @@ package com.avalanche.tmcs.company;
  * @since 4/18/17
  */
 public class NewCompany extends Company {
-    private String password;
-
-    private String passwordConfirm;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPasswordConfirm(){
-        return passwordConfirm;
-    }
-
     /**
      * Creates a new Company
      * returns new company object
@@ -27,12 +15,15 @@ public class NewCompany extends Company {
     public Company toCompany(){
         Company company = new Company();
 
-        company.setEmail(getEmail());
-        company.setEmail(getEmail());
+        company.setApprovalStatus(getApprovalStatus());
+        company.setEmailSuffix(getEmailSuffix());
         company.setId(getId());
         company.setCompanyName(getCompanyName());
         company.setCompanyDescription(getCompanyDescription());
-        company.setPhoneNumber(getPhoneNumber());
+        company.setPresentation(getPresentation());
+        company.setLocation(getLocation());
+        company.setSize(getSize());
+        company.setUser(getUser());
 
         return company;
     }

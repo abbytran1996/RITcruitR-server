@@ -4,6 +4,7 @@ import com.avalanche.tmcs.auth.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.File;
 
 /**
  * @author Zane Grasso
@@ -13,21 +14,21 @@ public class Company {
 
     private long id;
 
-    //private String firstName;
-
-    //private String lastName;
+    private User user;
 
     private String companyName;
 
-    private String email;
+    private String location;
 
-    private User user;
+    private String size;
 
-    private String phoneNumber;
+    private Boolean approvalStatus;
 
+    private String emailSuffix;
+
+    private File presentation;
+    
     private String companyDescription;
-
-    //to do; data type for uploading file, CompanyPresentation
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,26 +41,6 @@ public class Company {
         this.id = id;
     }
 
-    /* Not sure if I need these...
-    @NotNull
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    @NotNull
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    */
-
 
     @NotNull
     public String getCompanyName(){
@@ -71,23 +52,30 @@ public class Company {
     }
 
     @NotNull
-    // Copied from David's Student Class
-    @Pattern(regexp = "^.+@.+\\..+$")
-    public String getEmail() {
-        return email;
-    }
+    public String getLocation(){return location;}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setLocation(String location) {this.location = location;}
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+    @NotNull
+    public String getSize(){return size;}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    public void setSize(String size) {this.size = size;}
+
+    @NotNull
+    public Boolean getApprovalStatus(){return approvalStatus;}
+
+    public void setApprovalStatus(Boolean approvalStatus) {this.approvalStatus = approvalStatus;}
+
+    @NotNull
+    public String getEmailSuffix(){return emailSuffix;}
+
+    public void setEmailSuffix(String emailSuffix) {this.emailSuffix = emailSuffix;}
+
+    @NotNull
+    public File getPresentation(){return presentation;}
+
+    public void setPresentation(File presentation) {this.presentation = presentation;}
+
 
     @NotNull
     public String getCompanyDescription(){
@@ -108,27 +96,6 @@ public class Company {
         this.user = user;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) {
-            return true;
-        }
-        if(!(o instanceof Company)) {
-            return false;
-        }
-
-        Company student = (Company) o;
-
-        return id == student.id && email.equals(student.email);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + email.hashCode();
-        return result;
-    }
 
 }
 

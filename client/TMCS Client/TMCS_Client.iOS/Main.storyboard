@@ -79,6 +79,9 @@
                                 <rect key="frame" x="156" y="487" width="64" height="30"/>
                                 <state key="normal" title="Register"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES"/>
+                                <connections>
+                                    <segue id="407" destination="285" kind="show"/>
+                                </connections>
                             </button>
                         </subviews>
                         <variation key="default">
@@ -155,7 +158,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Choose A Role You Want To Regester As:">
+                                    <fragment content="Choose A Role You Want To Register As:">
                                         <attributes>
                                             <font key="NSFont" name="HelveticaNeue" family="Helvetica Neue" size="21"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
@@ -196,6 +199,9 @@
                                         <real key="value" value="30"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue id="469" destination="313" kind="show"/>
+                                </connections>
                             </button>
                         </subviews>
                         <variation key="default">
@@ -214,19 +220,65 @@
                                 <include reference="306"/>
                             </mask>
                         </variation>
-                        <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" notEnabled="YES"/>
-                        </accessibility>
                     </view>
                     <connections>
                         <outlet property="Student" destination="305" id="name-outlet-305"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="287" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationItem title="Login" id="290" key="navigationItem"/>
-                <navigationItem title="Login" id="309" key="navigationItem"/>
             </objects>
             <point key="canvasLocation" x="578" y="64"/>
+        </scene>
+        <scene sceneID="312">
+            <objects>
+                <viewController id="313" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="310"/>
+                        <viewControllerLayoutGuide type="bottom" id="311"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="314">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recruiter Registration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="479" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="58" y="76" width="260" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" colorSpace="calibratedWhite" white="0" alpha="1"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="21" id="480" translatesAutoresizingMaskIntoConstraints="NO" text="First Name">
+                                <rect key="frame" x="20" y="138" width="192" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Text" borderStyle="roundedRect" minimumFontSize="17" id="490" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="166" y="493" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="479"/>
+                                <exclude reference="480"/>
+                                <exclude reference="490"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="479"/>
+                                <include reference="480"/>
+                                <include reference="490"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="900"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="315" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1216" y="528"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
