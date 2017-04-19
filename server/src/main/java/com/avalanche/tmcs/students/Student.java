@@ -40,6 +40,8 @@ public class Student {
 
     private Set<String> preferredStates;
 
+    private String preferredCompanySize;
+
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
 
@@ -140,6 +142,15 @@ public class Student {
 
     public void setPreferredStates(Set<String> preferredStates) {
         this.preferredStates = preferredStates;
+    }
+
+    @NotNull
+    public String getPreferredCompanySize() {
+        return preferredCompanySize;
+    }
+
+    public void setPreferredCompanySize(String preferredCompanySize) {
+        this.preferredCompanySize = preferredCompanySize;
     }
 
     @Override

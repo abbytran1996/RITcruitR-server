@@ -10,21 +10,32 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
+    public enum RoleName {
+        Student,
+        Recruiter,
+        Administrator
+    }
+
     private UserDAO userDAO;
+
+    private RoleDAO roleDAO;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserDAO userDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserDAO userDAO, RoleDAO roleDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public void save(User user) {
+    public void save(User user, RoleName roleName) {
         if(userDAO.findByUsername(user.getUsername()) != null) {
             throw new RegistrationException("Username already taken");
         }
 
+        Role studentRole = roleDAO.findByName(roleName.name().toLowerCase());
+        user.addRole(studentRole);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDAO.save(user);
     }
