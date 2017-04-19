@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
+
+namespace TMCS_Client.DTOs
 /// <summary>
 /// The DTO for a Company
 /// </summary>
-namespace TMCS_Client.DTOs
 {
 	
 	class Company

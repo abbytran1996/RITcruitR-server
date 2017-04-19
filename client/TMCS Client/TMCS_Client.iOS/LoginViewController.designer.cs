@@ -32,11 +32,19 @@ namespace TMCS_Client.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton Student { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField txtBoxPassword { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField txtBoxUsername { get; set; }
+
+        [Action ("Student_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void Student_TouchUpInside (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
@@ -58,6 +66,11 @@ namespace TMCS_Client.iOS
             if (lblRegister != null) {
                 lblRegister.Dispose ();
                 lblRegister = null;
+            }
+
+            if (Student != null) {
+                Student.Dispose ();
+                Student = null;
             }
 
             if (txtBoxPassword != null) {
