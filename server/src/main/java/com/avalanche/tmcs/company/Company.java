@@ -6,8 +6,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
- * Created by zanegrasso
- * Created on 4/18/17.
+ * @author Zane Grasso
+ * @since 4/18/17
  */
 public class Company {
 

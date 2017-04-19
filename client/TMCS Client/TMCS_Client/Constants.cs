@@ -12,5 +12,9 @@ namespace TMCS_Client {
         public class Students {
             public static string ADD_STUDENT_RESOURCE { get => "/students"; }
         }
+	public class Company
+		{
+			public static string ADD_COMPANY_RESOURCE { get => "/company"; }
+		}
     }
 }

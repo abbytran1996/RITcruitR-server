@@ -1,8 +1,8 @@
 package com.avalanche.tmcs.company;
 
 /**
- * Created by zanegrasso
- * Created on 4/18/17.
+ * @author Zane Grasso
+ * @since 4/18/17
  */
 public class NewCompany extends Company {
     private String password;
@@ -21,6 +21,7 @@ public class NewCompany extends Company {
      * Creates a new Company
      * returns new company object
      */
+
     //may need to reference other attributes to company
 
     public Company toCompany(){

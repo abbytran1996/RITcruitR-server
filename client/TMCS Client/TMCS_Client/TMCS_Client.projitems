@@ -16,5 +16,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)MyClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\StudentComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewCompany.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Company.cs" />
   </ItemGroup>
 </Project>
