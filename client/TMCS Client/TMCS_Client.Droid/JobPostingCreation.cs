@@ -54,6 +54,8 @@ namespace TMCS_Client.Droid {
                 var recommendedSkillsList = new List<String>();
                 recommendedSkillsList.AddRange(recommendedSkills);
                 recommendedSkillsList.RemoveAll(str => str.Trim().Length == 0);
+
+                // TODO: Submit the new job
             };
         }
 
