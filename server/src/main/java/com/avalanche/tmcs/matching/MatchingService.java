@@ -1,6 +1,8 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
+import com.avalanche.tmcs.students.StudentDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +14,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MatchingService {
-    private MatchesDAO matchesDAO;
+    private MatchDAO matchDAO;
+
+    private StudentDAO studentDAO;
 
     @Autowired
-    public MatchingService(MatchesDAO matchesDAO) {
-        this.matchesDAO = matchesDAO;
+    public MatchingService(MatchDAO matchDAO, StudentDAO studentDAO) {
+        this.matchDAO = matchDAO;
+        this.studentDAO = studentDAO;
     }
 
     /**
-     * Registeres the given student with the matching student
+     * Registers the given student with the matching student
      * <p>This adds the student to the skills index and calculates the best matches for this student</p>
      * <p>The expectation is that this method will be called when a new student is registered</p>
      *
@@ -37,7 +42,12 @@ public class MatchingService {
      *
      * @param posting The job posting to register
      */
-    // void registerJobPosting(JobPosting posting) {
-    //      TODO: Uncomment when we have job postings
-    // }
+    void registerJobPosting(JobPosting posting) {
+        //for(Skill skill : posting.get)
+    }
+
+    private class JobMatchMetedata {
+        JobPosting job;
+
+    }
 }
