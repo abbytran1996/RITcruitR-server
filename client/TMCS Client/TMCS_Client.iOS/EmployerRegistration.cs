@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 
@@ -8,6 +8,7 @@ namespace TMCS_Client.iOS
     {
         public EmployerRegistration (IntPtr handle) : base (handle)
         {
+			
         }
     }
 }

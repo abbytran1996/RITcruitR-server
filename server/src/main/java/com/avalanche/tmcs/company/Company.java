@@ -27,7 +27,7 @@ public class Company {
     private String emailSuffix;
 
     private File presentation;
-    
+
     private String companyDescription;
 
     @Id

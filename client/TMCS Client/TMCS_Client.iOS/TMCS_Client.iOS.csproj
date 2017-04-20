@@ -150,6 +150,10 @@
     <Compile Include="EmployerRegistration.designer.cs">
       <DependentUpon>EmployerRegistration.cs</DependentUpon>
     </Compile>
+    <Compile Include="RecruiterUIController.cs" />
+    <Compile Include="RecruiterUIController.designer.cs">
+      <DependentUpon>RecruiterUIController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\TMCS_Client\TMCS_Client.projitems" Label="Shared" Condition="Exists('..\TMCS_Client\TMCS_Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
