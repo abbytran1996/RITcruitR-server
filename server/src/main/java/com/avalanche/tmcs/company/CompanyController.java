@@ -17,5 +17,32 @@ import java.net.URI;
     @RestController
     @RequestMapping("/company")
 public class CompanyController {
+        private CompanyDAO companyDAO;
+
+        @Autowired
+        public CompanyController(CompanyDAO companyDAO){
+            this.companyDAO = companyDAO;
+        }
+
+    /*private void validateCompanyId(long id) {
+            if(!companyDAO.exists(id)){
+                throw ExceptionHandler("");
+            }
+    }
+    */
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Company getCompany(@PathVariable long id){
+        //validateCompanyId(id);
+        return companyDAO.findOne(id);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCompany(@PathVariable long id, @RequestBody Company updateCompany){
+        updateCompany.setId(id);
+        companyDAO.save(updateCompany);
+
+        return ResponseEntity.ok().build();
+    }
 
 }
