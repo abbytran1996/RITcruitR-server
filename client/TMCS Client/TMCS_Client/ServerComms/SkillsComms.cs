@@ -9,7 +9,7 @@ namespace TMCS_Client.ServerComms
         RestClient client = new RestClient(Constants.SERVER_URL);
 
         public List<Skill> getAllSkills(){
-            var request = new RestRequest(Constants.Skill.ADD_SKILL_RESOURCE, Method.GET);
+            var request = new RestRequest(Constants.Skill.GET_SKILL_RESOURCE, Method.GET);
 
             var response = client.Execute<List<Skill>>(request);
 
