@@ -1,8 +1,12 @@
 package com.avalanche.tmcs.job_posting;
 
 
+import com.avalanche.tmcs.matching.Skill;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Maxwell Hadley
@@ -17,17 +21,11 @@ public class JobPosting {
 
     private String description;
 
-    // @ManyToMany
-    // @JoinColumn(name = "id")
-    // private Set<Skill> requiredSkills = new HashSet<Skill>();
+    private Set<Skill> requiredSkills = new HashSet<>();
 
-    // @ManyToMany
-    // @JoinColumn(name = "id")
-    // private Set<Skill> recommendedSkills = new HashSet<Skill>();
+    private Set<Skill> recommendedSkills = new HashSet<Skill>();
 
-    // @ManyToOne
-    // @JoinColumn(name = "id")
-    // private Recruiter recruiter;
+    //private Recruiter recruiter;
 
     private String location;
 
@@ -63,6 +61,26 @@ public class JobPosting {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @ManyToMany
+    @JoinColumn(name = "id")
+    public Set<Skill> getRequiredSkills() {
+        return requiredSkills;
+    }
+
+    public void setRequiredSkills(Set<Skill> requiredSkills) {
+        this.requiredSkills = requiredSkills;
+    }
+
+    @ManyToMany
+    @JoinColumn(name = "id")
+    public Set<Skill> getRecommendedSkills() {
+        return recommendedSkills;
+    }
+
+    public void setRecommendedSkills(Set<Skill> recommendedSkills) {
+        this.recommendedSkills = recommendedSkills;
     }
 
     @NotNull

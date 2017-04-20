@@ -12,9 +12,18 @@ namespace TMCS_Client {
         public class Students {
             public static string ADD_STUDENT_RESOURCE { get => "/students"; }
         }
-	public class Company
+	    public class Company
 		{
 			public static string ADD_COMPANY_RESOURCE { get => "/company"; }
+		}
+        public class Skill{
+            public static string GET_SKILL_RESOURCE { get => "/skills"; }
+        }
+		public class JobPosting
+		{
+            public static string ADD_JOB_POSTING_RESOURCE { get => "/jobposting/create"; }
+            public static string DELETE_JOB_POSTING_RESOURCE { get => "/jobposting/delete/{id}"; }
+            public static string GET_JOB_POSTING_RESOURCE { get => "/jobposting/{id}"; }
 		}
     }
 }

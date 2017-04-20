@@ -20,5 +20,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewCompany.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Company.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\JobPosting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Skill.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\SkillsComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
   </ItemGroup>
 </Project>
