@@ -397,7 +397,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="636" translatesAutoresizingMaskIntoConstraints="NO" indicatorStyle="white" showsHorizontalScrollIndicator="NO" bounces="NO" fixedFrame="YES">
+                            <scrollView contentMode="scaleToFill" id="636" translatesAutoresizingMaskIntoConstraints="NO" indicatorStyle="white" showsHorizontalScrollIndicator="NO" bounces="NO" fixedFrame="YES" clipsSubviews="YES" multipleTouchEnabled="YES">
                                 <rect key="frame" x="0.0" y="65" width="375" height="602"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
                                     <color key="tintColor" colorSpace="calibratedWhite" white="0" alpha="0"/>
@@ -413,6 +413,12 @@
                                         <include reference="731"/>
                                         <include reference="732"/>
                                         <include reference="733"/>
+                                        <include reference="745"/>
+                                        <include reference="746"/>
+                                        <include reference="747"/>
+                                        <include reference="748"/>
+                                        <include reference="749"/>
+                                        <include reference="750"/>
                                     </mask>
                                 </variation>
                                 <subviews>
@@ -476,6 +482,39 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="745" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" fixedFrame="YES" placeholder="+x (xxx) xxx-xxxx">
+                                        <rect key="frame" x="28" y="531" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number (Optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="746" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="30" y="505" width="233" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="747" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="mm/yy" fixedFrame="YES">
+                                        <rect key="frame" x="28" y="467" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expected Graduation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="748" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="30" y="441" width="191" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="749" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="School Name" fixedFrame="YES">
+                                        <rect key="frame" x="28" y="402" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="750" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES" text="School Name">
+                                        <rect key="frame" x="30" y="376" width="124" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <variation key="default">
                                     <mask key="subviews">
@@ -490,8 +529,15 @@
                                         <exclude reference="731"/>
                                         <exclude reference="732"/>
                                         <exclude reference="733"/>
+                                        <exclude reference="745"/>
+                                        <exclude reference="746"/>
+                                        <exclude reference="747"/>
+                                        <exclude reference="748"/>
+                                        <exclude reference="749"/>
+                                        <exclude reference="750"/>
                                     </mask>
                                 </variation>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="1" height="1"/>
                             </scrollView>
                         </subviews>
                         <variation key="default">
@@ -517,6 +563,12 @@
                         <outlet property="lblFirstName" destination="620" id="name-outlet-620"/>
                         <outlet property="txtBoxPassword" destination="732" id="name-outlet-732"/>
                         <outlet property="txtBoxConfirmPassword" destination="730" id="name-outlet-730"/>
+                        <outlet property="lblSchoolName" destination="750" id="name-outlet-750"/>
+                        <outlet property="txtBoxSchoolName" destination="749" id="name-outlet-749"/>
+                        <outlet property="lblExpectedGraduation" destination="748" id="name-outlet-748"/>
+                        <outlet property="txtBoxExpectedGraduation" destination="747" id="name-outlet-747"/>
+                        <outlet property="lblPhoneNumber" destination="746" id="name-outlet-746"/>
+                        <outlet property="txtBoxPhoneNumber" destination="745" id="name-outlet-745"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="540" userLabel="First Responder" sceneMemberID="firstResponder"/>
