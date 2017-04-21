@@ -11,8 +11,8 @@ using UIKit;
 
 namespace TMCS_Client.iOS
 {
-    [Register ("RecruiterUIController")]
-    partial class RecruiterUIController
+    [Register ("RecruiterRegistrationViewController")]
+    partial class RecruiterRegistrationViewController
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]

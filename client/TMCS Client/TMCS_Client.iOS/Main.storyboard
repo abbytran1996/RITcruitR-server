@@ -27,7 +27,7 @@
                         <viewControllerLayoutGuide type="top" id="184"/>
                         <viewControllerLayoutGuide type="bottom" id="185"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="188">
+                    <view key="view" contentMode="scaleToFill" id="188" customClass="Login">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -125,6 +125,7 @@
                         <outlet property="txtBoxPassword" destination="262" id="name-outlet-262"/>
                         <outlet property="lblRegister" destination="265" id="name-outlet-265"/>
                         <outlet property="btnRegister" destination="268" id="name-outlet-268"/>
+                        <outlet property="viewLogin" destination="188" id="name-outlet-188"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="189" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -133,7 +134,7 @@
         </scene>
         <scene sceneID="284">
             <objects>
-                <viewController id="285" sceneMemberID="viewController" customClass="LoginViewController">
+                <viewController id="285" sceneMemberID="viewController" customClass="RegistrationViewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="282"/>
                         <viewControllerLayoutGuide type="bottom" id="283"/>
@@ -166,24 +167,6 @@
                                     </fragment>
                                 </attributedString>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="305" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
-                                <rect key="frame" x="113" y="420" width="150" height="65"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                <state key="normal" title="Student">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="Student_TouchUpInside:" destination="285" id="308" eventType="touchUpInside"/>
-                                </connections>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.12549019607843137" green="0.82352941176470584" blue="0.596078431372549" alpha="1"/>
-                                </variation>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
-                                        <real key="value" value="30"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="306" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
                                 <rect key="frame" x="112" y="513" width="150" height="65"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
@@ -203,28 +186,45 @@
                                     <segue id="469" destination="313" kind="show"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="649" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                <rect key="frame" x="112" y="429" width="150" height="65"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <state key="normal" title="Student">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.10196078431372549" green="0.29803921568627451" blue="0.49019607843137253" alpha="1"/>
+                                </variation>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
+                                        <real key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue id="720" destination="538" kind="show"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="289"/>
                                 <exclude reference="296"/>
-                                <exclude reference="305"/>
                                 <exclude reference="306"/>
+                                <exclude reference="649"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="289"/>
                                 <include reference="296"/>
-                                <include reference="305"/>
                                 <include reference="306"/>
+                                <include reference="649"/>
                             </mask>
                             <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         </variation>
                     </view>
-                    <connections>
-                        <outlet property="Student" destination="305" id="name-outlet-305"/>
-                    </connections>
+                    <connections/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="287" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -232,7 +232,7 @@
         </scene>
         <scene sceneID="312">
             <objects>
-                <viewController id="313" sceneMemberID="viewController" customClass="RecruiterUIController">
+                <viewController id="313" sceneMemberID="viewController" customClass="RecruiterRegistrationViewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="310"/>
                         <viewControllerLayoutGuide type="bottom" id="311"/>
@@ -293,19 +293,19 @@
                                 <textInputTraits key="textInputTraits"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES" preservesSuperviewLayoutMargins="YES"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Settings:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="516" translatesAutoresizingMaskIntoConstraints="NO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Settings:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="516" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
                                 <rect key="frame" x="82" y="609" width="212" height="37"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Select When You Want To Recieve Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="517" translatesAutoresizingMaskIntoConstraints="NO" numberOfLines="2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Select When You Want To Recieve Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="517" translatesAutoresizingMaskIntoConstraints="NO" numberOfLines="2" fixedFrame="YES">
                                 <rect key="frame" x="41" y="640" width="292" height="59"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="526" translatesAutoresizingMaskIntoConstraints="NO">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="526" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
                                 <rect key="frame" x="54" y="726" width="240" height="236"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -363,6 +363,148 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="315" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1216" y="528"/>
+        </scene>
+        <scene sceneID="537">
+            <objects>
+                <viewController id="538" sceneMemberID="viewController" customClass="StudentRegistrationViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="535"/>
+                        <viewControllerLayoutGuide type="bottom" id="536"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="539" customClass="StudentRegistration">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="625" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                <rect key="frame" x="50" y="140" width="102" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="636" translatesAutoresizingMaskIntoConstraints="NO" indicatorStyle="white" showsHorizontalScrollIndicator="NO" bounces="NO" fixedFrame="YES">
+                                <rect key="frame" x="0.0" y="65" width="375" height="602"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <color key="tintColor" colorSpace="calibratedWhite" white="0" alpha="0"/>
+                                    <mask key="subviews">
+                                        <include reference="634"/>
+                                        <include reference="635"/>
+                                        <include reference="633"/>
+                                        <include reference="632"/>
+                                        <include reference="619"/>
+                                        <include reference="620"/>
+                                        <include reference="618"/>
+                                        <include reference="730"/>
+                                        <include reference="731"/>
+                                        <include reference="732"/>
+                                        <include reference="733"/>
+                                    </mask>
+                                </variation>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="634" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="Email" fixedFrame="YES">
+                                        <rect key="frame" x="28" y="209" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="635" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="30" y="183" width="51" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="633" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="Last Name" fixedFrame="YES">
+                                        <rect key="frame" x="28" y="145" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="632" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="30" y="119" width="102" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="619" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="First Name" fixedFrame="YES">
+                                        <rect key="frame" x="28" y="80" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="620" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="30" y="54" width="102" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Student Registration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="618" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="67" y="16" width="241" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="730" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="Last Name" fixedFrame="YES">
+                                        <rect key="frame" x="28" y="338" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="731" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="30" y="312" width="175" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="732" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="First Name" fixedFrame="YES">
+                                        <rect key="frame" x="28" y="273" width="318" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="733" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                        <rect key="frame" x="30" y="247" width="102" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="634"/>
+                                        <exclude reference="635"/>
+                                        <exclude reference="633"/>
+                                        <exclude reference="632"/>
+                                        <exclude reference="619"/>
+                                        <exclude reference="620"/>
+                                        <exclude reference="618"/>
+                                        <exclude reference="730"/>
+                                        <exclude reference="731"/>
+                                        <exclude reference="732"/>
+                                        <exclude reference="733"/>
+                                    </mask>
+                                </variation>
+                            </scrollView>
+                        </subviews>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="625"/>
+                                <exclude reference="636"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="636"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="viewStudentRegistration" destination="539" id="name-outlet-539"/>
+                        <outlet property="scrollViewStudentRegistration" destination="636" id="name-outlet-636"/>
+                        <outlet property="txtBoxEmail" destination="634" id="name-outlet-634"/>
+                        <outlet property="lblEmail" destination="635" id="name-outlet-635"/>
+                        <outlet property="txtBoxLastName" destination="633" id="name-outlet-633"/>
+                        <outlet property="lblLastName" destination="632" id="name-outlet-632"/>
+                        <outlet property="txtBoxFirstName" destination="619" id="name-outlet-619"/>
+                        <outlet property="lblFirstName" destination="620" id="name-outlet-620"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="540" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1213" y="-249"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

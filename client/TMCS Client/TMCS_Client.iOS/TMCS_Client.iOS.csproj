@@ -138,10 +138,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="LoginViewController.cs" />
-    <Compile Include="LoginViewController.designer.cs">
-      <DependentUpon>LoginViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="ViewController.cs" />
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
@@ -150,9 +146,29 @@
     <Compile Include="EmployerRegistration.designer.cs">
       <DependentUpon>EmployerRegistration.cs</DependentUpon>
     </Compile>
-    <Compile Include="RecruiterUIController.cs" />
-    <Compile Include="RecruiterUIController.designer.cs">
-      <DependentUpon>RecruiterUIController.cs</DependentUpon>
+    <Compile Include="StudentRegistration.cs" />
+    <Compile Include="StudentRegistration.designer.cs">
+      <DependentUpon>StudentRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginViewController.cs" />
+    <Compile Include="LoginViewController.designer.cs">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RecruiterRegistrationViewController.cs" />
+    <Compile Include="RecruiterRegistrationViewController.designer.cs">
+      <DependentUpon>RecruiterRegistrationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs" />
+    <Compile Include="Login.designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrationViewController.cs" />
+    <Compile Include="RegistrationViewController.designer.cs">
+      <DependentUpon>RegistrationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StudentRegistrationViewController.cs" />
+    <Compile Include="StudentRegistrationViewController.designer.cs">
+      <DependentUpon>StudentRegistrationViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="..\TMCS_Client\TMCS_Client.projitems" Label="Shared" Condition="Exists('..\TMCS_Client\TMCS_Client.projitems')" />
