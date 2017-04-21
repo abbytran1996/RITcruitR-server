@@ -139,7 +139,7 @@
                         <viewControllerLayoutGuide type="top" id="282"/>
                         <viewControllerLayoutGuide type="bottom" id="283"/>
                     </layoutGuides>
-                    <view key="view" contentMode="center" id="286">
+                    <view key="view" contentMode="center" id="286" customClass="Registration">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -224,7 +224,13 @@
                             <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         </variation>
                     </view>
-                    <connections/>
+                    <connections>
+                        <outlet property="viewRegistration" destination="286" id="name-outlet-286"/>
+                        <outlet property="lblWelcome" destination="289" id="name-outlet-289"/>
+                        <outlet property="lblRole" destination="296" id="name-outlet-296"/>
+                        <outlet property="btnSelectRoleStudent" destination="649" id="name-outlet-649"/>
+                        <outlet property="btnSelectRoleEmployer" destination="306" id="name-outlet-306"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="287" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -358,6 +364,15 @@
                     <size key="freeformSize" width="375" height="900"/>
                     <connections>
                         <outlet property="Recruiter_Registration" destination="314" id="name-outlet-314"/>
+                        <outlet property="lblRecruiterRegistration" destination="479" id="name-outlet-479"/>
+                        <outlet property="txtBoxFirstName" destination="480" id="name-outlet-480"/>
+                        <outlet property="txtBoxLastName" destination="503" id="name-outlet-503"/>
+                        <outlet property="txtBoxCompanyEmail" destination="504" id="name-outlet-504"/>
+                        <outlet property="txtBoxPassword" destination="505" id="name-outlet-505"/>
+                        <outlet property="txtBoxConfirmPassword" destination="512" id="name-outlet-512"/>
+                        <outlet property="txtBoxCompanyName" destination="513" id="name-outlet-513"/>
+                        <outlet property="txtBoxPhoneNumber" destination="514" id="name-outlet-514"/>
+                        <outlet property="txtBoxCompanyLocation" destination="515" id="name-outlet-515"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="315" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -439,10 +454,10 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="730" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="Last Name" fixedFrame="YES">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="730" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="Confirm Password" fixedFrame="YES">
                                         <rect key="frame" x="28" y="338" width="318" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="731" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
                                         <rect key="frame" x="30" y="312" width="175" height="21"/>
@@ -450,10 +465,10 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="732" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="First Name" fixedFrame="YES">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="732" translatesAutoresizingMaskIntoConstraints="NO" borderStyle="roundedRect" placeholder="Password" fixedFrame="YES">
                                         <rect key="frame" x="28" y="273" width="318" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="733" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
                                         <rect key="frame" x="30" y="247" width="102" height="21"/>
@@ -500,6 +515,8 @@
                         <outlet property="lblLastName" destination="632" id="name-outlet-632"/>
                         <outlet property="txtBoxFirstName" destination="619" id="name-outlet-619"/>
                         <outlet property="lblFirstName" destination="620" id="name-outlet-620"/>
+                        <outlet property="txtBoxPassword" destination="732" id="name-outlet-732"/>
+                        <outlet property="txtBoxConfirmPassword" destination="730" id="name-outlet-730"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="540" userLabel="First Responder" sceneMemberID="firstResponder"/>

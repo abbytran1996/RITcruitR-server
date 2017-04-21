@@ -4,9 +4,9 @@ using UIKit;
 
 namespace TMCS_Client.iOS
 {
-    public partial class ViewController : UIView
+    public partial class Registration : UIView
     {
-        public ViewController (IntPtr handle) : base (handle)
+        public Registration (IntPtr handle) : base (handle)
         {
         }
     }

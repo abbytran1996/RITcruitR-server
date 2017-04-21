@@ -11,8 +11,8 @@ using UIKit;
 
 namespace TMCS_Client.iOS
 {
-    [Register ("RegistrationViewController")]
-    partial class RegistrationViewController
+    [Register ("Registration")]
+    partial class Registration
     {
         void ReleaseDesignerOutlets ()
         {
