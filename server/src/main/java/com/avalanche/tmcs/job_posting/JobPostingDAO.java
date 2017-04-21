@@ -8,4 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface JobPostingDAO extends CrudRepository<JobPosting, Long> {
     //Recuriter findAllByRecruiter(Recruiter recruiter)
+
 }

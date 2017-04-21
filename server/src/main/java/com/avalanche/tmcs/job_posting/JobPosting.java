@@ -17,13 +17,20 @@ public class JobPosting {
 
     private long id;
 
+    //Status Enum Below
+    private int status;
+
     private String positionTitle;
 
     private String description;
 
-    private Set<Skill> requiredSkills = new HashSet<>();
+    private Set<Skill> requiredSkills;
 
-    private Set<Skill> recommendedSkills = new HashSet<Skill>();
+    private int minMatchedRequiredSkills;
+
+    private Set<Skill> recommendedSkills;
+
+    private double recommendedSkillsWeight;
 
     //private Recruiter recruiter;
 
@@ -43,6 +50,15 @@ public class JobPosting {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @NotNull
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @NotNull
@@ -73,6 +89,15 @@ public class JobPosting {
         this.requiredSkills = requiredSkills;
     }
 
+    @NotNull
+    public long getMinMatchedRequiredSkills() {
+        return minMatchedRequiredSkills;
+    }
+
+    public void setMinMatchedRequiredSkills(int minMatchedRequiredSkills) {
+        this.minMatchedRequiredSkills = minMatchedRequiredSkills;
+    }
+
     @ManyToMany
     @JoinColumn(name = "id")
     public Set<Skill> getRecommendedSkills() {
@@ -81,6 +106,15 @@ public class JobPosting {
 
     public void setRecommendedSkills(Set<Skill> recommendedSkills) {
         this.recommendedSkills = recommendedSkills;
+    }
+
+    @NotNull
+    public double getRecommendedSkillsWeight() {
+        return recommendedSkillsWeight;
+    }
+
+    public void setRecommendedSkillsWeight(double recommendedSkillsWeight) {
+        this.recommendedSkillsWeight = recommendedSkillsWeight;
     }
 
     @NotNull
@@ -119,4 +153,20 @@ public class JobPosting {
         this.url = url;
     }
 
+}
+
+enum Status{
+    OPEN(0),
+    FULFILLED(1),
+    DELETED(2);
+
+    private int status;
+
+    Status(int status){
+        this.status = status;
+    }
+
+    int toInt(){
+        return status;
+    }
 }
