@@ -14,8 +14,16 @@ namespace TMCS_Client.iOS
     [Register ("StudentRegistrationTableViewController")]
     partial class StudentRegistrationTableViewController
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        TMCS_Client.iOS.StudentRegistration tblStudentRegistration { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
+            if (tblStudentRegistration != null) {
+                tblStudentRegistration.Dispose ();
+                tblStudentRegistration = null;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-// WARNING
+﻿// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -16,11 +16,11 @@ namespace TMCS_Client.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TMCS_Client.iOS.StudentRegistrationTableController dataSource { get; set; }
+        TMCS_Client.iOS.StudentRegistrationTableViewController dataSource { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TMCS_Client.iOS.StudentRegistrationTableController @delegate { get; set; }
+        TMCS_Client.iOS.StudentRegistrationTableViewController @delegate { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
