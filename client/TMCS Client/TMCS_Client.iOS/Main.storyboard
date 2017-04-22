@@ -440,7 +440,7 @@
         <!--View Controller-->
         <scene sceneID="1782">
             <objects>
-                <tableViewController id="1783" sceneMemberID="viewController" customClass="StudentRegistrationTableController">
+                <tableViewController id="1783" sceneMemberID="viewController" customClass="StudentRegistrationTableViewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="1784" separatorStyle="none" showsHorizontalScrollIndicator="NO" bounces="NO" bouncesZoom="NO" indicatorStyle="black" allowsSelectionDuringEditing="YES">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="784"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
