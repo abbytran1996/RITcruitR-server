@@ -150,10 +150,6 @@
     <Compile Include="ViewControllers\RegistrationViewController.designer.cs">
       <DependentUpon>RegistrationViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewControllers\StudentRegistrationViewController.cs" />
-    <Compile Include="ViewControllers\StudentRegistrationViewController.designer.cs">
-      <DependentUpon>StudentRegistrationViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\EmployerRegistration.cs" />
     <Compile Include="Views\EmployerRegistration.designer.cs">
       <DependentUpon>EmployerRegistration.cs</DependentUpon>
@@ -169,6 +165,10 @@
     <Compile Include="Views\StudentRegistration.cs" />
     <Compile Include="Views\StudentRegistration.designer.cs">
       <DependentUpon>StudentRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\StudentRegistrationTableViewController.cs" />
+    <Compile Include="ViewControllers\StudentRegistrationTableViewController.designer.cs">
+      <DependentUpon>StudentRegistrationTableViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
