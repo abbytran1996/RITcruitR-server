@@ -36,7 +36,6 @@ namespace TMCS_Client.DTOs
 			var newCompany = new NewCompany();
 			newCompany.companyName = companyName;
 			newCompany.email = email;
-			newCompany.phoneNumber = phoneNumber;
 			newCompany.companyDescription = companyDescription;
 			newCompany.password = password;
 			newCompany.passwordConfirm = passwordConfirm;
