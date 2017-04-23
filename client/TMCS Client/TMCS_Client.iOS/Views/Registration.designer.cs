@@ -1,4 +1,4 @@
-﻿// WARNING
+// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -11,11 +11,11 @@ using UIKit;
 
 namespace TMCS_Client.iOS
 {
-    [Register ("ViewController")]
-    partial class ViewController
+    [Register ("Registration")]
+    partial class Registration
     {
         void ReleaseDesignerOutlets ()
         {
         }
     }
-}`
+}

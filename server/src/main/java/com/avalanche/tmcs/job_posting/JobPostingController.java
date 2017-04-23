@@ -23,9 +23,18 @@ public class JobPostingController {
         return jobPostingDAO.findOne(id);
     }
 
+    @RequestMapping(value = "/fulfilled/{id}", method = RequestMethod.POST)
+    public void fulfillJobPosting(@PathVariable long id){
+        JobPosting toFulfill = jobPostingDAO.findOne(id);
+        toFulfill.setStatus(Status.FULFILLED.toInt());
+        jobPostingDAO.save(toFulfill);
+    }
+
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void deleteJobPosting(@PathVariable long id){
-        jobPostingDAO.delete(id);
+        JobPosting toDelete = jobPostingDAO.findOne(id);
+        toDelete.setStatus(Status.DELETED.toInt());
+        jobPostingDAO.save(toDelete);
     }
 
     @RequestMapping(value = "/create", method=RequestMethod.POST)

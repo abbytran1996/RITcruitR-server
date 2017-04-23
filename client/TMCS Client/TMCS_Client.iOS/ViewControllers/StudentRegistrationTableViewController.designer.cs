@@ -11,18 +11,18 @@ using UIKit;
 
 namespace TMCS_Client.iOS
 {
-    [Register ("RecruiterUIController")]
-    partial class RecruiterUIController
+    [Register ("StudentRegistrationTableViewController")]
+    partial class StudentRegistrationTableViewController
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TMCS_Client.iOS.EmployerRegistration Recruiter_Registration { get; set; }
+        TMCS_Client.iOS.StudentRegistration tblStudentRegistration { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (Recruiter_Registration != null) {
-                Recruiter_Registration.Dispose ();
-                Recruiter_Registration = null;
+            if (tblStudentRegistration != null) {
+                tblStudentRegistration.Dispose ();
+                tblStudentRegistration = null;
             }
         }
     }

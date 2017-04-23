@@ -6,7 +6,7 @@ namespace TMCS_Client.DTOs {
     /// <summary>
     /// The DTO sent to the server when a new student is added
     /// </summary>
-    class NewStudent : Student {
+    public class NewStudent : Student {
         public string password { get; set; }
 
         public string passwordConfirm { get; set; }

@@ -138,22 +138,42 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="LoginViewController.cs" />
-    <Compile Include="LoginViewController.designer.cs">
+    <Compile Include="ViewControllers\LoginViewController.cs" />
+    <Compile Include="ViewControllers\LoginViewController.designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewController.cs" />
-    <Compile Include="ViewController.designer.cs">
-      <DependentUpon>ViewController.cs</DependentUpon>
+    <Compile Include="ViewControllers\RecruiterRegistrationViewController.cs" />
+    <Compile Include="ViewControllers\RecruiterRegistrationViewController.designer.cs">
+      <DependentUpon>RecruiterRegistrationViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="EmployerRegistration.cs" />
-    <Compile Include="EmployerRegistration.designer.cs">
+    <Compile Include="ViewControllers\RegistrationViewController.cs" />
+    <Compile Include="ViewControllers\RegistrationViewController.designer.cs">
+      <DependentUpon>RegistrationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EmployerRegistration.cs" />
+    <Compile Include="Views\EmployerRegistration.designer.cs">
       <DependentUpon>EmployerRegistration.cs</DependentUpon>
     </Compile>
-    <Compile Include="RecruiterUIController.cs" />
-    <Compile Include="RecruiterUIController.designer.cs">
-      <DependentUpon>RecruiterUIController.cs</DependentUpon>
+    <Compile Include="Views\Login.cs" />
+    <Compile Include="Views\Login.designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Registration.cs" />
+    <Compile Include="Views\Registration.designer.cs">
+      <DependentUpon>Registration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StudentRegistration.cs" />
+    <Compile Include="Views\StudentRegistration.designer.cs">
+      <DependentUpon>StudentRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\StudentRegistrationTableViewController.cs" />
+    <Compile Include="ViewControllers\StudentRegistrationTableViewController.designer.cs">
+      <DependentUpon>StudentRegistrationTableViewController.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewControllers\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="..\TMCS_Client\TMCS_Client.projitems" Label="Shared" Condition="Exists('..\TMCS_Client\TMCS_Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

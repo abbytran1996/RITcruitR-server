@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 
@@ -8,7 +8,6 @@ namespace TMCS_Client.iOS
     {
         public LoginViewController (IntPtr handle) : base (handle)
         {
-
         }
     }
 }

@@ -6,7 +6,7 @@ namespace TMCS_Client.DTOs {
     /// <summary>
     /// The DTO for a student
     /// </summary>
-    class Student {
+    public class Student {
         public string phoneNumber { get; set; }
         public string school { get; set; }
         public DateTime graduationDate { get; set; }
