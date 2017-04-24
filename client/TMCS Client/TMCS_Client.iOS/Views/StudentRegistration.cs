@@ -2,11 +2,15 @@
 using System;
 using UIKit;
 using TMCS_Client.DTOs;
+using System.Collections.Generic;
+using TMCS_Client.ServerComms;
 
 namespace TMCS_Client.iOS
 {
     internal class StudentRegistrationSource : UITableViewSource
     {
+        //Comms
+        StudentComms studentComms = new StudentComms();
 
         //All Cells
         private UIView[] cells = new UIView[12];
@@ -55,7 +59,7 @@ namespace TMCS_Client.iOS
         UITextField txtBoxPreferedCompanySize = null;
 
         //Submit Cell
-        UIButton btnSubmit = null;
+        UIButton btnRegister = null;
 
         //Colors for text boxes
         UIColor paleGreen = new UIColor(0.75f, 1.0f, 0.75f, 1.0f);
@@ -119,7 +123,7 @@ namespace TMCS_Client.iOS
             txtBoxEmail.ReturnKeyType = UIReturnKeyType.Next;
             txtBoxEmail.AutocapitalizationType = UITextAutocapitalizationType.None;
             txtBoxEmail.AutocorrectionType = UITextAutocorrectionType.No;
-            txtBoxEmail.ShouldReturn = (UITextField textField) => txtBoxPassword.BecomeFirstResponder();
+            txtBoxEmail.ShouldReturn = checkEmail;
             cells[3].AddSubviews(new UIView[] { lblEmail, txtBoxEmail });
 
             //Password Cell
@@ -136,7 +140,7 @@ namespace TMCS_Client.iOS
             txtBoxPassword.ReturnKeyType = UIReturnKeyType.Next;
             txtBoxPassword.AutocapitalizationType = UITextAutocapitalizationType.None;
             txtBoxPassword.AutocorrectionType = UITextAutocorrectionType.No;
-            txtBoxPassword.ShouldReturn = (UITextField textField) => txtBoxRetypePassword.BecomeFirstResponder();
+            txtBoxPassword.ShouldReturn = checkPassword;
             cells[4].AddSubviews(new UIView[] { lblPassword, txtBoxPassword });
 
             //Retype Password Cell
@@ -158,6 +162,20 @@ namespace TMCS_Client.iOS
 
             //School Name Cell
             cells[6] = new UIView(new CoreGraphics.CGRect(0, 0, 375, 60));
+            lblSchoolName = new UILabel(new CoreGraphics.CGRect(16, 0, 110, 21));
+            lblSchoolName.Text = "School Name";
+            lblSchoolName.Font = lblSchoolName.Font.WithSize(18);
+            txtBoxSchoolName = new UITextField(new CoreGraphics.CGRect(16, 22, 343, 30));
+            txtBoxSchoolName.Placeholder = "School Name";
+            txtBoxSchoolName.BorderStyle = UITextBorderStyle.RoundedRect;
+            txtBoxSchoolName.Font = txtBoxSchoolName.Font.WithSize(16);
+            txtBoxSchoolName.SetTextContentType(UITextContentType.OrganizationName);
+            txtBoxSchoolName.KeyboardType = UIKeyboardType.ASCIICapable;
+            txtBoxSchoolName.ReturnKeyType = UIReturnKeyType.Next;
+            txtBoxSchoolName.AutocapitalizationType = UITextAutocapitalizationType.Words;
+            txtBoxSchoolName.AutocorrectionType = UITextAutocorrectionType.No;
+            txtBoxSchoolName.ShouldReturn = (UITextField textField) => txtBoxExpectedGraduation.BecomeFirstResponder();
+            cells[6].AddSubviews(new UIView[] { lblSchoolName, txtBoxSchoolName });
 
             //Expected Graduation Cell
             cells[7] = new UIView(new CoreGraphics.CGRect(0, 0, 375, 60));
@@ -168,28 +186,91 @@ namespace TMCS_Client.iOS
             txtBoxExpectedGraduation.Placeholder = "mm/yy";
             txtBoxExpectedGraduation.BorderStyle = UITextBorderStyle.RoundedRect;
             txtBoxExpectedGraduation.Font = txtBoxExpectedGraduation.Font.WithSize(16);
-            txtBoxExpectedGraduation.KeyboardType = UIKeyboardType.NumberPad;
+            txtBoxExpectedGraduation.KeyboardType = UIKeyboardType.AsciiCapableNumberPad;
             txtBoxExpectedGraduation.ReturnKeyType = UIReturnKeyType.Next;
-            txtBoxExpectedGraduation.AddTarget(expectedGraduationUpdate,UIControlEvent.AllEvents);
+            txtBoxExpectedGraduation.AddTarget(expectedGraduationUpdate,UIControlEvent.EditingChanged);
             txtBoxExpectedGraduation.ShouldReturn = (UITextField textField) => txtBoxPhoneNumber.BecomeFirstResponder();
             cells[7].AddSubviews(new UIView[] { lblExpectedGraduation, txtBoxExpectedGraduation });
 
             //Phone Number Cell
             cells[8] = new UIView(new CoreGraphics.CGRect(0, 0, 375, 60));
+            lblPhoneNumber = new UILabel(new CoreGraphics.CGRect(16, 0, 207, 21));
+            lblPhoneNumber.Text = "Phone Number (Optional)";
+            lblPhoneNumber.Font = lblPhoneNumber.Font.WithSize(18);
+            txtBoxPhoneNumber = new UITextField(new CoreGraphics.CGRect(16, 22, 343, 30));
+            txtBoxPhoneNumber.Placeholder = "(xxx) xxx-xxxx";
+            txtBoxPhoneNumber.BorderStyle = UITextBorderStyle.RoundedRect;
+            txtBoxPhoneNumber.Font = txtBoxPhoneNumber.Font.WithSize(16);
+            txtBoxPhoneNumber.KeyboardType = UIKeyboardType.AsciiCapableNumberPad;
+            txtBoxPhoneNumber.ReturnKeyType = UIReturnKeyType.Next;
+            txtBoxPhoneNumber.AddTarget(phoneNumberUpdate, UIControlEvent.EditingChanged);
+            txtBoxPhoneNumber.ShouldReturn = (UITextField textField) => txtBoxPreferedLocation.BecomeFirstResponder();
+            cells[8].AddSubviews(new UIView[] { lblPhoneNumber, txtBoxPhoneNumber });
 
             //Prefered Location Cell
             cells[9] = new UIView(new CoreGraphics.CGRect(0, 0, 375, 60));
+            lblPreferedLocation = new UILabel(new CoreGraphics.CGRect(16, 0, 308, 21));
+            lblPreferedLocation.Text = "What states do you prefer to work in?";
+            lblPreferedLocation.Font = lblPreferedLocation.Font.WithSize(18);
+            txtBoxPreferedLocation = new UITextField(new CoreGraphics.CGRect(16, 22, 343, 30));
+            txtBoxPreferedLocation.Placeholder = "XX, XX, ...";
+            txtBoxPreferedLocation.BorderStyle = UITextBorderStyle.RoundedRect;
+            txtBoxPreferedLocation.Font = txtBoxPreferedLocation.Font.WithSize(16);
+            txtBoxPreferedLocation.KeyboardType = UIKeyboardType.ASCIICapable;
+            txtBoxPreferedLocation.ReturnKeyType = UIReturnKeyType.Next;
+            txtBoxPreferedLocation.AutocapitalizationType = UITextAutocapitalizationType.AllCharacters;
+            txtBoxPreferedLocation.AutocorrectionType = UITextAutocorrectionType.No;
+            txtBoxPreferedLocation.AddTarget(preferedLocationUpdate, UIControlEvent.EditingChanged);
+            txtBoxPreferedLocation.ShouldReturn = (UITextField textField) => txtBoxPreferedCompanySize.BecomeFirstResponder();
+            cells[9].AddSubviews(new UIView[] { lblPreferedLocation, txtBoxPreferedLocation });
 
             //Prefered Company Size Cell
             cells[10] = new UIView(new CoreGraphics.CGRect(0, 0, 375, 60));
+            lblPreferedCompanySize = new UILabel(new CoreGraphics.CGRect(16, 0, 290, 21));
+            lblPreferedCompanySize.Text = "What's your desired company size?";
+            lblPreferedCompanySize.Font = lblPreferedLocation.Font.WithSize(18);
+            txtBoxPreferedCompanySize = new UITextField(new CoreGraphics.CGRect(16, 22, 343, 30));
+            txtBoxPreferedCompanySize.Placeholder = "Company Size";
+            txtBoxPreferedCompanySize.BorderStyle = UITextBorderStyle.RoundedRect;
+            txtBoxPreferedCompanySize.Font = txtBoxPreferedCompanySize.Font.WithSize(16);
+            txtBoxPreferedCompanySize.KeyboardType = UIKeyboardType.ASCIICapable;
+            txtBoxPreferedCompanySize.ReturnKeyType = UIReturnKeyType.Done;
+            txtBoxPreferedCompanySize.AutocapitalizationType = UITextAutocapitalizationType.Sentences;
+            txtBoxPreferedCompanySize.ShouldReturn = (UITextField textField) => txtBoxPreferedCompanySize.ResignFirstResponder();
+            cells[10].AddSubviews(new UIView[] { lblPreferedCompanySize, txtBoxPreferedCompanySize});
 
             //Submit Cell
             cells[11] = new UIView(new CoreGraphics.CGRect(0, 0, 375, 60));
+            btnRegister = new UIButton(new CoreGraphics.CGRect(2, 2, 371, 56));
+            btnRegister.SetTitle("Register",UIControlState.Normal);
+            btnRegister.Enabled = true;
+            btnRegister.SetTitleColor(UIColor.Cyan,UIControlState.Normal);
+            btnRegister.AddTarget(register,UIControlEvent.TouchUpInside | UIControlEvent.TouchUpOutside);
+            cells[11].AddSubview(btnRegister);
+        }
+
+        private void register(object sender, EventArgs e){
+            NewStudent newStudent = NewStudent.createAndValidate(
+                txtBoxFirstName.Text,
+                txtBoxLastName.Text,
+                txtBoxEmail.Text,
+                txtBoxSchoolName.Text,
+                txtBoxExpectedGraduation.Text,
+                txtBoxPhoneNumber.Text.Replace("(", "").Replace(")", "").Replace("-","").Replace(" ", ""),
+                new List<string>(txtBoxPreferedLocation.Text.Replace(" ", "").Split(new char[] { ',' })),
+                txtBoxPreferedCompanySize.Text,
+                txtBoxPassword.Text,
+                txtBoxRetypePassword.Text
+            );
+
+            studentComms.addStudent(newStudent);
         }
 
         private void expectedGraduationUpdate(object sender, EventArgs e){
             
             switch(txtBoxExpectedGraduation.Text.Replace("/","").Length){
+                case(0):
+                    break;
                 case(1):case(2):
                     txtBoxExpectedGraduation.Text = txtBoxExpectedGraduation.Text.Replace("/", "");
                     break;
@@ -197,20 +278,49 @@ namespace TMCS_Client.iOS
                     txtBoxExpectedGraduation.Text =
                         txtBoxExpectedGraduation.Text.Replace("/", "").Insert(txtBoxExpectedGraduation.Text.Replace("/","").Length - 2, "/");
                     break;
+                default:
+                    txtBoxExpectedGraduation.Text =
+                        txtBoxExpectedGraduation.Text.Substring(0, 5);
+                    break;
             }
         }
 
-        private bool checkEmail(){
+        private void phoneNumberUpdate(object sender, EventArgs e){
+            string stripedText = txtBoxPhoneNumber.Text.Replace("(","").Replace(")", "").Replace("-", "").Replace(" ", "");
+            string newString = "";
+
+            if(stripedText.Length > 0){
+                newString += "(";
+                newString += stripedText.Substring(0, Math.Min(3, stripedText.Length));
+            }
+            if (stripedText.Length > 3)
+            {
+                newString += ") ";
+                newString += stripedText.Substring(3, Math.Min(3, stripedText.Length - 3));
+            }
+            if (stripedText.Length > 6)
+            {
+                newString += "-";
+                newString += stripedText.Substring(6, Math.Min(4, stripedText.Length - 6));
+            }
+            txtBoxPhoneNumber.Text = newString;
+        }
+
+        private void preferedLocationUpdate(object sender, EventArgs e){
+            
+        }
+
+        private bool checkEmail(UITextField txtBox){
             if(true /*txtBoxEmail.Text matches email regex*/){
                 txtBoxEmail.BackgroundColor = paleGreen;
             }else{
                 txtBoxEmail.BackgroundColor = paleRed;
             }
-            txtBoxEmail.BecomeFirstResponder();
+            txtBoxPassword.BecomeFirstResponder();
             return false;
         }
 
-        private bool checkPassword(){
+        private bool checkPassword(UITextField txtBox){
             if(true /*txtBoxPassword.Text meets conditions*/){
                 txtBoxPassword.BackgroundColor = paleGreen;
             }else{
