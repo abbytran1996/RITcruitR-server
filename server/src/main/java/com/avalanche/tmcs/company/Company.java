@@ -10,6 +10,7 @@ import java.io.File;
  * @author Zane Grasso
  * @since 4/18/17
  */
+@Entity
 public class Company {
 
     private long id;

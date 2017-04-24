@@ -159,7 +159,7 @@ namespace TMCS_Client.iOS
 
 			//Company Name Cell
 			cells[6] = new UIView(new CoreGraphics.CGRect(0, 0, 375, 60));
-			lblCompanyName = new UILabel(new CoreGraphics.CGRect(16, 0, 110, 21));
+			lblCompanyName = new UILabel(new CoreGraphics.CGRect(16, 0, 207, 21));
 			lblCompanyName.Text = "Company Name";
 			lblCompanyName.Font = lblCompanyName.Font.WithSize(18);
 			txtBoxCompanyName = new UITextField(new CoreGraphics.CGRect(16, 22, 343, 30));
