@@ -16,7 +16,7 @@ namespace TMCS_Client.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton btnSelectRoleEmployer { get; set; }
+        UIKit.UIButton btnRecruiterRegistration { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -36,9 +36,9 @@ namespace TMCS_Client.iOS
 
         void ReleaseDesignerOutlets ()
         {
-            if (btnSelectRoleEmployer != null) {
-                btnSelectRoleEmployer.Dispose ();
-                btnSelectRoleEmployer = null;
+            if (btnRecruiterRegistration != null) {
+                btnRecruiterRegistration.Dispose ();
+                btnRecruiterRegistration = null;
             }
 
             if (btnSelectRoleStudent != null) {

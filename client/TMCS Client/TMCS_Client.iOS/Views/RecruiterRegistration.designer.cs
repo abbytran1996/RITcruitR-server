@@ -11,16 +11,16 @@ using UIKit;
 
 namespace TMCS_Client.iOS
 {
-    [Register ("StudentRegistration")]
-    partial class StudentRegistration
+    [Register ("RecruiterRegistration")]
+    partial class RecruiterRegistration
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TMCS_Client.iOS.StudentRegistrationTableViewController dataSource { get; set; }
+        TMCS_Client.iOS.RecruiterRegistrationTableViewController dataSource { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TMCS_Client.iOS.StudentRegistrationTableViewController @delegate { get; set; }
+        TMCS_Client.iOS.RecruiterRegistrationTableViewController @delegate { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
