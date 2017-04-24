@@ -16,13 +16,13 @@ namespace TMCS_Client.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TMCS_Client.iOS.RecruiterRegistration tblEmployerRegistration { get; set; }
+        TMCS_Client.iOS.RecruiterRegistration tblRecruiterRegistration { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (tblEmployerRegistration != null) {
-                tblEmployerRegistration.Dispose ();
-                tblEmployerRegistration = null;
+            if (tblRecruiterRegistration != null) {
+                tblRecruiterRegistration.Dispose ();
+                tblRecruiterRegistration = null;
             }
         }
     }

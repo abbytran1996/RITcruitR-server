@@ -202,8 +202,8 @@ namespace TMCS_Client.iOS
 			txtBoxLocation.ReturnKeyType = UIReturnKeyType.Next;
 			txtBoxLocation.AutocapitalizationType = UITextAutocapitalizationType.AllCharacters;
 			txtBoxLocation.AutocorrectionType = UITextAutocorrectionType.No;
-			txtBoxLocation.AddTarget(locationUpdate, UIControlEvent.EditingChanged);
-			txtBoxLocation.ShouldReturn = (UITextField textField) => txtBoxCompanySize.BecomeFirstResponder();
+			//txtBoxLocation.AddTarget(locationUpdate, UIControlEvent.EditingChanged);
+			txtBoxLocation.ShouldReturn = (UITextField textField) => txtBoxLocation.ResignFirstResponder();
 			cells[8].AddSubviews(new UIView[] { lblLocation, txtBoxLocation });
 
 			//Submit Cell
@@ -218,43 +218,21 @@ namespace TMCS_Client.iOS
 
 		private void register(object sender, EventArgs e)
 		{
-			NewStudent newStudent = NewStudent.createAndValidate(
+			/*
+			 * Waiting for Recruiter Class
+			NewRecruiter newRecruiter = NewRecruiter.createAndValidate(
 				txtBoxFirstName.Text,
 				txtBoxLastName.Text,
 				txtBoxEmail.Text,
 				txtBoxCompanyName.Text,
-				txtBoxExpectedGraduation.Text,
 				txtBoxPhoneNumber.Text.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", ""),
-				new List<string>(txtBoxPreferedLocation.Text.Replace(" ", "").Split(new char[] { ',' })),
-				txtBoxPreferedCompanySize.Text,
+				txtBoxLocation.Text,
 				txtBoxPassword.Text,
 				txtBoxRetypePassword.Text
 			);
 
-			//RecruiterComms.addRecruiter(newRecruiter);
-		}
-
-		private void expectedGraduationUpdate(object sender, EventArgs e)
-		{
-
-			switch (txtBoxExpectedGraduation.Text.Replace("/", "").Length)
-			{
-				case (0):
-					break;
-				case (1):
-				case (2):
-					txtBoxExpectedGraduation.Text = txtBoxExpectedGraduation.Text.Replace("/", "");
-					break;
-				case (3):
-				case (4):
-					txtBoxExpectedGraduation.Text =
-						txtBoxExpectedGraduation.Text.Replace("/", "").Insert(txtBoxExpectedGraduation.Text.Replace("/", "").Length - 2, "/");
-					break;
-				default:
-					txtBoxExpectedGraduation.Text =
-						txtBoxExpectedGraduation.Text.Substring(0, 5);
-					break;
-			}
+			RecruiterComms.addRecruiter(newRecruiter);
+			*/
 		}
 
 		private void phoneNumberUpdate(object sender, EventArgs e)
@@ -278,11 +256,6 @@ namespace TMCS_Client.iOS
 				newString += stripedText.Substring(6, Math.Min(4, stripedText.Length - 6));
 			}
 			txtBoxPhoneNumber.Text = newString;
-		}
-
-		private void preferedLocationUpdate(object sender, EventArgs e)
-		{
-
 		}
 
 		private bool checkEmail(UITextField txtBox)
@@ -323,7 +296,7 @@ namespace TMCS_Client.iOS
 			{
 				txtBoxRetypePassword.BackgroundColor = paleRed;
 			}
-			txtBoxSchoolName.BecomeFirstResponder();
+			txtBoxCompanyName.BecomeFirstResponder();
 			return false;
 		}
 
@@ -349,19 +322,20 @@ namespace TMCS_Client.iOS
 		}
 	}
 
-	public partial class StudentRegistration : UITableView
+	public partial class RecruiterRegistration : UITableView
 	{
-		public StudentRegistration(IntPtr handle) : base(handle)
+		public RecruiterRegistration(IntPtr handle) : base(handle)
 		{
-			this.Source = new StudentRegistrationSource();
+			this.Source = new RecruiterRegistrationSource();
 		}
 
-		public NewStudent newStudentFromForm()
+		/*public NewRecruiter newRecruiterFromForm()
 		{
-			NewStudent newStudent = null;
+			NewRecruiter newRecruiter = null;
 
-			return newStudent;
+			return newRecruiter;
 		}
+		*/
 	}
 }
  
