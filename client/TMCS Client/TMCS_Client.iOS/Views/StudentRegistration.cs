@@ -80,6 +80,7 @@ namespace TMCS_Client.iOS
             lblFirstName = new UILabel(new CoreGraphics.CGRect(16, 0, 91, 21));
             lblFirstName.Text = "First Name";
             lblFirstName.Font = lblFirstName.Font.WithSize(18);
+            lblFirstName.AddConstraint(new NSLayoutConstraint());
             txtBoxFirstName = new UITextField(new CoreGraphics.CGRect(16, 22, 343, 30));
             txtBoxFirstName.Placeholder = "First Name";
             txtBoxFirstName.BorderStyle = UITextBorderStyle.RoundedRect;
@@ -263,7 +264,12 @@ namespace TMCS_Client.iOS
                 txtBoxRetypePassword.Text
             );
 
-            studentComms.addStudent(newStudent);
+            try{
+                studentComms.addStudent(newStudent);
+            }catch(RestException re){
+                Console.WriteLine(re.ToString());
+            }
+
         }
 
         private void expectedGraduationUpdate(object sender, EventArgs e){
@@ -350,8 +356,13 @@ namespace TMCS_Client.iOS
                 newCell = new UITableViewCell(UITableViewCellStyle.Default, "FormCell");
             }
 
+            //foreach(UIView subView in newCell.ContentView.Subviews){
+            //    subView.RemoveFromSuperview();
+            //}
+
             newCell.ContentView.AddSubviews(cells[indexPath.Row].Subviews);
             newCell.SelectionStyle = UITableViewCellSelectionStyle.None;
+            newCell.ContentView.AutosizesSubviews = true;
 
             return newCell;
         }
@@ -366,12 +377,6 @@ namespace TMCS_Client.iOS
     {
         public StudentRegistration (IntPtr handle) : base (handle){
             this.Source = new StudentRegistrationSource();
-        }
-
-        public NewStudent newStudentFromForm(){
-            NewStudent newStudent = null;
-
-            return newStudent;
         }
     }
 }
