@@ -1,8 +1,10 @@
 package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.matching.Skill;
+import jdk.nashorn.internal.scripts.JO;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,7 +14,8 @@ import java.util.Set;
 public interface JobPostingDAO extends CrudRepository<JobPosting, Long> {
     //Recuriter findAllByRecruiter(Recruiter recruiter)
 
-    Set<JobPosting> findAllByRequiredSkillsContains(Skill skill);
+    List<JobPosting> findAllByRequiredSkillsContains(Skill skill);
 
-    Set<JobPosting> findAllByRecommendedSkillsContains(Skill skill);
+    List<JobPosting> findAllByRecommendedSkillsContains(Skill skill);
+
 }
