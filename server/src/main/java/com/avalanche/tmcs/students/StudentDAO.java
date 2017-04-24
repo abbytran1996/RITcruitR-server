@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Provides an interface to manipulate the Student database table
@@ -15,5 +16,5 @@ import java.util.Optional;
  */
 @Transactional
 public interface StudentDAO extends CrudRepository<Student, Long> {
-    List<Student> findAllBySkillsContains(Skill skill);
+    Set<Student> findAllBySkillsContains(Skill skill);
 }

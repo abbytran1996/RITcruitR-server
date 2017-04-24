@@ -22,4 +22,18 @@ public class Skill {
         return this.name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Skill)) return false;
+
+        Skill skill = (Skill) o;
+
+        return id == skill.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.*;
+import com.avalanche.tmcs.exceptions.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,7 @@ public class StudentsController {
 
     private void validateStudentId(long id) {
         if(!studentDAO.exists(id)) {
-            throw new StudentNotFoundException(id);
+            throw new ResourceNotFound("student " + id);
         }
     }
 }
