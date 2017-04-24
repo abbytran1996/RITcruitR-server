@@ -4,12 +4,10 @@ import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 import static org.mockito.Matchers.any;
@@ -180,9 +178,7 @@ public class MatchingServiceTest {
     }
 
     private MatchDAO makeMockMatchDAO() {
-        MatchDAO matchDAO = mock(MatchDAO.class);
-
-        return matchDAO;
+        return mock(MatchDAO.class);
     }
 
     private StudentDAO makeMockStudentDAO() {
