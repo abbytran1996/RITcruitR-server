@@ -142,17 +142,13 @@
     <Compile Include="ViewControllers\LoginViewController.designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewControllers\RecruiterRegistrationViewController.cs" />
-    <Compile Include="ViewControllers\RecruiterRegistrationViewController.designer.cs">
-      <DependentUpon>RecruiterRegistrationViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="ViewControllers\RegistrationViewController.cs" />
     <Compile Include="ViewControllers\RegistrationViewController.designer.cs">
       <DependentUpon>RegistrationViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\EmployerRegistration.cs" />
+    <Compile Include="Views\RecruiterRegistration.cs" />
     <Compile Include="Views\EmployerRegistration.designer.cs">
-      <DependentUpon>EmployerRegistration.cs</DependentUpon>
+      <DependentUpon>RecruiterRegistration.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Login.cs" />
     <Compile Include="Views\Login.designer.cs">
@@ -169,6 +165,13 @@
     <Compile Include="ViewControllers\StudentRegistrationTableViewController.cs" />
     <Compile Include="ViewControllers\StudentRegistrationTableViewController.designer.cs">
       <DependentUpon>StudentRegistrationTableViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\RecruiterRegistrationTableViewController.cs" />
+    <Compile Include="ViewControllers\RecruiterRegistrationTableViewController.designer.cs">
+      <DependentUpon>RecruiterRegistrationTableViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecruiterRegistration.designer.cs">
+      <DependentUpon>..\RecruiterRegistration.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
