@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 import static org.mockito.Matchers.any;
@@ -24,11 +25,13 @@ public class MatchingServiceTest {
 
     List<JobPosting> recommended;
     List<JobPosting> required;
+    Set<Student> students;
 
     @Before
     public void setUp() {
         recommended = new ArrayList<>();
         required = new ArrayList<>();
+        students = new HashSet<>();
 
         MatchDAO matchDAO = makeMockMatchDAO();
         StudentDAO studentDAO = makeMockStudentDAO();
@@ -159,6 +162,23 @@ public class MatchingServiceTest {
         Assert.assertEquals(0, skillsCount.requiredSkillsCount);
     }
 
+    @Test
+    public void testCountStudentsWithSkillsInList() {
+        List<Skill> skills = new ArrayList<>();
+        Skill skill = new Skill();
+        skill.setName("Seizing the means of production");
+        skills.add(skill);
+
+        Map<Student, Integer> counts = matchingService.countStudentsWithSkillInList(skills);
+
+        Assert.assertEquals(2, counts.size());
+
+        for(Student stu : students) {
+            Assert.assertTrue(counts.containsKey(stu));
+            Assert.assertEquals(1, (int)counts.get(stu));
+        }
+    }
+
     private MatchDAO makeMockMatchDAO() {
         MatchDAO matchDAO = mock(MatchDAO.class);
 
@@ -166,7 +186,15 @@ public class MatchingServiceTest {
     }
 
     private StudentDAO makeMockStudentDAO() {
-        Set<Student> students = new HashSet<>();
+        setupStudents();
+
+        StudentDAO studentDAO = mock(StudentDAO.class);
+        when(studentDAO.findAllBySkillsContains(any())).thenReturn(students);
+
+        return studentDAO;
+    }
+
+    private void setupStudents() {
         Student marx = new Student();
         marx.setFirstName("Karl");
         marx.setEmail("manifest@proles.org");
@@ -176,11 +204,6 @@ public class MatchingServiceTest {
         engels.setFirstName("Frederick");
         engels.setEmail("email@email.email");
         students.add(engels);
-
-        StudentDAO studentDAO = mock(StudentDAO.class);
-        when(studentDAO.findAllBySkillsContains(any())).thenReturn(students);
-
-        return studentDAO;
     }
 
     private JobPostingDAO makeMockJobPostingDAO() {
