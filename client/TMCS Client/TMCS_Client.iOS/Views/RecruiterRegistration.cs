@@ -260,6 +260,10 @@ namespace TMCS_Client.iOS
 
 		private bool checkEmail(UITextField txtBox)
 		{
+			/*if company email does not match any in our database, dialog appears
+			 * and asks if they want to create a new company
+			 */
+
 			if (true /*txtBoxEmail.Text matches email regex*/)
 			{
 				txtBoxEmail.BackgroundColor = paleGreen;
