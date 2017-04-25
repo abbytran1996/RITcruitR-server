@@ -10,60 +10,61 @@ namespace TMCS_Client.iOS
     internal class StudentRegistrationSource : UITableViewSource
     {
         //Comms
-        StudentComms studentComms = new StudentComms();
+        private StudentComms studentComms = new StudentComms();
+        private StudentRegistrationTableViewController grandparent;
 
         //All Cells
         private UIView[] cells = new UIView[12];
 
         //Title Cell
-        UILabel lblTitle = null;
+        private UILabel lblTitle = null;
 
         //First Name Cell
-        UILabel lblFirstName = null;
-        UITextField txtBoxFirstName = null;
+        private UILabel lblFirstName = null;
+        private UITextField txtBoxFirstName = null;
 
         //Last Name Cell
-        UILabel lblLastName = null;
-        UITextField txtBoxLastName = null;
+        private UILabel lblLastName = null;
+        private UITextField txtBoxLastName = null;
 
         //Email Cell
-        UILabel lblEmail = null;
-        UITextField txtBoxEmail = null;
+        private UILabel lblEmail = null;
+        private UITextField txtBoxEmail = null;
 
         //Passowrd Cell
-        UILabel lblPassword = null;
-        UITextField txtBoxPassword = null;
+        private UILabel lblPassword = null;
+        private UITextField txtBoxPassword = null;
 
         //Retype Password Cell
-        UILabel lblRetypePassword = null;
-        UITextField txtBoxRetypePassword = null;
+        private UILabel lblRetypePassword = null;
+        private UITextField txtBoxRetypePassword = null;
 
         //School Name Cell
-        UILabel lblSchoolName = null;
-        UITextField txtBoxSchoolName = null;
+        private UILabel lblSchoolName = null;
+        private UITextField txtBoxSchoolName = null;
 
         //Expected Graduation Cell
-        UILabel lblExpectedGraduation = null;
-        UITextField txtBoxExpectedGraduation = null;
+        private UILabel lblExpectedGraduation = null;
+        private UITextField txtBoxExpectedGraduation = null;
 
         //Phone Number
-        UILabel lblPhoneNumber = null;
-        UITextField txtBoxPhoneNumber = null;
+        private UILabel lblPhoneNumber = null;
+        private UITextField txtBoxPhoneNumber = null;
 
         //Prefered Location Cell
-        UILabel lblPreferedLocation = null;
-        UITextField txtBoxPreferedLocation = null;
+        private UILabel lblPreferedLocation = null;
+        private UITextField txtBoxPreferedLocation = null;
 
         //Prefered Company Size Cell
-        UILabel lblPreferedCompanySize = null;
-        UITextField txtBoxPreferedCompanySize = null;
+        private UILabel lblPreferedCompanySize = null;
+        private UITextField txtBoxPreferedCompanySize = null;
 
         //Submit Cell
-        UIButton btnRegister = null;
+        private UIButton btnRegister = null;
 
         //Colors for text boxes
-        UIColor paleGreen = new UIColor(0.75f, 1.0f, 0.75f, 1.0f);
-        UIColor paleRed = new UIColor(1.0f, 0.75f, 0.75f, 1.0f);
+        private UIColor paleGreen = new UIColor(0.75f, 1.0f, 0.75f, 1.0f);
+        private UIColor paleRed = new UIColor(1.0f, 0.75f, 0.75f, 1.0f);
 
         public StudentRegistrationSource()
         {
@@ -250,13 +251,13 @@ namespace TMCS_Client.iOS
             cells[11].AddSubview(btnRegister);
         }
 
-        private void register(object sender, EventArgs e){
+        private void register(object sender, EventArgs eventArgs){
             NewStudent newStudent = NewStudent.createAndValidate(
                 txtBoxFirstName.Text,
                 txtBoxLastName.Text,
                 txtBoxEmail.Text,
                 txtBoxSchoolName.Text,
-                txtBoxExpectedGraduation.Text,
+                (txtBoxExpectedGraduation.Text.Length < 5) ? "0" + txtBoxExpectedGraduation.Text : txtBoxExpectedGraduation.Text,
                 txtBoxPhoneNumber.Text.Replace("(", "").Replace(")", "").Replace("-","").Replace(" ", ""),
                 new List<string>(txtBoxPreferedLocation.Text.Replace(" ", "").Split(new char[] { ',' })),
                 txtBoxPreferedCompanySize.Text,
@@ -265,11 +266,15 @@ namespace TMCS_Client.iOS
             );
 
             try{
-                studentComms.addStudent(newStudent);
-            }catch(RestException re){
-                Console.WriteLine(re.ToString());
+				studentComms.addStudent(newStudent);
+				this.grandparent.endStudentRegistration();
+            }catch(RestException exception){
+                Console.WriteLine(exception.ToString());
+            }catch(ArgumentException exception){
+                //Shouldn't occur, data is checked before being
+                //passed to addStudent
+                Console.WriteLine(exception.ToString());
             }
-
         }
 
         private void expectedGraduationUpdate(object sender, EventArgs e){
@@ -371,12 +376,23 @@ namespace TMCS_Client.iOS
         {
             return cells.Length;
         }
+
+        public void setGrandparent(StudentRegistrationTableViewController newGrandparent){
+            this.grandparent = newGrandparent;
+        }
     }
 
     public partial class StudentRegistration : UITableView
     {
+        StudentRegistrationTableViewController parent = null;
+
         public StudentRegistration (IntPtr handle) : base (handle){
             this.Source = new StudentRegistrationSource();
+        }
+
+        public void setParent(StudentRegistrationTableViewController newParent){
+            this.parent = newParent;
+            ((StudentRegistrationSource)this.Source).setGrandparent(newParent);
         }
     }
 }
