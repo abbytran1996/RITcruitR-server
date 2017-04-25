@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace TMCS_Client
+namespace client
 {
     public partial class App : Application
     {
@@ -8,7 +8,7 @@ namespace TMCS_Client
         {
             InitializeComponent();
 
-            MainPage = new TMCS_ClientPage();
+            MainPage = new clientPage();
         }
 
         protected override void OnStart()

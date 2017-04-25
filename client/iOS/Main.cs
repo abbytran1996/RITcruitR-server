@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-namespace TMCS_Client.iOS
+namespace client.iOS
 {
     public class Application
     {

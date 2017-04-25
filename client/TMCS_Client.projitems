@@ -3,33 +3,31 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>{611BBE89-532E-49C9-AEEE-53FEAEFAC560}</SharedGUID>
+    <SharedGUID>{F9316A30-1849-49B6-BFBE-B0846BB5B3D6}</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>TMCS_Client</Import_RootNamespace>
+    <Import_RootNamespace>client</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
-      <IncludeInPackage>false</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)TMCS_ClientPage.xaml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)clientPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)TMCS_ClientPage.xaml.cs">
-      <DependentUpon>TMCS_ClientPage.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)clientPage.xaml.cs">
+      <DependentUpon>clientPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\SkillsComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\StudentComms.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\JobPosting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewCompany.cs" />
