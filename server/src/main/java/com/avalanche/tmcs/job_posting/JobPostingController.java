@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.job_posting;
 
+import com.avalanche.tmcs.matching.MatchingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,12 @@ public class JobPostingController {
 
     private JobPostingDAO jobPostingDAO;
 
+    private MatchingService matchingService;
+
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, MatchingService matchingService){
         this.jobPostingDAO = jobPostingDAO;
+        this.matchingService = matchingService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -39,7 +43,8 @@ public class JobPostingController {
 
     @RequestMapping(value = "/create", method=RequestMethod.POST)
     public void createJobPosting(@RequestBody JobPosting newJobPosting){
-        jobPostingDAO.save(newJobPosting);
+        JobPosting newPosting = jobPostingDAO.save(newJobPosting);
+        matchingService.registerJobPosting(newPosting);
     }
 
 }
