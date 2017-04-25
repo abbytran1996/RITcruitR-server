@@ -1,7 +1,10 @@
 package com.avalanche.tmcs.Recruiter;
 
+import com.avalanche.tmcs.company.Company;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -27,9 +30,9 @@ public class Recruiter {
     @Pattern(regexp = "^.+@.+\\..+$")
     private String email;
 
-    /**
-     * TODO: company
-     */
+    @NotNull
+    @ManyToOne
+    private Company company;
 
     /**
      * TODO: Notification Preferences
@@ -115,6 +118,10 @@ public class Recruiter {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public Company getCompany() { return company; }
+
+    public void setCompany(long id) { this.company = company; }
 
     @Override
     public boolean equals(Object obj) {
