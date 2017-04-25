@@ -9,5 +9,15 @@ namespace TMCS_Client.iOS
         public StudentRegistrationTableViewController (IntPtr handle) : base (handle)
         {
         }
+
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            tblStudentRegistration.setParent(this);
+        }
+
+        public void endStudentRegistration(){
+            this.NavigationController.PopToRootViewController(true);
+        }
     }
 }
