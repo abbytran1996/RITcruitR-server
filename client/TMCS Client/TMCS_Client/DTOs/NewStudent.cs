@@ -38,7 +38,7 @@ namespace TMCS_Client.DTOs {
                 throw new ArgumentException("Passwords must match");
             }
 
-            var date = DateTime.Parse(graduationDate);
+            var date = DateTime.ParseExact(graduationDate,"MM/yy",null);
 
             // Create student
             var newStudent = new NewStudent();

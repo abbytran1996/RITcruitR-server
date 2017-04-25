@@ -2,6 +2,7 @@ package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.*;
 import com.avalanche.tmcs.exceptions.ResourceNotFound;
+import com.avalanche.tmcs.matching.MatchingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,14 @@ public class StudentsController {
 
     private SecurityService securityService;
 
+    private MatchingService matchingService;
+
     @Autowired
-    public StudentsController(StudentDAO studentDAO, UserService userService, SecurityService securityService) {
+    public StudentsController(StudentDAO studentDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.studentDAO = studentDAO;
         this.userService = userService;
         this.securityService = securityService;
+        this.matchingService = matchingService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -48,6 +52,8 @@ public class StudentsController {
             newStudent.setUser(newUser);
             newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
+
+            matchingService.registerStudent(savedStudent);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
