@@ -1,5 +1,7 @@
 package com.avalanche.tmcs.Recruiter;
 
+import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.students.StudentDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class RecruiterController {
 
     private RecruiterRepository recruiterRepo;
+    private UserService userService;
 
     @Autowired
-    public RecruiterController(RecruiterRepository repo){
+    public RecruiterController(RecruiterRepository repo, UserService userService){
         this.recruiterRepo = repo;
+        this.userService = userService;
     }
 
     /**
@@ -26,8 +30,10 @@ public class RecruiterController {
      * @return TODO
      */
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    public ResponseEntity<String> registerRecruiter(@RequestBody Recruiter newRecruiter){
+    public ResponseEntity<String> registerRecruiter(@RequestBody NewRecruiter newRecruiter){
+        User newUser = new User(newRecruiter.eMail,newRecruiter.password);
         Recruiter newguy = new Recruiter(newRecruiter);
+        userService.save(newUser, UserService.RoleName.Recruiter);
         recruiterRepo.save(newguy);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

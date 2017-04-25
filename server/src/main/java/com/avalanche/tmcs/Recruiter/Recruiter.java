@@ -58,6 +58,13 @@ public class Recruiter {
             phoneNumber = other.getPhoneNumber();
 
     }
+    public Recruiter(NewRecruiter other) {
+        firstName = other.firstName;
+        lastName = other.lastName;
+        email = other.eMail;
+        phoneNumber = other.phoneNumber;
+
+    }
 
     public void editRecruiter(Recruiter newinfo){
         if(newinfo.getFirstName()!=null)
