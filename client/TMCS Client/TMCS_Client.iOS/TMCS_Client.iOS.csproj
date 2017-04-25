@@ -173,6 +173,14 @@
     <Compile Include="Views\RecruiterRegistration.designer.cs">
       <DependentUpon>..\RecruiterRegistration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\StudentMatching.cs" />
+    <Compile Include="Views\StudentMatching.designer.cs">
+      <DependentUpon>StudentMatching.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\StudentMatchingTableViewController.cs" />
+    <Compile Include="ViewControllers\StudentMatchingTableViewController.designer.cs">
+      <DependentUpon>StudentMatchingTableViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewControllers\" />
