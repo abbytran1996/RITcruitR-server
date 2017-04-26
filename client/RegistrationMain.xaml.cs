@@ -42,6 +42,7 @@ namespace client
                 Text = "Student",
                 FontSize = 20,
                 HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
+                Command = new Command((object obj) => this.Navigation.PushAsync(new StudentRegistration())),
             },
             new Rectangle(0.5, 0.6, 1.0, 0.4),AbsoluteLayoutFlags.All);
            

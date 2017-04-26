@@ -32,5 +32,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Student.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Login.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StudentRegistration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml.cs">
+      <DependentUpon>RegistrationMain.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </None>
   </ItemGroup>
 </Project>
