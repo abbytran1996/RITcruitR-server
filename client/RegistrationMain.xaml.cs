@@ -35,7 +35,7 @@ namespace client
             },
 
 			new Rectangle(0.5, 0.3 , 1.0, 0.2),AbsoluteLayoutFlags.All);
-            
+
 
             roleChoiceSection.Children.Add(new Button()
             {
@@ -44,7 +44,7 @@ namespace client
                 HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
                 Command = new Command((object obj) => this.Navigation.PushAsync(new StudentRegistration())),
             },
-            new Rectangle(0.5, 0.6, 1.0, 0.4),AbsoluteLayoutFlags.All);
+            new Rectangle(0.5, 0.6, 1.0, 0.1),AbsoluteLayoutFlags.All);
            
             roleChoiceSection.Children.Add(new Button()
             {
@@ -52,7 +52,7 @@ namespace client
                 FontSize = 20,
                 HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
             },
-                                      new Rectangle(0.5, 0.9 , 1.0, 0.4), AbsoluteLayoutFlags.All);
+                                      new Rectangle(0.5, 0.75 , 1.0, 0.1), AbsoluteLayoutFlags.All);
 
 
 
