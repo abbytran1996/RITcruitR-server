@@ -8,7 +8,7 @@ namespace client
         {
             InitializeComponent();
 
-            MainPage = new clientPage();
+            MainPage = new Login();
         }
 
         protected override void OnStart()
