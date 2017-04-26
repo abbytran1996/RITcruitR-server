@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 
 /**
  * Created by John on 4/17/2017.
@@ -73,10 +75,15 @@ public class RecruiterController {
      */
 
     @RequestMapping(value = "/company", method = RequestMethod.POST)
-    public ResponseEntity<?> addCompany(@PathVariable long id, @RequestBody NewCompany newCompany){
-        Company newcomp = new Company();
-        companyDAO.save(newcomp);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    public ResponseEntity<?> addCompany(@PathVariable long id, @RequestBody Company newCompany){
+        Company savedCompany = companyDAO.save(newCompany);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("company/{id}")
+                .buildAndExpand(savedCompany.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
 
