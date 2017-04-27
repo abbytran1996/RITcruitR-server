@@ -37,6 +37,8 @@
       <DependentUpon>RegistrationMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\FormFieldLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\PageTitleLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\FormEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml">
@@ -47,5 +49,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\" />
   </ItemGroup>
 </Project>

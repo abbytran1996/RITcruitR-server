@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMCS_Client.DTOs;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
+using TMCS_Client.CustomUIElements.Entries;
 
 using Xamarin.Forms;
 
@@ -15,47 +16,47 @@ namespace TMCS_Client
         private AbsoluteLayout registrationForm;
 
         //Title
-        private Label lblTitle;
+        private PageTitleLabel lblTitle;
 
         //First Name
         private FormFieldLabel lblFirstName;
-        private Entry entFirstName;
+        private FormEntry entFirstName;
 
         //Last Name
         private FormFieldLabel lblLastName;
-        private Entry entLastName;
+        private FormEntry entLastName;
 
 		//Email
 		private FormFieldLabel lblEmail;
-		private Entry entEmail;
+		private FormEntry entEmail;
 
 		//Password
 		private FormFieldLabel lblPassword;
-		private Entry entPassword;
+		private FormEntry entPassword;
 
 		//Retype Password
 		private FormFieldLabel lblRetypePassword;
-		private Entry entRetypePassword;
+		private FormEntry entRetypePassword;
 
 		//School Name
 		private FormFieldLabel lblSchoolName;
-		private Entry entSchoolName;
+		private FormEntry entSchoolName;
 
 		//Graduation Date
 		private FormFieldLabel lblGraduationDate;
-		private Entry entGraduationDate;
+		private FormEntry entGraduationDate;
 
 		//Phone Number
 		private FormFieldLabel lblPhoneNumber;
-        private Entry entPhoneNumber;
+        private FormEntry entPhoneNumber;
 
         //Prefered Location
         private FormFieldLabel lblPreferedLocation;
-        private Entry entPreferedLocation;
+        private FormEntry entPreferedLocation;
 
         //Prefered Company Size
         private FormFieldLabel lblPreferedCompanySize;
-		private Entry entPreferedCompanySize;
+		private FormEntry entPreferedCompanySize;
 
         //Register Button
         private Button btnRegister;
@@ -78,12 +79,10 @@ namespace TMCS_Client
 
 
             //Title
-            registrationForm.Children.Add(lblTitle = new Label(){
-                Text = "Student Registration",
-                FontSize = 28.0,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-            }, new Rectangle(0,0,1.0,60.0), AbsoluteLayoutFlags.WidthProportional);
+            registrationForm.Children.Add(lblTitle =
+                                          new PageTitleLabel("Student Registration"),
+                                          new Rectangle(0,0,1.0,60.0), 
+                                          AbsoluteLayoutFlags.WidthProportional);
 
 
             //First Name
@@ -96,11 +95,10 @@ namespace TMCS_Client
                                         new Rectangle(0.5,0,0.9,0.5), 
                                         AbsoluteLayoutFlags.All);
 
-            firstNameInput.Children.Add(entFirstName = new Entry(){
-                Placeholder = "First Name",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeSentence),
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+            firstNameInput.Children.Add(entFirstName = 
+                                        new FormEntry("First Name", Keyboard.Text), 
+                                        new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                        AbsoluteLayoutFlags.All);
 
             entFirstName.Completed += (sender, e) => entLastName.Focus();
 
@@ -118,12 +116,10 @@ namespace TMCS_Client
                                        new Rectangle(0.5, 0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-            lastNameInput.Children.Add(entLastName = new Entry()
-            {
-                Placeholder = "Last Name",
-                FontSize = 16.0,
-                Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeSentence),
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+            lastNameInput.Children.Add(entLastName = 
+                                       new FormEntry("Last Name", Keyboard.Text), 
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			entLastName.Completed += (sender, e) => entEmail.Focus();
 
@@ -141,12 +137,10 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			emailInput.Children.Add(entEmail = new Entry()
-			{
-				Placeholder = "Email",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Email,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			emailInput.Children.Add(entEmail =
+									new FormEntry("Email", Keyboard.Email), 
+                                    new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                    AbsoluteLayoutFlags.All);
 
 			entEmail.Completed += (sender, e) => entPassword.Focus();
 
@@ -164,13 +158,10 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			passwordInput.Children.Add(entPassword = new Entry()
-			{
-				Placeholder = "Password",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Plain,
-                IsPassword = true,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+            passwordInput.Children.Add(entPassword = 
+                                       new FormEntry("Password", Keyboard.Text, true),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			entPassword.Completed += (sender, e) => entRetypePassword.Focus();
 
@@ -188,13 +179,10 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			retypePasswordInput.Children.Add(entRetypePassword = new Entry()
-			{
-				Placeholder = "Retype Password",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Plain,
-				IsPassword = true,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			retypePasswordInput.Children.Add(entRetypePassword =
+									   new FormEntry("Retype Password", Keyboard.Text, true),
+									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			entRetypePassword.Completed += (sender, e) => entSchoolName.Focus();
 
@@ -212,12 +200,10 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			schoolNameInput.Children.Add(entSchoolName = new Entry()
-			{
-				Placeholder = "School Name",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Plain,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			schoolNameInput.Children.Add(entSchoolName =
+									   new FormEntry("School Name", Keyboard.Text),
+									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			entSchoolName.Completed += (sender, e) => entGraduationDate.Focus();
 
@@ -235,18 +221,16 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			graduationDateInput.Children.Add(entGraduationDate = new Entry()
-			{
-				Placeholder = "mm/yy",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Numeric,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			graduationDateInput.Children.Add(entGraduationDate =
+									   new FormEntry("Graduation Date", Keyboard.Text),
+									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			entGraduationDate.Completed += (sender, e) => entPhoneNumber.Focus();
 
 			registrationForm.Children.Add(graduationDateInput,
-										 new Rectangle(0, 420.0, 1.0, 60.0),
-										  AbsoluteLayoutFlags.WidthProportional);
+									   new Rectangle(0, 420.0, 1.0, 60.0),
+									   AbsoluteLayoutFlags.WidthProportional);
 
 			//Phone Number
 			AbsoluteLayout phoneNumberInput = new AbsoluteLayout()
@@ -258,12 +242,10 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			phoneNumberInput.Children.Add(entPhoneNumber = new Entry()
-			{
-                Placeholder = "(xxx) xxx-xxxx",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Numeric,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			phoneNumberInput.Children.Add(entPhoneNumber =
+                                       new FormEntry("(xxx) xxx-xxxx", Keyboard.Text),
+									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			entPhoneNumber.Completed += (sender, e) => entPreferedLocation.Focus();
 
@@ -281,12 +263,10 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			preferedLocationInput.Children.Add(entPreferedLocation = new Entry()
-			{
-				Placeholder = "State, State, ...",
-				FontSize = 16.0,
-				Keyboard = Keyboard.Text,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			preferedLocationInput.Children.Add(entPreferedLocation =
+									   new FormEntry("State, State, ...", Keyboard.Text, true), 
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			entPreferedLocation.Completed += (sender, e) => entPreferedCompanySize.Focus();
 
@@ -304,12 +284,10 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			preferedCompanySizeInput.Children.Add(entPreferedCompanySize = new Entry()
-			{
-				Placeholder = "Size",
-				FontSize = 16.0,
-                Keyboard = Keyboard.Text,
-			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			preferedCompanySizeInput.Children.Add(entPreferedCompanySize =
+									   new FormEntry("Size", Keyboard.Text, true),
+									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
 			registrationForm.Children.Add(preferedCompanySizeInput,
 										 new Rectangle(0, 600.0, 1.0, 60.0),

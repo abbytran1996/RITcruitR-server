@@ -36,8 +36,8 @@ namespace TMCS_Client
             {
                 Text = "Login",
                 FontSize = 24,
-                TextColor = Color.Blue,
-                BackgroundColor = Color.PaleGreen,
+                TextColor = Color.White,
+                BackgroundColor = Color.Blue,
 			},
 									  new Rectangle(0.5, 0.6, 0.6, 0.15), AbsoluteLayoutFlags.All);
 
@@ -48,7 +48,6 @@ namespace TMCS_Client
 			sectionRegister.Children.Add(new Label()
 			{
 				Text = "Don't have an account?",
-				HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
 				VerticalTextAlignment = TextAlignment.Center,
 				HorizontalTextAlignment = TextAlignment.Center,
 			},
@@ -57,9 +56,8 @@ namespace TMCS_Client
             sectionRegister.Children.Add(new Button()
             {
                 Text = "Register",
-                HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
                 TextColor = Color.Blue,
-                BorderColor = Color.PaleGreen,
+                BorderColor = Color.Blue,
                 BorderWidth = 2,
                 Command = new Command((object obj) => this.Navigation.PushAsync(new RegistrationMain())),
 			},
@@ -76,7 +74,6 @@ namespace TMCS_Client
                                       AbsoluteLayoutFlags.All);
             pageContent.Children.Add(sectionRegister, new Rectangle(0, 1.0, 1.0, 0.3),
                                       AbsoluteLayoutFlags.All);
-
 
             Content = pageContent;
         }
