@@ -33,5 +33,11 @@ namespace TMCS_Client
             public static string DELETE_JOB_POSTING_RESOURCE { get { return "/jobposting/delete/{id}"; } }
             public static string GET_JOB_POSTING_RESOURCE { get { return "/jobposting/{id}"; } }
         }
+
+        public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }
+
+        public class Emails{
+            public static string STUDENT { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.edu"; } }
+        }
     }
 }

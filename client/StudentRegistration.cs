@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TMCS_Client.DTOs;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
@@ -100,7 +101,7 @@ namespace TMCS_Client
                                         new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                         AbsoluteLayoutFlags.All);
 
-            entFirstName.Completed += (sender, e) => entLastName.Focus();
+            entFirstName.Completed += (object sender, EventArgs e) => entLastName.Focus();
 
             registrationForm.Children.Add(firstNameInput,
                                          new Rectangle(0, 60.0, 1.0, 60.0),
@@ -121,7 +122,7 @@ namespace TMCS_Client
                                        new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entLastName.Completed += (sender, e) => entEmail.Focus();
+			entLastName.Completed += (object sender, EventArgs e) => entEmail.Focus();
 
 			registrationForm.Children.Add(lastNameInput,
 										 new Rectangle(0, 120.0, 1.0, 60.0),
@@ -142,7 +143,8 @@ namespace TMCS_Client
                                     new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                     AbsoluteLayoutFlags.All);
 
-			entEmail.Completed += (sender, e) => entPassword.Focus();
+			entEmail.Completed += (object sender, EventArgs e) => entPassword.Focus();
+            entEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
 
 			registrationForm.Children.Add(emailInput,
 										 new Rectangle(0, 180.0, 1.0, 60.0),
@@ -163,7 +165,8 @@ namespace TMCS_Client
                                        new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entPassword.Completed += (sender, e) => entRetypePassword.Focus();
+			entPassword.Completed += (object sender, EventArgs e) => entRetypePassword.Focus();
+            entPassword.Unfocused += (object sender, FocusEventArgs e) => passwordCheck();
 
 			registrationForm.Children.Add(passwordInput,
 										 new Rectangle(0, 240.0, 1.0, 60.0),
@@ -184,7 +187,8 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entRetypePassword.Completed += (sender, e) => entSchoolName.Focus();
+			entRetypePassword.Completed += (object sender, EventArgs e) => entSchoolName.Focus();
+            entRetypePassword.Unfocused += (object sender, FocusEventArgs e) => retypePasswordCheck();
 
 			registrationForm.Children.Add(retypePasswordInput,
 										 new Rectangle(0, 300.0, 1.0, 60.0),
@@ -205,7 +209,7 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entSchoolName.Completed += (sender, e) => entGraduationDate.Focus();
+			entSchoolName.Completed += (object sender, EventArgs e) => entGraduationDate.Focus();
 
 			registrationForm.Children.Add(schoolNameInput,
 										 new Rectangle(0, 360.0, 1.0, 60.0),
@@ -222,11 +226,13 @@ namespace TMCS_Client
 									   AbsoluteLayoutFlags.All);
 
 			graduationDateInput.Children.Add(entGraduationDate =
-									   new FormEntry("Graduation Date", Keyboard.Text),
+									   new FormEntry("Graduation Date", Keyboard.Numeric),
 									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entGraduationDate.Completed += (sender, e) => entPhoneNumber.Focus();
+			entGraduationDate.Completed += (object sender, EventArgs e) => entPhoneNumber.Focus();
+            entGraduationDate.TextChanged += (object sender, TextChangedEventArgs e) => graduationDateUpdate();
+            entGraduationDate.Unfocused += (object sender, FocusEventArgs e) => graduationDateCheck();
 
 			registrationForm.Children.Add(graduationDateInput,
 									   new Rectangle(0, 420.0, 1.0, 60.0),
@@ -243,11 +249,12 @@ namespace TMCS_Client
 									   AbsoluteLayoutFlags.All);
 
 			phoneNumberInput.Children.Add(entPhoneNumber =
-                                       new FormEntry("(xxx) xxx-xxxx", Keyboard.Text),
+                                       new FormEntry("(xxx) xxx-xxxx", Keyboard.Numeric),
 									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entPhoneNumber.Completed += (sender, e) => entPreferedLocation.Focus();
+            entPhoneNumber.Completed += (object sender, EventArgs e) => entPreferedLocation.Focus();
+            entPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => phoneNumberUpdate();
 
 			registrationForm.Children.Add(phoneNumberInput,
 										 new Rectangle(0, 480.0, 1.0, 60.0),
@@ -268,7 +275,7 @@ namespace TMCS_Client
                                        new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entPreferedLocation.Completed += (sender, e) => entPreferedCompanySize.Focus();
+			entPreferedLocation.Completed += (object sender, EventArgs e) => entPreferedCompanySize.Focus();
 
 			registrationForm.Children.Add(preferedLocationInput,
                                          new Rectangle(0, 540.0, 1.0, 60.0),
@@ -337,6 +344,93 @@ namespace TMCS_Client
             }*/
 
             Navigation.PopToRootAsync();
+        }
+
+        private void graduationDateUpdate(){
+            String stripedGraduationDate =
+                entGraduationDate.Text.Replace("/","").Replace(".","");
+
+            String newString;
+
+            switch (stripedGraduationDate.Length){
+                case(0):case(1):case(2):
+                    newString = stripedGraduationDate;
+                    break;
+                default:
+                    newString = stripedGraduationDate.Substring(0, Math.Min(4,stripedGraduationDate.Length));
+                    newString = newString.Insert(newString.Length - 2,"/");
+                    break;
+            }
+
+            entGraduationDate.Text = newString;
+        }
+
+        private void phoneNumberUpdate(){
+            
+        }
+
+        private bool emailCheck(){
+            bool result;
+            if(Regex.IsMatch(entEmail.Text, Constants.Emails.STUDENT)){
+                entEmail.BackgroundColor = Color.PaleGreen;
+                result = true;
+            }else{
+                entEmail.BackgroundColor = Color.PaleVioletRed;
+                result = false;
+            }
+            return result;
+        }
+
+        private bool passwordCheck(){
+            bool result;
+            if(Regex.IsMatch(entPassword.Text, Constants.PASSWORD_REGEX)){
+                entPassword.BackgroundColor = Color.PaleGreen;
+                result = true;
+            }else{
+                entPassword.BackgroundColor = Color.PaleVioletRed;
+                result = false;
+            }
+            return result;
+        }
+
+        private bool retypePasswordCheck(){
+            bool result;
+            if(entPassword.Text != entRetypePassword.Text){
+                entRetypePassword.BackgroundColor = Color.PaleVioletRed;
+                result = false;
+            }else{
+                entRetypePassword.BackgroundColor = Color.PaleGreen;
+                result = true;
+            }
+            return result;
+        }
+
+        private bool graduationDateCheck(){
+            bool result;
+
+            String adjustedGraduation = (entGraduationDate.Text.Length < 5 ? 
+                                         "0" + entGraduationDate.Text : 
+                                         entGraduationDate.Text);
+            DateTime graduationDate;
+
+            try{
+                graduationDate = DateTime.ParseExact(adjustedGraduation, "MM/yy", null);
+
+                if(((graduationDate.Month >= DateTime.Today.Month) && 
+                    (graduationDate.Year == DateTime.Today.Year)) || 
+                    (graduationDate.Year > DateTime.Today.Year)){
+                    entGraduationDate.BackgroundColor = Color.PaleGreen;
+                result = true;
+                }else{
+                    entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+                    result = false;
+                }
+            }catch(FormatException e){
+                entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+                result = false;
+            }
+
+            return result;
         }
 	}
 }
