@@ -6,7 +6,7 @@
     <ProjectGuid>{C3AAB213-8182-48D5-8ECD-9886A2ADE63F}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>client.iOS</RootNamespace>
+    <RootNamespace>TMCS_Client.iOS</RootNamespace>
     <AssemblyName>client.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
