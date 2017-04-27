@@ -36,10 +36,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml.cs">
       <DependentUpon>RegistrationMain.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\FormFieldLabel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace client
+namespace TMCS_Client
 {
     public partial class App : Application
     {

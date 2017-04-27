@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using TMCS_Client.DTOs;
 using TMCS_Client.Controllers;
+using TMCS_Client.CustomUIElements.Labels;
 
 using Xamarin.Forms;
 
-namespace client
+namespace TMCS_Client
 {
     public class StudentRegistration : ContentPage
     {
@@ -17,43 +18,43 @@ namespace client
         private Label lblTitle;
 
         //First Name
-        private Label lblFirstName;
+        private FormFieldLabel lblFirstName;
         private Entry entFirstName;
 
         //Last Name
-        private Label lblLastName;
+        private FormFieldLabel lblLastName;
         private Entry entLastName;
 
 		//Email
-		private Label lblEmail;
+		private FormFieldLabel lblEmail;
 		private Entry entEmail;
 
 		//Password
-		private Label lblPassword;
+		private FormFieldLabel lblPassword;
 		private Entry entPassword;
 
 		//Retype Password
-		private Label lblRetypePassword;
+		private FormFieldLabel lblRetypePassword;
 		private Entry entRetypePassword;
 
 		//School Name
-		private Label lblSchoolName;
+		private FormFieldLabel lblSchoolName;
 		private Entry entSchoolName;
 
 		//Graduation Date
-		private Label lblGraduationDate;
+		private FormFieldLabel lblGraduationDate;
 		private Entry entGraduationDate;
 
 		//Phone Number
-		private Label lblPhoneNumber;
+		private FormFieldLabel lblPhoneNumber;
         private Entry entPhoneNumber;
 
         //Prefered Location
-        private Label lblPreferedLocation;
+        private FormFieldLabel lblPreferedLocation;
         private Entry entPreferedLocation;
 
         //Prefered Company Size
-        private Label lblPreferedCompanySize;
+        private FormFieldLabel lblPreferedCompanySize;
 		private Entry entPreferedCompanySize;
 
         //Register Button
@@ -90,13 +91,10 @@ namespace client
             {
             };
 
-            firstNameInput.Children.Add(lblFirstName = new Label()
-            {
-                Text = "First Name",
-                FontSize = 18.0,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Start,
-            }, new Rectangle(0.5,0,0.9,0.5), AbsoluteLayoutFlags.All);
+            firstNameInput.Children.Add(lblFirstName = 
+                                        new FormFieldLabel("First Name"), 
+                                        new Rectangle(0.5,0,0.9,0.5), 
+                                        AbsoluteLayoutFlags.All);
 
             firstNameInput.Children.Add(entFirstName = new Entry(){
                 Placeholder = "First Name",
@@ -115,13 +113,10 @@ namespace client
 			{
 			};
 
-			lastNameInput.Children.Add(lblLastName = new Label()
-			{
-				Text = "Last Name",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			lastNameInput.Children.Add(lblLastName = 
+                                       new FormFieldLabel("Last Name"), 
+                                       new Rectangle(0.5, 0, 0.9, 0.5), 
+                                       AbsoluteLayoutFlags.All);
 
             lastNameInput.Children.Add(entLastName = new Entry()
             {
@@ -141,13 +136,10 @@ namespace client
 			{
 			};
 
-			emailInput.Children.Add(lblEmail = new Label()
-			{
-				Text = "Email",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			emailInput.Children.Add(lblEmail =
+									   new FormFieldLabel("Email"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			emailInput.Children.Add(entEmail = new Entry()
 			{
@@ -167,13 +159,10 @@ namespace client
 			{
 			};
 
-			passwordInput.Children.Add(lblPassword = new Label()
-			{
-				Text = "Password",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			passwordInput.Children.Add(lblPassword =
+									   new FormFieldLabel("Password"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			passwordInput.Children.Add(entPassword = new Entry()
 			{
@@ -194,13 +183,10 @@ namespace client
 			{
 			};
 
-			retypePasswordInput.Children.Add(lblRetypePassword = new Label()
-			{
-				Text = "Retype Password",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			retypePasswordInput.Children.Add(lblRetypePassword =
+									   new FormFieldLabel("Retype Password"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			retypePasswordInput.Children.Add(entRetypePassword = new Entry()
 			{
@@ -221,13 +207,10 @@ namespace client
 			{
 			};
 
-			schoolNameInput.Children.Add(lblSchoolName = new Label()
-			{
-				Text = "School Name",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			schoolNameInput.Children.Add(lblSchoolName =
+									   new FormFieldLabel("School Name"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			schoolNameInput.Children.Add(entSchoolName = new Entry()
 			{
@@ -247,13 +230,10 @@ namespace client
 			{
 			};
 
-			graduationDateInput.Children.Add(lblGraduationDate = new Label()
-			{
-				Text = "Graduation Date",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			graduationDateInput.Children.Add(lblGraduationDate =
+									   new FormFieldLabel("Graduation Date"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			graduationDateInput.Children.Add(entGraduationDate = new Entry()
 			{
@@ -273,13 +253,10 @@ namespace client
 			{
 			};
 
-			phoneNumberInput.Children.Add(lblPhoneNumber = new Label()
-			{
-                Text = "Phone Number (Optional)",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+            phoneNumberInput.Children.Add(lblPhoneNumber = 
+                                       new FormFieldLabel("Phone Number (Optional)"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			phoneNumberInput.Children.Add(entPhoneNumber = new Entry()
 			{
@@ -299,13 +276,10 @@ namespace client
             {
             };
 
-			preferedLocationInput.Children.Add(lblPreferedLocation = new Label()
-			{
-				Text = "What is your prefered work location?",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			preferedLocationInput.Children.Add(lblPreferedLocation =
+									   new FormFieldLabel("What is your prefered work location?"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			preferedLocationInput.Children.Add(entPreferedLocation = new Entry()
 			{
@@ -325,13 +299,10 @@ namespace client
             {
             };
 
-			preferedCompanySizeInput.Children.Add(lblPreferedCompanySize = new Label()
-			{
-				Text = "What is your prefered company size?",
-				FontSize = 18.0,
-				VerticalTextAlignment = TextAlignment.Center,
-				HorizontalTextAlignment = TextAlignment.Start,
-			}, new Rectangle(0.5, 0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+			preferedCompanySizeInput.Children.Add(lblPreferedCompanySize =
+									   new FormFieldLabel("What is your preferec company size?"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
 
 			preferedCompanySizeInput.Children.Add(entPreferedCompanySize = new Entry()
 			{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 
-namespace client
+namespace TMCS_Client
 {
     public partial class RegistrationMain : ContentPage
     {
