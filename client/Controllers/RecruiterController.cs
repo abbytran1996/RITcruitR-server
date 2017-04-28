@@ -10,9 +10,21 @@ namespace TMCS_Client.Controllers
 	/// A controller to interact with students
 	/// </summary>
 	/// Is this a true MVC controller? I don't know.
-	class RecruiterController
+	public class RecruiterController
 	{
+        private static RecruiterController recruiterController = null;
         private RecruiterComms recruiterComms = new RecruiterComms();
+
+        private RecruiterController(){
+        }
+
+        public static RecruiterController getRecruiterController(){
+            if(recruiterController == null){
+                recruiterController = new RecruiterController();
+            }
+
+            return recruiterController;
+        }
 
 		/// <summary>
 		/// Adds a new recruiter to the server

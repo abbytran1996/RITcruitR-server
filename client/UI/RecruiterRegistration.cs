@@ -64,9 +64,6 @@ namespace TMCS_Client.UI
 		//Register Button
 		private Button btnRegister;
 
-		//Util
-        RecruiterController recruiterController = new RecruiterController();
-
 		public RecruiterRegistration()
 		{
 			//Whole page
@@ -325,7 +322,7 @@ namespace TMCS_Client.UI
 
 				try
 				{
-                    recruiterController.addRecruiter(newRecruiter);
+                    RecruiterController.getRecruiterController().addRecruiter(newRecruiter);
 					Navigation.PopToRootAsync();
 				}
 				catch (Exception e)

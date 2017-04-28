@@ -9,8 +9,21 @@ namespace TMCS_Client.Controllers {
     /// A controller to interact with students
     /// </summary>
     /// Is this a true MVC controller? I don't know.
-    class StudentController {
+    public class StudentController {
+
+        private static StudentController studentController = null;
         private StudentComms studentComms = new StudentComms();
+
+        private StudentController(){
+        }
+
+        public static StudentController getStudentController(){
+            if(studentController == null){
+                studentController = new StudentController();
+            }
+
+            return studentController;
+        }
 
         /// <summary>
         /// Adds a new student to the server

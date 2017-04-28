@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TMCS_Client.DTOs
 {
-	class NewCompany : Company
+	public class NewCompany : Company
 	{
 		public string password { get; set; }
 		public string passwordConfirm { get; set; }

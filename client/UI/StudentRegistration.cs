@@ -62,9 +62,6 @@ namespace TMCS_Client.UI
         //Register Button
         private Button btnRegister;
 
-		//Util
-		StudentController studentController = new StudentController();
-
         public StudentRegistration()
         {
             //Whole page
@@ -371,7 +368,7 @@ namespace TMCS_Client.UI
 
                 try
                 {
-                    studentController.addStudent(newStudent);
+                    StudentController.getStudentController().addStudent(newStudent);
                     Navigation.PushAsync(new StudentHomepage());
                 }catch(Exception e){
                     Console.WriteLine(e.ToString());
