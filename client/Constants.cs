@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace TMCS_Client
 {
     /// <summary>
     /// Holds all the constants that the TMCS client uses
     /// </summary>
-    class Constants
+    public static class Constants
     {
 #if __ANDROID__
         public static string SERVER_URL { get { return "http://10.0.2.2:8080"; } }  // 10.0.2.2 is the IP address of the device the emulator is running on
@@ -15,23 +16,23 @@ namespace TMCS_Client
 #if __IOS__
         public static string SERVER_URL { get { return "http://127.0.0.1:8080"; } }
 #endif
-        public class Students
+        public static class Students
         {
             public static string ADD_STUDENT_RESOURCE { get { return "/students"; } }
         }
-        public class Recruiters
+        public static class Recruiters
         {
             public static string ADD_RECRUITER_RESOURCE { get { return "/recruiters"; } }
         }
-        public class Company
+        public static class Company
         {
             public static string ADD_COMPANY_RESOURCE { get { return "/company"; } }
         }
-        public class Skill
+        public static class Skill
         {
             public static string GET_SKILL_RESOURCE { get { return "/skills"; } }
         }
-        public class JobPosting
+        public static class JobPosting
         {
             public static string ADD_JOB_POSTING_RESOURCE { get { return "/jobposting/create"; } }
             public static string DELETE_JOB_POSTING_RESOURCE { get { return "/jobposting/delete/{id}"; } }
@@ -40,9 +41,29 @@ namespace TMCS_Client
 
         public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }
 
-        public class Emails{
+        public static class Emails
+        {
             public static string STUDENT { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.edu"; } }
             public static string COMPANY { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.*"; } }
+        }
+
+        public static class Forms
+        {
+            public static class Colors
+            {
+                public static Color PALE_GREEN { get { return new Color(0.75, 1.0, 0.75); } }
+                public static Color PALE_RED { get { return new Color(1.0, 0.75, 0.75); } }
+            }
+
+            public static class Sizes
+            {
+#if __IOS__
+                public static double ROW_HEIGHT{ get { return 60.0; } }
+#endif
+#if __ANDROID__
+                public static double ROW_HEIGHT{ get { return 80.0; } }
+#endif
+			}
         }
     }
 }

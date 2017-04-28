@@ -62,13 +62,6 @@ namespace TMCS_Client
         //Register Button
         private Button btnRegister;
 
-#if __IOS__
-        const double ROW_HEIGHT = 60.0;
-#endif
-#if __ANDROID__
-        const double ROW_HEIGHT = 80.0;
-#endif
-
 		//Util
 		StudentController studentController = new StudentController();
 
@@ -82,14 +75,14 @@ namespace TMCS_Client
 
             registrationForm = new AbsoluteLayout()
             {
-                HeightRequest = (ROW_HEIGHT * 12.0),
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 12.0),
 			};
 
 
             //Title
             registrationForm.Children.Add(lblTitle =
                                           new PageTitleLabel("Student Registration"),
-                                          new Rectangle(0,0,1.0,ROW_HEIGHT), 
+                                          new Rectangle(0,0,1.0,Constants.Forms.Sizes.ROW_HEIGHT), 
                                           AbsoluteLayoutFlags.WidthProportional);
 
 
@@ -111,7 +104,8 @@ namespace TMCS_Client
             entFirstName.Completed += (object sender, EventArgs e) => entLastName.Focus();
 
             registrationForm.Children.Add(firstNameInput,
-                                         new Rectangle(0, ROW_HEIGHT, 1.0, ROW_HEIGHT),
+                                         new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT, 
+                                                       1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
 			//Last Name
@@ -132,7 +126,7 @@ namespace TMCS_Client
 			entLastName.Completed += (object sender, EventArgs e) => entEmail.Focus();
 
 			registrationForm.Children.Add(lastNameInput,
-										 new Rectangle(0, 2.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+										 new Rectangle(0, 2.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Email
@@ -154,7 +148,7 @@ namespace TMCS_Client
             entEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
 
 			registrationForm.Children.Add(emailInput,
-										 new Rectangle(0, 3.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+										 new Rectangle(0, 3.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Password
@@ -176,7 +170,7 @@ namespace TMCS_Client
             entPassword.Unfocused += (object sender, FocusEventArgs e) => passwordCheck();
 
 			registrationForm.Children.Add(passwordInput,
-										 new Rectangle(0, 4.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+										 new Rectangle(0, 4.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Retype Password
@@ -198,7 +192,7 @@ namespace TMCS_Client
             entRetypePassword.Unfocused += (object sender, FocusEventArgs e) => retypePasswordCheck();
 
 			registrationForm.Children.Add(retypePasswordInput,
-										 new Rectangle(0, 5.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+										 new Rectangle(0, 5.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//School Name
@@ -219,7 +213,7 @@ namespace TMCS_Client
 			entSchoolName.Completed += (object sender, EventArgs e) => entGraduationDate.Focus();
 
 			registrationForm.Children.Add(schoolNameInput,
-										 new Rectangle(0, 6.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+										 new Rectangle(0, 6.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Graduation Date
@@ -233,7 +227,7 @@ namespace TMCS_Client
 									   AbsoluteLayoutFlags.All);
 
 			graduationDateInput.Children.Add(entGraduationDate =
-									   new FormEntry("Graduation Date", Keyboard.Numeric),
+									   new FormEntry("mm/yy", Keyboard.Numeric),
 									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
@@ -242,7 +236,7 @@ namespace TMCS_Client
             entGraduationDate.Unfocused += (object sender, FocusEventArgs e) => graduationDateCheck();
 
 			registrationForm.Children.Add(graduationDateInput,
-									   new Rectangle(0, 7.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+									   new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 									   AbsoluteLayoutFlags.WidthProportional);
 
 			//Phone Number
@@ -265,7 +259,7 @@ namespace TMCS_Client
             entPhoneNumber.Unfocused += (object sender, FocusEventArgs e) => phoneNumberCheck();
 
 			registrationForm.Children.Add(phoneNumberInput,
-										 new Rectangle(0, 8.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+										 new Rectangle(0, 8.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Prefered Location
@@ -286,7 +280,7 @@ namespace TMCS_Client
             entPreferredLocation.Completed += (object sender, EventArgs e) => entPreferredCompanySize.Focus();
 
 			registrationForm.Children.Add(preferredLocationInput,
-                                         new Rectangle(0, 9.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+                                         new Rectangle(0, 9.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
 			//Prefered Company Size
@@ -305,7 +299,7 @@ namespace TMCS_Client
                                        AbsoluteLayoutFlags.All);
 
 			registrationForm.Children.Add(preferredCompanySizeInput,
-										 new Rectangle(0, 10.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
+										 new Rectangle(0, 10.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
             //Register Button
@@ -319,7 +313,7 @@ namespace TMCS_Client
             };
 
             registrationForm.Children.Add(btnRegister,
-                                          new Rectangle(0.5, ((11.0 * ROW_HEIGHT) + 10.0), 0.8, ROW_HEIGHT - 20.0),
+                                          new Rectangle(0.5, ((11.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
                                           AbsoluteLayoutFlags.WidthProportional |
                                          AbsoluteLayoutFlags.XProportional);
 
@@ -433,10 +427,10 @@ namespace TMCS_Client
         private bool emailCheck(){
             bool result;
             if((entEmail.Text != null) && Regex.IsMatch(entEmail.Text, Constants.Emails.STUDENT)){
-                entEmail.BackgroundColor = Color.PaleGreen;
+                entEmail.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
                 result = true;
             }else{
-                entEmail.BackgroundColor = Color.PaleVioletRed;
+                entEmail.BackgroundColor = Constants.Forms.Colors.PALE_RED;
                 result = false;
             }
             return result;
@@ -445,10 +439,10 @@ namespace TMCS_Client
         private bool passwordCheck(){
             bool result;
             if((entPassword.Text != null) && Regex.IsMatch(entPassword.Text, Constants.PASSWORD_REGEX)){
-                entPassword.BackgroundColor = Color.PaleGreen;
+                entPassword.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
                 result = true;
             }else{
-                entPassword.BackgroundColor = Color.PaleVioletRed;
+                entPassword.BackgroundColor = Constants.Forms.Colors.PALE_RED;
                 result = false;
             }
             return result;
@@ -458,10 +452,10 @@ namespace TMCS_Client
             bool result;
             if((entPassword.Text == null ? "" : entPassword.Text) != 
               (entRetypePassword.Text == null ? "" : entRetypePassword.Text)){
-                entRetypePassword.BackgroundColor = Color.PaleVioletRed;
+                entRetypePassword.BackgroundColor = Constants.Forms.Colors.PALE_RED;
                 result = false;
             }else if((entRetypePassword.Text != null) && (entRetypePassword.Text != "")){
-                entRetypePassword.BackgroundColor = Color.PaleGreen;
+                entRetypePassword.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
                 result = true;
             }else{
                 entRetypePassword.BackgroundColor = Color.White;
@@ -477,7 +471,7 @@ namespace TMCS_Client
 
             if ((entGraduationDate.Text == null) || (entGraduationDate.Text.Length < 4))
 			{
-				entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+				entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_RED;
                 result = false;
             }
             else
@@ -494,18 +488,18 @@ namespace TMCS_Client
                         (graduationDate.Year == DateTime.Today.Year)) ||
                         (graduationDate.Year > DateTime.Today.Year))
                     {
-                        entGraduationDate.BackgroundColor = Color.PaleGreen;
+                        entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
                         result = true;
                     }
                     else
                     {
-                        entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+                        entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_RED;
                         result = false;
                     }
                 }
                 catch (FormatException e)
                 {
-                    entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+                    entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_RED;
                     result = false;
                 }
             }
@@ -523,11 +517,11 @@ namespace TMCS_Client
                                    .Replace(")", "").Replace("-", ""), "[0-9]{10}"))
             {
                 result = true;
-                entPhoneNumber.BackgroundColor = Color.PaleGreen;
+                entPhoneNumber.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
             }else
             {
                 result = false;
-                entPhoneNumber.BackgroundColor = Color.PaleVioletRed;
+                entPhoneNumber.BackgroundColor = Constants.Forms.Colors.PALE_RED;
             }
 
             return result;
