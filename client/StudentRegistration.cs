@@ -27,28 +27,28 @@ namespace TMCS_Client
         private FormFieldLabel lblLastName;
         private FormEntry entLastName;
 
-		//Email
-		private FormFieldLabel lblEmail;
-		private FormEntry entEmail;
+        //Email
+        private FormFieldLabel lblEmail;
+        private FormEntry entEmail;
 
-		//Password
-		private FormFieldLabel lblPassword;
-		private FormEntry entPassword;
+        //Password
+        private FormFieldLabel lblPassword;
+        private FormEntry entPassword;
 
-		//Retype Password
-		private FormFieldLabel lblRetypePassword;
-		private FormEntry entRetypePassword;
+        //Retype Password
+        private FormFieldLabel lblRetypePassword;
+        private FormEntry entRetypePassword;
 
-		//School Name
-		private FormFieldLabel lblSchoolName;
-		private FormEntry entSchoolName;
+        //School Name
+        private FormFieldLabel lblSchoolName;
+        private FormEntry entSchoolName;
 
-		//Graduation Date
-		private FormFieldLabel lblGraduationDate;
-		private FormEntry entGraduationDate;
+        //Graduation Date
+        private FormFieldLabel lblGraduationDate;
+        private FormEntry entGraduationDate;
 
-		//Phone Number
-		private FormFieldLabel lblPhoneNumber;
+        //Phone Number
+        private FormFieldLabel lblPhoneNumber;
         private FormEntry entPhoneNumber;
 
         //Prefered Location
@@ -57,13 +57,20 @@ namespace TMCS_Client
 
         //Prefered Company Size
         private FormFieldLabel lblPreferredCompanySize;
-		private FormEntry entPreferredCompanySize;
+        private FormEntry entPreferredCompanySize;
 
         //Register Button
         private Button btnRegister;
 
-        //Util
-        StudentController studentController = new StudentController();
+#if __IOS__
+        const double ROW_HEIGHT = 60.0;
+#endif
+#if __ANDROID__
+        const double ROW_HEIGHT = 80.0;
+#endif
+
+		//Util
+		StudentController studentController = new StudentController();
 
         public StudentRegistration()
         {
@@ -75,14 +82,14 @@ namespace TMCS_Client
 
             registrationForm = new AbsoluteLayout()
             {
-                HeightRequest = (60.0 * 12.0),
+                HeightRequest = (ROW_HEIGHT * 12.0),
 			};
 
 
             //Title
             registrationForm.Children.Add(lblTitle =
                                           new PageTitleLabel("Student Registration"),
-                                          new Rectangle(0,0,1.0,60.0), 
+                                          new Rectangle(0,0,1.0,ROW_HEIGHT), 
                                           AbsoluteLayoutFlags.WidthProportional);
 
 
@@ -104,7 +111,7 @@ namespace TMCS_Client
             entFirstName.Completed += (object sender, EventArgs e) => entLastName.Focus();
 
             registrationForm.Children.Add(firstNameInput,
-                                         new Rectangle(0, 60.0, 1.0, 60.0),
+                                         new Rectangle(0, ROW_HEIGHT, 1.0, ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
 			//Last Name
@@ -125,7 +132,7 @@ namespace TMCS_Client
 			entLastName.Completed += (object sender, EventArgs e) => entEmail.Focus();
 
 			registrationForm.Children.Add(lastNameInput,
-										 new Rectangle(0, 120.0, 1.0, 60.0),
+										 new Rectangle(0, 2.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Email
@@ -147,7 +154,7 @@ namespace TMCS_Client
             entEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
 
 			registrationForm.Children.Add(emailInput,
-										 new Rectangle(0, 180.0, 1.0, 60.0),
+										 new Rectangle(0, 3.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Password
@@ -169,7 +176,7 @@ namespace TMCS_Client
             entPassword.Unfocused += (object sender, FocusEventArgs e) => passwordCheck();
 
 			registrationForm.Children.Add(passwordInput,
-										 new Rectangle(0, 240.0, 1.0, 60.0),
+										 new Rectangle(0, 4.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Retype Password
@@ -191,7 +198,7 @@ namespace TMCS_Client
             entRetypePassword.Unfocused += (object sender, FocusEventArgs e) => retypePasswordCheck();
 
 			registrationForm.Children.Add(retypePasswordInput,
-										 new Rectangle(0, 300.0, 1.0, 60.0),
+										 new Rectangle(0, 5.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//School Name
@@ -212,7 +219,7 @@ namespace TMCS_Client
 			entSchoolName.Completed += (object sender, EventArgs e) => entGraduationDate.Focus();
 
 			registrationForm.Children.Add(schoolNameInput,
-										 new Rectangle(0, 360.0, 1.0, 60.0),
+										 new Rectangle(0, 6.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Graduation Date
@@ -235,7 +242,7 @@ namespace TMCS_Client
             entGraduationDate.Unfocused += (object sender, FocusEventArgs e) => graduationDateCheck();
 
 			registrationForm.Children.Add(graduationDateInput,
-									   new Rectangle(0, 420.0, 1.0, 60.0),
+									   new Rectangle(0, 7.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 									   AbsoluteLayoutFlags.WidthProportional);
 
 			//Phone Number
@@ -258,7 +265,7 @@ namespace TMCS_Client
             entPhoneNumber.Unfocused += (object sender, FocusEventArgs e) => phoneNumberCheck();
 
 			registrationForm.Children.Add(phoneNumberInput,
-										 new Rectangle(0, 480.0, 1.0, 60.0),
+										 new Rectangle(0, 8.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Prefered Location
@@ -279,7 +286,7 @@ namespace TMCS_Client
             entPreferredLocation.Completed += (object sender, EventArgs e) => entPreferredCompanySize.Focus();
 
 			registrationForm.Children.Add(preferredLocationInput,
-                                         new Rectangle(0, 540.0, 1.0, 60.0),
+                                         new Rectangle(0, 9.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
 			//Prefered Company Size
@@ -298,7 +305,7 @@ namespace TMCS_Client
                                        AbsoluteLayoutFlags.All);
 
 			registrationForm.Children.Add(preferredCompanySizeInput,
-										 new Rectangle(0, 600.0, 1.0, 60.0),
+										 new Rectangle(0, 10.0 * ROW_HEIGHT, 1.0, ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
             //Register Button
@@ -312,7 +319,7 @@ namespace TMCS_Client
             };
 
             registrationForm.Children.Add(btnRegister,
-                                         new Rectangle(0.5, 670.0, 0.8, 40),
+                                          new Rectangle(0.5, ((11.0 * ROW_HEIGHT) + 10.0), 0.8, ROW_HEIGHT - 20.0),
                                           AbsoluteLayoutFlags.WidthProportional |
                                          AbsoluteLayoutFlags.XProportional);
 
