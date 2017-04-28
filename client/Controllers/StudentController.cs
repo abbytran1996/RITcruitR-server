@@ -9,7 +9,7 @@ namespace TMCS_Client.Controllers {
     /// A controller to interact with students
     /// </summary>
     /// Is this a true MVC controller? I don't know.
-    class StudentController {
+    public class StudentController {
         private StudentComms studentComms = new StudentComms();
 
         /// <summary>
@@ -18,6 +18,10 @@ namespace TMCS_Client.Controllers {
         /// <param name="student">The student to add</param>
         public void addStudent(NewStudent student) {
             studentComms.addStudent(student);
+        }
+
+        public List<Match> getMatchesForStudent(Student student) {
+            return studentComms.getMatchesForStudent(student);
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using RestSharp;
+using RestSharp.Deserializers;
+using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using TMCS_Client.DTOs;
 
@@ -9,8 +12,10 @@ namespace TMCS_Client.ServerComms {
     /// Allows someone to interact with the server's Student API
     /// </summary>
     /// This class is not thread safe
-    class StudentComms {
-        RestClient client = new RestClient(Constants.SERVER_URL);
+    public class StudentComms {
+        private RestClient client = new RestClient(Constants.SERVER_URL);
+
+        private JsonDeserializer deserialiser = new JsonDeserializer();
 
         /// <summary>
         /// Adds the student to the server
@@ -24,19 +29,31 @@ namespace TMCS_Client.ServerComms {
             request.AddBody(student);
 
             var response = client.Execute(request);
-            if(response.StatusCode != System.Net.HttpStatusCode.Created) {
+            ensureStatusCode(response, HttpStatusCode.Created);
+        }
+
+        /// <summary>
+        /// Gets all the Match objects associated with the given student
+        /// </summary>
+        /// <param name="student">The student to get all the matches of</param>
+        /// <returns>All the matches associated with the given student</returns>
+        public List<Match> getMatchesForStudent(Student student) {
+            var resource = String.Format(Constants.Students.GET_MATCHES_RESORUCE, student.id);
+            var request = new RestRequest(resource, Method.GET);
+
+            var response = client.Execute(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
+            
+            return deserialiser.Deserialize<List<Match>>(response);
+        }
+
+        private void ensureStatusCode(IRestResponse response, HttpStatusCode code) {
+            if(response.StatusCode != code) {
                 if(response.ErrorException != null) {
                     throw response.ErrorException;
                 }
                 throw new RestException(response.StatusCode);
             }
-        }
-
-        public List<Match> getMatchesForStudent(Student student) {
-            var resource = String.Format(Constants.Students.GET_MATCHES_RESORUCE, student.id);
-            var request = new RestRequest();
-
-            return null;
         }
     }
 }
