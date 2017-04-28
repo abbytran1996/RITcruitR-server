@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using TMCS_Client.UI;
 
 namespace TMCS_Client.Droid
 {

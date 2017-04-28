@@ -17,7 +17,7 @@ namespace TMCS_Client.UI {
         }
 
         private View makeJobPostingItem(Match match) {
-
+            return null;
         }
 
         /// <summary>
