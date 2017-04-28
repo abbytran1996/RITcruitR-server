@@ -19,6 +19,10 @@ namespace TMCS_Client
         {
             public static string ADD_STUDENT_RESOURCE { get { return "/students"; } }
         }
+        public class Recruiters
+        {
+            public static string ADD_RECRUITER_RESOURCE { get { return "/recruiters"; } }
+        }
         public class Company
         {
             public static string ADD_COMPANY_RESOURCE { get { return "/company"; } }
@@ -38,6 +42,7 @@ namespace TMCS_Client
 
         public class Emails{
             public static string STUDENT { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.edu"; } }
+            public static string COMPANY { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.*"; } }
         }
     }
 }

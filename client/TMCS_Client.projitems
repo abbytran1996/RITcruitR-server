@@ -39,6 +39,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\FormFieldLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\PageTitleLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\FormEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RecruiterRegistration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RecruiterComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewRecruiter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Recruiter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\RecruiterController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml">

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
@@ -13,10 +13,11 @@ namespace TMCS_Client
 			Label lblTitle = new Label()
 			{
 				Text = "Welcome To RecruitR!",
+                TextColor = Color.Blue,
+                FontAttributes = FontAttributes.Bold,
 				FontSize = 46.0,
                 VerticalTextAlignment = TextAlignment.Center,
 				HorizontalTextAlignment = TextAlignment.Center,
-				BackgroundColor = Color.Teal,
 
 			};
 
@@ -28,31 +29,40 @@ namespace TMCS_Client
 
             roleChoiceSection.Children.Add(new Label()
             {
-                Text = "Choose A Role You Want To Register As",
+                Text = "Choose A Role You Want To Register As:",
                 FontSize = 25,
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
             },
 
-			new Rectangle(0.5, 0.3 , 1.0, 0.2),AbsoluteLayoutFlags.All);
+			new Rectangle(0.5, 0.2 , 1.0, 0.2),AbsoluteLayoutFlags.All);
 
 
             roleChoiceSection.Children.Add(new Button()
             {
                 Text = "Student",
-                FontSize = 20,
+                TextColor = Color.Black,
+                FontSize = 25,
+                BorderColor = Color.SteelBlue,
+				BorderWidth = 2,
+                BorderRadius = 25,
                 HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
                 Command = new Command((object obj) => this.Navigation.PushAsync(new StudentRegistration())),
             },
-            new Rectangle(0.5, 0.6, 1.0, 0.1),AbsoluteLayoutFlags.All);
+            new Rectangle(0.5, 0.6, 0.35, 0.15),AbsoluteLayoutFlags.All);
            
             roleChoiceSection.Children.Add(new Button()
             {
                 Text = "Recruiter",
-                FontSize = 20,
+                TextColor = Color.Black,
+				FontSize = 25,
+				BorderColor = Color.DarkSlateBlue,
+				BorderWidth = 2,
+                BorderRadius = 25,
                 HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
+                Command = new Command((object obj) => this.Navigation.PushAsync(new RecruiterRegistration())),
             },
-                                      new Rectangle(0.5, 0.75 , 1.0, 0.1), AbsoluteLayoutFlags.All);
+                                      new Rectangle(0.5, 0.85 , 0.35, 0.15), AbsoluteLayoutFlags.All);
 
 
 
@@ -60,7 +70,7 @@ namespace TMCS_Client
 			{
 			};
 
-			pageContent.Children.Add(lblTitle, new Rectangle(0.5, 0.2, 0.7, 0.3),
+			pageContent.Children.Add(lblTitle, new Rectangle(0.5, 0.1, 0.7, 0.3),
                                      AbsoluteLayoutFlags.All);
             pageContent.Children.Add(roleChoiceSection, new Rectangle(0.5, 1.0, 1.0, 0.7),
                                      AbsoluteLayoutFlags.All);
