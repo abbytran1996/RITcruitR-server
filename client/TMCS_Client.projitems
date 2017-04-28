@@ -9,12 +9,10 @@
     <Import_RootNamespace>TMCS_Client</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
@@ -31,22 +29,26 @@
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Skill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Student.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Login.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StudentRegistration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Login.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentHomepage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentRegistration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml.cs">
       <DependentUpon>RegistrationMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\FormFieldLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\PageTitleLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\FormEntry.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RecruiterRegistration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RecruiterComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewRecruiter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Recruiter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\RecruiterController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)RegistrationMain.xaml">
+    <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </None>
   </ItemGroup>

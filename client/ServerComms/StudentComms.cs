@@ -31,5 +31,12 @@ namespace TMCS_Client.ServerComms {
                 throw new RestException(response.StatusCode);
             }
         }
+
+        public List<Match> getMatchesForStudent(Student student) {
+            var resource = String.Format(Constants.Students.GET_MATCHES_RESORUCE, student.id);
+            var request = new RestRequest();
+
+            return null;
+        }
     }
 }

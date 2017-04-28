@@ -2,7 +2,7 @@
 
 using Xamarin.Forms;
 
-namespace TMCS_Client
+namespace TMCS_Client.UI
 {
     public class Login : ContentPage
     {
