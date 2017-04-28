@@ -323,6 +323,7 @@ namespace TMCS_Client.UI
         private void register()
         {
             String invalidDataMessage = "";
+            //Student loggedInStudent;
 
             if (!emailCheck())
             {
@@ -368,8 +369,8 @@ namespace TMCS_Client.UI
 
                 try
                 {
-                    StudentController.getStudentController().addStudent(newStudent);
-                    Navigation.PushAsync(new StudentHomepage());
+                    /*loggedInStudent = */StudentController.getStudentController().addStudent(newStudent);
+                    Navigation.PushModalAsync(new StudentHomepage());
                 }catch(Exception e){
                     Console.WriteLine(e.ToString());
                 }

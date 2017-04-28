@@ -90,6 +90,7 @@ public class Student {
     // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
     // so their graduation dates are in the future implicitly.
     @Future
+    @NotNull
     public Date getGraduationDate() {
         return graduationDate;
     }
