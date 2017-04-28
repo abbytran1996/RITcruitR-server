@@ -32,7 +32,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Student.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Login.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentHomepage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentRegistration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml.cs">
       <DependentUpon>RegistrationMain.xaml</DependentUpon>
@@ -56,5 +55,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\" />
+    <Folder Include="$(MSBuildThisFileDirectory)UI\" />
   </ItemGroup>
 </Project>
