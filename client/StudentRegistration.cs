@@ -52,12 +52,12 @@ namespace TMCS_Client
         private FormEntry entPhoneNumber;
 
         //Prefered Location
-        private FormFieldLabel lblPreferedLocation;
-        private FormEntry entPreferedLocation;
+        private FormFieldLabel lblPreferredLocationn;
+        private FormEntry entPreferredLocation;
 
         //Prefered Company Size
-        private FormFieldLabel lblPreferedCompanySize;
-		private FormEntry entPreferedCompanySize;
+        private FormFieldLabel lblPreferredCompanySize;
+		private FormEntry entPreferredCompanySize;
 
         //Register Button
         private Button btnRegister;
@@ -253,50 +253,51 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-            entPhoneNumber.Completed += (object sender, EventArgs e) => entPreferedLocation.Focus();
+            entPhoneNumber.Completed += (object sender, EventArgs e) =>entPreferredLocation.Focus();
             entPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => phoneNumberUpdate();
+            entPhoneNumber.Unfocused += (object sender, FocusEventArgs e) => phoneNumberCheck();
 
 			registrationForm.Children.Add(phoneNumberInput,
 										 new Rectangle(0, 480.0, 1.0, 60.0),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Prefered Location
-			AbsoluteLayout preferedLocationInput = new AbsoluteLayout()
+			AbsoluteLayout preferredLocationInput = new AbsoluteLayout()
             {
             };
 
-			preferedLocationInput.Children.Add(lblPreferedLocation =
-									   new FormFieldLabel("What is your prefered work location?"),
+			preferredLocationInput.Children.Add(lblPreferredLocationn =
+									   new FormFieldLabel("What is your preferred work location?"),
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			preferedLocationInput.Children.Add(entPreferedLocation =
-									   new FormEntry("State, State, ...", Keyboard.Text, true), 
+			preferredLocationInput.Children.Add(entPreferredLocation =
+									   new FormEntry("State, State, ...", Keyboard.Text), 
                                        new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			entPreferedLocation.Completed += (object sender, EventArgs e) => entPreferedCompanySize.Focus();
+            entPreferredLocation.Completed += (object sender, EventArgs e) => entPreferredCompanySize.Focus();
 
-			registrationForm.Children.Add(preferedLocationInput,
+			registrationForm.Children.Add(preferredLocationInput,
                                          new Rectangle(0, 540.0, 1.0, 60.0),
                                           AbsoluteLayoutFlags.WidthProportional);
 
 			//Prefered Company Size
-			AbsoluteLayout preferedCompanySizeInput = new AbsoluteLayout()
+			AbsoluteLayout preferredCompanySizeInput = new AbsoluteLayout()
             {
             };
 
-			preferedCompanySizeInput.Children.Add(lblPreferedCompanySize =
-									   new FormFieldLabel("What is your preferec company size?"),
+			preferredCompanySizeInput.Children.Add(lblPreferredCompanySize =
+									   new FormFieldLabel("What is your preferred company size?"),
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			preferedCompanySizeInput.Children.Add(entPreferedCompanySize =
-									   new FormEntry("Size", Keyboard.Text, true),
+			preferredCompanySizeInput.Children.Add(entPreferredCompanySize =
+									   new FormEntry("Size", Keyboard.Text),
 									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-			registrationForm.Children.Add(preferedCompanySizeInput,
+			registrationForm.Children.Add(preferredCompanySizeInput,
 										 new Rectangle(0, 600.0, 1.0, 60.0),
 										  AbsoluteLayoutFlags.WidthProportional);
 
@@ -321,29 +322,60 @@ namespace TMCS_Client
 
         }
 
-        private void register(){
-            /*NewStudent newStudent = NewStudent.createAndValidate(
-                entFirstName.Text,
-                entLastName.Text,
-                entEmail.Text,
-                entSchoolName.Text,
-                entGraduationDate.Text,
-                entPhoneNumber.Text,
-                new List<String>(entPreferedLocation.Text.Replace(" ","").Split(',')),
-                entPreferedCompanySize.Text,
-                entPassword.Text,
-                entRetypePassword.Text
-            );
+        private void register()
+        {
+            String invalidDataMessage = "";
 
-            try
+            if (!emailCheck())
             {
-                //studentController.addStudent(newStudent);
-                Navigation.PopToRootAsync();
-            }catch(Exception e){
-                Console.WriteLine(e.ToString());
-            }*/
+                invalidDataMessage += "Email is not in proper format.\n";
+            }
+			if (!passwordCheck())
+			{
+				invalidDataMessage += "Password does not meet the complexity requirements.\n";
+			}
+			if (!retypePasswordCheck())
+			{
+				invalidDataMessage += "Passwords do not match.\n";
+			}
+			if (!graduationDateCheck())
+			{
+				invalidDataMessage += "Date is not a valid future date.\n";
+			}
+			if (!phoneNumberCheck())
+			{
+				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
+			}
 
-            Navigation.PopToRootAsync();
+            if (invalidDataMessage != "")
+            {
+                this.DisplayAlert("Invalid Data:", invalidDataMessage, "OK");
+            }
+            else
+            {
+                NewStudent newStudent = NewStudent.createAndValidate(
+                    entFirstName.Text,
+                    entLastName.Text,
+                    entEmail.Text,
+                    entSchoolName.Text,
+                    entGraduationDate.Text.Length < 5 ? "0" + entGraduationDate.Text :
+                        entGraduationDate.Text,
+                    entPhoneNumber.Text.Replace("(","").Replace(")","")
+                        .Replace(" ","").Replace("-", ""),
+                    new List<String>(entPreferredLocation.Text.Replace(", ",",").Split(',')),
+                    entPreferredCompanySize.Text,
+                    entPassword.Text,
+                    entRetypePassword.Text
+                );
+
+                try
+                {
+                    studentController.addStudent(newStudent);
+                    Navigation.PopToRootAsync();
+                }catch(Exception e){
+                    Console.WriteLine(e.ToString());
+                }
+            }
         }
 
         private void graduationDateUpdate(){
@@ -366,12 +398,34 @@ namespace TMCS_Client
         }
 
         private void phoneNumberUpdate(){
-            
+            String stripedPhoneNumber =
+                entPhoneNumber.Text.Replace(" ","").Replace("-","")
+                              .Replace("(","").Replace(")", "").Replace(".","");
+
+            String formattedPhoneNumber = "";
+
+            if (stripedPhoneNumber.Length > 0)
+            {
+                formattedPhoneNumber += "(";
+                formattedPhoneNumber += stripedPhoneNumber.Substring(0, Math.Min(3, stripedPhoneNumber.Length));
+            }
+            if (stripedPhoneNumber.Length > 3)
+            {
+                formattedPhoneNumber += ") ";
+                formattedPhoneNumber += stripedPhoneNumber.Substring(3, Math.Min(3, stripedPhoneNumber.Length - 3));
+            }
+            if (stripedPhoneNumber.Length > 6)
+            {
+                formattedPhoneNumber += "-";
+                formattedPhoneNumber += stripedPhoneNumber.Substring(6, Math.Min(4, stripedPhoneNumber.Length - 6));
+            }
+
+            entPhoneNumber.Text = formattedPhoneNumber;
         }
 
         private bool emailCheck(){
             bool result;
-            if(Regex.IsMatch(entEmail.Text, Constants.Emails.STUDENT)){
+            if((entEmail.Text != null) && Regex.IsMatch(entEmail.Text, Constants.Emails.STUDENT)){
                 entEmail.BackgroundColor = Color.PaleGreen;
                 result = true;
             }else{
@@ -383,7 +437,7 @@ namespace TMCS_Client
 
         private bool passwordCheck(){
             bool result;
-            if(Regex.IsMatch(entPassword.Text, Constants.PASSWORD_REGEX)){
+            if((entPassword.Text != null) && Regex.IsMatch(entPassword.Text, Constants.PASSWORD_REGEX)){
                 entPassword.BackgroundColor = Color.PaleGreen;
                 result = true;
             }else{
@@ -395,11 +449,15 @@ namespace TMCS_Client
 
         private bool retypePasswordCheck(){
             bool result;
-            if(entPassword.Text != entRetypePassword.Text){
+            if((entPassword.Text == null ? "" : entPassword.Text) != 
+              (entRetypePassword.Text == null ? "" : entRetypePassword.Text)){
                 entRetypePassword.BackgroundColor = Color.PaleVioletRed;
                 result = false;
-            }else{
+            }else if((entRetypePassword.Text != null) && (entRetypePassword.Text != "")){
                 entRetypePassword.BackgroundColor = Color.PaleGreen;
+                result = true;
+            }else{
+                entRetypePassword.BackgroundColor = Color.White;
                 result = true;
             }
             return result;
@@ -407,27 +465,62 @@ namespace TMCS_Client
 
         private bool graduationDateCheck(){
             bool result;
-
-            String adjustedGraduation = (entGraduationDate.Text.Length < 5 ? 
-                                         "0" + entGraduationDate.Text : 
-                                         entGraduationDate.Text);
+            String adjustedGraduationDate;
             DateTime graduationDate;
 
-            try{
-                graduationDate = DateTime.ParseExact(adjustedGraduation, "MM/yy", null);
+            if ((entGraduationDate.Text == null) || (entGraduationDate.Text.Length < 4))
+			{
+				entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+                result = false;
+            }
+            else
+            {
+                try
+                {
+                    adjustedGraduationDate = (entGraduationDate.Text.Length < 5 ?
+                                             "0" + entGraduationDate.Text :
+                                             entGraduationDate.Text);
 
-                if(((graduationDate.Month >= DateTime.Today.Month) && 
-                    (graduationDate.Year == DateTime.Today.Year)) || 
-                    (graduationDate.Year > DateTime.Today.Year)){
-                    entGraduationDate.BackgroundColor = Color.PaleGreen;
-                result = true;
-                }else{
+                    graduationDate = DateTime.ParseExact(adjustedGraduationDate, "MM/yy", null);
+
+                    if (((graduationDate.Month >= DateTime.Today.Month) &&
+                        (graduationDate.Year == DateTime.Today.Year)) ||
+                        (graduationDate.Year > DateTime.Today.Year))
+                    {
+                        entGraduationDate.BackgroundColor = Color.PaleGreen;
+                        result = true;
+                    }
+                    else
+                    {
+                        entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+                        result = false;
+                    }
+                }
+                catch (FormatException e)
+                {
                     entGraduationDate.BackgroundColor = Color.PaleVioletRed;
                     result = false;
                 }
-            }catch(FormatException e){
-                entGraduationDate.BackgroundColor = Color.PaleVioletRed;
+            }
+            return result;
+        }
+
+        private bool phoneNumberCheck(){
+            bool result;
+
+            if((entPhoneNumber.Text == null) || (entPhoneNumber.Text == ""))
+            {
+                entPhoneNumber.BackgroundColor = Color.White;
+                result = true;
+            }else if(Regex.IsMatch(entPhoneNumber.Text.Replace(" ", "").Replace("(", "")
+                                   .Replace(")", "").Replace("-", ""), "[0-9]{10}"))
+            {
+                result = true;
+                entPhoneNumber.BackgroundColor = Color.PaleGreen;
+            }else
+            {
                 result = false;
+                entPhoneNumber.BackgroundColor = Color.PaleVioletRed;
             }
 
             return result;
