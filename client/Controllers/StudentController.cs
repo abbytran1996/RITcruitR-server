@@ -29,8 +29,8 @@ namespace TMCS_Client.Controllers {
         /// Adds a new student to the server
         /// </summary>
         /// <param name="student">The student to add</param>
-        public void addStudent(NewStudent student) {
-            studentComms.addStudent(student);
+        public void addStudent(NewStudent newStudent) {
+            studentComms.addStudent(newStudent);
         }
     }
 }

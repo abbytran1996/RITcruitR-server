@@ -369,8 +369,11 @@ namespace TMCS_Client.UI
 
                 try
                 {
-                    /*loggedInStudent = */StudentController.getStudentController().addStudent(newStudent);
-                    Navigation.PushModalAsync(new StudentHomepage());
+                    //loggedInStudent = StudentController.getStudentController().addStudent(newStudent);
+                    Login.getLoginPage().updateLoginStatusMessage(
+                        Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
+                    Navigation.PopToRootAsync();
+                    //Navigation.PushAsync(new StudentHomepage());
                 }catch(Exception e){
                     Console.WriteLine(e.ToString());
                 }
@@ -425,10 +428,10 @@ namespace TMCS_Client.UI
         private bool emailCheck(){
             bool result;
             if((entEmail.Text != null) && Regex.IsMatch(entEmail.Text, Constants.Emails.STUDENT)){
-                entEmail.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
+                entEmail.BackgroundColor = Constants.Forms.Colors.SUCCESS;
                 result = true;
             }else{
-                entEmail.BackgroundColor = Constants.Forms.Colors.PALE_RED;
+                entEmail.BackgroundColor = Constants.Forms.Colors.FAILURE;
                 result = false;
             }
             return result;
@@ -437,10 +440,10 @@ namespace TMCS_Client.UI
         private bool passwordCheck(){
             bool result;
             if((entPassword.Text != null) && Regex.IsMatch(entPassword.Text, Constants.PASSWORD_REGEX)){
-                entPassword.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
+                entPassword.BackgroundColor = Constants.Forms.Colors.SUCCESS;
                 result = true;
             }else{
-                entPassword.BackgroundColor = Constants.Forms.Colors.PALE_RED;
+                entPassword.BackgroundColor = Constants.Forms.Colors.FAILURE;
                 result = false;
             }
             return result;
@@ -450,10 +453,10 @@ namespace TMCS_Client.UI
             bool result;
             if((entPassword.Text == null ? "" : entPassword.Text) != 
               (entRetypePassword.Text == null ? "" : entRetypePassword.Text)){
-                entRetypePassword.BackgroundColor = Constants.Forms.Colors.PALE_RED;
+                entRetypePassword.BackgroundColor = Constants.Forms.Colors.FAILURE;
                 result = false;
             }else if((entRetypePassword.Text != null) && (entRetypePassword.Text != "")){
-                entRetypePassword.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
+                entRetypePassword.BackgroundColor = Constants.Forms.Colors.SUCCESS;
                 result = true;
             }else{
                 entRetypePassword.BackgroundColor = Color.White;
@@ -469,7 +472,7 @@ namespace TMCS_Client.UI
 
             if ((entGraduationDate.Text == null) || (entGraduationDate.Text.Length < 4))
 			{
-				entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_RED;
+				entGraduationDate.BackgroundColor = Constants.Forms.Colors.FAILURE;
                 result = false;
             }
             else
@@ -486,18 +489,18 @@ namespace TMCS_Client.UI
                         (graduationDate.Year == DateTime.Today.Year)) ||
                         (graduationDate.Year > DateTime.Today.Year))
                     {
-                        entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
+                        entGraduationDate.BackgroundColor = Constants.Forms.Colors.SUCCESS;
                         result = true;
                     }
                     else
                     {
-                        entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_RED;
+                        entGraduationDate.BackgroundColor = Constants.Forms.Colors.FAILURE;
                         result = false;
                     }
                 }
                 catch (FormatException e)
                 {
-                    entGraduationDate.BackgroundColor = Constants.Forms.Colors.PALE_RED;
+                    entGraduationDate.BackgroundColor = Constants.Forms.Colors.FAILURE;
                     result = false;
                 }
             }
@@ -515,11 +518,11 @@ namespace TMCS_Client.UI
                                    .Replace(")", "").Replace("-", ""), "[0-9]{10}"))
             {
                 result = true;
-                entPhoneNumber.BackgroundColor = Constants.Forms.Colors.PALE_GREEN;
+                entPhoneNumber.BackgroundColor = Constants.Forms.Colors.SUCCESS;
             }else
             {
                 result = false;
-                entPhoneNumber.BackgroundColor = Constants.Forms.Colors.PALE_RED;
+                entPhoneNumber.BackgroundColor = Constants.Forms.Colors.FAILURE;
             }
 
             return result;
