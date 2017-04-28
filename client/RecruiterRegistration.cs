@@ -64,8 +64,15 @@ namespace TMCS_Client
 		//Register Button
 		private Button btnRegister;
 
+#if __IOS__
+		const double ROW_HEIGHT = 60.0;
+#endif
+#if __ANDROID__
+        const double ROW_HEIGHT = 80.0;
+#endif
+
 		//Util
-        RecruiterController recruiterController = new RecruiterController();
+		RecruiterController recruiterController = new RecruiterController();
 
 		public RecruiterRegistration()
 		{
