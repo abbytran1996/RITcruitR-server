@@ -51,6 +51,7 @@ namespace TMCS_Client
 		private FormFieldLabel lblLocation;
 		private FormEntry txtLocation;
 
+        /*
         //New Company* Description
         private FormFieldLabel lblCompanyDescription;
         private Editor txtCompanyDescription;
@@ -58,6 +59,7 @@ namespace TMCS_Client
         //Company Size
         private FormFieldLabel lblCompanySize;
         private FormEntry txtCompanySize;
+        */
 
 		//Register Button
 		private Button btnRegister;
@@ -234,7 +236,7 @@ namespace TMCS_Client
 									   AbsoluteLayoutFlags.All);
 
 			txtPhoneNumber.Completed += (object sender, EventArgs e) => txtLocation.Focus();
-			txtPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => phoneNumberUpdate();
+			txtPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => PhoneNumberUpdate();
 
 			registrationForm.Children.Add(phoneNumberInput,
 										 new Rectangle(0, 420.0, 1.0, 60.0),
@@ -255,7 +257,6 @@ namespace TMCS_Client
 									   new Rectangle(0.5, 1.0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			txtLocation.Completed += (object sender, EventArgs e) => txtCompanySize.Focus();
 
 			registrationForm.Children.Add(LocationInput,
 										 new Rectangle(0, 480.0, 1.0, 60.0),
@@ -285,34 +286,55 @@ namespace TMCS_Client
 
 		private void register()
 		{
-			/*NewRecruiter newRecruiter = NewRecruiter.createAndValidate(
-                txtFirstName.Text,
-                txtLastName.Text,
-                txtEmail.Text,
-                txtSchoolName.Text,
-                txtGraduationDate.Text,
-                txtPhoneNumber.Text,
-                new List<String>(txtPreferedLocation.Text.Replace(" ","").Split(',')),
-                txtPreferedCompanySize.Text,
-                txtPassword.Text,
-                txtRetypePassword.Text
-            );
+			String invalidDataMessage = "";
 
-            try
-            {
-                //recruiterController.addRecruiter(newRecruiter);
-                Navigation.PopToRootAsync();
-            }catch(Exception e){
-                Console.WriteLine(e.ToString());
-            }*/
+			if (!emailCheck())
+			{
+				invalidDataMessage += "Email is not in proper format.\n";
+			}
+			if (!passwordCheck())
+			{
+				invalidDataMessage += "Password does not meet the complexity requirements.\n";
+			}
+			if (!retypePasswordCheck())
+			{
+				invalidDataMessage += "Passwords do not match.\n";
+			}
+			if (!phoneNumberCheck())
+			{
+				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
+			}
 
-			Navigation.PopToRootAsync();
+			if (invalidDataMessage != "")
+			{
+				this.DisplayAlert("Invalid Data:", invalidDataMessage, "OK");
+			}
+			else
+			{
+                NewRecruiter newRecruiter = NewRecruiter.CreateAndValidate(
+					txtFirstName.Text,
+					txtLastName.Text,
+					txtCompanyEmail.Text,
+					txtCompanyName.Text,
+					txtPhoneNumber.Text.Replace("(", "").Replace(")", "")
+						.Replace(" ", "").Replace("-", ""),
+                    txtLocation.Text.Replace(", ", ",").Split(',').ToString(),
+                    txtPassword.Text,
+                    txtRetypePassword.Text
+				);
+
+				try
+				{
+                    recruiterController.addRecruiter(newRecruiter);
+					Navigation.PopToRootAsync();
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.ToString());
+				}
+			}
 		}
 
-		private void phoneNumberUpdate()
-		{
-
-		}
 
 		private bool emailCheck()
 		{
@@ -329,6 +351,34 @@ namespace TMCS_Client
 			}
 			return result;
 		}
+
+		private void PhoneNumberUpdate()
+		{
+			String stripedPhoneNumber =
+				txtPhoneNumber.Text.Replace(" ", "").Replace("-", "")
+							  .Replace("(", "").Replace(")", "").Replace(".", "");
+
+			String formattedPhoneNumber = "";
+
+			if (stripedPhoneNumber.Length > 0)
+			{
+				formattedPhoneNumber += "(";
+				formattedPhoneNumber += stripedPhoneNumber.Substring(0, Math.Min(3, stripedPhoneNumber.Length));
+			}
+			if (stripedPhoneNumber.Length > 3)
+			{
+				formattedPhoneNumber += ") ";
+				formattedPhoneNumber += stripedPhoneNumber.Substring(3, Math.Min(3, stripedPhoneNumber.Length - 3));
+			}
+			if (stripedPhoneNumber.Length > 6)
+			{
+				formattedPhoneNumber += "-";
+				formattedPhoneNumber += stripedPhoneNumber.Substring(6, Math.Min(4, stripedPhoneNumber.Length - 6));
+			}
+
+			txtPhoneNumber.Text = formattedPhoneNumber;
+		}
+
 
 		private bool passwordCheck()
 		{
@@ -349,16 +399,47 @@ namespace TMCS_Client
 		private bool retypePasswordCheck()
 		{
 			bool result;
-			if (txtPassword.Text != txtRetypePassword.Text)
+			if ((txtPassword.Text == null ? "" : txtPassword.Text) !=
+			  (txtRetypePassword.Text == null ? "" : txtRetypePassword.Text))
 			{
 				txtRetypePassword.BackgroundColor = Color.PaleVioletRed;
 				result = false;
 			}
-			else
+			else if ((txtRetypePassword.Text != null) && (txtRetypePassword.Text != ""))
 			{
 				txtRetypePassword.BackgroundColor = Color.PaleGreen;
 				result = true;
 			}
+			else
+			{
+				txtRetypePassword.BackgroundColor = Color.White;
+				result = true;
+			}
+			return result;
+		}
+
+
+		private bool phoneNumberCheck()
+		{
+			bool result;
+
+			if ((txtPhoneNumber.Text == null) || (txtPhoneNumber.Text == ""))
+			{
+				txtPhoneNumber.BackgroundColor = Color.White;
+				result = true;
+			}
+			else if (Regex.IsMatch(txtPhoneNumber.Text.Replace(" ", "").Replace("(", "")
+								  .Replace(")", "").Replace("-", ""), "[0-9]{10}"))
+			{
+				result = true;
+				txtPhoneNumber.BackgroundColor = Color.PaleGreen;
+			}
+			else
+			{
+				result = false;
+				txtPhoneNumber.BackgroundColor = Color.PaleVioletRed;
+			}
+
 			return result;
 		}
 	}
