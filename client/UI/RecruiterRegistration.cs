@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMCS_Client.DTOs;
@@ -64,7 +64,6 @@ namespace TMCS_Client.UI
 		//Register Button
 		private Button btnRegister;
 
-<<<<<<< HEAD
 #if __IOS__
 		const double ROW_HEIGHT = 60.0;
 #endif
@@ -75,8 +74,6 @@ namespace TMCS_Client.UI
 		//Util
 		RecruiterController recruiterController = new RecruiterController();
 
-=======
->>>>>>> 2ccdb188dea58182a1905296c9ef61a6143313d9
 		public RecruiterRegistration()
 		{
 			//Whole page
