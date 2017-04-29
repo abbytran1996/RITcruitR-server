@@ -7,7 +7,9 @@ namespace TMCS_Client.UI
 {
     public partial class RegistrationMain : ContentPage
     {
-        public RegistrationMain()
+        private static RegistrationMain registrationMainPage = null;
+
+        private RegistrationMain()
         {
             
 			Label lblTitle = new Label()
@@ -76,6 +78,14 @@ namespace TMCS_Client.UI
                                      AbsoluteLayoutFlags.All);
 
             Content = pageContent;
+        }
+
+        public static RegistrationMain getRegistrationMainPage(){
+            if(registrationMainPage == null){
+                registrationMainPage = new RegistrationMain();
+            }
+
+            return registrationMainPage;
         }
     }
 }

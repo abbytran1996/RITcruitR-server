@@ -1,4 +1,6 @@
 ﻿using System;
+using TMCS_Client;
+using TMCS_Client.CustomUIElements.Labels;
 
 using Xamarin.Forms;
 
@@ -6,7 +8,11 @@ namespace TMCS_Client.UI
 {
     public class Login : ContentPage
     {
-        public Login()
+        private static Login loginPage = null;
+
+        private AbsoluteLayout sectionLogin = null;
+
+        private Login()
         {
             Label lblTitle = new Label
             {
@@ -16,7 +22,7 @@ namespace TMCS_Client.UI
                 HorizontalTextAlignment = TextAlignment.Center,
             };
 
-            AbsoluteLayout sectionLogin = new AbsoluteLayout()
+            sectionLogin = new AbsoluteLayout()
             {
             };
 
@@ -32,6 +38,7 @@ namespace TMCS_Client.UI
                 IsPassword = true,
 			},
 									  new Rectangle(0.5, 0.4, 0.8, 0.15), AbsoluteLayoutFlags.All);
+            
             sectionLogin.Children.Add(new Button()
             {
                 Text = "Login",
@@ -40,6 +47,11 @@ namespace TMCS_Client.UI
                 BackgroundColor = Color.Blue,
 			},
 									  new Rectangle(0.5, 0.6, 0.6, 0.15), AbsoluteLayoutFlags.All);
+
+            //THIS MUST GO IN LAST
+			sectionLogin.Children.Add(Constants.Forms.LoginStatusMessage.EMPTY,
+									 new Rectangle(0.5, 0, 0.8, 0.15),
+									 AbsoluteLayoutFlags.All);
 
             AbsoluteLayout sectionRegister = new AbsoluteLayout()
             {
@@ -59,7 +71,7 @@ namespace TMCS_Client.UI
                 TextColor = Color.Blue,
                 BorderColor = Color.Blue,
                 BorderWidth = 2,
-                Command = new Command((object obj) => this.Navigation.PushAsync(new RegistrationMain())),
+                Command = new Command((object obj) => this.Navigation.PushAsync(RegistrationMain.getRegistrationMainPage())),
 			},
 										new Rectangle(0.5, 0.15, 0.25, 0.2),
 										AbsoluteLayoutFlags.All);
@@ -76,6 +88,21 @@ namespace TMCS_Client.UI
                                       AbsoluteLayoutFlags.All);
 
             Content = pageContent;
+        }
+
+        public static Login getLoginPage(){
+            if(loginPage == null){
+                loginPage = new Login();
+            }
+
+            return loginPage;
+        }
+
+        public void updateLoginStatusMessage(Entry newLoginStatusMessage){
+            sectionLogin.Children.RemoveAt(sectionLogin.Children.Count - 1);
+            sectionLogin.Children.Add(newLoginStatusMessage,
+                                     new Rectangle(0.5,0,0.8,0.15),
+                                     AbsoluteLayoutFlags.All);
         }
     }
 }

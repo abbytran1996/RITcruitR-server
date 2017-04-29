@@ -9,9 +9,23 @@ namespace TMCS_Client.Controllers
 /// A controller to interact with companies
 /// </summary>
 {
-	class CompanyController
+	public class CompanyController
 	{
+        private static CompanyController companyController = null;
 		private CompanyComms companyComms = new CompanyComms();
+
+        private CompanyController(){
+            
+        }
+
+        public static CompanyController getCompanyController(){
+            if (companyController == null){
+                companyController = new CompanyController();
+            }
+
+            return companyController;
+        }
+
 		/// <summary>
 		/// Adds a new company to the server
 		/// </summary>

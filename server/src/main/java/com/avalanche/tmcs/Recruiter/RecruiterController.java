@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.Recruiter;
 
+import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
@@ -41,7 +42,7 @@ public class RecruiterController {
     public ResponseEntity<String> registerRecruiter(@RequestBody NewRecruiter newRecruiter){
         User newUser = new User(newRecruiter.eMail,newRecruiter.password);
         Recruiter newguy = new Recruiter(newRecruiter);
-        userService.save(newUser, UserService.RoleName.Recruiter);
+        userService.save(newUser, Role.RoleName.Recruiter);
         recruiterRepo.save(newguy);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

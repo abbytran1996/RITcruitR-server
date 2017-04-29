@@ -9,7 +9,7 @@ namespace TMCS_Client.DTOs
 /// </summary>
 {
 	
-	class Company
+	public class Company
 	{
 		public string companyName { get; set; }
 		public string email { get; set; }
