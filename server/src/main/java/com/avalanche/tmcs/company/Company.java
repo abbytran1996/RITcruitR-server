@@ -15,6 +15,14 @@ import java.util.List;
  */
 @Entity
 public class Company {
+    public enum Size {
+        DONT_CARE,
+        STARTUP,
+        SMALL,
+        MEDIUM,
+        LARGE,
+        HUGE,
+    }
 
     private long id;
 

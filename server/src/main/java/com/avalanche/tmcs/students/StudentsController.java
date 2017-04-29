@@ -53,7 +53,7 @@ public class StudentsController {
     public ResponseEntity<String> addStudent(@RequestBody NewStudent newStudent) {
         User newUser = new User(newStudent.getEmail(), newStudent.getPassword(), newStudent.getPasswordConfirm());
 
-        userService.save(newUser, UserService.RoleName.Student);
+        newUser = userService.save(newUser, Role.RoleName.Student);
         if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
             newStudent.setUser(newUser);
             newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));

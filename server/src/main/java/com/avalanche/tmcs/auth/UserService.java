@@ -10,12 +10,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
-    public enum RoleName {
-        Student,
-        Recruiter,
-        Administrator
-    }
-
     private UserDAO userDAO;
 
     private RoleDAO roleDAO;
@@ -29,7 +23,7 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public void save(User user, RoleName roleName) {
+    public User save(User user, Role.RoleName roleName) {
         if(userDAO.findByUsername(user.getUsername()) != null) {
             throw new RegistrationException("Username already taken");
         }
@@ -37,7 +31,7 @@ public class UserService {
         Role studentRole = roleDAO.findByName(roleName.name().toLowerCase());
         user.addRole(studentRole);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userDAO.save(user);
+        return userDAO.save(user);
     }
 
     public User findByUsername(String username) {
