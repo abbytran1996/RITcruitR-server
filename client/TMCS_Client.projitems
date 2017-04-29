@@ -51,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\FormSearchBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormSearchResultsListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\SubSectionTitleLabel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
