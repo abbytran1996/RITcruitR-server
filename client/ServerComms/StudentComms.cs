@@ -20,13 +20,14 @@ namespace TMCS_Client.ServerComms {
         /// <summary>
         /// Adds the student to the server
         /// </summary>
-        /// <param name="student"></param>
+        /// <param name="newStudent"></param>
         /// <returns>The status of the response</returns>
         /// <exception cref="RestException">Throws a RestException when the server doesn't return a success</exception>
-        public void addStudent(NewStudent student) {
+        public void addStudent(NewStudent newStudent) {
             var request = new RestRequest(Constants.Students.ADD_STUDENT_RESOURCE, Method.POST);
+
             request.RequestFormat = DataFormat.Json;
-            request.AddBody(student);
+            request.AddBody(newStudent);
 
             var response = client.Execute(request);
             ensureStatusCode(response, HttpStatusCode.Created);

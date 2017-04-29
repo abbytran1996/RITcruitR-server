@@ -16,24 +16,24 @@ namespace TMCS_Client
 #if __IOS__
         public static string SERVER_URL { get { return "http://127.0.0.1:8080"; } }
 #endif
-        public class Students
+        public static class Students
         {
             public static string ADD_STUDENT_RESOURCE { get { return "/students"; } }
             public static string GET_MATCHES_RESORUCE { get { return "/students/{0}/matches"; } }
         }
-        public class Recruiters
+        public static class Recruiters
         {
             public static string ADD_RECRUITER_RESOURCE { get { return "/recruiters"; } }
         }
-        public class Company
+        public static class Company
         {
             public static string ADD_COMPANY_RESOURCE { get { return "/company"; } }
         }
-        public class Skill
+        public static class Skill
         {
             public static string GET_SKILL_RESOURCE { get { return "/skills"; } }
         }
-        public class JobPosting
+        public static class JobPosting
         {
             public static string ADD_JOB_POSTING_RESOURCE { get { return "/jobposting/create"; } }
             public static string DELETE_JOB_POSTING_RESOURCE { get { return "/jobposting/delete/{id}"; } }
@@ -52,8 +52,8 @@ namespace TMCS_Client
         {
             public static class Colors
             {
-                public static Color PALE_GREEN { get { return new Color(0.75, 1.0, 0.75); } }
-                public static Color PALE_RED { get { return new Color(1.0, 0.75, 0.75); } }
+                public static Color SUCCESS { get { return new Color(0.75, 1.0, 0.75); } }
+                public static Color FAILURE { get { return new Color(1.0, 0.75, 0.75); } }
             }
 
             public static class Sizes
@@ -65,6 +65,34 @@ namespace TMCS_Client
                 public static double ROW_HEIGHT{ get { return 80.0; } }
 #endif
 			}
+
+            public static class LoginStatusMessage{
+                public static Entry EMPTY = new Entry()
+                {
+                    IsEnabled = false,
+                    IsVisible = false,
+                };
+
+                public static Entry REGISTRATION_COMPLETE = new Entry()
+                {
+                    IsEnabled = false,
+                    IsVisible = true,
+                    Text = "Registration sucessfully completed.",
+                    BackgroundColor = Colors.SUCCESS,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    FontSize = 14.0,
+                };
+
+                public static Entry USERNAME_OR_PASSWORD_INVALID = new Entry()
+                {
+                    IsEnabled = false,
+                    IsVisible = true,
+                    Text = "Username and/or password was incorrect.",
+                    BackgroundColor = Colors.FAILURE,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    FontSize = 14.0,
+				};
+            }
         }
     }
 }

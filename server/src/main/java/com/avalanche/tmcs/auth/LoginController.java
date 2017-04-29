@@ -23,7 +23,7 @@ public class LoginController {
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody User user) {
-        if(securityService.login(user.getPassword(), user.getPassword())) {
+        if(securityService.login(user.getUsername(), user.getPassword())) {
             return ResponseEntity.ok().build();
         }
 
