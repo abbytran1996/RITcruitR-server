@@ -42,8 +42,6 @@ public class Company {
 
     private String companyDescription;
 
-    private List<JobPosting> jobPostings;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
@@ -108,16 +106,6 @@ public class Company {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @OneToMany
-    @JoinTable(name = "company_jobPostings", joinColumns = @JoinColumn(name = "company_id"), inverseJoinColumns = @JoinColumn(name = "jobPosting_id"))
-    public List<JobPosting> getJobPostings() {
-        return jobPostings;
-    }
-
-    public void setJobPostings(List<JobPosting> jobPostings) {
-        this.jobPostings = jobPostings;
     }
 }
 

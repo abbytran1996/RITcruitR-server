@@ -3,7 +3,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Text;
 using TMCS_Client.DTOs;
-                
+using TMCS_Client.UI;
 
 namespace TMCS_Client.ServerComms
 {
@@ -12,7 +12,7 @@ namespace TMCS_Client.ServerComms
 	/// </summary>
 	class CompanyComms
 	{
-		RestClient client = new RestClient(Constants.SERVER_URL);
+        RestClient client = (App.Current as App).Server;
 		/// <summary>
 		/// Adds the company to the server
 		/// </summary>

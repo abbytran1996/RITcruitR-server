@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TMCS_Client.DTOs;
+using TMCS_Client.UI;
 
 namespace TMCS_Client.ServerComms {
     /// <summary>
@@ -10,7 +11,7 @@ namespace TMCS_Client.ServerComms {
     /// </summary>
     /// This class is not thread safe
     class RecruiterComms {
-        RestClient client = new RestClient(Constants.SERVER_URL);
+        RestClient client = (App.Current as App).Server;
 
         /// <summary>
         /// Adds the recruiter to the server
