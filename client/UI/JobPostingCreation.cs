@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using TMCS_Client.DTOs;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
@@ -42,7 +43,7 @@ namespace TMCS_Client.UI
 		FormSearchBar<Skill> skillsSearchBar;
         FormSearchResultsListView<Skill> skillsSearchResults;
         FormFieldLabel lblChosenRequiredSkills;
-        FormListView requiredSkills;
+        FormListView<Skill> requiredSkills;
 
         //Recommended Skills
 
@@ -101,9 +102,8 @@ namespace TMCS_Client.UI
 
             };
 
-            requiredSkills = new FormListView()
-            {
-                SeparatorVisibility = SeparatorVisibility.None,
+            requiredSkills = new FormListView<Skill>(new ObservableCollection<Skill>(new Skill[]{Skill.NullSkill,})){
+                
             };
 
             requiredSkillsSection.Children.Add(lblRequiredSkills,

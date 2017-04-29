@@ -49,13 +49,7 @@ namespace TMCS_Client.CustomUIElements.ListViews
                 VerticalTextAlignment = TextAlignment.Center,
             };
 
-            searchResultLabel.SetBinding(Label.TextProperty, "name");
-
-            cellLayout.Children.Add(searchResultLabel,
-                                   new Rectangle(0.5, 0.0, 0.9, 1.0),
-                                   AbsoluteLayoutFlags.All);
-
-            cellLayout.Children.Add(new Button()
+            Button addSearchResult = new Button()
             {
                 BorderColor = Color.White,
                 BorderWidth = 0.0,
@@ -66,7 +60,15 @@ namespace TMCS_Client.CustomUIElements.ListViews
 #elif __ANDROID__
                 Image = "add.png",
 #endif
-			},new Rectangle(1.0,0.5,Constants.Forms.Sizes.ROW_HEIGHT * (2.0 / 3.0),
+            };
+
+            searchResultLabel.SetBinding(Label.TextProperty, "name");
+
+            cellLayout.Children.Add(searchResultLabel,
+                                   new Rectangle(0.5, 0.0, 0.9, 1.0),
+                                   AbsoluteLayoutFlags.All);
+
+            cellLayout.Children.Add(addSearchResult,new Rectangle(1.0,0.5,Constants.Forms.Sizes.ROW_HEIGHT * (2.0 / 3.0),
                            Constants.Forms.Sizes.ROW_HEIGHT * (2.0 / 3.0)),
                                    AbsoluteLayoutFlags.PositionProportional);
 
