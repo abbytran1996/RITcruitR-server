@@ -93,7 +93,7 @@ public class JobPosting {
     }
 
     @NotNull
-    public long getMinMatchedRequiredSkills() {
+    public int getMinMatchedRequiredSkills() {
         return minMatchedRequiredSkills;
     }
 
