@@ -96,13 +96,13 @@ public class DataLoader implements ApplicationRunner {
         skills.clear();
         savedSkills.forEach(skills::add);
 
-        User user = new User("karl_marx@gmail.com", "pr0lehero!", "pr0lehero!");
+        User user = new User("karl_marx@gmail.edu", "pr0lehero!", "pr0lehero!");
         user = userService.save(user, Role.RoleName.Student);
 
         Student newStudent = new Student();
         newStudent.setFirstName("Karl");
         newStudent.setLastName("Marx");
-        newStudent.setEmail("karl_marx@gmail.edu");
+        newStudent.setEmail(user.getUsername());
         newStudent.setGraduationDate(new Date(2018, 5, 1));
         newStudent.setUser(user);
         newStudent.setPreferredCompanySize(Company.Size.LARGE);
