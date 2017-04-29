@@ -29,7 +29,31 @@ namespace TMCS_Client.UI {
         private void loadMatches() {
             var student = app.CurrentStudent;
             var matches = studentController.getMatchesForStudent(student);
-            matchesList.ItemsSource = matches;
+            matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
+
+            var postings = matches.Where(match => match.matchStrength > 0.1)
+                                  .Select(match => match.jobPosting);
+            matchesList.ItemsSource = postings;
+        }
+
+        class MatchCell : ViewCell {
+            public MatchCell() {
+                StackLayout layout = new StackLayout();
+
+                Label title = new Label();
+                Label company = new Label();
+                Label location = new Label();
+
+                title.SetBinding(Label.TextProperty, "positionTitle");
+                company.SetBinding(Label.TextProperty, "company.companyName");
+                location.SetBinding(Label.TextProperty, "location");
+
+                layout.Children.Add(title);
+                layout.Children.Add(company);
+                layout.Children.Add(location);
+
+                View = layout;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.job_posting;
 
 
+import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
@@ -41,6 +42,8 @@ public class JobPosting {
     private String problemStatement;
 
     private String url;
+
+    private Company company;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -151,6 +154,16 @@ public class JobPosting {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @NotNull
+    @ManyToOne
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
 }

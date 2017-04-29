@@ -1,10 +1,13 @@
 package com.avalanche.tmcs.company;
 
 import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.job_posting.JobPosting;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Zane Grasso
@@ -30,6 +33,8 @@ public class Company {
     private File presentation;
 
     private String companyDescription;
+
+    private List<JobPosting> jobPostings;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -97,6 +102,14 @@ public class Company {
         this.user = user;
     }
 
+    @OneToMany
+    @JoinTable(name = "company_jobPostings", joinColumns = @JoinColumn(name = "company_id"), inverseJoinColumns = @JoinColumn(name = "jobPosting_id"))
+    public List<JobPosting> getJobPostings() {
+        return jobPostings;
+    }
 
+    public void setJobPostings(List<JobPosting> jobPostings) {
+        this.jobPostings = jobPostings;
+    }
 }
 
