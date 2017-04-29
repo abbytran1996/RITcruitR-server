@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -12,6 +12,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\App.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\ServerController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
@@ -20,8 +21,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\ServerCommsBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\SkillsComms.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\StudentComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\JobPosting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewCompany.cs" />
