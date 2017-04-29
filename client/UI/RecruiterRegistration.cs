@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMCS_Client.DTOs;
@@ -64,6 +64,13 @@ namespace TMCS_Client.UI
 		//Register Button
 		private Button btnRegister;
 
+#if __IOS__
+		const double ROW_HEIGHT = 60.0;
+#endif
+#if __ANDROID__
+        const double ROW_HEIGHT = 80.0;
+#endif
+
 		public RecruiterRegistration()
 		{
 			//Whole page
@@ -74,7 +81,7 @@ namespace TMCS_Client.UI
 
 			registrationForm = new AbsoluteLayout()
 			{
-				HeightRequest = (60.0 * 10.0),
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 11.0),
 			};
 
 
@@ -103,7 +110,8 @@ namespace TMCS_Client.UI
 			txtFirstName.Completed += (object sender, EventArgs e) => txtLastName.Focus();
 
 			registrationForm.Children.Add(firstNameInput,
-										 new Rectangle(0, 60.0, 1.0, 60.0),
+										 new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT, 1.0,
+                                                      Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Last Name
@@ -124,7 +132,7 @@ namespace TMCS_Client.UI
             txtLastName.Completed += (object sender, EventArgs e) => txtCompanyEmail.Focus();
 
 			registrationForm.Children.Add(lastNameInput,
-										 new Rectangle(0, 120.0, 1.0, 60.0),
+										 new Rectangle(0, 2.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Email
@@ -146,7 +154,7 @@ namespace TMCS_Client.UI
 			txtCompanyEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
 
 			registrationForm.Children.Add(emailInput,
-										 new Rectangle(0, 180.0, 1.0, 60.0),
+										 new Rectangle(0, 3.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Password
@@ -168,7 +176,7 @@ namespace TMCS_Client.UI
 			txtPassword.Unfocused += (object sender, FocusEventArgs e) => passwordCheck();
 
 			registrationForm.Children.Add(passwordInput,
-										 new Rectangle(0, 240.0, 1.0, 60.0),
+										 new Rectangle(0, 4.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Retype Password
@@ -190,7 +198,7 @@ namespace TMCS_Client.UI
 			txtRetypePassword.Unfocused += (object sender, FocusEventArgs e) => retypePasswordCheck();
 
 			registrationForm.Children.Add(retypePasswordInput,
-										 new Rectangle(0, 300.0, 1.0, 60.0),
+										 new Rectangle(0, 5.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Company Name
@@ -211,7 +219,7 @@ namespace TMCS_Client.UI
 			txtCompanyName.Completed += (object sender, EventArgs e) => txtPhoneNumber.Focus();
 
 			registrationForm.Children.Add(companyNameInput,
-										 new Rectangle(0, 360.0, 1.0, 60.0),
+										 new Rectangle(0, 6.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 
@@ -236,7 +244,7 @@ namespace TMCS_Client.UI
 			txtPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => PhoneNumberUpdate();
 
 			registrationForm.Children.Add(phoneNumberInput,
-										 new Rectangle(0, 420.0, 1.0, 60.0),
+										 new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 			//Prefered Location
@@ -256,7 +264,7 @@ namespace TMCS_Client.UI
 
 
 			registrationForm.Children.Add(LocationInput,
-										 new Rectangle(0, 480.0, 1.0, 60.0),
+										 new Rectangle(0, 8.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
             //Company Description
 
@@ -271,7 +279,7 @@ namespace TMCS_Client.UI
 			};
 
 			registrationForm.Children.Add(btnRegister,
-										 new Rectangle(0.5, 570.0, 0.8, 30),
+										 new Rectangle(0.5, 9 * Constants.Forms.Sizes.ROW_HEIGHT + 20, 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
 										  AbsoluteLayoutFlags.WidthProportional |
 										 AbsoluteLayoutFlags.XProportional);
 
@@ -301,11 +309,6 @@ namespace TMCS_Client.UI
 			{
 				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
 			}
-
-			if (invalidDataMessage != "")
-			{
-				this.DisplayAlert("Invalid Data:", invalidDataMessage, "OK");
-			}
 			else
 			{
                 NewRecruiter newRecruiter = NewRecruiter.CreateAndValidate(
@@ -323,6 +326,7 @@ namespace TMCS_Client.UI
 				try
 				{
                     RecruiterController.getRecruiterController().addRecruiter(newRecruiter);
+                    Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
 					Navigation.PopToRootAsync();
 				}
 				catch (Exception e)
