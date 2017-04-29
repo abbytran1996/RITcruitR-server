@@ -46,6 +46,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterRegistration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\JobPostingCreation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\FormEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\FormSearchBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormSearchResultsListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormListView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
@@ -57,5 +62,8 @@
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\" />
   </ItemGroup>
 </Project>

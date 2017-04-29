@@ -4,5 +4,10 @@ namespace TMCS_Client.DTOs
     public class Skill
     {
         public string name { get; set; }
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }
