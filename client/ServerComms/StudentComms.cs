@@ -6,16 +6,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using TMCS_Client.DTOs;
+using TMCS_Client.UI;
 
 namespace TMCS_Client.ServerComms {
     /// <summary>
     /// Allows someone to interact with the server's Student API
     /// </summary>
     /// This class is not thread safe
-    public class StudentComms {
-        private RestClient client = new RestClient(Constants.SERVER_URL);
-
-        private JsonDeserializer deserialiser = new JsonDeserializer();
+    public class StudentComms : ServerCommsBase {
 
         /// <summary>
         /// Adds the student to the server
@@ -42,19 +40,12 @@ namespace TMCS_Client.ServerComms {
             var resource = String.Format(Constants.Students.GET_MATCHES_RESORUCE, student.id);
             var request = new RestRequest(resource, Method.GET);
 
-            var response = client.Execute(request);
+            var response = client.Execute<List<Match>>(request);
             ensureStatusCode(response, HttpStatusCode.OK);
-            
-            return deserialiser.Deserialize<List<Match>>(response);
+
+            return response.Data;
         }
 
-        private void ensureStatusCode(IRestResponse response, HttpStatusCode code) {
-            if(response.StatusCode != code) {
-                if(response.ErrorException != null) {
-                    throw response.ErrorException;
-                }
-                throw new RestException(response.StatusCode);
-            }
-        }
+        
     }
 }

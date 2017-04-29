@@ -8,6 +8,7 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
+import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.students.Student;
@@ -21,12 +22,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,10 +42,11 @@ public class DataLoader implements ApplicationRunner {
     private StudentDAO studentDAO;
     private SkillDAO skillDAO;
     private UserService userService;
+    private MatchingService matchingService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
-                      UserService userService, SkillDAO skillDAO,
+                      UserService userService, SkillDAO skillDAO, MatchingService matchingService,
                       @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
         this.companyDAO = companyDAO;
@@ -56,6 +55,7 @@ public class DataLoader implements ApplicationRunner {
         this.addTestData = addTestData;
         this.userService = userService;
         this.skillDAO = skillDAO;
+        this.matchingService = matchingService;
     }
 
     public void run(ApplicationArguments args) {
@@ -85,6 +85,7 @@ public class DataLoader implements ApplicationRunner {
     private void performAdditionOfTestData() throws URISyntaxException {
         Skill seizing = skillDAO.findByName("revolution");
         if(seizing != null) {
+            LOG.warn("Already added test data, not adding it again");
             return;
         }
 
@@ -99,45 +100,45 @@ public class DataLoader implements ApplicationRunner {
         User user = new User("karl_marx@gmail.edu", "pr0lehero!", "pr0lehero!");
         user = userService.save(user, Role.RoleName.Student);
 
-        Student newStudent = new Student();
-        newStudent.setFirstName("Karl");
-        newStudent.setLastName("Marx");
-        newStudent.setEmail(user.getUsername());
-        newStudent.setGraduationDate(new Date(2018, 5, 1));
-        newStudent.setUser(user);
-        newStudent.setPreferredCompanySize(Company.Size.LARGE);
-        newStudent.setSkills(skills);
-        newStudent.setSchool("Hard knocks");
-        newStudent = studentDAO.save(newStudent);
+        Student karlMarx = new Student();
+        karlMarx.setFirstName("Karl");
+        karlMarx.setLastName("Marx");
+        karlMarx.setEmail(user.getUsername());
+        karlMarx.setGraduationDate(new Date(2018, 5, 1));
+        karlMarx.setUser(user);
+        karlMarx.setPreferredCompanySize(Company.Size.LARGE);
+        karlMarx.setSkills(skills);
+        karlMarx.setSchool("Hard knocks");
+        karlMarx = studentDAO.save(karlMarx);
 
-        Company company = new Company();
-        company.setCompanyName("USSR");
-        company.setLocation("Eastern Europe");
-        company.setSize(Company.Size.HUGE);
-        company.setApprovalStatus(true);
-        company.setCompanyDescription("Union of Soviet Socialist Republics");
-        company.setEmailSuffix("@ussr.gov");
-        company.setPresentation(new File("E:\\Documents\\TMCS\\server"));
-        company.setUser(user);
-        company = companyDAO.save(company);
+        Company ussr = new Company();
+        ussr.setCompanyName("USSR");
+        ussr.setLocation("Eastern Europe");
+        ussr.setSize(Company.Size.HUGE);
+        ussr.setApprovalStatus(true);
+        ussr.setCompanyDescription("Union of Soviet Socialist Republics");
+        ussr.setEmailSuffix("@ussr.gov");
+        ussr.setPresentation(new File("E:\\Documents\\TMCS\\server"));
+        ussr.setUser(user);
+        ussr = companyDAO.save(ussr);
 
-        JobPosting newPosting = new JobPosting();
-        newPosting.setPositionTitle("Seizer");
-        newPosting.setDescription("Seize the means of production");
-        newPosting.setRequiredSkills(skills);
-        newPosting.setMinMatchedRequiredSkills(2);
-        newPosting.setRecommendedSkillsWeight(0.1);
-        newPosting.setLocation("USSR");
-        newPosting.setPhaseTimeout(30);
-        newPosting.setProblemStatement("The bourgeoisie have ten cows. They pay you $3 per hour to milk the cows. " +
+        JobPosting seizer = new JobPosting();
+        seizer.setPositionTitle("Seizer");
+        seizer.setDescription("Seize the means of production");
+        seizer.setRequiredSkills(skills);
+        seizer.setMinMatchedRequiredSkills(2);
+        seizer.setRecommendedSkillsWeight(0.1);
+        seizer.setLocation("USSR");
+        seizer.setPhaseTimeout(30);
+        seizer.setProblemStatement("The bourgeoisie have ten cows. They pay you $3 per hour to milk the cows. " +
                 "They sell the milk for $5 per gallon. You can milk two cows per hour, and each cow produces two" +
                 "gallons of milk. How much are the bourgeoisie ripping you off by each hour?");
-        newPosting.setUrl("");
-        newPosting.setCompany(company);
-        jobPostingDAO.save(newPosting);
+        seizer.setUrl("");
+        seizer.setCompany(ussr);
+        jobPostingDAO.save(seizer);
 
-        List<JobPosting> postings = new ArrayList<>();
-        postings.add(newPosting);
-        company = companyDAO.save(company);
+        matchingService.registerStudent(karlMarx);
+
+        LOG.info("Test data added");
     }
 }
