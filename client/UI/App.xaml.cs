@@ -17,7 +17,8 @@ namespace TMCS_Client.UI
         {
             InitializeComponent();
 
-			MainPage = new NavigationPage(Login.getLoginPage());
+			MainPage = new NavigationPage(new JobPostingCreation(null));
+			//MainPage = new NavigationPage(Login.getLoginPage());
 		}
 
         protected override void OnStart()
