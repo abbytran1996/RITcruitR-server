@@ -48,8 +48,13 @@ namespace TMCS_Client
         public static class Emails
         {
             public static string STUDENT { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.edu"; } }
-            public static string COMPANY { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.*"; } }
+            public static string RECRUITER { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.*"; } }
         }
+
+        public static class CompanyEmailSuffix
+        {
+            public static string COMPANYEMAILSUFFIX { get { return "/company/emailSuffix"; } }
+        } 
 
         public static class Forms
         {
