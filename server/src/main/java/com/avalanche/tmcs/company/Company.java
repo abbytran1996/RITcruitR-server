@@ -32,7 +32,7 @@ public class Company {
 
     private String location;
 
-    private String size;
+    private Size size;
 
     private Boolean approvalStatus;
 
@@ -71,9 +71,9 @@ public class Company {
     public void setLocation(String location) {this.location = location;}
 
     @NotNull
-    public String getSize(){return size;}
+    public Size getSize(){return size;}
 
-    public void setSize(String size) {this.size = size;}
+    public void setSize(Size size) {this.size = size;}
 
     @NotNull
     public Boolean getApprovalStatus(){return approvalStatus;}

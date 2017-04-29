@@ -39,11 +39,14 @@ public class Skill {
 
         Skill skill = (Skill) o;
 
-        return id == skill.id;
+        if (id != skill.id) return false;
+        return name.equals(skill.name);
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }
