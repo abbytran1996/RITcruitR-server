@@ -16,6 +16,9 @@ namespace TMCS_Client
 #if __IOS__
         public static string SERVER_URL { get { return "http://127.0.0.1:8080"; } }
 #endif
+        public static class Login {
+            public static string LOGIN_RESOURCE {  get { return "/users/login"; } }
+        }
         public static class Students
         {
             public static string ADD_STUDENT_RESOURCE { get { return "/students"; } }

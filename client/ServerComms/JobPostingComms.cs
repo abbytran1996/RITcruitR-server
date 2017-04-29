@@ -3,11 +3,13 @@ using RestSharp;
 using TMCS_Client.DTOs;
 using TMCS_Client.Controllers;
 using TMCS_Client;
+using TMCS_Client.UI;
+
 namespace TMCS_Client.ServerComms
 {
     public class JobPostingComms
     {
-        RestClient client = new RestClient(Constants.SERVER_URL);
+        RestClient client = (App.Current as App).Server;
 
         public void createJobPositing(JobPosting newJobPosting){
             var request = new RestRequest(Constants.JobPosting.ADD_JOB_POSTING_RESOURCE, Method.POST);
