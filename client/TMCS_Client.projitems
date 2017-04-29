@@ -21,7 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\ServerCommsBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\SkillsComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\JobPosting.cs" />
@@ -54,6 +53,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\SubSectionTitleLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\ServerCommsBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AddSkillButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

@@ -20,6 +20,14 @@ namespace TMCS_Client.CustomUIElements.ListViews
             SeparatorVisibility = SeparatorVisibility.None;
             base.ItemsSource = items;
         }
+
+        public void addItem(T newItem){
+            items.Remove((T)((object)(Skill.NullSkill)));
+            if (!items.Contains(newItem))
+                {
+                    items.Add(newItem);
+                }
+        }
     }
 
     internal class FormListCell : ViewCell{
