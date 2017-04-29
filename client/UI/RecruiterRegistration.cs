@@ -51,15 +51,6 @@ namespace TMCS_Client.UI
 		private FormFieldLabel lblLocation;
 		private FormEntry txtLocation;
 
-        /*
-        //New Company* Description
-        private FormFieldLabel lblCompanyDescription;
-        private Editor txtCompanyDescription;
-
-        //Company Size
-        private FormFieldLabel lblCompanySize;
-        private FormEntry txtCompanySize;
-        */
 
 		//Register Button
 		private Button btnRegister;
@@ -88,7 +79,7 @@ namespace TMCS_Client.UI
 			//Title
 			registrationForm.Children.Add(lblTitle =
 										  new PageTitleLabel("Recruiter Registration"),
-										  new Rectangle(0, 0, 1.0, 60.0),
+                                          new Rectangle(0, 0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
 
@@ -339,8 +330,9 @@ namespace TMCS_Client.UI
 
 		private bool emailCheck()
 		{
-			bool result;
-			if (Regex.IsMatch(txtCompanyEmail.Text, Constants.Emails.COMPANY))
+
+            bool result;
+            if (Regex.IsMatch(txtCompanyEmail.Text, Constants.Emails.RECRUITER))
 			{
 				txtCompanyEmail.BackgroundColor = Color.PaleGreen;
 				result = true;
