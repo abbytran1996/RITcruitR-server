@@ -8,14 +8,12 @@ namespace TMCS_Client.UI
     public partial class App : Application
     {
         public Student CurrentStudent { get; internal set; }
-        public StudentController StudentController { get; internal set; }
 
         public App()
         {
             InitializeComponent();
 
             MainPage = new NavigationPage(new Login());
-            StudentController = new StudentController();
         }
 
         protected override void OnStart()

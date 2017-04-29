@@ -19,8 +19,8 @@ namespace TMCS_Client.UI {
             loadMatches();
 
             Content = pageContent;
-            
-            studentController = app.StudentController;
+
+            studentController = StudentController.getStudentController();
         }
 
         /// <summary>
