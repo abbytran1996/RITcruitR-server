@@ -1,5 +1,6 @@
 ﻿using System;
 using TMCS_Client;
+using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
 
 using Xamarin.Forms;
@@ -11,6 +12,9 @@ namespace TMCS_Client.UI
         private static Login loginPage = null;
 
         private AbsoluteLayout sectionLogin = null;
+
+        private Entry emailEntry;
+        private Entry passwordEntry;
 
         private Login()
         {
@@ -26,25 +30,25 @@ namespace TMCS_Client.UI
             {
             };
 
-            sectionLogin.Children.Add(new Entry()
-            {
+            emailEntry = new Entry() {
                 Placeholder = "Email",
                 Keyboard = Keyboard.Email,
-            },
-                                      new Rectangle(0.5,0.2,0.8,0.15), AbsoluteLayoutFlags.All);
-            sectionLogin.Children.Add(new Entry()
-            {
+            };
+
+            passwordEntry = new Entry() {
                 Placeholder = "Password",
                 IsPassword = true,
-			},
-									  new Rectangle(0.5, 0.4, 0.8, 0.15), AbsoluteLayoutFlags.All);
-            
-            sectionLogin.Children.Add(new Button()
-            {
+            };
+
+            sectionLogin.Children.Add(emailEntry, new Rectangle(0.5,0.2,0.8,0.15), AbsoluteLayoutFlags.All);
+            sectionLogin.Children.Add(passwordEntry, new Rectangle(0.5, 0.4, 0.8, 0.15), AbsoluteLayoutFlags.All);
+
+            sectionLogin.Children.Add(new Button() {
                 Text = "Login",
                 FontSize = 24,
                 TextColor = Color.White,
                 BackgroundColor = Color.Blue,
+                Command = new Command(doLogin)
 			},
 									  new Rectangle(0.5, 0.6, 0.6, 0.15), AbsoluteLayoutFlags.All);
 
@@ -103,6 +107,14 @@ namespace TMCS_Client.UI
             sectionLogin.Children.Add(newLoginStatusMessage,
                                      new Rectangle(0.5,0,0.8,0.15),
                                      AbsoluteLayoutFlags.All);
+        }
+
+        public void doLogin(object obj) {
+            var email = emailEntry.Text;
+            var password = passwordEntry.Text;
+
+            var serverController = ServerController.getServerController();
+            serverController.login(email, password);
         }
     }
 }
