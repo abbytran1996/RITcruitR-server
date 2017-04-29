@@ -138,7 +138,6 @@ public class DataLoader implements ApplicationRunner {
 
         List<JobPosting> postings = new ArrayList<>();
         postings.add(newPosting);
-        company.setJobPostings(postings);
         company = companyDAO.save(company);
     }
 }
