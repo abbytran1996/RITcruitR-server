@@ -54,9 +54,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\SubSectionTitleLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\ServerCommsBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AddSkillButton.cs" />
+<<<<<<< Updated upstream
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\RemoveSkillButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillListCell.cs" />
+=======
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CompanyRegistration.cs" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
