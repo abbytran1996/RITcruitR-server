@@ -14,27 +14,27 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 				BackgroundColor = Color.White,
 			};
 
-			Label searchResultLabel = new Label()
+            Label lblSearchResult = new Label()
 			{
 				BackgroundColor = Color.White,
 				VerticalTextAlignment = TextAlignment.Center,
 			};
 
-			AddSkillButton addSearchResult = new AddSkillButton()
+            AddSkillButton btnAddSearchResult = new AddSkillButton()
 			{
 			};
 
-			addSearchResult.SetBinding(AddSkillButton.SkillIDProperty, "id");
-			addSearchResult.SetBinding(AddSkillButton.NameProperty, "name");
+			btnAddSearchResult.SetBinding(AddSkillButton.SkillIDProperty, "id");
+			btnAddSearchResult.SetBinding(AddSkillButton.NameProperty, "name");
 
-			searchResultLabel.SetBinding(Label.TextProperty, "name");
+			lblSearchResult.SetBinding(Label.TextProperty, "name");
 
-			cellLayout.Children.Add(searchResultLabel,
+			cellLayout.Children.Add(lblSearchResult,
 								   new Rectangle(0.5, 0.0, 0.9, 1.0),
 								   AbsoluteLayoutFlags.All);
 
-			cellLayout.Children.Add(addSearchResult, new Rectangle(1.0, 0.5, Constants.Forms.Sizes.ROW_HEIGHT * (2.0 / 3.0),
-						   Constants.Forms.Sizes.ROW_HEIGHT * (2.0 / 3.0)),
+			cellLayout.Children.Add(btnAddSearchResult, new Rectangle(1.0, 0.5, 40.0,
+						   40.0),
 								   AbsoluteLayoutFlags.PositionProportional);
 
 			View = cellLayout;
