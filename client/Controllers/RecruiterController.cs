@@ -34,5 +34,14 @@ namespace TMCS_Client.Controllers
 		{
             recruiterComms.addRecruiter(recruiter);
 		}
+
+        /// <summary>
+        /// Gets a recruiter by email address
+        /// </summary>
+        /// <param name="email">The email of the recruiter to get</param>
+        /// <returns>The found recruiter</returns>
+        public Recruiter getRecruiter(string email) {
+            return recruiterComms.getRecruiter(email);
+        }
 	}
 }

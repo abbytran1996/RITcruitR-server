@@ -13,14 +13,12 @@ namespace TMCS_Client.UI {
         private ListView matchesList = new ListView();
 
         private App app = Application.Current as App;
-        private StudentController studentController;
+        private StudentController studentController = StudentController.getStudentController();
 
         public StudentHomepage() {
             loadMatches();
 
             Content = pageContent;
-
-            studentController = StudentController.getStudentController();
         }
 
         /// <summary>

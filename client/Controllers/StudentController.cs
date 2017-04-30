@@ -12,12 +12,29 @@ namespace TMCS_Client.Controllers {
     /// </summary>
     /// Is this a true MVC controller? I don't know.
     public class StudentController : ServerCommsBase {
-        private static StudentController studentController = new StudentController();
+        private static StudentController studentController = null;
 
         private StudentController() {}
 
         public static StudentController getStudentController() {
+            if(studentController == null) {
+                studentController = new StudentController();
+            }
             return studentController;
+        }
+
+        /// <summary>
+        /// Finds a student based on their email address
+        /// </summary>
+        /// <param name="email">The email to find the student by</param>
+        /// <returns>The found student</returns>
+        public Student getStudent(String email) {
+            var request = new RestRequest(Constants.Students.GET_STUDENT_BY_EMAIL_RESOURCE, Method.GET);
+
+            var response = client.Execute<Student>(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
+
+            return response.Data;
         }
 
         /// <summary>

@@ -32,5 +32,19 @@ namespace TMCS_Client.ServerComms {
                 throw new RestException(response.StatusCode);
             }
         }
+
+        internal Recruiter getRecruiter(string email) {
+            var request = new RestRequest(Constants.Recruiters.GET_RECRUITER_BY_EMAIL_RESOURCE, Method.GET);
+
+            var response = client.Execute<Recruiter>(request);
+            if(response.StatusCode != System.Net.HttpStatusCode.OK) {
+                if(response.ErrorException != null) {
+                    throw response.ErrorException;
+                }
+                throw new RestException(response.StatusCode);
+            }
+
+            return response.Data;
+        }
     }
 }

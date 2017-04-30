@@ -115,6 +115,18 @@ namespace TMCS_Client.UI
 
             var serverController = ServerController.getServerController();
             serverController.login(email, password);
+
+            // Figure out if we're a student or not
+            //try {
+                var student = StudentController.getStudentController().getStudent(email);
+                (App.Current as App).CurrentStudent = student;
+                Console.WriteLine("Navigating to student homepage");
+                Navigation.PushAsync(new StudentHomepage());
+            //} catch(Exception e) {
+            //    Console.WriteLine("Could not find student, reason " + e.Message);
+            //    var recruiter = RecruiterController.getRecruiterController().getRecruiter(email);
+                // Do recruiter stuff
+            //}
         }
     }
 }
