@@ -24,7 +24,8 @@ public class LoginController {
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody User user) {
         if(securityService.login(user.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok().build();
+            user.setPassword("");
+            return ResponseEntity.ok().body(user);
         }
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
