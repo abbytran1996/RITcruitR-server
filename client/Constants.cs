@@ -41,8 +41,9 @@ namespace TMCS_Client
         public static class JobPosting
         {
             public static string ADD_JOB_POSTING_RESOURCE { get { return "/jobposting/create"; } }
-            public static string DELETE_JOB_POSTING_RESOURCE { get { return "/jobposting/delete/{id}"; } }
-            public static string GET_JOB_POSTING_RESOURCE { get { return "/jobposting/{id}"; } }
+            public static string DELETE_JOB_POSTING_RESOURCE { get { return "/jobposting/delete/{0}"; } }
+            public static string GET_JOB_POSTING_RESOURCE { get { return "/jobposting/{0}"; } }
+            public static string GET_JOB_POSTING_BY_RECRUITER_RESOURCE { get { return "/jobposting/recruiter/{0}"; } }
         }
 
         public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }
