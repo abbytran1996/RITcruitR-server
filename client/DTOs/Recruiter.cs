@@ -9,6 +9,7 @@ namespace TMCS_Client.DTOs
 	/// </summary>
 	public class Recruiter
 	{
+        public long id { get; internal set; }
 		public string phoneNumber { get; set; }
 		public string email { get; set; }
 		public string lastName { get; set; }

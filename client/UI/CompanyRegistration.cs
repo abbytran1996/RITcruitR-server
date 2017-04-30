@@ -19,7 +19,7 @@ namespace TMCS_Client.UI
 		//Title
 		private PageTitleLabel lblTitle;
 
-        //Email
+        //CompanyEmail
         private FormFieldLabel lblCompanyEmailSuffix;
         private FormEntry txtCompanyEmailSuffix;
 

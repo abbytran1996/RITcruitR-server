@@ -34,5 +34,18 @@ namespace TMCS_Client.Controllers
 		{
 			companyComms.addCompany(company);
 		}
+		/// <summary>
+		/// Gets Company by Id
+		/// </summary>
+		/// <param name="company">The company to add</param>
+		public Company getCompanyById(long id)
+        {
+            return companyComms.getCompanyById(id);
+        }
+
+        public Company getCompanyByEmailSuffix(string emailSuffix)
+        {
+            return companyComms.getCompanyByEmailSuffix(emailSuffix);
+        }
 	}
 }
