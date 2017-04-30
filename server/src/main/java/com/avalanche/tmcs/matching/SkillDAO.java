@@ -10,4 +10,5 @@ import java.util.Set;
  * @since 4/18/17
  */
 public interface SkillDAO extends CrudRepository<Skill, Long> {
+    Skill findByName(String name);
 }

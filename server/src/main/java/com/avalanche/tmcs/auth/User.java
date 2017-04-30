@@ -28,6 +28,15 @@ public class User {
         validateNewUser();
     }
 
+    /**
+     * make a user from just a UN and PW because having our confirm password server side is unneeded
+     * @param username
+     * @param password
+     */
+    public User(String username, String password){
+        setUsername(username);
+        setPassword(password);
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {

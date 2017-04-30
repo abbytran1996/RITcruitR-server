@@ -10,9 +10,14 @@ import java.util.Set;
 @Entity
 @Table(name = "role")
 public class Role {
+    public enum RoleName {
+        Student,
+        Recruiter,
+        Administrator
+    }
+
     private Long id;
     private String name;
-    private Set<User> users;
 
     public Role() {}
 
@@ -38,12 +43,4 @@ public class Role {
         this.name = name;
     }
 
-    @ManyToMany(mappedBy = "roles")
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
 }

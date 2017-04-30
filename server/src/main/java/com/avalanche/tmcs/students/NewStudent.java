@@ -32,6 +32,7 @@ public class NewStudent extends Student {
         student.setGraduationDate(getGraduationDate());
         student.setPhoneNumber(getPhoneNumber());
         student.setPreferredStates(getPreferredStates());
+        student.setPreferredCompanySize(getPreferredCompanySize());
         student.setSchool(getSchool());
         student.setSkills(getSkills());
         student.setUser(getUser());

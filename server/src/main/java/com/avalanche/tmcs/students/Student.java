@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
@@ -40,7 +41,7 @@ public class Student {
 
     private Set<String> preferredStates;
 
-    private String preferredCompanySize;
+    private Company.Size preferredCompanySize;
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -90,6 +91,7 @@ public class Student {
     // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
     // so their graduation dates are in the future implicitly.
     @Future
+    @NotNull
     public Date getGraduationDate() {
         return graduationDate;
     }
@@ -145,11 +147,11 @@ public class Student {
     }
 
     @NotNull
-    public String getPreferredCompanySize() {
+    public Company.Size getPreferredCompanySize() {
         return preferredCompanySize;
     }
 
-    public void setPreferredCompanySize(String preferredCompanySize) {
+    public void setPreferredCompanySize(Company.Size preferredCompanySize) {
         this.preferredCompanySize = preferredCompanySize;
     }
 

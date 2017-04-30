@@ -1,10 +1,19 @@
 package com.avalanche.tmcs.Recruiter;
 
+import com.avalanche.tmcs.auth.Role;
+import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.auth.UserService;
+import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.company.CompanyDAO;
+import com.avalanche.tmcs.company.NewCompany;
 import com.avalanche.tmcs.students.StudentDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 /**
  * Created by John on 4/17/2017.
@@ -15,10 +24,14 @@ import org.springframework.web.bind.annotation.*;
 public class RecruiterController {
 
     private RecruiterRepository recruiterRepo;
+    private UserService userService;
+    private CompanyDAO companyDAO;
 
     @Autowired
-    public RecruiterController(RecruiterRepository repo){
+    public RecruiterController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO){
         this.recruiterRepo = repo;
+        this.userService = userService;
+        this.companyDAO = companyDAO;
     }
 
     /**
@@ -26,8 +39,10 @@ public class RecruiterController {
      * @return TODO
      */
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    public ResponseEntity<String> registerRecruiter(@RequestBody Recruiter newRecruiter){
+    public ResponseEntity<String> registerRecruiter(@RequestBody NewRecruiter newRecruiter){
+        User newUser = new User(newRecruiter.eMail,newRecruiter.password);
         Recruiter newguy = new Recruiter(newRecruiter);
+        userService.save(newUser, Role.RoleName.Recruiter);
         recruiterRepo.save(newguy);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -55,21 +70,41 @@ public class RecruiterController {
         return recruiterRepo.findOne(id);
     }
 
+    @RequestMapping(value="byEmail/{email}", method = RequestMethod.GET)
+    public Recruiter getRecruiterByEmail(@PathVariable String email) {
+        return recruiterRepo.findByEmail(email);
+    }
 
     /**
      * TODO: When companies are included, add the controller actions here
      */
-    /**
-     * TODO: Create company
-     */
 
-    /**
-     * TODO: Edit company
-     */
+    @RequestMapping(value = "/company", method = RequestMethod.POST)
+    public ResponseEntity<?> addCompany(@PathVariable long id, @RequestBody Company newCompany){
+        Company savedCompany = companyDAO.save(newCompany);
 
-    /**
-     * TODO: Get company
-     */
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("company/{id}")
+                .buildAndExpand(savedCompany.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+
+    @RequestMapping(value = "/company/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> editCompany(@PathVariable long id, @RequestBody Company editCompany){
+        editCompany.setId(id);
+        companyDAO.save(editCompany);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/company/{id}", method = RequestMethod.GET)
+    public Company getCompany(@PathVariable long id){
+        //validateCompanyId(id);
+        return companyDAO.findOne(id);
+    }
 
     /**
      * TODO: Approve/decline company

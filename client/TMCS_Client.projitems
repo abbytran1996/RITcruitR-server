@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{F9316A30-1849-49B6-BFBE-B0846BB5B3D6}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>TMCS_Client</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\ServerController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Match.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\SkillsComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Company.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\JobPosting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewCompany.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewStudent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Skill.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Student.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Login.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentHomepage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentRegistration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml.cs">
+      <DependentUpon>RegistrationMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\FormFieldLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\PageTitleLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\FormEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RecruiterComms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewRecruiter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Recruiter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\RecruiterController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterRegistration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\JobPostingCreation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\FormEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\FormSearchBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormSearchResultsListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\SubSectionTitleLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\ServerCommsBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AddSkillButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\RemoveSkillButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillListCell.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\" />
+  </ItemGroup>
+</Project>

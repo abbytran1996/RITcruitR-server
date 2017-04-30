@@ -1,10 +1,13 @@
 package com.avalanche.tmcs.company;
 
 import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.job_posting.JobPosting;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Zane Grasso
@@ -12,6 +15,14 @@ import java.io.File;
  */
 @Entity
 public class Company {
+    public enum Size {
+        DONT_CARE,
+        STARTUP,
+        SMALL,
+        MEDIUM,
+        LARGE,
+        HUGE,
+    }
 
     private long id;
 
@@ -21,7 +32,7 @@ public class Company {
 
     private String location;
 
-    private String size;
+    private Size size;
 
     private Boolean approvalStatus;
 
@@ -58,9 +69,9 @@ public class Company {
     public void setLocation(String location) {this.location = location;}
 
     @NotNull
-    public String getSize(){return size;}
+    public Size getSize(){return size;}
 
-    public void setSize(String size) {this.size = size;}
+    public void setSize(Size size) {this.size = size;}
 
     @NotNull
     public Boolean getApprovalStatus(){return approvalStatus;}
@@ -96,7 +107,5 @@ public class Company {
     public void setUser(User user) {
         this.user = user;
     }
-
-
 }
 
