@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using TMCS_Client.DTOs;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
@@ -29,12 +30,12 @@ namespace TMCS_Client.UI
         //FormEditor editorDescription;
 
         //All Skills: Get the list of skills from skills controller call
-        List<Skill> allSkills = new List<Skill>{ new Skill() { name = "Communication" },
-            new Skill(){name = "Team Work"},
-            new Skill(){name = "C/C++"},
-            new Skill(){name = "Object Oriented Principles"},
-            new Skill(){name = "Technical Writing"},
-            new Skill(){name = "Problem Solving"},};
+        List<Skill> allSkills = new List<Skill>{ new Skill() {id=0, name = "Communication" },
+            new Skill(){id=1,name = "Team Work"},
+            new Skill(){id=2,name = "C/C++"},
+            new Skill(){id=3,name = "Object Oriented Principles"},
+            new Skill(){id=4,name = "Technical Writing"},
+            new Skill(){id=5,name = "Problem Solving"},};
 
         //Required Skills
         AbsoluteLayout requiredSkillsSection;
@@ -42,7 +43,7 @@ namespace TMCS_Client.UI
 		FormSearchBar<Skill> skillsSearchBar;
         FormSearchResultsListView<Skill> skillsSearchResults;
         FormFieldLabel lblChosenRequiredSkills;
-        FormListView requiredSkills;
+        FormListView<Skill> requiredSkills;
 
         //Recommended Skills
 
@@ -83,28 +84,20 @@ namespace TMCS_Client.UI
             //Required Skills
             requiredSkillsSection = new AbsoluteLayout()
             {
-                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 4,
+                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 5,
             };
 
-            lblRequiredSkills = new SubSectionTitleLabel("Required Skills Seletion"){
-            };
+            lblRequiredSkills = new SubSectionTitleLabel("Required Skills Seletion");
+            
+            requiredSkills = new FormListView<Skill>(
+                new ObservableCollection<Skill>(new Skill[]{Skill.NullSkill,}));
 
-			skillsSearchResults = new FormSearchResultsListView<Skill>();
+			skillsSearchResults = new FormSearchResultsListView<Skill>(requiredSkills);
 
             skillsSearchBar = new FormSearchBar<Skill>("Search for required skills",
-                                                      allSkills, skillsSearchResults)
-            {
-            };
+                                                      allSkills, skillsSearchResults);
 
-            lblChosenRequiredSkills = new FormFieldLabel("Chosen Required Skills")
-            {
-
-            };
-
-            requiredSkills = new FormListView()
-            {
-                SeparatorVisibility = SeparatorVisibility.None,
-            };
+            lblChosenRequiredSkills = new FormFieldLabel("Chosen Required Skills");
 
             requiredSkillsSection.Children.Add(lblRequiredSkills,
                                               new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1),

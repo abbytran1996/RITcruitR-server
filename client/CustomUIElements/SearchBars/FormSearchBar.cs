@@ -17,6 +17,8 @@ namespace TMCS_Client.CustomUIElements.SearchBars
             Placeholder = placeholder;
             BackgroundColor = Color.White;
             base.SearchButtonPressed += (object sender, EventArgs e) => base.Focus();
+            base.Focused += (object sender, FocusEventArgs e) => OnPropertyChanged(SearchBar.TextProperty.PropertyName);
+            base.Unfocused += (object sender, FocusEventArgs e) => searchResultsList.hide();
         }
 
         protected override void OnPropertyChanged(string propertyName = null)
