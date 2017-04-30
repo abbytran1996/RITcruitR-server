@@ -114,19 +114,20 @@ namespace TMCS_Client.UI
             var password = passwordEntry.Text;
 
             var serverController = ServerController.getServerController();
-            serverController.login(email, password);
+            var user = serverController.login(email, password);
 
-            // Figure out if we're a student or not
-            //try {
-                var student = StudentController.getStudentController().getStudent(email);
-                (App.Current as App).CurrentStudent = student;
-                Console.WriteLine("Navigating to student homepage");
-                Navigation.PushAsync(new StudentHomepage());
-            //} catch(Exception e) {
-            //    Console.WriteLine("Could not find student, reason " + e.Message);
-            //    var recruiter = RecruiterController.getRecruiterController().getRecruiter(email);
-                // Do recruiter stuff
-            //}
+            foreach (var role in user.roles) {
+                if(role.name == Role.Name.Student.ToString().ToLower()) {
+                    // We're a student!
+                    var student = StudentController.getStudentController().getStudent(email);
+                    (App.Current as App).CurrentStudent = student;
+                    Console.WriteLine("Student login detected");
+                    Navigation.PushAsync(new StudentHomepage());
+                } else if(role.name == Role.Recruiter.ToString().ToLower()) {
+                    // We're a recruiter!
+                    Console.WriteLine("Recruiter login detected");
+                }
+            }
         }
     }
 }
