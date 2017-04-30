@@ -1,8 +1,13 @@
 package com.avalanche.tmcs.job_posting;
 
+import com.avalanche.tmcs.Recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.ws.Response;
+import java.util.List;
 
 /**
  * @author Maxwell Hadley
@@ -23,8 +28,8 @@ public class JobPostingController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public JobPosting getJobPosting(@PathVariable long id){
-        return jobPostingDAO.findOne(id);
+    public ResponseEntity<JobPosting> getJobPosting(@PathVariable long id){
+        return ResponseEntity.ok(jobPostingDAO.findOne(id));
     }
 
     @RequestMapping(value = "/fulfilled/{id}", method = RequestMethod.POST)
@@ -45,6 +50,16 @@ public class JobPostingController {
     public void createJobPosting(@RequestBody JobPosting newJobPosting){
         JobPosting newPosting = jobPostingDAO.save(newJobPosting);
         matchingService.registerJobPosting(newPosting);
+    }
+
+    @RequestMapping(value = "/recuriter/{id}", method=RequestMethod.GET)
+    public ResponseEntity<List<JobPosting>> getJobPostingsByRecruiter(@PathVariable long id){
+        Recruiter recruiterWithID = new Recruiter();
+        recruiterWithID.setId(id);
+
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByRecruiter(recruiterWithID);
+
+        return ResponseEntity.ok(jobPostings);
     }
 
 }
