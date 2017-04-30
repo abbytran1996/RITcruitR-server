@@ -8,6 +8,6 @@ namespace TMCS_Client.ServerComms {
     /// Exception for things to throw when a REST call doesn't do what you wanted
     /// </summary>
     class RestException : Exception {
-        public RestException(HttpStatusCode statusCode) : base("Could not add student, HTTP status " + statusCode) { }
+        public RestException(HttpStatusCode statusCode) : base("Request failed, HTTP status " + statusCode) { }
     }
 }

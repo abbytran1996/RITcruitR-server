@@ -5,12 +5,12 @@ using TMCS_Client.CustomUIElements.ListViews;
 
 namespace TMCS_Client.CustomUIElements.SearchBars
 {
-    public class FormSearchBar<T> : SearchBar
+    public class FormSearchBar<T, CustomSearchResultCell, CustomListCell> : SearchBar
     {
         private List<T> potentialResults;
-        private FormSearchResultsListView<T> searchResultsList;
+        private FormSearchResultsListView<T, CustomSearchResultCell, CustomListCell> searchResultsList;
 
-        public FormSearchBar(String placeholder, List<T> potentialResults, FormSearchResultsListView<T> searchResultsList)
+        public FormSearchBar(String placeholder, List<T> potentialResults, FormSearchResultsListView<T, CustomSearchResultCell, CustomListCell> searchResultsList)
         {
             this.potentialResults = potentialResults;
             this.searchResultsList = searchResultsList;
@@ -18,7 +18,9 @@ namespace TMCS_Client.CustomUIElements.SearchBars
             BackgroundColor = Color.White;
             base.SearchButtonPressed += (object sender, EventArgs e) => base.Focus();
             base.Focused += (object sender, FocusEventArgs e) => OnPropertyChanged(SearchBar.TextProperty.PropertyName);
+     #if __IOS__
             base.Unfocused += (object sender, FocusEventArgs e) => searchResultsList.hide();
+            #endif
         }
 
         protected override void OnPropertyChanged(string propertyName = null)

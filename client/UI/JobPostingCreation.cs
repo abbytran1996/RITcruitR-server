@@ -7,6 +7,7 @@ using TMCS_Client.CustomUIElements.Entries;
 using TMCS_Client.CustomUIElements.Editors;
 using TMCS_Client.CustomUIElements.SearchBars;
 using TMCS_Client.CustomUIElements.ListViews;
+using TMCS_Client.CustomUIElements.ViewCells;
 
 using Xamarin.Forms;
 
@@ -40,10 +41,10 @@ namespace TMCS_Client.UI
         //Required Skills
         AbsoluteLayout requiredSkillsSection;
         SubSectionTitleLabel lblRequiredSkills;
-		FormSearchBar<Skill> skillsSearchBar;
-        FormSearchResultsListView<Skill> skillsSearchResults;
+		FormSearchBar<Skill, SkillSearchResultCell, SkillListCell> skillsSearchBar;
+        FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> skillsSearchResults;
         FormFieldLabel lblChosenRequiredSkills;
-        FormListView<Skill> requiredSkills;
+        FormListView<Skill, SkillListCell> requiredSkills;
 
         //Recommended Skills
 
@@ -89,12 +90,11 @@ namespace TMCS_Client.UI
 
             lblRequiredSkills = new SubSectionTitleLabel("Required Skills Seletion");
             
-            requiredSkills = new FormListView<Skill>(
-                new ObservableCollection<Skill>(new Skill[]{Skill.NullSkill,}));
+            requiredSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
 
-			skillsSearchResults = new FormSearchResultsListView<Skill>(requiredSkills);
+			skillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(requiredSkills);
 
-            skillsSearchBar = new FormSearchBar<Skill>("Search for required skills",
+            skillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for required skills",
                                                       allSkills, skillsSearchResults);
 
             lblChosenRequiredSkills = new FormFieldLabel("Chosen Required Skills");

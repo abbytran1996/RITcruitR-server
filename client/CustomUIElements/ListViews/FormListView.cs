@@ -6,31 +6,39 @@ using TMCS_Client.DTOs;
 
 namespace TMCS_Client.CustomUIElements.ListViews
 {
-    public class FormListView<T> : ListView
+    public class FormListView<T, CustomDisplayCell> : ListView
     {
         public ObservableCollection<T> items { get; }
 
-        public FormListView(ObservableCollection<T> initialItems = null) : base(ListViewCachingStrategy.RetainElement)
+        private T emptyListItem;
+
+        public FormListView(T emptyListItem,ObservableCollection<T> initialItems = null) : base(ListViewCachingStrategy.RetainElement)
         {
             if (initialItems == null){
                 items = new ObservableCollection<T>();
+                items.Add(emptyListItem);
             }else{
                 items = initialItems;
             }
+            this.emptyListItem = emptyListItem;
             SeparatorVisibility = SeparatorVisibility.None;
             base.ItemsSource = items;
+            base.ItemTemplate = new DataTemplate(typeof(CustomDisplayCell));
         }
 
         public void addItem(T newItem){
-            items.Remove((T)((object)(Skill.NullSkill)));
+            items.Remove(emptyListItem);
             if (!items.Contains(newItem))
                 {
                     items.Add(newItem);
                 }
         }
-    }
 
-    internal class FormListCell : ViewCell{
-        //Implement Later if necessary
+        public void removeItem(T toRemove){
+            items.Remove(toRemove);
+            if(items.Count == 0){
+                items.Add(emptyListItem); 
+            }
+        }
     }
 }

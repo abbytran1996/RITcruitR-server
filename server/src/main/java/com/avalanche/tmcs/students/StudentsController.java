@@ -46,7 +46,20 @@ public class StudentsController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Student getStudent(@PathVariable long id) {
         validateStudentId(id);
-        return studentDAO.findOne(id);
+        Student student = studentDAO.findOne(id);
+        if(student == null) {
+            // 404
+        }
+        return student;
+    }
+
+    @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
+    public Student getStudentByName(@PathVariable String email) {
+        Student student = studentDAO.findByEmail(email);
+        if(student == null) {
+            // 404
+        }
+        return student;
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -88,6 +101,9 @@ public class StudentsController {
         validateStudentId(id);
 
         Student student = studentDAO.findOne(id);
+        if(student == null) {
+            // 404
+        }
         return matchDAO.findAllByStudent(student);
     }
 

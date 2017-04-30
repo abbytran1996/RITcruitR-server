@@ -17,16 +17,18 @@ namespace TMCS_Client
         public static string SERVER_URL { get { return "http://127.0.0.1:8080"; } }
 #endif
         public static class Login {
-            public static string LOGIN_RESOURCE {  get { return "/users/login"; } }
+            public static string LOGIN_RESOURCE {  get { return "/user/login"; } }
         }
         public static class Students
         {
             public static string ADD_STUDENT_RESOURCE { get { return "/students"; } }
             public static string GET_MATCHES_RESORUCE { get { return "/students/{0}/matches"; } }
+            public static string GET_STUDENT_BY_EMAIL_RESOURCE { get { return "/students/byEmail/{0}"; } }
         }
         public static class Recruiters
         {
             public static string ADD_RECRUITER_RESOURCE { get { return "/recruiters"; } }
+            public static string GET_RECRUITER_BY_EMAIL_RESOURCE { get { return "/recruiters/byEmail/{0}"; } }
         }
         public static class Company
         {

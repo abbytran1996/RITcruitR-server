@@ -54,6 +54,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\SubSectionTitleLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\ServerCommsBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AddSkillButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\RemoveSkillButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillListCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
@@ -68,5 +71,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\" />
   </ItemGroup>
 </Project>

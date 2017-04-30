@@ -70,6 +70,10 @@ public class RecruiterController {
         return recruiterRepo.findOne(id);
     }
 
+    @RequestMapping(value="byEmail/{email}", method = RequestMethod.GET)
+    public Recruiter getRecruiterByEmail(@PathVariable String email) {
+        return recruiterRepo.findByEmail(email);
+    }
 
     /**
      * TODO: When companies are included, add the controller actions here

@@ -1,9 +1,6 @@
 ﻿using RestSharp;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using TMCS_Client.ServerComms;
-using TMCS_Client.UI;
 
 namespace TMCS_Client.Controllers {
     /// <summary>
@@ -32,6 +29,16 @@ namespace TMCS_Client.Controllers {
 
             var response = client.Execute(request);
             ensureStatusCode(response, System.Net.HttpStatusCode.OK);
+            
+            foreach(var cookie in response.Cookies) {
+                if(cookie.Name == "JSESSIONID") {
+                    if(client.CookieContainer == null) {
+                        client.CookieContainer = new System.Net.CookieContainer();
+                    }
+                    client.CookieContainer.Add(new System.Net.Cookie(cookie.Name, cookie.Value, cookie.Path, cookie.Domain));
+                    break;
+                }
+            }
         }
     }
 }

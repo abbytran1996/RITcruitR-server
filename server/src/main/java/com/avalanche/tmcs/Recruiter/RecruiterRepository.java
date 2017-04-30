@@ -11,4 +11,6 @@ import java.util.Optional;
 @Transactional
 public interface RecruiterRepository extends CrudRepository<Recruiter, Long> {
     Optional<Recruiter> findById(long id);
+
+    Recruiter findByEmail(String email);
 }
