@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.job_posting;
 
 
+import com.avalanche.tmcs.Recruiter.Recruiter;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.Skill;
 
@@ -33,7 +34,7 @@ public class JobPosting {
 
     private double recommendedSkillsWeight;
 
-    //private Recruiter recruiter;
+    private Recruiter recruiter;
 
     private String location;
 
@@ -119,6 +120,13 @@ public class JobPosting {
     public void setRecommendedSkillsWeight(double recommendedSkillsWeight) {
         this.recommendedSkillsWeight = recommendedSkillsWeight;
     }
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id")
+    public Recruiter getRecruiter(){return recruiter;}
+
+    public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
 
     @NotNull
     public String getLocation() {
