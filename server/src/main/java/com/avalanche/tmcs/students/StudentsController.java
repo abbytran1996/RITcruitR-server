@@ -44,22 +44,22 @@ public class StudentsController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Student getStudent(@PathVariable long id) {
+    public ResponseEntity<Student> getStudent(@PathVariable long id) {
         validateStudentId(id);
         Student student = studentDAO.findOne(id);
         if(student == null) {
-            // 404
+            return ResponseEntity.notFound().build();
         }
-        return student;
+        return ResponseEntity.ok(student);
     }
 
     @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
-    public Student getStudentByName(@PathVariable String email) {
+    public ResponseEntity<Student> getStudentByName(@PathVariable String email) {
         Student student = studentDAO.findByEmail(email);
         if(student == null) {
-            // 404
+            return ResponseEntity.notFound().build();
         }
-        return student;
+        return ResponseEntity.ok(student);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

@@ -33,6 +33,7 @@ namespace TMCS_Client
         public static class Company
         {
             public static string ADD_COMPANY_RESOURCE { get { return "/company"; } }
+			public static string GET_COMPANY_RESOURCE { get { return "/company/{id}"; } }
         }
         public static class Skill
         {
@@ -56,7 +57,7 @@ namespace TMCS_Client
 
         public static class CompanyEmailSuffix
         {
-            public static string COMPANYEMAILSUFFIX { get { return "/company/emailSuffix"; } }
+            public static string COMPANYEMAILSUFFIX { get { return "/company/email_suffix"; } }
         } 
 
         public static class Forms

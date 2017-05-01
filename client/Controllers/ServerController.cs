@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 using System.Collections.Generic;
+using TMCS_Client.DTOs;
 using TMCS_Client.ServerComms;
 
 namespace TMCS_Client.Controllers {
@@ -18,7 +19,7 @@ namespace TMCS_Client.Controllers {
         /// </summary>
         /// <param name="username">The username of the user to log in</param>
         /// <param name="password">The password of the user to log in</param>
-        public void login(string username, string password) {
+        public User login(string username, string password) {
             var request = new RestRequest(Constants.Login.LOGIN_RESOURCE, Method.POST);
             request.RequestFormat = DataFormat.Json;
 
@@ -27,7 +28,7 @@ namespace TMCS_Client.Controllers {
             body["password"] = password;
             request.AddBody(body);
 
-            var response = client.Execute(request);
+            var response = client.Execute<User>(request);
             ensureStatusCode(response, System.Net.HttpStatusCode.OK);
             
             foreach(var cookie in response.Cookies) {
@@ -39,6 +40,8 @@ namespace TMCS_Client.Controllers {
                     break;
                 }
             }
+
+            return response.Data;
         }
     }
 }
