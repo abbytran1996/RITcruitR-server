@@ -22,13 +22,13 @@ namespace TMCS_Client
         public static class Students
         {
             public static string ADD_STUDENT_RESOURCE { get { return "/students"; } }
-            public static string GET_MATCHES_RESORUCE { get { return "/students/{0}/matches"; } }
-            public static string GET_STUDENT_BY_EMAIL_RESOURCE { get { return "/students/byEmail/{0}"; } }
+            public static string GET_MATCHES_RESORUCE { get { return "/students/{id}/matches"; } }
+            public static string GET_STUDENT_BY_EMAIL_RESOURCE { get { return "/students/byEmail/{email}"; } }
         }
         public static class Recruiters
         {
             public static string ADD_RECRUITER_RESOURCE { get { return "/recruiters"; } }
-            public static string GET_RECRUITER_BY_EMAIL_RESOURCE { get { return "/recruiters/byEmail/{0}"; } }
+            public static string GET_RECRUITER_BY_EMAIL_RESOURCE { get { return "/recruiters/byEmail/{email}"; } }
         }
         public static class Company
         {

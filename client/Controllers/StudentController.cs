@@ -29,8 +29,9 @@ namespace TMCS_Client.Controllers {
         /// <param name="email">The email to find the student by</param>
         /// <returns>The found student</returns>
         public Student getStudent(String email) {
-            var resource = string.Format(Constants.Students.GET_STUDENT_BY_EMAIL_RESOURCE, email);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new RestRequest(Constants.Students.GET_STUDENT_BY_EMAIL_RESOURCE, Method.GET);
+            request.AddUrlSegment("email", email);
+            request.RequestFormat = DataFormat.Json;
 
             var response = client.Execute<Student>(request);
             ensureStatusCode(response, HttpStatusCode.OK);
@@ -60,8 +61,9 @@ namespace TMCS_Client.Controllers {
         /// <param name="student">The student to get all the matches of</param>
         /// <returns>All the matches associated with the given student</returns>
         public List<Match> getMatchesForStudent(Student student) {
-            var resource = String.Format(Constants.Students.GET_MATCHES_RESORUCE, student.id);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new RestRequest(Constants.Students.GET_MATCHES_RESORUCE, Method.GET);
+            request.AddUrlSegment("id", student.id.ToString());
+            request.RequestFormat = DataFormat.Json;
 
             var response = client.Execute<List<Match>>(request);
             ensureStatusCode(response, HttpStatusCode.OK);

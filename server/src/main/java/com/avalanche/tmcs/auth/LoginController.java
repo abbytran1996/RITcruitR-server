@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
     private SecurityService securityService;
 
+    private UserDAO userDAO;
+
     @Autowired
-    public LoginController(SecurityService securityService) {
+    public LoginController(SecurityService securityService, UserDAO userDAO) {
         this.securityService = securityService;
+        this.userDAO = userDAO;
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<User> login(@RequestBody User user) {
-        if(securityService.login(user.getPassword(), user.getPassword())) {
+        if(securityService.login(user.getUsername(), user.getPassword())) {
+            user = userDAO.findByUsername(user.getUsername());
             user.setPassword("");
             return ResponseEntity.ok(user);
         }
