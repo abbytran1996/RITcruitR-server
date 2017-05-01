@@ -57,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\RemoveSkillButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\FormSubmitButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

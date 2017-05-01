@@ -65,6 +65,7 @@ namespace TMCS_Client
             {
                 public static Color SUCCESS { get { return new Color(0.75, 1.0, 0.75); } }
                 public static Color FAILURE { get { return new Color(1.0, 0.75, 0.75); } }
+                public static Color EDITOR_BACKGROUND { get { return new Color(0.9,0.95,1.0); } }
             }
 
             public static class Sizes
