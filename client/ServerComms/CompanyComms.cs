@@ -58,6 +58,7 @@ namespace TMCS_Client.ServerComms
 		public Company getCompanyByEmailSuffix(string emailSuffix)
 		{
             string url = Constants.CompanyEmailSuffix.COMPANYEMAILSUFFIX;
+            url.Replace("email_suffix", emailSuffix);
 			var request = new RestRequest(url, Method.GET);
 			var response = client.Execute<Company>(request);
 

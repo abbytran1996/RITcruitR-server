@@ -5,6 +5,8 @@ using TMCS_Client.DTOs;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
@@ -142,7 +144,8 @@ namespace TMCS_Client.UI
 									AbsoluteLayoutFlags.All);
 
 			txtCompanyEmail.Completed += (object sender, EventArgs e) => txtPassword.Focus();
-			txtCompanyEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
+            txtCompanyEmail.Unfocused += async (object sender, FocusEventArgs e) => await SuffixCheck();
+            txtCompanyEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
 
 			registrationForm.Children.Add(emailInput,
 										 new Rectangle(0, 3.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -326,7 +329,26 @@ namespace TMCS_Client.UI
 				}
 			}
 		}
+        public async Task<bool> SuffixCheck()
+        {
+            //bool result;
+            //MailAddress address = new MailAddress(txtCompanyEmail.Text);
+            //string suffix = address.Host;
 
+
+            //TODO:if suffix is not in company table then - (pop up dialog); else return true
+            var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
+            if (ans == true)
+            {
+                await this.Navigation.PushAsync(new CompanyRegistration());
+                return ans;
+            }
+            else
+            {
+                return ans;
+
+            }
+        }
 
 		private bool emailCheck()
 		{
