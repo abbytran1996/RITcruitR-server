@@ -60,6 +60,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\FormSubmitButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Role.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CompanyRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
