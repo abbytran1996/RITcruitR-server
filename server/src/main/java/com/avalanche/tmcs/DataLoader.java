@@ -134,7 +134,6 @@ public class DataLoader implements ApplicationRunner {
                 "They sell the milk for $5 per gallon. You can milk two cows per hour, and each cow produces two" +
                 "gallons of milk. How much are the bourgeoisie ripping you off by each hour?");
         seizer.setUrl("");
-        seizer.setCompany(ussr);
         jobPostingDAO.save(seizer);
 
         matchingService.registerStudent(karlMarx);

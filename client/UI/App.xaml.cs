@@ -17,6 +17,7 @@ namespace TMCS_Client.UI
         {
             InitializeComponent();
 
+			//MainPage = new NavigationPage(new JobPostingCreation(null));
 			MainPage = new NavigationPage(Login.getLoginPage());
 		}
 

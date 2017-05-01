@@ -44,8 +44,6 @@ public class JobPosting {
 
     private String url;
 
-    private Company company;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
@@ -123,7 +121,6 @@ public class JobPosting {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "id")
     public Recruiter getRecruiter(){return recruiter;}
 
     public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
@@ -162,16 +159,6 @@ public class JobPosting {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @NotNull
-    @ManyToOne
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 
 }

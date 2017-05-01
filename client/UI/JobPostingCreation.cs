@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TMCS_Client.Controllers;
 using TMCS_Client.DTOs;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
@@ -317,9 +318,24 @@ namespace TMCS_Client.UI
         }
 
         private void createJobPosting(){
-            
-        }
+            JobPosting newJobPosting = new JobPosting();
+            newJobPosting.location = "California";
+            newJobPosting.phaseTimeout = 2;
+            newJobPosting.description = "Well it is a job atleast...";
+            newJobPosting.positionTitle = "Software Engineer?";
+            newJobPosting.minMatchedRequiredSkills = 4;
+            newJobPosting.recommendedSkillsWeight = 0.5;
+            newJobPosting.url = "google.com";
+            newJobPosting.requiredSkills = new List<Skill>(new Skill[]{allSkills[2],allSkills[1]});
+            newJobPosting.recommendedSkills = new List<Skill>(new Skill[] { allSkills[3], allSkills[0] });
+            newJobPosting.recruiter = new Recruiter(){
+                firstName = "Test",
+                lastName = "e",
+            };
+            newJobPosting.problemStatement = "Find x.";
 
+            JobPostingController.getJobPostingController().createJobPosting(newJobPosting);
+        }
     }
 }
 

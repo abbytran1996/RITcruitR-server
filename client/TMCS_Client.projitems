@@ -58,6 +58,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillListCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\FormSubmitButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Role.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

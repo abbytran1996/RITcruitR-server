@@ -16,6 +16,8 @@ namespace TMCS_Client.ServerComms
             var request = new RestRequest(Constants.JobPosting.ADD_JOB_POSTING_RESOURCE, Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(newJobPosting);
+
+            var response = client.Execute(request);
         }
 
         public void deleteJobPosting(JobPosting toDelete){

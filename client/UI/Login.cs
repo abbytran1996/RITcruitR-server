@@ -1,6 +1,7 @@
 ﻿using System;
 using TMCS_Client;
 using TMCS_Client.Controllers;
+using TMCS_Client.DTOs;
 using TMCS_Client.CustomUIElements.Labels;
 
 using Xamarin.Forms;
@@ -123,7 +124,7 @@ namespace TMCS_Client.UI
                     (App.Current as App).CurrentStudent = student;
                     Console.WriteLine("Student login detected");
                     Navigation.PushAsync(new StudentHomepage());
-                } else if(role.name == Role.Recruiter.ToString().ToLower()) {
+                } else if(role.name == Role.Name.Recruiter.ToString().ToLower()) {
                     // We're a recruiter!
                     Console.WriteLine("Recruiter login detected");
                 }

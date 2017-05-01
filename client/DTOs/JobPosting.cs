@@ -11,12 +11,10 @@ namespace TMCS_Client.DTOs
         public int minMatchedRequiredSkills { get; set; }
         public List<Skill> recommendedSkills { get; set; }
         public double recommendedSkillsWeight { get; set; }
-        //Recruiter
+        public Recruiter recruiter { get; set; }
         public string location { get; set; }
         public long phaseTimeout { get; set; }
         public string problemStatement { get; set; }
         public string url { get; set; }
-
-        public Company company { get; set; }
     }
 }
