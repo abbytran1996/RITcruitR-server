@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SecurityService {
+    private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
+
     private AuthenticationManager authenticationManager;
 
     private UserDetailsService userDetailsService;
@@ -25,8 +27,6 @@ public class SecurityService {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
 
     public String findLoggedInUsername() {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
