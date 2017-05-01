@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using TMCS_Client.DTOs;
 using TMCS_Client.CustomUIElements.ListViews;
+using TMCS_Client.CustomUIElements.ViewCells;
 
 namespace TMCS_Client.CustomUIElements.Buttons
 {
@@ -41,8 +42,10 @@ namespace TMCS_Client.CustomUIElements.Buttons
 
         private void addButtonClicked(object sender, EventArgs e)
         {
-            FormSearchResultsListView<Skill> ancestor = 
-                ((FormSearchResultsListView<Skill>)((SearchResultCell)((AbsoluteLayout)((AddSkillButton)sender).Parent).Parent).Parent);
+            FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> ancestor = 
+                ((FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>)
+                 ((SkillSearchResultCell)((AbsoluteLayout)((AddSkillButton)sender).Parent)
+                  .Parent).Parent);
 
             Skill extractedSkill = new Skill()
             {
@@ -51,8 +54,8 @@ namespace TMCS_Client.CustomUIElements.Buttons
             };
 
             ancestor.selectedItemsView.addItem(extractedSkill);
-
             ancestor.searchResults.Remove(extractedSkill);
+            ancestor.hide();
         }
     }
 }

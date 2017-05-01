@@ -13,5 +13,7 @@ import javax.persistence.Id;
  */
 @Transactional
 public interface CompanyDAO extends CrudRepository<Company, Long>{
-    List<Company> findAllBy(long id);
+    //List<Company> findAllByID(long id);
+
+    Company findByEmailSuffix (String emailSuffix);
 }

@@ -34,6 +34,36 @@ namespace TMCS_Client.ServerComms
 				throw new RestException(response.StatusCode);
 			}
 		}
+        ///<summary>
+		/// gets the company by their ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>The status of the response</returns>
+		public Company getCompanyById(long id)
+		{
+            string url = Constants.Company.GET_COMPANY_RESOURCE;
+			url.Replace("{id}", id.ToString());
+			var request = new RestRequest(url, Method.GET);
+
+            var response = client.Execute<Company>(request);
+
+			return response.Data;
+		}
+
+		///<summary>
+		/// gets the company by their emailSuffix
+		/// </summary>
+		/// <param name="emailSuffix"></param>
+		/// <returns>The status of the response</returns>
+		public Company getCompanyByEmailSuffix(string emailSuffix)
+		{
+            string url = Constants.CompanyEmailSuffix.COMPANYEMAILSUFFIX;
+            url.Replace("email_suffix", emailSuffix);
+			var request = new RestRequest(url, Method.GET);
+			var response = client.Execute<Company>(request);
+
+			return response.Data;
+		}
 	}
 }
 

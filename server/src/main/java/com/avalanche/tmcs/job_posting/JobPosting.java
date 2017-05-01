@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.job_posting;
 
 
+import com.avalanche.tmcs.Recruiter.Recruiter;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.Skill;
 
@@ -33,7 +34,7 @@ public class JobPosting {
 
     private double recommendedSkillsWeight;
 
-    //private Recruiter recruiter;
+    private Recruiter recruiter;
 
     private String location;
 
@@ -42,8 +43,6 @@ public class JobPosting {
     private String problemStatement;
 
     private String url;
-
-    private Company company;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -121,6 +120,12 @@ public class JobPosting {
     }
 
     @NotNull
+    @ManyToOne
+    public Recruiter getRecruiter(){return recruiter;}
+
+    public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
+
+    @NotNull
     public String getLocation() {
         return location;
     }
@@ -154,16 +159,6 @@ public class JobPosting {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @NotNull
-    @ManyToOne
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 
 }

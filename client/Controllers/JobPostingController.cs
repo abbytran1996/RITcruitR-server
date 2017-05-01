@@ -1,6 +1,8 @@
 ﻿using System;
 using TMCS_Client.ServerComms;
 using TMCS_Client.DTOs;
+using System.Collections.Generic;
+
 namespace TMCS_Client.Controllers
 {
     public class JobPostingController
@@ -30,6 +32,10 @@ namespace TMCS_Client.Controllers
 
         public JobPosting getJobPostingById(long id){
             return jobPostingComms.getJobPostingById(id);
+        }
+
+        public List<JobPosting> getJobPostingsByRecruiter(Recruiter recruiter){
+            return jobPostingComms.getJobPostingsByRecruiter(recruiter.id);
         }
     }
 }

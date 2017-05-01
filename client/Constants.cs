@@ -33,6 +33,7 @@ namespace TMCS_Client
         public static class Company
         {
             public static string ADD_COMPANY_RESOURCE { get { return "/company"; } }
+			public static string GET_COMPANY_RESOURCE { get { return "/company/{id}"; } }
         }
         public static class Skill
         {
@@ -41,8 +42,9 @@ namespace TMCS_Client
         public static class JobPosting
         {
             public static string ADD_JOB_POSTING_RESOURCE { get { return "/jobposting/create"; } }
-            public static string DELETE_JOB_POSTING_RESOURCE { get { return "/jobposting/delete/{id}"; } }
-            public static string GET_JOB_POSTING_RESOURCE { get { return "/jobposting/{id}"; } }
+            public static string DELETE_JOB_POSTING_RESOURCE { get { return "/jobposting/delete/{0}"; } }
+            public static string GET_JOB_POSTING_RESOURCE { get { return "/jobposting/{0}"; } }
+            public static string GET_JOB_POSTING_BY_RECRUITER_RESOURCE { get { return "/jobposting/recruiter/{0}"; } }
         }
 
         public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }
@@ -55,7 +57,7 @@ namespace TMCS_Client
 
         public static class CompanyEmailSuffix
         {
-            public static string COMPANYEMAILSUFFIX { get { return "/company/emailSuffix"; } }
+            public static string COMPANYEMAILSUFFIX { get { return "/company/email_suffix"; } }
         } 
 
         public static class Forms
@@ -64,6 +66,7 @@ namespace TMCS_Client
             {
                 public static Color SUCCESS { get { return new Color(0.75, 1.0, 0.75); } }
                 public static Color FAILURE { get { return new Color(1.0, 0.75, 0.75); } }
+                public static Color EDITOR_BACKGROUND { get { return new Color(0.9,0.95,1.0); } }
             }
 
             public static class Sizes
