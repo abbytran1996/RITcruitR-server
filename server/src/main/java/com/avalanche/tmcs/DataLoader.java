@@ -1,5 +1,6 @@
 package com.avalanche.tmcs;
 
+import com.avalanche.tmcs.Recruiter.Recruiter;
 import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;
@@ -122,6 +123,13 @@ public class DataLoader implements ApplicationRunner {
         ussr.setUser(user);
         ussr = companyDAO.save(ussr);
 
+        Recruiter lenin = new Recruiter();
+        lenin.setFirstName("Vladimir");
+        lenin.setLastName("Lenin");
+        lenin.setEmail("lenin@ussr.gov");
+        lenin.setCompany(ussr);
+        lenin.setPhoneNumber("555-555-5555");
+
         JobPosting seizer = new JobPosting();
         seizer.setPositionTitle("Seizer");
         seizer.setDescription("Seize the means of production");
@@ -134,6 +142,7 @@ public class DataLoader implements ApplicationRunner {
                 "They sell the milk for $5 per gallon. You can milk two cows per hour, and each cow produces two" +
                 "gallons of milk. How much are the bourgeoisie ripping you off by each hour?");
         seizer.setUrl("");
+        seizer.setRecruiter(lenin);
         jobPostingDAO.save(seizer);
 
         matchingService.registerStudent(karlMarx);

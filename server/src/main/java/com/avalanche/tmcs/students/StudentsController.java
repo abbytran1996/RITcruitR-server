@@ -5,6 +5,8 @@ import com.avalanche.tmcs.exceptions.ResourceNotFound;
 import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.MatchDAO;
 import com.avalanche.tmcs.matching.MatchingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 public class StudentsController {
+    private static final Logger LOG = LoggerFactory.getLogger(StudentsController.class);
+
     private StudentDAO studentDAO;
 
     private MatchDAO matchDAO;
@@ -45,6 +49,7 @@ public class StudentsController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Student> getStudent(@PathVariable long id) {
+        LOG.debug("Getting student with id " + id);
         validateStudentId(id);
         Student student = studentDAO.findOne(id);
         if(student == null) {
@@ -55,6 +60,7 @@ public class StudentsController {
 
     @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
     public ResponseEntity<Student> getStudentByName(@PathVariable String email) {
+        LOG.debug("Getting student with email " + email);
         Student student = studentDAO.findByEmail(email);
         if(student == null) {
             return ResponseEntity.notFound().build();

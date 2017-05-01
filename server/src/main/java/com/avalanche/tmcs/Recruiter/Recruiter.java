@@ -121,7 +121,7 @@ public class Recruiter {
 
     public Company getCompany() { return company; }
 
-    public void setCompany(long id) { this.company = company; }
+    public void setCompany(Company company) { this.company = company; }
 
     @Override
     public boolean equals(Object obj) {
