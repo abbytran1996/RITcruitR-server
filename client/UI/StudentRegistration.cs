@@ -5,6 +5,7 @@ using TMCS_Client.DTOs;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
+using TMCS_Client.CustomUIElements.Buttons;
 
 using Xamarin.Forms;
 
@@ -300,14 +301,8 @@ namespace TMCS_Client.UI
 										  AbsoluteLayoutFlags.WidthProportional);
 
             //Register Button
-            btnRegister = new Button()
-            {
-                Text = "Register",
-                FontSize = 24,
-                TextColor = Color.White,
-                BackgroundColor = Color.Blue,
-                Command = new Command((object obj) => register()),
-            };
+            btnRegister = new FormSubmitButton("Register");
+            btnRegister.Command = new Command((object obj) => register());
 
             registrationForm.Children.Add(btnRegister,
                                           new Rectangle(0.5, ((11.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
