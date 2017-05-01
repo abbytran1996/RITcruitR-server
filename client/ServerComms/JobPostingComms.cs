@@ -21,18 +21,15 @@ namespace TMCS_Client.ServerComms
         }
 
         public void deleteJobPosting(JobPosting toDelete){
-            string url = 
-            string.Format(Constants.JobPosting.DELETE_JOB_POSTING_RESOURCE, toDelete.id);
-            
-            var request = new RestRequest(url, Method.DELETE);
+            var request = new RestRequest(Constants.JobPosting.DELETE_JOB_POSTING_RESOURCE, Method.DELETE);
+            request.AddUrlSegment("id", toDelete.id.ToString());
 
             client.Execute(request);
         }
 
         public JobPosting getJobPostingById(long id){
-			string url =
-			string.Format(Constants.JobPosting.GET_JOB_POSTING_RESOURCE, id);
-            var request = new RestRequest(url, Method.GET);
+            var request = new RestRequest(Constants.JobPosting.GET_JOB_POSTING_RESOURCE, Method.GET);
+            request.AddUrlSegment("id", id.ToString());
 
             var response = client.Execute<JobPosting>(request);
 
@@ -40,10 +37,8 @@ namespace TMCS_Client.ServerComms
         }
 
         public List<JobPosting> getJobPostingsByRecruiter(long recruiterID){
-            string url =
-                string.Format(Constants.JobPosting.GET_JOB_POSTING_BY_RECRUITER_RESOURCE, recruiterID);
-
-            var request = new RestRequest(url, Method.GET);
+            var request = new RestRequest(Constants.JobPosting.GET_JOB_POSTING_BY_RECRUITER_RESOURCE, Method.GET);
+            request.AddUrlSegment("id", recruiterID.ToString());
 
             var response = client.Execute<List<JobPosting>>(request);
 
