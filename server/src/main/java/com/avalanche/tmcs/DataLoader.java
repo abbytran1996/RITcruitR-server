@@ -1,6 +1,7 @@
 package com.avalanche.tmcs;
 
 import com.avalanche.tmcs.Recruiter.Recruiter;
+import com.avalanche.tmcs.Recruiter.RecruiterRepository;
 import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;
@@ -38,6 +39,7 @@ public class DataLoader implements ApplicationRunner {
 
     private RoleDAO roleDAO;
 
+    private RecruiterRepository recruiterDAO;
     private CompanyDAO companyDAO;
     private JobPostingDAO jobPostingDAO;
     private StudentDAO studentDAO;
@@ -46,10 +48,11 @@ public class DataLoader implements ApplicationRunner {
     private MatchingService matchingService;
 
     @Autowired
-    public DataLoader(RoleDAO roleDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
+    public DataLoader(RoleDAO roleDAO, RecruiterRepository recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
                       UserService userService, SkillDAO skillDAO, MatchingService matchingService,
                       @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
+        this.recruiterDAO = recruiterDAO;
         this.companyDAO = companyDAO;
         this.jobPostingDAO = jobPostingDAO;
         this.studentDAO = studentDAO;
@@ -129,6 +132,7 @@ public class DataLoader implements ApplicationRunner {
         lenin.setEmail("lenin@ussr.gov");
         lenin.setCompany(ussr);
         lenin.setPhoneNumber("555-555-5555");
+        recruiterDAO.save(lenin);
 
         JobPosting seizer = new JobPosting();
         seizer.setPositionTitle("Seizer");

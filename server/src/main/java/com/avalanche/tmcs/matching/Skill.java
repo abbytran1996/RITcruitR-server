@@ -11,25 +11,33 @@ import javax.validation.constraints.NotNull;
 @Table(name="skills")
 public class Skill {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
     private String name;
 
-    public Skill() {}
+    public Skill(){}
 
-    public Skill(String name) {
+    public Skill(String name){
         this.name = name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public long getId() {
+        return id;
     }
 
-    public String getName(){
-        return this.name;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @NotNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

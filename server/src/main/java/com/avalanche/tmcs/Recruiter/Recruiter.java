@@ -43,12 +43,6 @@ public class Recruiter {
      */
 
     @NotNull
-    /**
-     * TODO: is this supposed to be implimented differently?
-     */
-    private String password;
-
-    @NotNull
     private String phoneNumber;
 
     public Recruiter(){}

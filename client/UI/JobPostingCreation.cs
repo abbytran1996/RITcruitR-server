@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TMCS_Client.Controllers;
@@ -33,7 +33,7 @@ namespace TMCS_Client.UI
         FormEditor editorDescription;
 
         //All Skills: Get the list of skills from skills controller call
-        List<Skill> allSkills = new List<Skill>{ new Skill() {id=0, name = "Communication" },
+        List<Skill> allSkills = new List<Skill>{ new Skill() {id=6, name = "Communication" },
             new Skill(){id=1,name = "Team Work"},
             new Skill(){id=2,name = "C/C++"},
             new Skill(){id=3,name = "Object Oriented Principles"},
@@ -327,10 +327,9 @@ namespace TMCS_Client.UI
             newJobPosting.recommendedSkillsWeight = 0.5;
             newJobPosting.url = "google.com";
             newJobPosting.requiredSkills = new List<Skill>(new Skill[]{allSkills[2],allSkills[1]});
-            newJobPosting.recommendedSkills = new List<Skill>(new Skill[] { allSkills[3], allSkills[0] });
+            newJobPosting.recommendedSkills = new List<Skill>(new Skill[] { allSkills[3] });
             newJobPosting.recruiter = new Recruiter(){
-                firstName = "Test",
-                lastName = "e",
+                id=1,
             };
             newJobPosting.problemStatement = "Find x.";
 
