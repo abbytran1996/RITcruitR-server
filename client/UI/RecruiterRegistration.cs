@@ -331,24 +331,30 @@ namespace TMCS_Client.UI
 		}
         public async Task<bool> SuffixCheck()
         {
-
+            
             //bool result;
-                   //if (txtCompanyEmail.Text != null){
-				//MailAddress address = new MailAddress(txtCompanyEmail.Text);
-				//string suffix = address.Host;
+            //if (txtCompanyEmail.Text != null){
+            MailAddress address = new MailAddress(txtCompanyEmail.Text);
+            string suffix = address.Host;
             //}
-            //TODO:if suffix is not in company table then - (pop up dialog); else return true
-            var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
-            if (ans == true)
-            {
-                await this.Navigation.PushAsync(new CompanyRegistration());
-                return ans;
-            }
-            else
-            {
-                return ans;
+            if (CompanyController.getCompanyController().getCompanyByEmailSuffix(suffix) == null){
+				var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
+				if (ans == true)
+				{
+					await this.Navigation.PushAsync(new CompanyRegistration());
+					return ans;
+				}
+				else
+				{
+					return ans;
 
+				}
             }
+            else{
+                txtCompanyName.Text = CompanyController.getCompanyController().getCompanyByEmailSuffix(suffix).companyName;
+                return true;
+            }
+
         }
 
 		private bool emailCheck()

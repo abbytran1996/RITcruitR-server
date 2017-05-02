@@ -64,6 +64,21 @@ namespace TMCS_Client.ServerComms
 
 			return response.Data;
 		}
+
+		///<summary>
+		/// gets the company by their name
+		/// </summary>
+		/// <param name="companyName"></param>
+		/// <returns>The status of the response</returns>
+		public Company getCompanyByName(string companyName)
+		{
+            string url = Constants.Company.GET_COMPANY_BY_NAME;
+            url.Replace("company_name", companyName);
+			var request = new RestRequest(url, Method.GET);
+			var response = client.Execute<Company>(request);
+
+			return response.Data;
+		}
 	}
 }
 

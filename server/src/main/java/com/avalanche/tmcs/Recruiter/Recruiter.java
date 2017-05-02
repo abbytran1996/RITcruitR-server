@@ -114,9 +114,9 @@ public class Recruiter {
 
     @NotNull
     @ManyToOne
-    public Company getCompany() { return company; }
+    public String getCompany() { return company; }
 
-    public void setCompany(Company company) { this.company = company; }
+    public void setCompany(String company) { this.company = company; }
 
     @Override
     public boolean equals(Object obj) {
