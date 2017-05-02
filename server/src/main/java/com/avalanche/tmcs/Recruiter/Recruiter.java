@@ -16,22 +16,14 @@ import javax.validation.constraints.Pattern;
 @Table(name="recruiters")
 public class Recruiter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
     private String firstName;
 
-    @NotNull
     private String lastName;
 
-    @NotNull
-    @Pattern(regexp = "^.+@.+\\..+$")
     private String email;
 
-    @NotNull
-    @ManyToOne
     private Company company;
 
     /**
@@ -42,7 +34,6 @@ public class Recruiter {
      * TODO: Interview Schedule
      */
 
-    @NotNull
     private String phoneNumber;
 
     public Recruiter(){}
@@ -73,6 +64,9 @@ public class Recruiter {
         if(newinfo.getPhoneNumber() !=null)
             phoneNumber = newinfo.getPhoneNumber();
     }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -81,6 +75,7 @@ public class Recruiter {
         this.id = id;
     }
 
+    @NotNull
     public String getFirstName() {
         return firstName;
     }
@@ -89,6 +84,7 @@ public class Recruiter {
         this.firstName = firstName;
     }
 
+    @NotNull
     public String getLastName() {
         return lastName;
     }
@@ -97,6 +93,8 @@ public class Recruiter {
         this.lastName = lastName;
     }
 
+    @NotNull
+    @Pattern(regexp = "^.+@.+\\..+$")
     public String getEmail() {
         return email;
     }
@@ -105,6 +103,7 @@ public class Recruiter {
         this.email = email;
     }
 
+    @NotNull
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -113,6 +112,8 @@ public class Recruiter {
         this.phoneNumber = phoneNumber;
     }
 
+    @NotNull
+    @ManyToOne
     public Company getCompany() { return company; }
 
     public void setCompany(Company company) { this.company = company; }

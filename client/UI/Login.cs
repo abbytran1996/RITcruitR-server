@@ -123,8 +123,8 @@ namespace TMCS_Client.UI
                     var student = StudentController.getStudentController().getStudent(email);
                     (App.Current as App).CurrentStudent = student;
                     Console.WriteLine("Student login detected");
-                    Navigation.PushAsync(new JobPostingCreation(null));
-                    //Navigation.PushAsync(new StudentHomepage());
+                    //Navigation.PushAsync(new JobPostingCreation(null));
+                    Navigation.PushAsync(new StudentHomepage());
                 } else if(role.name == Role.Name.Recruiter.ToString().ToLower()) {
                     // We're a recruiter!
                     Console.WriteLine("Recruiter login detected");

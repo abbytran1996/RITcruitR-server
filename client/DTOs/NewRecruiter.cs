@@ -48,9 +48,9 @@ namespace TMCS_Client.DTOs
             newRecruiter.firstName = firstName;
             newRecruiter.lastName = lastName;
             newRecruiter.email = email;
-            newRecruiter.companyName = companyName;
+            //newRecruiter.companyName = companyName;
             newRecruiter.phoneNumber = phoneNumber;
-            newRecruiter.location = location;
+            //newRecruiter.location = location;
             newRecruiter.password = password;
             newRecruiter.passwordConfirm = passwordConfirm;
 
