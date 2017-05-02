@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿using System;
 using TMCS_Client;
 using TMCS_Client.Controllers;
 using TMCS_Client.DTOs;
@@ -17,7 +17,14 @@ namespace TMCS_Client.UI
         private Entry emailEntry;
         private Entry passwordEntry;
 
-        private Login()
+#if __IOS__
+        const double ROW_HEIGHT = 0.4;
+#endif
+#if __ANDROID__
+		const double ROW_HEIGHT = 0.20;
+#endif
+
+		private Login()
         {
             Label lblTitle = new Label
             {
@@ -41,8 +48,8 @@ namespace TMCS_Client.UI
                 IsPassword = true,
             };
 
-            sectionLogin.Children.Add(emailEntry, new Rectangle(0.5,0.2,0.8,0.15), AbsoluteLayoutFlags.All);
-            sectionLogin.Children.Add(passwordEntry, new Rectangle(0.5, 0.4, 0.8, 0.15), AbsoluteLayoutFlags.All);
+            sectionLogin.Children.Add(emailEntry, new Rectangle(0.5,0.2,0.8,0.20), AbsoluteLayoutFlags.All);
+            sectionLogin.Children.Add(passwordEntry, new Rectangle(0.5, 0.5, 0.8, 0.2), AbsoluteLayoutFlags.All);
 
             sectionLogin.Children.Add(new Button() {
                 Text = "Login",
@@ -51,7 +58,7 @@ namespace TMCS_Client.UI
                 BackgroundColor = Color.Blue,
                 Command = new Command(doLogin)
 			},
-									  new Rectangle(0.5, 0.6, 0.6, 0.15), AbsoluteLayoutFlags.All);
+									  new Rectangle(0.5, 0.78, 0.6, 0.2), AbsoluteLayoutFlags.All);
 
             //THIS MUST GO IN LAST
 			sectionLogin.Children.Add(Constants.Forms.LoginStatusMessage.EMPTY,
@@ -78,7 +85,7 @@ namespace TMCS_Client.UI
                 BorderWidth = 2,
                 Command = new Command((object obj) => this.Navigation.PushAsync(RegistrationMain.getRegistrationMainPage())),
 			},
-										new Rectangle(0.5, 0.15, 0.25, 0.2),
+										new Rectangle(0.5, 0.2, 0.25, 0.25),
 										AbsoluteLayoutFlags.All);
 
             AbsoluteLayout pageContent = new AbsoluteLayout()

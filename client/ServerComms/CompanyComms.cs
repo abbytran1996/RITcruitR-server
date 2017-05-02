@@ -68,7 +68,7 @@ namespace TMCS_Client.ServerComms
 		///<summary>
 		/// gets the company by their name
 		/// </summary>
-		/// <param name="companyName"></param>
+		/// <param name="company"></param>
 		/// <returns>The status of the response</returns>
 		public Company getCompanyByName(string companyName)
 		{

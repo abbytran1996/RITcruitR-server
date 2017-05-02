@@ -51,7 +51,7 @@ namespace TMCS_Client.UI
                 HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
                 Command = new Command((object obj) => this.Navigation.PushAsync(new StudentRegistration())),
             },
-            new Rectangle(0.5, 0.6, 0.35, 0.15),AbsoluteLayoutFlags.All);
+            new Rectangle(0.5, 0.6, 0.4, 0.15),AbsoluteLayoutFlags.All);
            
             roleChoiceSection.Children.Add(new Button()
             {
@@ -64,7 +64,7 @@ namespace TMCS_Client.UI
                 HorizontalOptions = new LayoutOptions(LayoutAlignment.Fill, true),
                 Command = new Command((object obj) => this.Navigation.PushAsync(new RecruiterRegistration())),
             },
-                                      new Rectangle(0.5, 0.85 , 0.35, 0.15), AbsoluteLayoutFlags.All);
+                                      new Rectangle(0.5, 0.85 , 0.4, 0.15), AbsoluteLayoutFlags.All);
 
 
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMCS_Client.DTOs;
@@ -63,7 +63,7 @@ namespace TMCS_Client.UI
 
             registrationForm = new AbsoluteLayout()
             {
-                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 6.0),
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 10.0),
             };
 
 
