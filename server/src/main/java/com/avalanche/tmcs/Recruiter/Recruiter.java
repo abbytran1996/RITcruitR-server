@@ -24,7 +24,7 @@ public class Recruiter {
 
     private String email;
 
-    private String company;
+    private Company company;
 
     /**
      * TODO: Notification Preferences
@@ -114,9 +114,9 @@ public class Recruiter {
 
     @NotNull
     @ManyToOne
-    public String getCompany() { return company; }
+    public Company getCompany() { return company; }
 
-    public void setCompany(String company) { this.company = company; }
+    public void setCompany(Company company) { this.company = company; }
 
     @Override
     public boolean equals(Object obj) {
