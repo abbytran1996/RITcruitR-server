@@ -41,7 +41,7 @@ namespace TMCS_Client.ServerComms
 		/// <returns>The status of the response</returns>
 		public Company getCompanyById(long id)
 		{
-            string url = Constants.Company.GET_COMPANY_RESOURCE;
+            string url = Constants.Company.GET_COMPANY_BY_ID_RESOURCE;
 			url.Replace("{id}", id.ToString());
 			var request = new RestRequest(url, Method.GET);
 

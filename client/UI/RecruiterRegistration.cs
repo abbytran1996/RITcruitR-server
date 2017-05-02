@@ -309,7 +309,7 @@ namespace TMCS_Client.UI
 					txtFirstName.Text,
 					txtLastName.Text,
 					txtCompanyEmail.Text,
-					txtCompanyName.Text,
+                    txtCompanyName.Text,
 					txtPhoneNumber.Text.Replace("(", "").Replace(")", "")
 						.Replace(" ", "").Replace("-", ""),
                     txtLocation.Text.Replace(", ", ",").Split(',').ToString(),
@@ -331,11 +331,12 @@ namespace TMCS_Client.UI
 		}
         public async Task<bool> SuffixCheck()
         {
+
             //bool result;
-            //MailAddress address = new MailAddress(txtCompanyEmail.Text);
-            //string suffix = address.Host;
-
-
+                   //if (txtCompanyEmail.Text != null){
+				//MailAddress address = new MailAddress(txtCompanyEmail.Text);
+				//string suffix = address.Host;
+            //}
             //TODO:if suffix is not in company table then - (pop up dialog); else return true
             var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
             if (ans == true)

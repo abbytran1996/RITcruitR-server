@@ -24,7 +24,7 @@ public class Recruiter {
 
     private String email;
 
-    private Company company;
+    private String company;
 
     /**
      * TODO: Notification Preferences

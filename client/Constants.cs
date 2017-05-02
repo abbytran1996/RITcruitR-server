@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -33,7 +33,8 @@ namespace TMCS_Client
         public static class Company
         {
             public static string ADD_COMPANY_RESOURCE { get { return "/company"; } }
-			public static string GET_COMPANY_RESOURCE { get { return "/company/{id}"; } }
+			public static string GET_COMPANY_BY_ID_RESOURCE { get { return "/company/{id}"; } }
+            public static string GET_COMPANY_BY_SUFFIX_RESOURCE { get { return "/company/email_suffix"; } }
         }
         public static class Skill
         {
