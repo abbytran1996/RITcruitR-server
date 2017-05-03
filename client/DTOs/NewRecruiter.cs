@@ -22,7 +22,7 @@ namespace TMCS_Client.DTOs
 		/// <param name="firstName">The first name of the new recruiter</param>
 		/// <param name="lastName">The last name of the new recruiter</param>
 		/// <param name="email">The email address of the new recruiter</param>
-		/// <param name="companyName">The company the recruiter works for</param>
+		/// <param name="company">The company the recruiter works for</param>
 		/// <param name="phoneNumber">The phone number of the new recruiter</param>
 		/// <param name="location">The location the recruiter is working in</param>
 		/// <param name="password">The password that the new recruiter wants to use</param>
@@ -30,7 +30,7 @@ namespace TMCS_Client.DTOs
 		/// confirmation field. I included this parameter so that all the validation can happen in this method and 
 		/// nothing needs to happen in the OS-specific classes</param>
 		/// <returns>The created Recruiter</returns>
-        public static NewRecruiter CreateAndValidate(string firstName, string lastName, string email, string companyName,
+        public static NewRecruiter CreateAndValidate(string firstName, string lastName, string email, Company company,
                                                      string phoneNumber, string location,
 			string password, string passwordConfirm)
 		{
@@ -48,7 +48,7 @@ namespace TMCS_Client.DTOs
             newRecruiter.firstName = firstName;
             newRecruiter.lastName = lastName;
             newRecruiter.email = email;
-            newRecruiter.companyName = companyName;
+            newRecruiter.company = company;
             newRecruiter.phoneNumber = phoneNumber;
             newRecruiter.location = location;
             newRecruiter.password = password;

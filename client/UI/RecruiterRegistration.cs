@@ -303,13 +303,14 @@ namespace TMCS_Client.UI
 			{
 				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
 			}
-			else
-			{
+			else {
+                var company = CompanyController.getCompanyController().getCompanyByName(txtCompanyName.Text);
+
                 NewRecruiter newRecruiter = NewRecruiter.CreateAndValidate(
 					txtFirstName.Text,
 					txtLastName.Text,
 					txtCompanyEmail.Text,
-                    txtCompanyName.Text,
+                    company,
 					txtPhoneNumber.Text.Replace("(", "").Replace(")", "")
 						.Replace(" ", "").Replace("-", ""),
                     txtLocation.Text.Replace(", ", ",").Split(',').ToString(),

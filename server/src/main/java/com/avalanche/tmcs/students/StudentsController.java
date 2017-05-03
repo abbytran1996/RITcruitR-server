@@ -69,7 +69,7 @@ public class StudentsController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<String> addStudent(@RequestBody NewStudent newStudent) {
+    public ResponseEntity<Student> addStudent(@RequestBody NewStudent newStudent) {
         User newUser = new User(newStudent.getEmail(), newStudent.getPassword(), newStudent.getPasswordConfirm());
 
         newUser = userService.save(newUser, Role.RoleName.Student);
@@ -86,7 +86,7 @@ public class StudentsController {
                     .buildAndExpand(savedStudent.getId())
                     .toUri();
 
-            return ResponseEntity.created(location).build();
+            return ResponseEntity.created(location).body(savedStudent);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -110,7 +110,8 @@ public class StudentsController {
         if(student == null) {
             // 404
         }
-        return matchDAO.findAllByStudent(student);
+        List<Match> matches =  matchDAO.findAllByStudent(student);
+        return matches;
     }
 
     private void validateStudentId(long id) {

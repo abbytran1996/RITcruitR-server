@@ -16,5 +16,6 @@ namespace TMCS_Client.DTOs
         public long phaseTimeout { get; set; }
         public string problemStatement { get; set; }
         public string url { get; set; }
+        public Company company { get; set; }
     }
 }

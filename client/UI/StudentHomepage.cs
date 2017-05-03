@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using TMCS_Client.Controllers;
-using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
 namespace TMCS_Client.UI {
@@ -18,6 +14,8 @@ namespace TMCS_Client.UI {
         public StudentHomepage() {
             loadMatches();
 
+            pageContent.Content = matchesList;
+
             Content = pageContent;
         }
 
@@ -30,27 +28,45 @@ namespace TMCS_Client.UI {
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
             var postings = matches.Where(match => match.matchStrength > 0.1)
-                                  .Select(match => match.jobPosting);
+                                  .Select(match => new CellData() {
+                                      PositionTitle = match.jobPosting.positionTitle,
+                                      CompanyName = match.jobPosting.recruiter.company.companyName,
+                                      Location = match.jobPosting.location
+                                  });
+
             matchesList.ItemsSource = postings;
+            matchesList.RowHeight = 80;
+        }
+
+        class CellData {
+            public string PositionTitle { get; set; }
+            public string CompanyName { get; set; }
+            public string Location { get; set; }
         }
 
         class MatchCell : ViewCell {
             public MatchCell() {
+                StackLayout cellWrapper = new StackLayout();
                 StackLayout layout = new StackLayout();
 
                 Label title = new Label();
                 Label company = new Label();
                 Label location = new Label();
 
-                title.SetBinding(Label.TextProperty, "positionTitle");
-                company.SetBinding(Label.TextProperty, "company.companyName");
-                location.SetBinding(Label.TextProperty, "location");
+                title.Text = "Position Title";
+                company.Text = "Company";
+                location.Text = "Location";
+
+                //title.SetBinding(Label.TextProperty, new Binding("positionTitle"));
+                //company.SetBinding(Label.TextProperty, new Binding("company.companyName"));
+                //location.SetBinding(Label.TextProperty, new Binding("location"));
 
                 layout.Children.Add(title);
                 layout.Children.Add(company);
                 layout.Children.Add(location);
+                cellWrapper.Children.Add(layout);
 
-                View = layout;
+                View = cellWrapper;
             }
         }
     }
