@@ -14,14 +14,17 @@ namespace TMCS_Client.UI
 
         private AbsoluteLayout sectionLogin = null;
 
+        private Entry statusMessage;
         private Entry emailEntry;
         private Entry passwordEntry;
 
+        private ActivityIndicator loginBusyIndicator;
+
 #if __IOS__
-        const double ROW_HEIGHT = 0.4;
+        //const double ROW_HEIGHT = 0.4;
 #endif
 #if __ANDROID__
-		const double ROW_HEIGHT = 0.20;
+		//const double ROW_HEIGHT = 0.20;
 #endif
 
 		private Login()
@@ -60,8 +63,7 @@ namespace TMCS_Client.UI
 			},
 									  new Rectangle(0.5, 0.78, 0.6, 0.2), AbsoluteLayoutFlags.All);
 
-            //THIS MUST GO IN LAST
-			sectionLogin.Children.Add(Constants.Forms.LoginStatusMessage.EMPTY,
+			sectionLogin.Children.Add(statusMessage = Constants.Forms.LoginStatusMessage.EMPTY,
 									 new Rectangle(0.5, 0, 0.8, 0.15),
 									 AbsoluteLayoutFlags.All);
 
@@ -98,6 +100,14 @@ namespace TMCS_Client.UI
                                       AbsoluteLayoutFlags.All);
             pageContent.Children.Add(sectionRegister, new Rectangle(0, 1.0, 1.0, 0.3),
                                       AbsoluteLayoutFlags.All);
+            pageContent.Children.Add(loginBusyIndicator = new ActivityIndicator(),
+                                    new Rectangle(0, 0, 1.0, 1.0), AbsoluteLayoutFlags.All);
+
+            loginBusyIndicator.IsEnabled = true;
+            loginBusyIndicator.IsRunning = true;
+            loginBusyIndicator.IsVisible = false;
+            loginBusyIndicator.Color = Color.Black;
+            loginBusyIndicator.Scale = 2.0;
 
             Content = pageContent;
         }
@@ -111,32 +121,47 @@ namespace TMCS_Client.UI
         }
 
         public void updateLoginStatusMessage(Entry newLoginStatusMessage){
-            sectionLogin.Children.RemoveAt(sectionLogin.Children.Count - 1);
-            sectionLogin.Children.Add(newLoginStatusMessage,
-                                     new Rectangle(0.5,0,0.8,0.15),
-                                     AbsoluteLayoutFlags.All);
+            sectionLogin.Children.Remove(statusMessage);
+            statusMessage = newLoginStatusMessage;
+			sectionLogin.Children.Add(statusMessage, new Rectangle(0.5, 0, 0.8, 0.15),
+									 AbsoluteLayoutFlags.All);
         }
 
         public void doLogin(object obj) {
+            loginBusyIndicator.IsVisible = true;
+
             var email = emailEntry.Text;
             var password = passwordEntry.Text;
 
             var serverController = ServerController.getServerController();
             var user = serverController.login(email, password);
 
-            foreach (var role in user.roles) {
-                if(role.name == Role.Name.Student.ToString().ToLower()) {
-                    // We're a student!
-                    var student = StudentController.getStudentController().getStudent(email);
-                    (App.Current as App).CurrentStudent = student;
-                    Console.WriteLine("Student login detected");
-                    //Navigation.PushAsync(new JobPostingCreation(null));
-                    Navigation.PushAsync(new StudentHomepage());
-                } else if(role.name == Role.Name.Recruiter.ToString().ToLower()) {
-                    // We're a recruiter!
-                    Console.WriteLine("Recruiter login detected");
+            if (user == null)
+            {
+                updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.USERNAME_OR_PASSWORD_INVALID);
+            }
+            else
+            {
+
+                foreach (var role in user.roles)
+                {
+                    if (role.name == Role.Name.Student.ToString().ToLower())
+                    {
+                        // We're a student!
+                        var student = StudentController.getStudentController().getStudent(email);
+                        (App.Current as App).CurrentStudent = student;
+                        Console.WriteLine("Student login detected");
+                        Navigation.InsertPageBefore(new StudentHomepage(), Login.getLoginPage());
+                        Navigation.PopToRootAsync(false);
+                    }
+                    else if (role.name == Role.Name.Recruiter.ToString().ToLower())
+                    {
+                        // We're a recruiter!
+                        Console.WriteLine("Recruiter login detected");
+                    }
                 }
             }
+            loginBusyIndicator.IsVisible = false;
         }
     }
 }
