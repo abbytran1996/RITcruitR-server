@@ -64,6 +64,7 @@ namespace TMCS_Client
             {
                 public static Color SUCCESS { get { return new Color(0.75, 1.0, 0.75); } }
                 public static Color FAILURE { get { return new Color(1.0, 0.75, 0.75); } }
+                public static Color WARNING{ get { return new Color(1.0, 1.0, 0.4); } }
                 public static Color EDITOR_BACKGROUND { get { return new Color(0.9,0.95,1.0); } }
             }
 
@@ -102,6 +103,16 @@ namespace TMCS_Client
                     BackgroundColor = Colors.FAILURE,
                     HorizontalTextAlignment = TextAlignment.Center,
                     FontSize = 14.0,
+				};
+
+				public static Entry SERVER_CONNECTION_FAILURE = new Entry()
+				{
+					IsEnabled = false,
+					IsVisible = true,
+					Text = "Failed to connect, check connection.",
+					BackgroundColor = Colors.WARNING,
+					HorizontalTextAlignment = TextAlignment.Center,
+					FontSize = 14.0,
 				};
             }
         }

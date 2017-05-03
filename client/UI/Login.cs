@@ -138,6 +138,9 @@ namespace TMCS_Client.UI
 
             if (user == null)
             {
+                updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.SERVER_CONNECTION_FAILURE);
+            }
+            else if(user.id == -1){
                 updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.USERNAME_OR_PASSWORD_INVALID);
             }
             else
