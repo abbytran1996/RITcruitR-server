@@ -61,6 +61,8 @@ namespace TMCS_Client.UI
 
 		public RecruiterRegistration()
 		{
+            this.Title = "Recruiter Registration";
+
 			//Whole page
 			pageContent = new ScrollView()
 			{
@@ -69,7 +71,7 @@ namespace TMCS_Client.UI
 
 			registrationForm = new AbsoluteLayout()
 			{
-                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 11.0),
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 9.0),
 			};
 
 

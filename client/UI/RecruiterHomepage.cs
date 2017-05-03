@@ -11,15 +11,19 @@ namespace TMCS_Client.UI
         public RecruiterHomepage(Recruiter recruiter)
         {
             loggedInRecruiter = recruiter;
+            this.Title = "Job Postings";
 #if __IOS__
             ToolbarItem btnAddJobPosting;
             ToolbarItems.Add(btnAddJobPosting = new ToolbarItem()
             {
                 Icon = "TMCS_Client.iOS.Resources.add.png",
             });
-            btnAddJobPosting.Clicked += (object sender, EventArgs e) => 
-                Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
 #endif
+#if __ANDROID__
+
+#endif
+			btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
+				Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
         }
     }
 }

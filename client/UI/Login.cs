@@ -29,6 +29,8 @@ namespace TMCS_Client.UI
 
 		private Login()
         {
+            this.Title = "Login";
+
             Label lblTitle = new Label
             {
                 Text = "RecruitR",

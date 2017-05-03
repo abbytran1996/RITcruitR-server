@@ -80,6 +80,8 @@ namespace TMCS_Client.UI
 
         public JobPostingCreation(Recruiter associatedRecruiter)
         {
+            this.Title = "Job Posting Creation";
+
             this.associatedRecruiter = associatedRecruiter;
 
             //get scills

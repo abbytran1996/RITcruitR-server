@@ -55,6 +55,8 @@ namespace TMCS_Client.UI
 
         public CompanyRegistration()
         {
+            this.Title = "Company Registration";
+
             //Whole page
             pageContent = new ScrollView()
             {
