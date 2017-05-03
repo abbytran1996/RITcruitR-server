@@ -364,7 +364,7 @@ namespace TMCS_Client.UI
 
                 try
                 {
-                    /*(Application.Current as App).CurrentStudent =*/ StudentController.getStudentController().addStudent(newStudent);
+                    (Application.Current as App).CurrentStudent = StudentController.getStudentController().addStudent(newStudent);
                     Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
                     Navigation.PopToRootAsync();
                 }catch(Exception e){

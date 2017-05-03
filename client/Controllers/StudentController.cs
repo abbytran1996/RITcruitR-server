@@ -45,14 +45,15 @@ namespace TMCS_Client.Controllers {
         /// <param name="newStudent"></param>
         /// <returns>The status of the response</returns>
         /// <exception cref="RestException">Throws a RestException when the server doesn't return a success</exception>
-        public void addStudent(NewStudent newStudent) {
+        public Student addStudent(NewStudent newStudent) {
             var request = new RestRequest(Constants.Students.ADD_STUDENT_RESOURCE, Method.POST);
 
             request.RequestFormat = DataFormat.Json;
             request.AddBody(newStudent);
 
-            var response = client.Execute(request);
+            var response = client.Execute<Student>(request);
             ensureStatusCode(response, HttpStatusCode.Created);
+            return response.Data;
         }
 
         /// <summary>

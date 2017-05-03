@@ -163,7 +163,7 @@ namespace TMCS_Client.UI
                         Console.WriteLine("Recruiter login detected");
                     }
                 }
-            }
+            } 
             loginBusyIndicator.IsVisible = false;
         }
     }

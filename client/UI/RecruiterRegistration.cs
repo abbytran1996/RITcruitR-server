@@ -48,12 +48,7 @@ namespace TMCS_Client.UI
 		//Phone Number
 		private FormFieldLabel lblPhoneNumber;
 		private FormEntry txtPhoneNumber;
-
-		//Location
-		private FormFieldLabel lblLocation;
-		private FormEntry txtLocation;
-
-
+        
 		//Register Button
 		private Button btnRegister;
 
@@ -233,33 +228,13 @@ namespace TMCS_Client.UI
 									   new FormEntry("(xxx) xxx-xxxx", Keyboard.Numeric),
 									   new Rectangle(0.5, 1.0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
-
-			txtPhoneNumber.Completed += (object sender, EventArgs e) => txtLocation.Focus();
+            
 			txtPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => PhoneNumberUpdate();
 
 			registrationForm.Children.Add(phoneNumberInput,
 										 new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
-			//Prefered Location
-			AbsoluteLayout LocationInput = new AbsoluteLayout()
-			{
-			};
-
-			LocationInput.Children.Add(lblLocation=
-									   new FormFieldLabel("Office Location"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-			LocationInput.Children.Add(txtLocation =
-									   new FormEntry("State, State, ...", Keyboard.Text),
-									   new Rectangle(0.5, 1.0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-
-			registrationForm.Children.Add(LocationInput,
-										 new Rectangle(0, 8.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
             //Company Description
 
 			//Register Button
@@ -273,7 +248,7 @@ namespace TMCS_Client.UI
 			};
 
 			registrationForm.Children.Add(btnRegister,
-										 new Rectangle(0.5, 9 * Constants.Forms.Sizes.ROW_HEIGHT + 20, 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
+										 new Rectangle(0.5, 8 * Constants.Forms.Sizes.ROW_HEIGHT + 20, 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
 										  AbsoluteLayoutFlags.WidthProportional |
 										 AbsoluteLayoutFlags.XProportional);
 
@@ -319,16 +294,16 @@ namespace TMCS_Client.UI
 			{
 				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
 			}
-			else
-			{
+			else {
+                var company = CompanyController.getCompanyController().getCompanyByName(txtCompanyName.Text);
+
                 NewRecruiter newRecruiter = NewRecruiter.CreateAndValidate(
 					txtFirstName.Text,
 					txtLastName.Text,
 					txtCompanyEmail.Text,
-                    txtCompanyName.Text,
+                    company,
 					txtPhoneNumber.Text.Replace("(", "").Replace(")", "")
 						.Replace(" ", "").Replace("-", ""),
-                    txtLocation.Text.Replace(", ", ",").Split(',').ToString(),
                     txtPassword.Text,
                     txtRetypePassword.Text
 				);

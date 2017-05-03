@@ -16,5 +16,6 @@ namespace TMCS_Client.DTOs {
         public List<string> preferredStates { get; set; }
         public string preferredCompanySize { get; set; }
         public int id { get; internal set; }
+        public User user { get; set; }
     }
 }

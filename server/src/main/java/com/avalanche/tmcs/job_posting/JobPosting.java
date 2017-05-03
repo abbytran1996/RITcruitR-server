@@ -160,7 +160,6 @@ public class JobPosting {
     public void setUrl(String url) {
         this.url = url;
     }
-
 }
 
 enum Status{
