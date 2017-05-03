@@ -102,7 +102,9 @@ public class DataLoader implements ApplicationRunner {
         savedSkills.forEach(skills::add);
 
         User user = new User("karl_marx@gmail.edu", "pr0lehero!", "pr0lehero!");
+        User user1 = new User("lenin@ussr.gov", "pr0lehero!", "pr0lehero!");
         user = userService.save(user, Role.RoleName.Student);
+        user1 = userService.save(user1, Role.RoleName.Recruiter);
 
         Student karlMarx = new Student();
         karlMarx.setFirstName("Karl");
@@ -121,7 +123,7 @@ public class DataLoader implements ApplicationRunner {
         ussr.setSize(Company.Size.HUGE);
         ussr.setApprovalStatus(true);
         ussr.setCompanyDescription("Union of Soviet Socialist Republics");
-        ussr.setEmailSuffix("@ussr.gov");
+        ussr.setEmailSuffix("ussr.gov");
         ussr.setPresentation(new File("E:\\Documents\\TMCS\\server"));
         ussr.setUser(user);
         ussr = companyDAO.save(ussr);

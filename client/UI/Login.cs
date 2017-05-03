@@ -160,7 +160,11 @@ namespace TMCS_Client.UI
                     else if (role.name == Role.Name.Recruiter.ToString().ToLower())
                     {
                         // We're a recruiter!
+                        var recruiter = RecruiterController.getRecruiterController().getRecruiter(email);
+                        //
                         Console.WriteLine("Recruiter login detected");
+                        Navigation.InsertPageBefore(new RecruiterHomepage(recruiter), Login.getLoginPage());
+                        Navigation.PopToRootAsync(false);
                     }
                 }
             } 

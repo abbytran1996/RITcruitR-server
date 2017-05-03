@@ -35,14 +35,10 @@ namespace TMCS_Client.ServerComms {
 
         internal Recruiter getRecruiter(string email) {
             var request = new RestRequest(Constants.Recruiters.GET_RECRUITER_BY_EMAIL_RESOURCE, Method.GET);
+			request.AddUrlSegment("email", email);
+			request.RequestFormat = DataFormat.Json;
 
             var response = client.Execute<Recruiter>(request);
-            if(response.StatusCode != System.Net.HttpStatusCode.OK) {
-                if(response.ErrorException != null) {
-                    throw response.ErrorException;
-                }
-                throw new RestException(response.StatusCode);
-            }
 
             return response.Data;
         }
