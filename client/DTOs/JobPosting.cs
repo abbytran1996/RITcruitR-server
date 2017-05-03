@@ -5,6 +5,7 @@ namespace TMCS_Client.DTOs
     public class JobPosting
     {
         public long id { get; set; }
+        public int status { get; set; }
         public string positionTitle { get; set; }
         public string description { get; set; }
         public List<Skill> requiredSkills { get; set; }
@@ -16,6 +17,5 @@ namespace TMCS_Client.DTOs
         public long phaseTimeout { get; set; }
         public string problemStatement { get; set; }
         public string url { get; set; }
-        public Company company { get; set; }
     }
 }

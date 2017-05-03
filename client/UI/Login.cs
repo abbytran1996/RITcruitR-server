@@ -122,22 +122,27 @@ namespace TMCS_Client.UI
             var password = passwordEntry.Text;
 
             var serverController = ServerController.getServerController();
-            var user = serverController.login(email, password);
 
-            foreach (var role in user.roles) {
-                if(role.name == Role.Name.Student.ToString().ToLower()) {
-                    // We're a student!
-                    var student = StudentController.getStudentController().getStudent(email);
-                    (App.Current as App).CurrentStudent = student;
-                    Console.WriteLine("Student login detected");
-                    //Navigation.PushAsync(new JobPostingCreation(null));
-                    Navigation.PushAsync(new StudentHomepage());
-                } else if(role.name == Role.Name.Recruiter.ToString().ToLower()) {
-                    // We're a recruiter!
-                    Console.WriteLine("Recruiter login detected");
+            try {
+                var user = serverController.login(email, password);
+
+                foreach(var role in user.roles) {
+                    if(role.name == Role.Name.Student.ToString().ToLower()) {
+                        // We're a student!
+                        var student = StudentController.getStudentController().getStudent(email);
+                        (App.Current as App).CurrentStudent = student;
+                        Console.WriteLine("Student login detected");
+                        //Navigation.PushAsync(new JobPostingCreation(null));
+                        Navigation.PushAsync(new StudentHomepage());
+                    } else if(role.name == Role.Name.Recruiter.ToString().ToLower()) {
+                        // We're a recruiter!
+                        Console.WriteLine("Recruiter login detected");
+                    }
                 }
+            } catch(Exception e) {
+                Console.WriteLine("Could not log in. This is probably a username/password error Error:\n" + e.ToString());
             }
-        }
+         }
     }
 }
 

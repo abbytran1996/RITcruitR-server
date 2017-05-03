@@ -29,9 +29,9 @@ namespace TMCS_Client.UI {
 
             var postings = matches.Where(match => match.matchStrength > 0.1)
                                   .Select(match => new CellData() {
-                                      PositionTitle = match.jobPosting.positionTitle,
-                                      CompanyName = match.jobPosting.recruiter.company.companyName,
-                                      Location = match.jobPosting.location
+                                      PositionTitle = match.job.positionTitle,
+                                      CompanyName = match.job.recruiter.company.companyName,
+                                      Location = match.job.location
                                   });
 
             matchesList.ItemsSource = postings;
@@ -53,13 +53,13 @@ namespace TMCS_Client.UI {
                 Label company = new Label();
                 Label location = new Label();
 
-                title.Text = "Position Title";
-                company.Text = "Company";
-                location.Text = "Location";
+                //title.Text = "Position Title";
+                //company.Text = "Company";
+                //location.Text = "Location";
 
-                //title.SetBinding(Label.TextProperty, new Binding("positionTitle"));
-                //company.SetBinding(Label.TextProperty, new Binding("company.companyName"));
-                //location.SetBinding(Label.TextProperty, new Binding("location"));
+                title.SetBinding(Label.TextProperty, new Binding("PositionTitle"));
+                company.SetBinding(Label.TextProperty, new Binding("CompanyName"));
+                location.SetBinding(Label.TextProperty, new Binding("Location"));
 
                 layout.Children.Add(title);
                 layout.Children.Add(company);

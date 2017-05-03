@@ -31,8 +31,7 @@ namespace TMCS_Client.DTOs
 		/// nothing needs to happen in the OS-specific classes</param>
 		/// <returns>The created Recruiter</returns>
         public static NewRecruiter CreateAndValidate(string firstName, string lastName, string email, Company company,
-                                                     string phoneNumber, string location,
-			string password, string passwordConfirm)
+                                                     string phoneNumber, string password, string passwordConfirm)
 		{
 
 			// Validation
@@ -50,7 +49,6 @@ namespace TMCS_Client.DTOs
             newRecruiter.email = email;
             newRecruiter.company = company;
             newRecruiter.phoneNumber = phoneNumber;
-            newRecruiter.location = location;
             newRecruiter.password = password;
             newRecruiter.passwordConfirm = passwordConfirm;
 

@@ -1,5 +1,8 @@
 package com.avalanche.tmcs.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.util.HashSet;
@@ -37,6 +40,7 @@ public class User {
         setUsername(username);
         setPassword(password);
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
@@ -55,19 +59,23 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
 
+    @JsonIgnore
     @Transient
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
 
+    @JsonProperty
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
