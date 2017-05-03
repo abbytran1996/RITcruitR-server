@@ -133,6 +133,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <LogicalName>TMCS_Client.iOS.Resources.add.png</LogicalName>
     </BundleResource>
+    <BundleResource Include="Resources\approve.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>TMCS_Client.iOS.Resources.approve.png</LogicalName>
+    </BundleResource>
+    <BundleResource Include="Resources\reject.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>TMCS_Client.iOS.Resources.reject.png</LogicalName>
+    </BundleResource>
   </ItemGroup>
   <Import Project="..\TMCS_Client.projitems" Label="Shared" Condition="Exists('..\TMCS_Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
