@@ -47,7 +47,7 @@ namespace TMCS_Client.Controllers
         {
             return companyComms.getCompanyByEmailSuffix(emailSuffix);
         }
-		public Company getCompanyByName(string companyName)
+        public Company getCompanyByName(string companyName)
 		{
             return companyComms.getCompanyByName(companyName);
 		}

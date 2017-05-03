@@ -234,7 +234,7 @@ namespace TMCS_Client.UI
 			registrationForm.Children.Add(phoneNumberInput,
 										 new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
-            
+
             //Company Description
 
 			//Register Button
@@ -258,7 +258,7 @@ namespace TMCS_Client.UI
 
 		}
 
-		private void register()
+		private async void register()
 		{
 			String invalidDataMessage = "";
 
@@ -266,10 +266,26 @@ namespace TMCS_Client.UI
 			{
 				invalidDataMessage += "Email is not in proper format.\n";
 			}
-			if (!passwordCheck())
-			{
-				invalidDataMessage += "Password does not meet the complexity requirements.\n";
-			}
+            if (!SuffixCheck().Result)
+            {
+                invalidDataMessage += "Company Email must be registered before Recruiter can.\n";
+				var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
+				if (ans == true)
+				{
+					await this.Navigation.PushAsync(new CompanyRegistration());
+					return;
+				}
+				else
+				{
+                    return;
+
+				}
+            }
+
+            if (!passwordCheck())
+                {
+                    invalidDataMessage += "Password does not meet the complexity requirements.\n";
+                }
 			if (!retypePasswordCheck())
 			{
 				invalidDataMessage += "Passwords do not match.\n";
@@ -296,7 +312,7 @@ namespace TMCS_Client.UI
 				{
                     RecruiterController.getRecruiterController().addRecruiter(newRecruiter);
                     Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
-					Navigation.PopToRootAsync();
+					await Navigation.PopToRootAsync();
 				}
 				catch (Exception e)
 				{
@@ -306,29 +322,40 @@ namespace TMCS_Client.UI
 		}
         public async Task<bool> SuffixCheck()
         {
-            
-            //bool result;
-            //if (txtCompanyEmail.Text != null){
-            MailAddress address = new MailAddress(txtCompanyEmail.Text);
-            string suffix = address.Host;
-            //}
-            if (CompanyController.getCompanyController().getCompanyByEmailSuffix(suffix) == null){
-				var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
-				if (ans == true)
-				{
-					await this.Navigation.PushAsync(new CompanyRegistration());
-					return ans;
-				}
-				else
-				{
-					return ans;
 
-				}
-            }
-            else{
-                txtCompanyName.Text = CompanyController.getCompanyController().getCompanyByEmailSuffix(suffix).companyName;
-                return true;
-            }
+            //bool result;
+            //if (txtCompanyEmail.Text == null)
+            try
+                {
+                    MailAddress address = new MailAddress(txtCompanyEmail.Text);
+                    string suffix = address.Host;
+
+                var CompanySuffix = CompanyController.getCompanyController().getCompanyByEmailSuffix(suffix);
+
+                if (CompanySuffix.emailSuffix == null)
+                    {
+                        var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
+                        if (ans == true)
+                        {
+                            await this.Navigation.PushAsync(new CompanyRegistration());
+                            return ans;
+                        }
+                        else
+                        {
+                            return ans;
+
+                        }
+                    }
+                    else
+                    {
+                        txtCompanyName.Text = CompanySuffix.companyName;
+                        return true;
+                    }
+                }
+                catch
+                {
+                    return true;
+                }
 
         }
 

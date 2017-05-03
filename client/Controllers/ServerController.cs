@@ -28,8 +28,13 @@ namespace TMCS_Client.Controllers {
             body["password"] = password;
             request.AddBody(body);
 
+            //Maybe wrap with try to catch exception for if no actual network is available
             var response = client.Execute<User>(request);
-            ensureStatusCode(response, System.Net.HttpStatusCode.OK);
+            //TODO change what this compares too, maybe send -1 from server for no student
+            if (response.Data.id == 0){
+                return null;
+            }
+            //ensureStatusCode(response, System.Net.HttpStatusCode.OK);
             
             foreach(var cookie in response.Cookies) {
                 if(cookie.Name == "JSESSIONID") {
