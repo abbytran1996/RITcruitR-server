@@ -12,7 +12,7 @@ namespace TMCS_Client.DTOs
 	public class Company
 	{
         public long id { get; set; }
-		public string companyName { get; set; }
+        public string companyName { get; set; }
         public string emailSuffix { get; set; }
         //public string phoneNumber { get; set; }
 		public string location { get; set; }

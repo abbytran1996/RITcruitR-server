@@ -34,8 +34,8 @@ namespace TMCS_Client
         {
             public static string ADD_COMPANY_RESOURCE { get { return "/company"; } }
 			public static string GET_COMPANY_BY_ID_RESOURCE { get { return "/company/{id}"; } }
-            public static string GET_COMPANY_BY_SUFFIX_RESOURCE { get { return "/company/email_suffix"; } }
-            public static string GET_COMPANY_BY_NAME{ get { return "/company/company_name"; } }
+            public static string GET_COMPANY_BY_SUFFIX_RESOURCE { get { return "/company/{emailSuffix}"; } }
+            public static string GET_COMPANY_BY_NAME{ get { return "/company/{company_name}"; } }
         }
         public static class Skill
         {
@@ -57,10 +57,6 @@ namespace TMCS_Client
             public static string RECRUITER { get { return "[a-zA-Z0-9]*@[a-zA-Z\\.]*\\.*"; } }
         }
 
-        public static class CompanyEmailSuffix
-        {
-            public static string COMPANYEMAILSUFFIX { get { return "/company/email_suffix"; } }
-        } 
 
         public static class Forms
         {
