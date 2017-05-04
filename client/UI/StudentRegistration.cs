@@ -65,6 +65,8 @@ namespace TMCS_Client.UI
         
         public StudentRegistration()
         {
+            this.Title = "Student Registration";
+
             //Whole page
             pageContent = new ScrollView()
             {

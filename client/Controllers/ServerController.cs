@@ -1,4 +1,6 @@
 ﻿using RestSharp;
+using System;
+using System.Net;
 using System.Collections.Generic;
 using TMCS_Client.DTOs;
 using TMCS_Client.ServerComms;
@@ -28,11 +30,17 @@ namespace TMCS_Client.Controllers {
             body["password"] = password;
             request.AddBody(body);
 
-            //Maybe wrap with try to catch exception for if no actual network is available
             var response = client.Execute<User>(request);
-            //TODO change what this compares too, maybe send -1 from server for no student
-            if (response.Data.id == 0){
+            if((response.ErrorException != null) && 
+               (response.ErrorException.GetType() == typeof(System.Net.WebException))){
                 return null;
+            }
+            else if (response.Data.id == 0)
+            {
+                return new User()
+                {
+                    id = -1,
+                };
             }
             //ensureStatusCode(response, System.Net.HttpStatusCode.OK);
             

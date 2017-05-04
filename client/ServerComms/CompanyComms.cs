@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Text;
 using TMCS_Client.DTOs;
 using TMCS_Client.UI;
+using System.Net;
+using TMCS_Client.ServerComms;
 
 namespace TMCS_Client.ServerComms
 {
 	/// <summary>
 	/// Allows someone to interact with the server's Company API
 	/// </summary>
-	class CompanyComms
+    public class CompanyComms
 	{
         RestClient client = (App.Current as App).Server;
 		/// <summary>

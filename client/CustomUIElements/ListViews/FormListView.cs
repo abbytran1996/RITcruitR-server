@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using TMCS_Client.CustomUIElements.SearchBars;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using TMCS_Client.DTOs;
 
 namespace TMCS_Client.CustomUIElements.ListViews
@@ -24,6 +25,7 @@ namespace TMCS_Client.CustomUIElements.ListViews
             SeparatorVisibility = SeparatorVisibility.None;
             base.ItemsSource = items;
             base.ItemTemplate = new DataTemplate(typeof(CustomDisplayCell));
+            base.HasUnevenRows = true;
         }
 
         public void addItem(T newItem){
@@ -39,6 +41,11 @@ namespace TMCS_Client.CustomUIElements.ListViews
             if(items.Count == 0){
                 items.Add(emptyListItem); 
             }
+        }
+
+        public void clearItems(){
+            items.Clear();
+            items.Add(emptyListItem);
         }
     }
 }

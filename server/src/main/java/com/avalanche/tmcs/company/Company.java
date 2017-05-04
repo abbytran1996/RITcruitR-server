@@ -38,7 +38,7 @@ public class Company {
 
     private String emailSuffix;
 
-    private File presentation;
+    private String presentation;
 
     private String companyDescription;
 
@@ -73,7 +73,7 @@ public class Company {
 
     public void setSize(Size size) {this.size = size;}
 
-    @NotNull
+//    @NotNull
     public Boolean getApprovalStatus(){return approvalStatus;}
 
     public void setApprovalStatus(Boolean approvalStatus) {this.approvalStatus = approvalStatus;}
@@ -83,10 +83,10 @@ public class Company {
 
     public void setEmailSuffix(String emailSuffix) {this.emailSuffix = emailSuffix;}
 
-    @NotNull
-    public File getPresentation(){return presentation;}
+//    @NotNull
+    public String getPresentation(){return presentation;}
 
-    public void setPresentation(File presentation) {this.presentation = presentation;}
+    public void setPresentation(String presentation) {this.presentation = presentation;}
 
 
     @NotNull
@@ -99,7 +99,7 @@ public class Company {
     }
 
     @OneToOne
-    @NotNull
+ //   @NotNull
     public User getUser() {
         return user;
     }

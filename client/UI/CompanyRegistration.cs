@@ -40,7 +40,9 @@ namespace TMCS_Client.UI
         private FormFieldLabel lblCompanySize;
         private FormEntry txtCompanySize;
 
-        //TODO: Company Presentation Field, may need to add nuget package for youtube plugin
+        //Company Presentation
+        private FormFieldLabel lblPresentationLink;
+        private FormEntry txtPresentationLink;
 
 
         //Register Button
@@ -55,6 +57,8 @@ namespace TMCS_Client.UI
 
         public CompanyRegistration()
         {
+            this.Title = "Company Registration";
+
             //Whole page
             pageContent = new ScrollView()
             {
@@ -173,7 +177,7 @@ namespace TMCS_Client.UI
 
 
             registrationForm.Children.Add(Descriptionlbl,
-                                         new Rectangle(0, 5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                         new Rectangle(0, 4 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
             
 			AbsoluteLayout DescriptionInput = new AbsoluteLayout()
@@ -182,15 +186,36 @@ namespace TMCS_Client.UI
 			DescriptionInput.Children.Add(txtCompanyDescription =
 									  new Editor
 									  {
-										  Text = "Company Description",
 										  FontSize = 12,
                                           BackgroundColor = Color.LightGray,
 									  },
 									  new Rectangle(0.5, 1.0, 0.9, 0.85),
 									  AbsoluteLayoutFlags.All);
+            txtCompanyDescription.Completed += (object sender, EventArgs e) => txtPresentationLink.Focus();
             registrationForm.Children.Add(DescriptionInput,
-							 new Rectangle(0, 5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 3 * Constants.Forms.Sizes.ROW_HEIGHT),
+							 new Rectangle(0, 4 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 3 * Constants.Forms.Sizes.ROW_HEIGHT),
 							  AbsoluteLayoutFlags.WidthProportional);
+
+            AbsoluteLayout PresentationInput = new AbsoluteLayout()
+            {
+            };
+
+            PresentationInput.Children.Add(lblPresentationLink =
+                                           new FormFieldLabel("Company Presentation (Youtube Link)"),
+                                           new Rectangle(0.5, 0, 0.9, 0.5),
+                                           AbsoluteLayoutFlags.All);
+            PresentationInput.Children.Add(txtCompanySize =
+						   new FormEntry("Company Presentation (Youtube Link)", Keyboard.Text),
+						   new Rectangle(0.5, 1.0, 0.9, 0.5),
+						   AbsoluteLayoutFlags.All);
+
+
+
+			registrationForm.Children.Add(SizeInput,
+										 new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+										  AbsoluteLayoutFlags.WidthProportional);
+
+
 			//Register Button
 			btnRegister = new Button()
             {
@@ -228,7 +253,9 @@ namespace TMCS_Client.UI
                     txtCompanyEmailSuffix.Text,
                     txtCompanyLocation.Text.Replace(", ", ",").Split(',').ToString(),
                     txtCompanySize.Text,
-                    txtCompanyDescription.Text
+                    txtCompanyDescription.Text,
+                    txtPresentationLink.Text
+
 
                 );
 

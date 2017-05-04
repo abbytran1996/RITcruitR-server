@@ -52,7 +52,7 @@ public class JobPostingController {
         matchingService.registerJobPosting(newPosting);
     }
 
-    @RequestMapping(value = "/recuriter/{id}", method=RequestMethod.GET)
+    @RequestMapping(value = "/recruiter/{id}", method=RequestMethod.GET)
     public ResponseEntity<List<JobPosting>> getJobPostingsByRecruiter(@PathVariable long id){
         Recruiter recruiterWithID = new Recruiter();
         recruiterWithID.setId(id);
