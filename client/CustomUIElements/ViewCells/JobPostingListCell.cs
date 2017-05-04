@@ -65,19 +65,21 @@ namespace TMCS_Client.CustomUIElements.ViewCells
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            this.View = new AbsoluteLayout()
+            if (jobPostingID == -1)
             {
-                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
-            };
-            ((AbsoluteLayout)this.View).Children.Add(new Label()
-            {
-                Text = "No job postings yet.",
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                FontSize = 22.0,
-            },new Rectangle(0.0,0.0,1.0,1.0),
-            AbsoluteLayoutFlags.All);
+                this.View = new AbsoluteLayout()
+                {
+                    HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
+                };
+                ((AbsoluteLayout)this.View).Children.Add(new Label()
+                {
+                    Text = "No job postings yet.",
+                    VerticalTextAlignment = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    FontSize = 22.0,
+                }, new Rectangle(0.0, 0.0, 1.0, 1.0),
+                                                         AbsoluteLayoutFlags.All);
+            }
         }
     }
-
 }

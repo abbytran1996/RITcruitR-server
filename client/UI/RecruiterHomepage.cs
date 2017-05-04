@@ -4,6 +4,7 @@ using TMCS_Client.DTOs;
 using TMCS_Client.CustomUIElements.Labels;
 using System.Collections.ObjectModel;
 using TMCS_Client.CustomUIElements.ListViews;
+using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.ViewCells;
 
 namespace TMCS_Client.UI
@@ -55,6 +56,16 @@ namespace TMCS_Client.UI
 				Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
 
             Content = pageContent;
+        }
+
+        protected override void OnAppearing()
+        {
+            jobPostingsList.clearItems();
+            foreach(JobPosting jobPosting in JobPostingController.getJobPostingController().
+                    getJobPostingsByRecruiter(this.loggedInRecruiter)){
+                jobPostingsList.addItem(jobPosting);
+            }
+            base.OnAppearing();
         }
     }
 }
