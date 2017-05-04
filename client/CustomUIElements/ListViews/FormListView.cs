@@ -24,6 +24,7 @@ namespace TMCS_Client.CustomUIElements.ListViews
             SeparatorVisibility = SeparatorVisibility.None;
             base.ItemsSource = items;
             base.ItemTemplate = new DataTemplate(typeof(CustomDisplayCell));
+            base.HasUnevenRows = true;
         }
 
         public void addItem(T newItem){

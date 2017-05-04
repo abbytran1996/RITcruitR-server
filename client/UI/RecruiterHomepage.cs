@@ -3,6 +3,8 @@ using Xamarin.Forms;
 using TMCS_Client.DTOs;
 using TMCS_Client.CustomUIElements.Labels;
 using System.Collections.ObjectModel;
+using TMCS_Client.CustomUIElements.ListViews;
+using TMCS_Client.CustomUIElements.ViewCells;
 
 namespace TMCS_Client.UI
 {
@@ -12,8 +14,7 @@ namespace TMCS_Client.UI
 
         private AbsoluteLayout pageContent;
 
-        private ListView jobPostingsList;
-        private ObservableCollection<JobPosting> jobPostings;
+        private FormListView<JobPosting, JobPostingListCell> jobPostingsList;
 
         public RecruiterHomepage(Recruiter recruiter)
         {
@@ -22,11 +23,8 @@ namespace TMCS_Client.UI
 
             pageContent = new AbsoluteLayout();
 
-            jobPostings = new ObservableCollection<JobPosting>();
-            jobPostingsList = new ListView(ListViewCachingStrategy.RetainElement)
-            {
-                SeparatorVisibility = SeparatorVisibility.None,
-            };
+            jobPostingsList = new FormListView<JobPosting, JobPostingListCell>(
+                JobPosting.NullJobPosting);
 
             pageContent.Children.Add(jobPostingsList,
                                     new Rectangle(0.0, 0.0, 1.0, 1.0),
