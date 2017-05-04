@@ -5,6 +5,15 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 {
     public class JobPostingListCell : ViewCell
 	{
+		public static readonly BindableProperty JobPostingIDProperty =
+			BindableProperty.Create("jobPostingID", typeof(long), typeof(JobPostingListCell), -1L);
+
+		public long jobPostingID
+		{
+			get { return (long)GetValue(JobPostingIDProperty); }
+			set { SetValue(JobPostingIDProperty, value); }
+		}
+
         public JobPostingListCell()
         {
             AbsoluteLayout cellLayout = new AbsoluteLayout(){
@@ -48,8 +57,26 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             jobPostingPositionTitle.SetBinding(Label.TextProperty, "positionTitle");
             jobPostingLocation.SetBinding(Label.TextProperty, "location");
 
+            this.SetBinding(JobPostingListCell.JobPostingIDProperty,"id");
 
             View = cellLayout;
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            this.View = new AbsoluteLayout()
+            {
+                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
+            };
+            ((AbsoluteLayout)this.View).Children.Add(new Label()
+            {
+                Text = "No job postings yet.",
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = 22.0,
+            },new Rectangle(0.0,0.0,1.0,1.0),
+            AbsoluteLayoutFlags.All);
         }
     }
 
