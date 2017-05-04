@@ -124,7 +124,7 @@ public class DataLoader implements ApplicationRunner {
         ussr.setApprovalStatus(true);
         ussr.setCompanyDescription("Union of Soviet Socialist Republics");
         ussr.setEmailSuffix("ussr.gov");
-        ussr.setPresentation(new File("E:\\Documents\\TMCS\\server"));
+        ussr.setPresentation("sample.youtube.com");
         ussr.setUser(user);
         ussr = companyDAO.save(ussr);
 
