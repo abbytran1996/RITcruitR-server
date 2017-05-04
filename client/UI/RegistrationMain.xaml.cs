@@ -11,7 +11,8 @@ namespace TMCS_Client.UI
 
         private RegistrationMain()
         {
-            
+            this.Title = "Registration";
+
 			Label lblTitle = new Label()
 			{
 				Text = "Welcome To RecruitR!",

@@ -12,6 +12,8 @@ namespace TMCS_Client.UI {
         private StudentController studentController = StudentController.getStudentController();
 
         public StudentHomepage() {
+            this.Title = "Matches";
+
             loadMatches();
 
             pageContent.Content = matchesList;
