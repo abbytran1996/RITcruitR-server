@@ -16,7 +16,6 @@ namespace TMCS_Client.ServerComms
 			var response = client.Execute<List<Skill>>(request);
 
 			return response.Data;
-			
 		}
     }
 }

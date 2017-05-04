@@ -33,12 +33,12 @@ namespace TMCS_Client.UI
         FormEditor editorDescription;
 
         //All Skills: Get the list of skills from skills controller call
-        List<Skill> allSkills = new List<Skill>{ new Skill() {id=6, name = "Communication" },
+        List<Skill> allSkills;/* = new List<Skill>{ new Skill() {id=6, name = "Communication" },
             new Skill(){id=1,name = "Team Work"},
             new Skill(){id=2,name = "C/C++"},
             new Skill(){id=3,name = "Object Oriented Principles"},
             new Skill(){id=4,name = "Technical Writing"},
-            new Skill(){id=5,name = "Problem Solving"},};
+            new Skill(){id=5,name = "Problem Solving"},};*/
 
         //Required Skills
         AbsoluteLayout requiredSkillsSection;
@@ -84,7 +84,7 @@ namespace TMCS_Client.UI
 
             this.associatedRecruiter = associatedRecruiter;
 
-            //get scills
+            allSkills = SkillController.getSkillController().getAllSkills();
 
             //Whole Page
             pageContent = new ScrollView()

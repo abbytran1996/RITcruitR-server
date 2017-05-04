@@ -94,9 +94,9 @@ public class DataLoader implements ApplicationRunner {
         }
 
         Set<Skill> skills = new HashSet<>();
-        skills.add(new Skill("seizing"));
-        skills.add(new Skill("social ownership"));
-        skills.add(new Skill("revolution"));
+        skills.add(new Skill("Seizing"));
+        skills.add(new Skill("Social Ownership"));
+        skills.add(new Skill("Revolution"));
         Iterable<Skill> savedSkills = skillDAO.save(skills);
         skills.clear();
         savedSkills.forEach(skills::add);
