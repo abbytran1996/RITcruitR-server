@@ -5,7 +5,8 @@ using Xamarin.Forms;
 namespace TMCS_Client.UI {
     public class StudentHomepage : ContentPage {
         private AbsoluteLayout menu;
-        private ScrollView pageContent = new ScrollView();
+        private StackLayout pageContent;
+        private ScrollView matchesListContainer = new ScrollView();
         private ListView matchesList = new ListView();
 
         private App app = Application.Current as App;
@@ -14,7 +15,9 @@ namespace TMCS_Client.UI {
         public StudentHomepage() {
             loadMatches();
 
-            pageContent.Content = matchesList;
+
+
+            matchesListContainer.Content = matchesList;
 
             Content = pageContent;
         }
