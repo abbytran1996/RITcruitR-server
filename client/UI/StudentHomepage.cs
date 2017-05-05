@@ -1,52 +1,88 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMCS_Client.Controllers;
+using TMCS_Client.CustomUIElements.Labels;
+using TMCS_Client.CustomUIElements.Layouts;
+using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
 namespace TMCS_Client.UI {
     public class StudentHomepage : ContentPage {
         private AbsoluteLayout menu;
-        private StackLayout pageContent;
+        private StackLayout pageContent = new StackLayout();
         private ScrollView matchesListContainer = new ScrollView();
         private ListView matchesList = new ListView();
+        private HorizontalStackLayout bottomItems = new HorizontalStackLayout();
 
         private App app = Application.Current as App;
         private StudentController studentController = StudentController.getStudentController();
 
+        private List<Match> matches;
+
         public StudentHomepage() {
-            this.Title = "Matches";
+            setupMatchedList();
 
-            loadMatches();
-
-
+            pageContent.Children.Add(new SubSectionTitleLabel("You have been matched with the following jobs:"));
 
             matchesListContainer.Content = matchesList;
+            matchesListContainer.Margin = new Thickness(15, 0);
+
+            pageContent.Children.Add(matchesListContainer);
+
+            bottomItems.Children.Add(new Label() {
+                Text = "Select a position you may be interested in"
+            });
+            pageContent.Children.Add(bottomItems);
 
             Content = pageContent;
+        }
+
+        private void onItemTapped(object sender, ItemTappedEventArgs e) {
+            var selectedMatch = e.Item;
+
+            bottomItems.Children.Clear();
+            bottomItems.Children.Add(new Button() {
+                Text = "Not Interested",
+                BackgroundColor = Constants.Forms.Colors.FAILURE
+            });
+
+            bottomItems.Children.Add(new Button() {
+                Text = "Interested",
+                BackgroundColor = Constants.Forms.Colors.SUCCESS
+            });
         }
 
         /// <summary>
         /// Grabs the Match objects for the current Student, and sets those as this view's items
         /// </summary>
-        private void loadMatches() {
+        private void setupMatchedList() {
             var student = app.CurrentStudent;
-            var matches = studentController.getMatchesForStudent(student);
+            matches = studentController.getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
             var postings = matches.Where(match => match.matchStrength > 0.1)
+                                  .OrderByDescending(match => match.matchStrength)
                                   .Select(match => new CellData() {
                                       PositionTitle = match.job.positionTitle,
                                       CompanyName = match.job.recruiter.company.companyName,
-                                      Location = match.job.location
+                                      Location = match.job.location,
+                                      Website = "Zane add this",
+                                      Match = match
                                   });
 
             matchesList.ItemsSource = postings;
-            matchesList.RowHeight = 80;
+            matchesList.RowHeight = 100;
+
+            matchesList.ItemTapped += onItemTapped;
         }
 
         class CellData {
             public string PositionTitle { get; set; }
             public string CompanyName { get; set; }
             public string Location { get; set; }
+            public string Website { get; set; }
+            public Match Match { get; set; }
         }
 
         class MatchCell : ViewCell {
@@ -57,18 +93,17 @@ namespace TMCS_Client.UI {
                 Label title = new Label();
                 Label company = new Label();
                 Label location = new Label();
-
-                //title.Text = "Position Title";
-                //company.Text = "Company";
-                //location.Text = "Location";
+                Label website = new Label();
 
                 title.SetBinding(Label.TextProperty, new Binding("PositionTitle"));
                 company.SetBinding(Label.TextProperty, new Binding("CompanyName"));
                 location.SetBinding(Label.TextProperty, new Binding("Location"));
+                website.SetBinding(Label.TextProperty, new Binding("Website"));
 
                 layout.Children.Add(title);
                 layout.Children.Add(company);
                 layout.Children.Add(location);
+                layout.Children.Add(website);
                 cellWrapper.Children.Add(layout);
 
                 View = cellWrapper;

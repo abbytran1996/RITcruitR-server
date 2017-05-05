@@ -157,7 +157,7 @@ namespace TMCS_Client.UI
                         (App.Current as App).CurrentStudent = student;
                         Console.WriteLine("Student login detected");
                         Navigation.InsertPageBefore(new StudentHomepage(), Login.getLoginPage());
-                        Navigation.PopToRootAsync(false);
+                        break;
                     }
                     else if (role.name == Role.Name.Recruiter.ToString().ToLower())
                     {
@@ -166,9 +166,10 @@ namespace TMCS_Client.UI
                         //
                         Console.WriteLine("Recruiter login detected");
                         Navigation.InsertPageBefore(new RecruiterHomepage(recruiter), Login.getLoginPage());
-                        Navigation.PopToRootAsync(false);
+                        break;
                     }
                 }
+                Navigation.PopToRootAsync(false);
             } 
             loginBusyIndicator.IsVisible = false;
         }

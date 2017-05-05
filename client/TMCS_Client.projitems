@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\ServerController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Layouts\HorizontalStackLayout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
@@ -70,7 +71,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\" />
