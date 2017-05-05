@@ -10,7 +10,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
         {
 			AbsoluteLayout cellLayout = new AbsoluteLayout()
 			{
-				HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
+				HeightRequest = 40.0,//Constants.Forms.Sizes.ROW_HEIGHT,
 				BackgroundColor = Color.White,
 			};
 

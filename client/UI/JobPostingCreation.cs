@@ -25,20 +25,15 @@ namespace TMCS_Client.UI
         PageTitleLabel lblTitle;
 
         //Position Name
-        FormFieldLabel lblPositionName;
-        FormEntry entPositionName;
+        FormFieldLabel lblPositionTitle;
+        FormEntry entPositionTitle;
 
         //Description
         FormFieldLabel lblDescription;
         FormEditor editorDescription;
 
         //All Skills: Get the list of skills from skills controller call
-        List<Skill> allSkills;/* = new List<Skill>{ new Skill() {id=6, name = "Communication" },
-            new Skill(){id=1,name = "Team Work"},
-            new Skill(){id=2,name = "C/C++"},
-            new Skill(){id=3,name = "Object Oriented Principles"},
-            new Skill(){id=4,name = "Technical Writing"},
-            new Skill(){id=5,name = "Problem Solving"},};*/
+        List<Skill> allSkills;
 
         //Required Skills
         AbsoluteLayout requiredSkillsSection;
@@ -47,6 +42,8 @@ namespace TMCS_Client.UI
         FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> requiredSkillsSearchResults;
         FormFieldLabel lblChosenRequiredSkills;
         FormListView<Skill, SkillListCell> requiredSkills;
+        FormFieldLabel lblMinMatchedRequiredSkills;
+        FormEntry entMinMatchedRequiredSkills;
 
 		//Recommended Skills
 		AbsoluteLayout recommendedSkillsSection;
@@ -55,6 +52,8 @@ namespace TMCS_Client.UI
 		FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> recommendedSkillsSearchResults;
 		FormFieldLabel lblChosenRecommendedSkills;
 		FormListView<Skill, SkillListCell> recommendedSkills;
+		FormFieldLabel lblRecommendedSkillsWeight;
+		FormEntry entRecommendedSkillsWeight;
 
         //Recruiter
         private Recruiter associatedRecruiter = null;
@@ -94,7 +93,7 @@ namespace TMCS_Client.UI
 
 			creationForm = new AbsoluteLayout()
 			{
-				HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 22,
+				HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 24,
 			};
 
             //Title
@@ -108,14 +107,14 @@ namespace TMCS_Client.UI
             //Position Name
             AbsoluteLayout positionNameSection = new AbsoluteLayout();
 
-            positionNameSection.Children.Add(lblPositionName = new FormFieldLabel("Position Name"),
+            positionNameSection.Children.Add(lblPositionTitle = new FormFieldLabel("Position Name"),
                                             new Rectangle(0.5, 0.0, 0.9, 0.5),
                                              AbsoluteLayoutFlags.All);
-            positionNameSection.Children.Add(entPositionName =
+            positionNameSection.Children.Add(entPositionTitle =
                                              new FormEntry("Position Name", Keyboard.Plain),
                                             new Rectangle(0.5, 1.0, 0.9, 0.5),
                                             AbsoluteLayoutFlags.All);
-            entPositionName.Completed += (object sender, EventArgs e) => editorDescription.Focus();
+            entPositionTitle.Completed += (object sender, EventArgs e) => editorDescription.Focus();
             creationForm.Children.Add(positionNameSection,
                                      new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 1,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -182,10 +181,23 @@ namespace TMCS_Client.UI
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
 
+            requiredSkillsSection.Children.Add(lblMinMatchedRequiredSkills = 
+                                               new FormFieldLabel("Minimum required skills for a match"),
+											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
+												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+                                               AbsoluteLayoutFlags.XProportional | 
+                                               AbsoluteLayoutFlags.WidthProportional);
 
+			requiredSkillsSection.Children.Add(entMinMatchedRequiredSkills = 
+                                               new FormEntry("Minimum skills", Keyboard.Numeric),
+											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
+												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+											   AbsoluteLayoutFlags.XProportional |
+											   AbsoluteLayoutFlags.WidthProportional);
+            
             creationForm.Children.Add(requiredSkillsSection,
                                      new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 5,
-                                                   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 5),
+                                                   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6),
                                      AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
@@ -232,10 +244,24 @@ namespace TMCS_Client.UI
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
 
+			recommendedSkillsSection.Children.Add(lblRecommendedSkillsWeight =
+                                                  new FormFieldLabel("Recommended Skills Weight (0.0 - 1.0)"),
+											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
+												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+											   AbsoluteLayoutFlags.XProportional |
+											   AbsoluteLayoutFlags.WidthProportional);
+
+			recommendedSkillsSection.Children.Add(entRecommendedSkillsWeight =
+											   new FormEntry("0.0 - 1.0", Keyboard.Numeric),
+											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
+												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+											   AbsoluteLayoutFlags.XProportional |
+											   AbsoluteLayoutFlags.WidthProportional);
+
 
 			creationForm.Children.Add(recommendedSkillsSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 10,
-												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 5),
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 11,
+												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6),
 									 AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
 
@@ -251,7 +277,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			entLocation.Completed += (object sender, EventArgs e) => entPhaseTimeout.Focus();
 			creationForm.Children.Add(locationSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 15,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 17,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -268,7 +294,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			entLocation.Completed += (object sender, EventArgs e) => editorProblemStatement.Focus();
 			creationForm.Children.Add(phaseTimeoutSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 16,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 18,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -284,7 +310,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			editorProblemStatement.Completed += (object sender, EventArgs e) => entWebpageURL.Focus();
 			creationForm.Children.Add(problemStatementSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 17,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 19,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 3),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -301,7 +327,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			entWebpageURL.Completed += (object sender, EventArgs e) => entWebpageURL.Unfocus();
 			creationForm.Children.Add(webpageURLSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 20,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 22,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -311,7 +337,7 @@ namespace TMCS_Client.UI
             btnCreate.Command = new Command((object obj) => createJobPosting());
 
 			creationForm.Children.Add(btnCreate,
-										  new Rectangle(0.5, ((21.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
+										  new Rectangle(0.5, ((23.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
 										  AbsoluteLayoutFlags.WidthProportional |
 										 AbsoluteLayoutFlags.XProportional);
 
@@ -320,22 +346,100 @@ namespace TMCS_Client.UI
         }
 
         private void createJobPosting(){
-            JobPosting newJobPosting = new JobPosting();
-            newJobPosting.location = "California";
-            newJobPosting.phaseTimeout = 2;
-            newJobPosting.description = "Well it is a job atleast...";
-            newJobPosting.positionTitle = "Software Engineer?";
-            newJobPosting.minMatchedRequiredSkills = 4;
-            newJobPosting.recommendedSkillsWeight = 0.5;
-            newJobPosting.url = "google.com";
-            newJobPosting.requiredSkills = new List<Skill>(new Skill[]{allSkills[2],allSkills[1]});
-            newJobPosting.recommendedSkills = new List<Skill>(new Skill[] { allSkills[3] });
-            newJobPosting.recruiter = new Recruiter(){
-                id=1,
-            };
-            newJobPosting.problemStatement = "Find x.";
 
-            JobPostingController.getJobPostingController().createJobPosting(newJobPosting);
+            String invalidDataMessage = validateForm();
+            if (invalidDataMessage != "")
+            {
+                DisplayAlert("Invalid Data:", invalidDataMessage, "OK");
+            }
+            else
+            {
+
+                JobPosting newJobPosting = new JobPosting();
+                newJobPosting.location = entLocation.Text;
+                newJobPosting.phaseTimeout = int.Parse(entPhaseTimeout.Text);
+                newJobPosting.description = editorDescription.Text;
+                newJobPosting.positionTitle = entPositionTitle.Text;
+                newJobPosting.minMatchedRequiredSkills = int.Parse(entMinMatchedRequiredSkills.Text);
+                newJobPosting.recommendedSkillsWeight = double.Parse(entRecommendedSkillsWeight.Text);
+                newJobPosting.url = entWebpageURL.Text;
+                newJobPosting.requiredSkills = new List<Skill>(requiredSkills.items);
+                newJobPosting.requiredSkills.Remove(Skill.NullSkill);
+                newJobPosting.recommendedSkills = new List<Skill>(recommendedSkills.items);
+                newJobPosting.recommendedSkills.Remove(Skill.NullSkill);
+                newJobPosting.recruiter = associatedRecruiter;
+                newJobPosting.problemStatement = editorProblemStatement.Text;
+
+                JobPostingController.getJobPostingController().createJobPosting(newJobPosting);
+                Navigation.PopAsync(true);
+            }
+        }
+
+        private String validateForm(){
+            String invalidDataMessage = "";
+            int temp;
+            double temp_d;
+
+            if(string.IsNullOrEmpty(entLocation.Text)){
+                invalidDataMessage += "Location is required\n";
+			}
+
+			if (string.IsNullOrEmpty(entPhaseTimeout.Text))
+			{
+				invalidDataMessage += "Phase Timeout is required\n";
+            }else if(!int.TryParse(entPhaseTimeout.Text, out temp)){
+                invalidDataMessage += "Phase Timeout must be an integer\n";
+            }else if(temp < 0){
+                invalidDataMessage += "Phase Timeout must be non-negative\n";
+            }
+
+            if (string.IsNullOrEmpty(editorDescription.Text))
+                {
+                    invalidDataMessage += "A position description is required\n";
+                }
+
+			if (string.IsNullOrEmpty(entPositionTitle.Text))
+			{
+				invalidDataMessage += "A position title is required\n";
+			}
+
+            if(requiredSkills.items.Count < 1){
+                invalidDataMessage += "Atleast 1 required skill is required\n";
+            }
+
+            if (string.IsNullOrEmpty(editorProblemStatement.Text)){
+                invalidDataMessage += "A problem statement must be provided\n";
+            }
+
+			if (string.IsNullOrEmpty(entMinMatchedRequiredSkills.Text))
+			{
+				invalidDataMessage += "A minimum number of required skills is required\n";
+			}
+			else if (!int.TryParse(entMinMatchedRequiredSkills.Text, out temp))
+			{
+				invalidDataMessage += "The minimum number of required skills must be an integer\n";
+            }else if(temp < 0){
+                invalidDataMessage += "The minimum number of required skills must be non-negative\n";
+            }else if(temp > requiredSkills.items.Count){
+                invalidDataMessage += "The minimum number of required skills cannot be greater than the " +
+                    "selected number of required skills\n";
+            }
+            if (recommendedSkills.items[0] != Skill.NullSkill)
+            {
+                if (string.IsNullOrEmpty(entRecommendedSkillsWeight.Text))//Not necessaryif no recommended skills
+                {
+                    invalidDataMessage += "A weight for recommended skills is required\n";
+                }
+                else if (!double.TryParse(entRecommendedSkillsWeight.Text, out temp_d))
+                {
+                    invalidDataMessage += "The weight for recommended skills must be a decimal number\n";
+                }
+                else if (temp_d < 0.0 || temp_d > 1.0)
+                {
+                    invalidDataMessage += "The weight for recommended skills must be between 0.0 and 1.0\n";
+                }
+            }
+            return invalidDataMessage;
         }
     }
 }
