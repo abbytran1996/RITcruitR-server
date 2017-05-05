@@ -44,6 +44,8 @@ namespace TMCS_Client.UI
         private FormFieldLabel lblPresentationLink;
         private FormEntry txtPresentationLink;
 
+        private FormFieldLabel lblWebsiteURL;
+        private FormEntry txtWebsiteURL;
 
         //Register Button
         private Button btnRegister;
@@ -67,7 +69,7 @@ namespace TMCS_Client.UI
 
             registrationForm = new AbsoluteLayout()
             {
-                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 10.0),
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 12.0),
             };
 
 
@@ -163,7 +165,7 @@ namespace TMCS_Client.UI
             txtCompanySize.Completed += (object sender, EventArgs e) => txtCompanyDescription.Focus();
 
             registrationForm.Children.Add(SizeInput,
-                                         new Rectangle(0, 4.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                         new Rectangle(0, 4 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
             //Company Description
             AbsoluteLayout Descriptionlbl = new AbsoluteLayout()
@@ -177,11 +179,12 @@ namespace TMCS_Client.UI
 
 
             registrationForm.Children.Add(Descriptionlbl,
-                                         new Rectangle(0, 4 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                         new Rectangle(0, 5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
             
 			AbsoluteLayout DescriptionInput = new AbsoluteLayout()
 			{
+              
 			};
 			DescriptionInput.Children.Add(txtCompanyDescription =
 									  new Editor
@@ -193,7 +196,7 @@ namespace TMCS_Client.UI
 									  AbsoluteLayoutFlags.All);
             txtCompanyDescription.Completed += (object sender, EventArgs e) => txtPresentationLink.Focus();
             registrationForm.Children.Add(DescriptionInput,
-							 new Rectangle(0, 4 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 3 * Constants.Forms.Sizes.ROW_HEIGHT),
+							 new Rectangle(0, 5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 3 * Constants.Forms.Sizes.ROW_HEIGHT),
 							  AbsoluteLayoutFlags.WidthProportional);
 
             AbsoluteLayout PresentationInput = new AbsoluteLayout()
@@ -204,16 +207,36 @@ namespace TMCS_Client.UI
                                            new FormFieldLabel("Company Presentation (Youtube Link)"),
                                            new Rectangle(0.5, 0, 0.9, 0.5),
                                            AbsoluteLayoutFlags.All);
-            PresentationInput.Children.Add(txtCompanySize =
+            PresentationInput.Children.Add(txtPresentationLink =
 						   new FormEntry("Company Presentation (Youtube Link)", Keyboard.Text),
+						   new Rectangle(0.5, 1.0, 0.9, 0.5),
+						   AbsoluteLayoutFlags.All);
+
+            txtCompanyDescription.Completed += (object sender, EventArgs e) => txtWebsiteURL.Focus();
+
+            registrationForm.Children.Add(PresentationInput,
+										 new Rectangle(0, 8.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+										  AbsoluteLayoutFlags.WidthProportional);
+
+			AbsoluteLayout URLInput = new AbsoluteLayout()
+			{
+			};
+
+            URLInput.Children.Add(lblWebsiteURL =
+										   new FormFieldLabel("Company Website URL"),
+										   new Rectangle(0.5, 0, 0.9, 0.5),
+										   AbsoluteLayoutFlags.All);
+			URLInput.Children.Add(txtWebsiteURL =
+						   new FormEntry("Company Website URL", Keyboard.Text),
 						   new Rectangle(0.5, 1.0, 0.9, 0.5),
 						   AbsoluteLayoutFlags.All);
 
 
 
-			registrationForm.Children.Add(SizeInput,
-										 new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+            registrationForm.Children.Add(URLInput,
+										 new Rectangle(0, 9.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
+
 
 
 			//Register Button
@@ -227,7 +250,7 @@ namespace TMCS_Client.UI
             };
 
             registrationForm.Children.Add(btnRegister,
-                                         new Rectangle(0.5, 9 * Constants.Forms.Sizes.ROW_HEIGHT + 20, 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
+                                         new Rectangle(0.5, 10 * Constants.Forms.Sizes.ROW_HEIGHT + 20, 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
                                           AbsoluteLayoutFlags.WidthProportional |
                                          AbsoluteLayoutFlags.XProportional);
 
@@ -254,7 +277,8 @@ namespace TMCS_Client.UI
                     txtCompanyLocation.Text.Replace(", ", ",").Split(',').ToString(),
                     txtCompanySize.Text,
                     txtCompanyDescription.Text,
-                    txtPresentationLink.Text
+                    txtPresentationLink.Text,
+                    txtWebsiteURL.Text
 
 
                 );

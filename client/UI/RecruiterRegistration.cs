@@ -334,7 +334,7 @@ namespace TMCS_Client.UI
 
                 var CompanySuffix = CompanyController.getCompanyController().getCompanyByEmailSuffix(suffix);
 
-                if (CompanySuffix.emailSuffix == null)
+                if (CompanySuffix == null)
                     {
                         var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
                         if (ans == true)

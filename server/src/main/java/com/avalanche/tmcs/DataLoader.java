@@ -126,6 +126,7 @@ public class DataLoader implements ApplicationRunner {
         ussr.setEmailSuffix("ussr.gov");
         ussr.setPresentation("sample.youtube.com");
         ussr.setUser(user);
+        ussr.setWebsiteURL("ussr.gov");
         ussr = companyDAO.save(ussr);
 
         Recruiter lenin = new Recruiter();

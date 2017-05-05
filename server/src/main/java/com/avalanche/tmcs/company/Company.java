@@ -42,6 +42,8 @@ public class Company {
 
     private String companyDescription;
 
+    private String websiteURL;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
@@ -88,6 +90,14 @@ public class Company {
 
     public void setPresentation(String presentation) {this.presentation = presentation;}
 
+    @NotNull
+    public String getWebsiteURL() {
+        return websiteURL;
+    }
+
+    public void setWebsiteURL(String websiteURL) {
+        this.websiteURL = websiteURL;
+    }
 
     @NotNull
     public String getCompanyDescription(){
@@ -107,5 +117,8 @@ public class Company {
     public void setUser(User user) {
         this.user = user;
     }
+
+
+
 }
 

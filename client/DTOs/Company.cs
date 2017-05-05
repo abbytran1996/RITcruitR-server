@@ -20,5 +20,6 @@ namespace TMCS_Client.DTOs
         public string presentation { get; set; }
 		public string companyDescription { get; set; }
         public Boolean approvalStatus { get; set; }
+        public string websiteURL { get; set; }
 	}
 }

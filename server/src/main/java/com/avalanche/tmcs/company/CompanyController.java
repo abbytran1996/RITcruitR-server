@@ -45,7 +45,7 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/{email_suffix}", method = RequestMethod.GET)
+    @RequestMapping(value = "/email_suffix/{emailSuffix}", method = RequestMethod.GET)
     public Company getCompanyByEmailSuffix(@PathVariable String emailSuffix) {
         return companyDAO.findByEmailSuffix(emailSuffix);
     }
