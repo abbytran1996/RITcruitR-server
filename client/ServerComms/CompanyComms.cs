@@ -60,7 +60,7 @@ namespace TMCS_Client.ServerComms
 		public Company getCompanyByEmailSuffix(string emailSuffix)
 		{
             string url = Constants.Company.GET_COMPANY_BY_SUFFIX_RESOURCE;
-            url =url.Replace("emailSuffix", emailSuffix);
+            url = url.Replace("emailSuffix", emailSuffix);
 			var request = new RestRequest(url, Method.GET);
 			var response = client.Execute<Company>(request);
 
@@ -75,7 +75,7 @@ namespace TMCS_Client.ServerComms
 		public Company getCompanyByName(string companyName)
 		{
             string url = Constants.Company.GET_COMPANY_BY_NAME;
-            url.Replace("company_name", companyName);
+            url = url.Replace("companyName", companyName);
 			var request = new RestRequest(url, Method.GET);
 			var response = client.Execute<Company>(request);
 

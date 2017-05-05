@@ -106,6 +106,14 @@ public class RecruiterController {
         return companyDAO.findOne(id);
     }
 
+    /*
+    @RequestMapping(value = "/company/company_name/{company_name}", method = RequestMethod.GET)
+    public Company getCompanyByName(@PathVariable String companyName) {
+        return companyDAO.findByEmailSuffix(companyName);
+
+    }
+    */
+
     /**
      * TODO: Approve/decline company
      */

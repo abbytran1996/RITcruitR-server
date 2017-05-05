@@ -117,6 +117,7 @@ public class DataLoader implements ApplicationRunner {
         karlMarx.setSchool("Hard knocks");
         karlMarx = studentDAO.save(karlMarx);
 
+
         Company ussr = new Company();
         ussr.setCompanyName("USSR");
         ussr.setLocation("Eastern Europe");
@@ -125,7 +126,7 @@ public class DataLoader implements ApplicationRunner {
         ussr.setCompanyDescription("Union of Soviet Socialist Republics");
         ussr.setEmailSuffix("ussr.gov");
         ussr.setPresentation("sample.youtube.com");
-        ussr.setUser(user);
+        ussr.setUser(user1);
         ussr.setWebsiteURL("ussr.gov");
         ussr = companyDAO.save(ussr);
 
@@ -134,6 +135,7 @@ public class DataLoader implements ApplicationRunner {
         lenin.setLastName("Lenin");
         lenin.setEmail("lenin@ussr.gov");
         lenin.setCompany(ussr);
+
         lenin.setPhoneNumber("555-555-5555");
         recruiterDAO.save(lenin);
 

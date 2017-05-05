@@ -109,7 +109,7 @@ public class Company {
     }
 
     @OneToOne
- //   @NotNull
+    @NotNull
     public User getUser() {
         return user;
     }
