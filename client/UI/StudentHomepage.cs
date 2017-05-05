@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
-using TMCS_Client.CustomUIElements.Layouts;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
@@ -13,7 +11,9 @@ namespace TMCS_Client.UI {
         private StackLayout pageContent = new StackLayout();
         private ScrollView matchesListContainer = new ScrollView();
         private ListView matchesList = new ListView();
-        private HorizontalStackLayout bottomItems = new HorizontalStackLayout();
+        private AbsoluteLayout bottomItems = new AbsoluteLayout() {
+            HorizontalOptions = LayoutOptions.CenterAndExpand
+        };
 
         private App app = Application.Current as App;
         private StudentController studentController = StudentController.getStudentController();
@@ -26,13 +26,15 @@ namespace TMCS_Client.UI {
             pageContent.Children.Add(new SubSectionTitleLabel("You have been matched with the following jobs:"));
 
             matchesListContainer.Content = matchesList;
-            matchesListContainer.Margin = new Thickness(15, 0);
+            matchesListContainer.Margin = new Thickness(22, 0);
 
             pageContent.Children.Add(matchesListContainer);
 
             bottomItems.Children.Add(new Label() {
                 Text = "Select a position you may be interested in"
-            });
+            },
+            new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+
             pageContent.Children.Add(bottomItems);
 
             Content = pageContent;
@@ -44,13 +46,17 @@ namespace TMCS_Client.UI {
             bottomItems.Children.Clear();
             bottomItems.Children.Add(new Button() {
                 Text = "Not Interested",
-                BackgroundColor = Constants.Forms.Colors.FAILURE
-            });
+                BackgroundColor = Constants.Forms.Colors.FAILURE,
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            },
+            new Rectangle(0, 0, 0.5, 1), AbsoluteLayoutFlags.All);
 
             bottomItems.Children.Add(new Button() {
                 Text = "Interested",
-                BackgroundColor = Constants.Forms.Colors.SUCCESS
-            });
+                BackgroundColor = Constants.Forms.Colors.SUCCESS,
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            },
+            new Rectangle(1, 0, 0.5, 1), AbsoluteLayoutFlags.All);
         }
 
         /// <summary>
@@ -72,7 +78,7 @@ namespace TMCS_Client.UI {
                                   });
 
             matchesList.ItemsSource = postings;
-            matchesList.RowHeight = 100;
+            matchesList.RowHeight = 110;
 
             matchesList.ItemTapped += onItemTapped;
         }
@@ -90,7 +96,9 @@ namespace TMCS_Client.UI {
                 StackLayout cellWrapper = new StackLayout();
                 StackLayout layout = new StackLayout();
 
-                Label title = new Label();
+                Label title = new Label() {
+                    FontSize = 20
+                };
                 Label company = new Label();
                 Label location = new Label();
                 Label website = new Label();
