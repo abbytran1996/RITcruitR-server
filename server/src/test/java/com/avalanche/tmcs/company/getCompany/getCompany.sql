@@ -1,3 +1,3 @@
-SELECT *
-FROM company
-WHERE email_suffix = "gmail.com";
+SELECT company_name
+FROM tmcs.company
+WHERE email_suffix = "ussr.gov";

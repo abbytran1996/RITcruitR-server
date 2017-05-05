@@ -73,7 +73,7 @@ public class Company {
 
     public void setSize(Size size) {this.size = size;}
 
-//    @NotNull
+    @NotNull
     public Boolean getApprovalStatus(){return approvalStatus;}
 
     public void setApprovalStatus(Boolean approvalStatus) {this.approvalStatus = approvalStatus;}
@@ -83,7 +83,7 @@ public class Company {
 
     public void setEmailSuffix(String emailSuffix) {this.emailSuffix = emailSuffix;}
 
-//    @NotNull
+    @NotNull
     public String getPresentation(){return presentation;}
 
     public void setPresentation(String presentation) {this.presentation = presentation;}
