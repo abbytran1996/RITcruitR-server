@@ -51,6 +51,7 @@ namespace TMCS_Client.DTOs
             newRecruiter.phoneNumber = phoneNumber;
             newRecruiter.password = password;
             newRecruiter.passwordConfirm = passwordConfirm;
+            //newRecruiter.user = user;
 
             return newRecruiter;
 		}

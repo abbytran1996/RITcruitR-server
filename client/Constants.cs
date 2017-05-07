@@ -29,6 +29,7 @@ namespace TMCS_Client
         {
             public static string ADD_RECRUITER_RESOURCE { get { return "/recruiters"; } }
             public static string GET_RECRUITER_BY_EMAIL_RESOURCE { get { return "/recruiters/byEmail/{email}"; } }
+            public static string GET_RECRUITER_BY_USER_RESOURCE { get { return "/recruiters/byUser/{user}"; } }
         }
         public static class Company
         {

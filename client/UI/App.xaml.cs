@@ -11,6 +11,7 @@ namespace TMCS_Client.UI
         private RestClient server = new RestClient(Constants.SERVER_URL);
 
         public Student CurrentStudent { get; internal set; }
+        public Recruiter CurrentRecruiter { get; internal set; }
         public RestClient Server { get { return server; } }
 
         public App()

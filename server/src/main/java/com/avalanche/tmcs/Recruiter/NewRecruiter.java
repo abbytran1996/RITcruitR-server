@@ -1,15 +1,39 @@
 package com.avalanche.tmcs.Recruiter;
 
-import com.avalanche.tmcs.company.Company;
-
 /**
- * Created by John on 4/25/2017.
+ * @author Zane Grasso
+ * @since 7-May-17.
  */
-public class NewRecruiter {
-    public String firstName;
-    public String lastName;
-    public String eMail;
-    public Company company;
-    public String phoneNumber;
-    public String password;
+public class NewRecruiter extends Recruiter {
+    private String password;
+
+    private String passwordConfirm;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    /**
+     * Creates a new Recruiter with the information from this NewRecruiter
+     * <p>This method is provided so Hibernate won't explode</p>
+     *
+     * @return The new Recruiter object
+     */
+    public Recruiter toRecruiter() {
+        Recruiter recruiter = new Recruiter();
+
+        recruiter.setEmail(getEmail());
+        recruiter.setFirstName(getFirstName());
+        recruiter.setLastName(getLastName());
+        recruiter.setPhoneNumber(getPhoneNumber());
+        recruiter.setUser(getUser());
+        recruiter.setCompany(getCompany());
+
+
+        return recruiter;
+    }
 }

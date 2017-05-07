@@ -1,17 +1,21 @@
 package com.avalanche.tmcs.Recruiter;
 
+import com.avalanche.tmcs.Recruiter.NewRecruiter;
 import com.avalanche.tmcs.auth.Role;
+import com.avalanche.tmcs.auth.SecurityService;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.company.NewCompany;
-import com.avalanche.tmcs.students.StudentDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.net.URI;
+
 
 import java.net.URI;
 
@@ -26,25 +30,40 @@ public class RecruiterController {
     private RecruiterRepository recruiterRepo;
     private UserService userService;
     private CompanyDAO companyDAO;
+    private SecurityService securityService;
+
 
     @Autowired
-    public RecruiterController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO){
+    public RecruiterController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, SecurityService securityService){
         this.recruiterRepo = repo;
         this.userService = userService;
         this.companyDAO = companyDAO;
+        this.securityService = securityService;
     }
 
     /**
      * @param newRecruiter: info for new recruiter
      * @return TODO
      */
-    @RequestMapping(value = "register", method = RequestMethod.POST)
-    public ResponseEntity<String> registerRecruiter(@RequestBody NewRecruiter newRecruiter){
-        User newUser = new User(newRecruiter.eMail,newRecruiter.password);
-        Recruiter newguy = new Recruiter(newRecruiter);
-        userService.save(newUser, Role.RoleName.Recruiter);
-        recruiterRepo.save(newguy);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<Recruiter> addRecruiter(@RequestBody NewRecruiter newRecruiter) {
+        User newUser = new User(newRecruiter.getEmail(), newRecruiter.getPassword(), newRecruiter.getPasswordConfirm());
+        newUser = userService.save(newUser, Role.RoleName.Recruiter);
+        if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
+            newRecruiter.setUser(newUser);
+            Recruiter savedRecruiter = recruiterRepo.save(newRecruiter.toRecruiter());
+
+
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(savedRecruiter.getId())
+                    .toUri();
+
+            return ResponseEntity.created(location).body(savedRecruiter);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     /**

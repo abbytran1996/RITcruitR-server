@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.Recruiter;
 
+import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
 
 import javax.persistence.*;
@@ -36,23 +37,10 @@ public class Recruiter {
 
     private String phoneNumber;
 
+    private User user;
+
     public Recruiter(){}
 
-
-    public Recruiter(Recruiter other) {
-            firstName = other.getFirstName();
-            lastName = other.getLastName();
-            email = other.getEmail();
-            phoneNumber = other.getPhoneNumber();
-
-    }
-    public Recruiter(NewRecruiter other) {
-        firstName = other.firstName;
-        lastName = other.lastName;
-        email = other.eMail;
-        phoneNumber = other.phoneNumber;
-
-    }
 
     public void editRecruiter(Recruiter newinfo){
         if(newinfo.getFirstName()!=null)
@@ -127,6 +115,16 @@ public class Recruiter {
             return false;
         }
         return id == ((Recruiter) obj).getId();
+    }
+
+    @OneToOne
+    @NotNull
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

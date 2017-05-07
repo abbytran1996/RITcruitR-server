@@ -29,7 +29,9 @@ public class UserService {
         }
 
         Role studentRole = roleDAO.findByName(roleName.name().toLowerCase());
+        Role recruiterRole = roleDAO.findByName(roleName.name().toLowerCase());
         user.addRole(studentRole);
+        user.addRole(recruiterRole);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userDAO.save(user);
     }

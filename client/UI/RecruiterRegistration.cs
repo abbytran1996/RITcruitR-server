@@ -315,6 +315,7 @@ namespace TMCS_Client.UI
                     RecruiterController.getRecruiterController().addRecruiter(newRecruiter);
                     Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
 					await Navigation.PopToRootAsync();
+
 				}
 				catch (Exception e)
 				{
