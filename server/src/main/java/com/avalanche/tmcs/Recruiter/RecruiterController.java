@@ -89,7 +89,7 @@ public class RecruiterController {
         return recruiterRepo.findOne(id);
     }
 
-    @RequestMapping(value="byEmail/{email}", method = RequestMethod.GET)
+    @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
     public Recruiter getRecruiterByEmail(@PathVariable String email) {
         return recruiterRepo.findByEmail(email);
     }
