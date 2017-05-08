@@ -59,7 +59,7 @@ public class StudentsController {
     }
 
     @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
-    public ResponseEntity<Student> getStudentByName(@PathVariable String email) {
+    public ResponseEntity<Student> getStudentByEmail(@PathVariable String email) {
         LOG.debug("Getting student with email " + email);
         Student student = studentDAO.findByEmail(email);
         if(student == null) {

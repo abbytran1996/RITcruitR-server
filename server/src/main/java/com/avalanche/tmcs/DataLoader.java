@@ -87,7 +87,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void performAdditionOfTestData() throws URISyntaxException {
-        Skill seizing = skillDAO.findByName("revolution");
+        Skill seizing = skillDAO.findByName("Revolution");
         if(seizing != null) {
             LOG.warn("Already added test data, not adding it again");
             return;
@@ -117,7 +117,6 @@ public class DataLoader implements ApplicationRunner {
         karlMarx.setSchool("Hard knocks");
         karlMarx = studentDAO.save(karlMarx);
 
-
         Company ussr = new Company();
         ussr.setCompanyName("USSR");
         ussr.setLocation("Eastern Europe");
@@ -135,7 +134,7 @@ public class DataLoader implements ApplicationRunner {
         lenin.setLastName("Lenin");
         lenin.setEmail("lenin@ussr.gov");
         lenin.setCompany(ussr);
-
+        lenin.setUser(user1);
         lenin.setPhoneNumber("555-555-5555");
         recruiterDAO.save(lenin);
 
