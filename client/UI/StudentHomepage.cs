@@ -78,8 +78,7 @@ namespace TMCS_Client.UI {
             pageContent.Children.Add(menu);
 
             Content = pageContent;
-            
-            RefreshCommand += setupMatchedList();
+           
         }
 
         private void onItemTapped(object sender, ItemTappedEventArgs e) {
@@ -115,7 +114,7 @@ namespace TMCS_Client.UI {
                                       PositionTitle = match.job.positionTitle,
                                       CompanyName = match.job.recruiter.company.companyName,
                                       Location = match.job.location,
-                                      Website = match.job.recruiter.company.website,
+                                      Website = match.job.recruiter.company.websiteURL,
                                       Match = match
                                   });
 
