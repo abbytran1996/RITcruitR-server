@@ -10,17 +10,6 @@ using System;
 
 namespace TMCS_Client.UI {
     public class StudentHomepage : ContentPage {
-        public ICommand RefreshCommand {
-            get {
-                return new Command(async () => {
-                    IsRefreshing = true;
-                    
-                    await setupMatchedList();
-
-                    IsRefreshing = false;
-                });
-            }
-        }
 
         private AbsoluteLayout menu;
         private StackLayout pageContent = new StackLayout();
@@ -37,6 +26,14 @@ namespace TMCS_Client.UI {
 
         public StudentHomepage() {
             IsPullToRefreshEnabled = true;
+            matchesList.RefreshCommand = new Command(async () => {
+                IsRefreshing = true;
+                    
+                await setupMatchedList();
+
+                IsRefreshing = false;
+            });
+
             setupMatchedList();
             menu = new AbsoluteLayout();
 
