@@ -1,7 +1,5 @@
 package com.avalanche.tmcs;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+
 import javax.servlet.Filter;
 
 
@@ -32,9 +33,16 @@ public class Application {
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
-            PropertySource<?> ps = new SimpleCommandLinePropertySource(args);
-            shouldDeleteDatabase = Boolean.parseBoolean((String) ps.getProperty("rebuildDatabase"));
+        return new CommandLineRunner() {
+            @Autowired
+            ConfigurableEnvironment environment;
+
+            @Override
+            public void run(final String... args) throws Exception {
+                PropertySource<?> ps = new SimpleCommandLinePropertySource(args);
+                shouldDeleteDatabase = Boolean.parseBoolean((String) ps.getProperty("rebuildDatabase"));
+
+            }
         };
     }
 

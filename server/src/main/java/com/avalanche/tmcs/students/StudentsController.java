@@ -123,12 +123,12 @@ public class StudentsController {
     public Student addSkills(@PathVariable long id, @RequestBody List<Skill> skills){
         Student ourstudent = studentDAO.findOne(id);
         HashSet<Skill> addThese = new HashSet<Skill>();
-        for (Skill s:skills
-                ) {
+        for (Skill s:skills) {
             addThese.add(skillDAO.findByName(s.getName()));
         }
         ourstudent.setSkills(addThese);
         studentDAO.save(ourstudent);
+        matchingService.registerStudent(ourstudent);
         return ourstudent;
     }
 
