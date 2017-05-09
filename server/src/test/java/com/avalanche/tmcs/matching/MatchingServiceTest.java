@@ -46,6 +46,26 @@ public class MatchingServiceTest {
         Map<JobPosting, MatchingService.MatchedSkillsCount> postMap = new HashMap<>();
         JobPosting posting = new JobPosting();
         posting.setPositionTitle("Position C");
+        posting.setUrl("https://drive.google.com/drive/u/1/my-drive");
+        posting.setRequiredSkills(new HashSet<>());
+
+        Skill skill = new Skill();
+        skill.setName("Bash");
+        posting.getRequiredSkills().add(skill);
+
+        skill = new Skill();
+        skill.setName("Linux");
+        posting.getRequiredSkills().add(skill);
+
+        skill = new Skill();
+        skill.setName("C");
+        posting.getRequiredSkills().add(skill);
+
+        posting.setRecommendedSkills(new HashSet<>());
+
+        skill = new Skill();
+        skill.setName("Perl");
+        posting.getRecommendedSkills().add(skill);
 
         MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
         skillsCount.requiredSkillsCount = 3;
@@ -58,7 +78,7 @@ public class MatchingServiceTest {
         Assert.assertEquals(1, matches.size());
 
         Match match = matches.get(0);
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f + skillsCount.recommendedSkillsCount * 0.2f;
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getRecommendedSkills().size();
 
         Assert.assertEquals(chompsky, match.getStudent());
         Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
@@ -215,15 +235,18 @@ public class MatchingServiceTest {
     private void setupJobPostings() {
         JobPosting post = new JobPosting();
         post.setPositionTitle("Post a");
+        post.setUrl("https://drive.google.com/drive/u/1/my-drive");
         recommended.add(post);
 
         post = new JobPosting();
         post.setPositionTitle("Post B");
+        post.setUrl("https://drive.google.com/drive/u/1/my-drive");
         recommended.add(post);
         required.add(post);
 
         post = new JobPosting();
         post.setPositionTitle("Post C");
+        post.setUrl("https://drive.google.com/drive/u/1/my-drive");
         required.add(post);
     }
 }

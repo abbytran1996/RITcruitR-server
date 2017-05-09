@@ -81,7 +81,7 @@ public class JobPosting {
         this.description = description;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     public Set<Skill> getRequiredSkills() {
         return requiredSkills;
@@ -100,7 +100,7 @@ public class JobPosting {
         this.minMatchedRequiredSkills = minMatchedRequiredSkills;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     public Set<Skill> getRecommendedSkills() {
         return recommendedSkills;
@@ -159,6 +159,26 @@ public class JobPosting {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JobPosting)) return false;
+
+        JobPosting that = (JobPosting) o;
+
+        if (getId() != that.getId()) return false;
+        if (!getPositionTitle().equals(that.getPositionTitle())) return false;
+        return getUrl().equals(that.getUrl());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (getId() ^ (getId() >>> 32));
+        result = 31 * result + getPositionTitle().hashCode();
+        result = 31 * result + getUrl().hashCode();
+        return result;
     }
 }
 

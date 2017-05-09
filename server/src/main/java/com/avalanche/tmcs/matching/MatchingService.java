@@ -4,6 +4,8 @@ import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,16 +49,16 @@ public class MatchingService {
     public void registerStudent(final Student student) {
         executor.execute(() -> {
             final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap = new HashMap<>();
-            for(Skill skill : student.getSkills()) {
+            for (Skill skill : student.getSkills()) {
                 // This does one DB call for each skill in the student's profile
                 // Based on what I've seen on LinkedIn, I'd expect students to have maybe a hundred skill max? That's
                 // 100 calls. Would be better if we didn't need that many, but should be fine for a POC
-                countJobPostingsThatRequireSkill(matchedSkillsCountMap, skill);
+                MatchingService.this.countJobPostingsThatRequireSkill(matchedSkillsCountMap, skill);
 
-                countJobPostingsThatRecommendSkill(matchedSkillsCountMap, skill);
+                MatchingService.this.countJobPostingsThatRecommendSkill(matchedSkillsCountMap, skill);
             }
 
-            final List<Match> matches = buildMatchesList(student, matchedSkillsCountMap);
+            final List<Match> matches = MatchingService.this.buildMatchesList(student, matchedSkillsCountMap);
 
             matchDAO.save(matches);
         });
@@ -132,7 +134,12 @@ public class MatchingService {
         final List<Match> matches = new ArrayList<>();
         for(JobPosting posting : matchedSkillsCountMap.keySet()) {
             MatchedSkillsCount matchedSkillsCount = matchedSkillsCountMap.get(posting);
-            float weight = matchedSkillsCount.requiredSkillsCount * requiredSkillsWeight + matchedSkillsCount.recommendedSkillsCount * (1.0f - requiredSkillsWeight);
+            float numRequiredSkills = posting.getRequiredSkills().size();
+            float weight = matchedSkillsCount.requiredSkillsCount * requiredSkillsWeight / numRequiredSkills;
+            float numRecommendedSkills = posting.getRecommendedSkills().size();
+            if(numRecommendedSkills > 0) {
+                weight += matchedSkillsCount.recommendedSkillsCount * (1.0f - requiredSkillsWeight) / numRecommendedSkills;
+            }
 
             Match match = new Match();
             match.setMatchStrength(weight);
