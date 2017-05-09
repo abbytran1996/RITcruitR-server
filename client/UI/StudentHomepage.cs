@@ -2,8 +2,11 @@
 using System.Linq;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
+using TMCS_Client.CustomUIElements.ListViews;
+using TMCS_Client.CustomUIElements.ViewCells;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
+using System;
 
 namespace TMCS_Client.UI {
     public class StudentHomepage : ContentPage {
@@ -22,6 +25,7 @@ namespace TMCS_Client.UI {
 
         public StudentHomepage() {
             setupMatchedList();
+            menu = new AbsoluteLayout();
 
             pageContent.Children.Add(new SubSectionTitleLabel("You have been matched with the following jobs:"));
 
@@ -34,8 +38,34 @@ namespace TMCS_Client.UI {
                 Text = "Select a position you may be interested in"
             },
             new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+#if __IOS__
+            ToolbarItem btnAddJobPosting;
+            ToolbarItems.Add(btnAddJobPosting = new ToolbarItem()
+            {
+                Icon = "TMCS_Client.iOS.Resources.add.png",
+            });
+#endif
+#if __ANDROID__
+            Button btnAddJobPosting;
+            btnAddJobPosting = new Button()
+            {
+                Image = "add_job_posting.png",
+                BackgroundColor = Color.Transparent,
+                BorderColor = Color.Transparent,
+                BorderWidth = 0.0,
+            };
+            menu.Children.Add(btnAddJobPosting,
+                                    new Rectangle(0.95,0.95,80.0,80.0),
+                                    AbsoluteLayoutFlags.PositionProportional);
+#endif
+            btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
+                Navigation.PushAsync(new SkillsEditing(app.CurrentStudent));
+
+            Content = pageContent;
+        
 
             pageContent.Children.Add(bottomItems);
+            pageContent.Children.Add(menu);
 
             Content = pageContent;
         }

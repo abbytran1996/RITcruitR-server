@@ -5,6 +5,9 @@ import com.avalanche.tmcs.exceptions.ResourceNotFound;
 import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.MatchDAO;
 import com.avalanche.tmcs.matching.MatchingService;
+import com.avalanche.tmcs.matching.SkillDAO;
+import com.avalanche.tmcs.matching.Skill;
+import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ public class StudentsController {
 
     private StudentDAO studentDAO;
 
+    private SkillDAO skillDAO;
     private MatchDAO matchDAO;
 
     private UserService userService;
@@ -39,8 +43,9 @@ public class StudentsController {
     private MatchingService matchingService;
 
     @Autowired
-    public StudentsController(StudentDAO studentDAO, MatchDAO matchDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
+    public StudentsController(StudentDAO studentDAO, SkillDAO skillDAO, MatchDAO matchDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.studentDAO = studentDAO;
+        this.skillDAO = skillDAO;
         this.matchDAO = matchDAO;
         this.userService = userService;
         this.securityService = securityService;
@@ -112,6 +117,19 @@ public class StudentsController {
         }
         List<Match> matches =  matchDAO.findAllByStudent(student);
         return matches;
+    }
+
+    @RequestMapping(value = "/{id}/skills", method = RequestMethod.POST)
+    public Student addSkills(@PathVariable long id, @RequestBody List<Skill> skills){
+        Student ourstudent = studentDAO.findOne(id);
+        HashSet<Skill> addThese = new HashSet<Skill>();
+        for (Skill s:skills
+                ) {
+            addThese.add(skillDAO.findByName(s.getName()));
+        }
+        ourstudent.setSkills(addThese);
+        studentDAO.save(ourstudent);
+        return ourstudent;
     }
 
     private void validateStudentId(long id) {
