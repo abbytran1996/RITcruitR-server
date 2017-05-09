@@ -10,6 +10,18 @@ using System;
 
 namespace TMCS_Client.UI {
     public class StudentHomepage : ContentPage {
+        public ICommand RefreshCommand {
+            get {
+                return new Command(async () => {
+                    IsRefreshing = true;
+                    
+                    await setupMatchedList();
+
+                    IsRefreshing = false;
+                });
+            }
+        }
+
         private AbsoluteLayout menu;
         private StackLayout pageContent = new StackLayout();
         private ScrollView matchesListContainer = new ScrollView();
@@ -24,6 +36,7 @@ namespace TMCS_Client.UI {
         private List<Match> matches;
 
         public StudentHomepage() {
+            IsPullToRefreshEnabled = true;
             setupMatchedList();
             menu = new AbsoluteLayout();
 
@@ -68,6 +81,8 @@ namespace TMCS_Client.UI {
             pageContent.Children.Add(menu);
 
             Content = pageContent;
+            
+            RefreshCommand += setupMatchedList();
         }
 
         private void onItemTapped(object sender, ItemTappedEventArgs e) {
@@ -103,7 +118,7 @@ namespace TMCS_Client.UI {
                                       PositionTitle = match.job.positionTitle,
                                       CompanyName = match.job.recruiter.company.companyName,
                                       Location = match.job.location,
-                                      Website = "Zane add this",
+                                      Website = match.job.recruiter.company.website,
                                       Match = match
                                   });
 
