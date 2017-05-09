@@ -68,7 +68,7 @@ namespace TMCS_Client.UI
 
 			creationForm = new AbsoluteLayout()
 			{
-				HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 24,
+				HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 7,
 			};
 
             
@@ -117,7 +117,7 @@ namespace TMCS_Client.UI
 
             
             creationForm.Children.Add(requiredSkillsSection,
-                                     new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 5,
+                                     new Rectangle(0.0, 0.0,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6),
                                      AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
@@ -128,7 +128,7 @@ namespace TMCS_Client.UI
             btnSave.Command = new Command((object obj) => saveSkills());
 
 			creationForm.Children.Add(btnSave,
-										  new Rectangle(0.5, ((23.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
+										  new Rectangle(0.5, ((Constants.Forms.Sizes.ROW_HEIGHT * 6) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
 										  AbsoluteLayoutFlags.WidthProportional |
 										 AbsoluteLayoutFlags.XProportional);
 
