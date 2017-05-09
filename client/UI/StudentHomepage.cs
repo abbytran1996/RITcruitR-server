@@ -29,7 +29,7 @@ namespace TMCS_Client.UI {
             matchesList.RefreshCommand = new Command(async () => {
                 matchesList.IsRefreshing = true;
                     
-                await setupMatchedList();
+                setupMatchedList();
 
                 matchesList.IsRefreshing = false;
             });
