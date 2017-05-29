@@ -6,6 +6,7 @@ using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
 using TMCS_Client.CustomUIElements.Buttons;
+using TMCS_Client.CustomUIElements.Pickers;
 
 using Xamarin.Forms;
 
@@ -58,7 +59,7 @@ namespace TMCS_Client.UI
 
         //Prefered Company Size
         private FormFieldLabel lblPreferredCompanySize;
-        private FormEntry entPreferredCompanySize;
+        private CompanySizePicker pickPreferredCompanySize;
 
         //Register Button
         private Button btnRegister;
@@ -277,7 +278,7 @@ namespace TMCS_Client.UI
                                        new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                        AbsoluteLayoutFlags.All);
 
-            entPreferredLocation.Completed += (object sender, EventArgs e) => entPreferredCompanySize.Focus();
+            entPreferredLocation.Completed += (object sender, EventArgs e) => pickPreferredCompanySize.Focus();
 
 			registrationForm.Children.Add(preferredLocationInput,
                                          new Rectangle(0, 9.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -293,10 +294,10 @@ namespace TMCS_Client.UI
 									   new Rectangle(0.5, 0, 0.9, 0.5),
 									   AbsoluteLayoutFlags.All);
 
-			preferredCompanySizeInput.Children.Add(entPreferredCompanySize =
-									   new FormEntry("Size", Keyboard.Text),
-									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
+            preferredCompanySizeInput.Children.Add(pickPreferredCompanySize = 
+                                       new CompanySizePicker(),
+									   new Rectangle(0.5, 1.0, 0.9, 0.5),
+			                           AbsoluteLayoutFlags.All);
 
 			registrationForm.Children.Add(preferredCompanySizeInput,
 										 new Rectangle(0, 10.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -342,6 +343,9 @@ namespace TMCS_Client.UI
 			{
 				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
 			}
+            if (pickPreferredCompanySize.getPreferredSize() == null){
+                invalidDataMessage += "A preferred company size must be selected.\n";
+            }
 
             if (invalidDataMessage != "")
             {
@@ -359,7 +363,7 @@ namespace TMCS_Client.UI
                     entPhoneNumber.Text.Replace("(","").Replace(")","")
                         .Replace(" ","").Replace("-", ""),
                     new List<String>(entPreferredLocation.Text.Replace(", ",",").Split(',')),
-                    entPreferredCompanySize.Text,
+                    pickPreferredCompanySize.getPreferredSize(),
                     entPassword.Text,
                     entRetypePassword.Text
                 );

@@ -26,7 +26,7 @@ namespace TMCS_Client.UI {
 
         public StudentHomepage() {
             matchesList.IsPullToRefreshEnabled = true;
-            matchesList.RefreshCommand = new Command(async () => {
+            matchesList.RefreshCommand = new Command(() => {
                 matchesList.IsRefreshing = true;
                     
                 setupMatchedList();
