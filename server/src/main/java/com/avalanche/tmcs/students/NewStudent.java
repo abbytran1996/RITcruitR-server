@@ -9,6 +9,14 @@ public class NewStudent extends Student {
 
     private String passwordConfirm;
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
     public String getPassword() {
         return password;
     }

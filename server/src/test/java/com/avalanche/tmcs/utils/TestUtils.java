@@ -1,0 +1,64 @@
+package com.avalanche.tmcs.utils;
+
+import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.students.NewStudent;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import java.sql.Date;
+import java.util.HashSet;
+
+/**
+ * Defines utility methods to do things like ensure that there's data in the database and login users
+ *
+ * @author ddubois
+ * @since 5/15/17.
+ */
+public class TestUtils {
+    private static String LOGIN_EMAIL           = "student@rit.edu";
+    private static String LOGIN_PASSWORD        = "Password1!";
+
+    private static String LOGIN_URL             = "/user/login";
+    private static String REGISTER_STUDENT_URL  = "/students";
+
+    private static RestTemplate restTemplate = new RestTemplate();
+
+    public static void ensureTestStudent() {
+        NewStudent newStudent = new NewStudent();
+        newStudent.setEmail(LOGIN_EMAIL);
+        newStudent.setPassword(LOGIN_PASSWORD);
+        newStudent.setPasswordConfirm(LOGIN_PASSWORD);
+        newStudent.setFirstName("Login");
+        newStudent.setLastName("Student");
+        newStudent.setGraduationDate(new Date(2099, 1, 1));
+        newStudent.setPhoneNumber("5555555555");
+        newStudent.setPreferredCompanySize(Company.Size.DONT_CARE);
+        newStudent.setPreferredStates(new HashSet<>());
+        newStudent.setSchool("RIT");
+        newStudent.setSkills(new HashSet<>());
+
+        restTemplate.postForLocation(ServerContext.urlBase + REGISTER_STUDENT_URL, newStudent);
+    }
+
+    public static String login() {
+        ensureTestStudent();
+
+        User user = new User();
+        user.setUsername(LOGIN_EMAIL);
+        user.setPassword(LOGIN_PASSWORD);
+
+        HttpHeaders headers = restTemplate.exchange(
+                ServerContext.urlBase + LOGIN_URL,
+                HttpMethod.POST,
+                new HttpEntity<>(user),
+                new ParameterizedTypeReference<ResponseEntity<User>>() {}
+        ).getHeaders();
+
+        return "";
+    }
+}
