@@ -53,7 +53,8 @@ namespace TMCS_Client.UI
 		FormFieldLabel lblChosenRecommendedSkills;
 		FormListView<Skill, SkillListCell> recommendedSkills;
 		FormFieldLabel lblRecommendedSkillsWeight;
-		FormEntry entRecommendedSkillsWeight;
+		Label lblRecommendedSkillsWeightValue;
+        Slider slidReocommendedSkillsWeight;
 
         //Recruiter
         private Recruiter associatedRecruiter = null;
@@ -245,21 +246,32 @@ namespace TMCS_Client.UI
 									  AbsoluteLayoutFlags.WidthProportional);
 
 			recommendedSkillsSection.Children.Add(lblRecommendedSkillsWeight =
-                                                  new FormFieldLabel("Recommended Skills Weight (0.0 - 1.0)"),
+                                                  new FormFieldLabel("Recommended Skills Weight"),
 											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
 												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
 											   AbsoluteLayoutFlags.XProportional |
 											   AbsoluteLayoutFlags.WidthProportional);
-
-			recommendedSkillsSection.Children.Add(entRecommendedSkillsWeight =
-											   new FormEntry("0.0 - 1.0", Keyboard.Numeric),
+            
+			recommendedSkillsSection.Children.Add(slidReocommendedSkillsWeight =
+                                                  new Slider(0.0, 100.0, 50.0) { Margin = new Thickness(0.0, 0.0, 50.0, 0.0) },
 											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
 												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
 											   AbsoluteLayoutFlags.XProportional |
 											   AbsoluteLayoutFlags.WidthProportional);
 
+            recommendedSkillsSection.Children.Add(lblRecommendedSkillsWeightValue = 
+                                                  new Label(){Text = "50%",
+                                                    HorizontalTextAlignment = TextAlignment.End},
+												 new Rectangle(0.94, Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
+												  50.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+											   AbsoluteLayoutFlags.XProportional);
 
-			creationForm.Children.Add(recommendedSkillsSection,
+            slidReocommendedSkillsWeight.ValueChanged += (object sender, ValueChangedEventArgs e) =>
+            {
+                lblRecommendedSkillsWeightValue.Text = ((int)((Slider)sender).Value).ToString() + "%";
+            };
+			
+            creationForm.Children.Add(recommendedSkillsSection,
 									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 11,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6),
 									 AbsoluteLayoutFlags.XProportional |
@@ -282,7 +294,7 @@ namespace TMCS_Client.UI
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
 
-			//Location
+			//Phase Timeout
 			AbsoluteLayout phaseTimeoutSection = new AbsoluteLayout();
 
 			phaseTimeoutSection.Children.Add(lblPhaseTimeout = new FormFieldLabel("Phase Timeout"),
@@ -361,7 +373,7 @@ namespace TMCS_Client.UI
                 newJobPosting.description = editorDescription.Text;
                 newJobPosting.positionTitle = entPositionTitle.Text;
                 newJobPosting.minMatchedRequiredSkills = int.Parse(entMinMatchedRequiredSkills.Text);
-                newJobPosting.recommendedSkillsWeight = double.Parse(entRecommendedSkillsWeight.Text);
+                newJobPosting.recommendedSkillsWeight = Math.Truncate(slidReocommendedSkillsWeight.Value) / 100.0;
                 newJobPosting.url = entWebpageURL.Text;
                 newJobPosting.requiredSkills = new List<Skill>(requiredSkills.items);
                 newJobPosting.requiredSkills.Remove(Skill.NullSkill);
@@ -378,7 +390,6 @@ namespace TMCS_Client.UI
         private String validateForm(){
             String invalidDataMessage = "";
             int temp;
-            double temp_d;
 
             if(string.IsNullOrEmpty(entLocation.Text)){
                 invalidDataMessage += "Location is required\n";
@@ -423,21 +434,6 @@ namespace TMCS_Client.UI
             }else if(temp > requiredSkills.items.Count){
                 invalidDataMessage += "The minimum number of required skills cannot be greater than the " +
                     "selected number of required skills\n";
-            }
-            if (recommendedSkills.items[0] != Skill.NullSkill)
-            {
-                if (string.IsNullOrEmpty(entRecommendedSkillsWeight.Text))//Not necessaryif no recommended skills
-                {
-                    invalidDataMessage += "A weight for recommended skills is required\n";
-                }
-                else if (!double.TryParse(entRecommendedSkillsWeight.Text, out temp_d))
-                {
-                    invalidDataMessage += "The weight for recommended skills must be a decimal number\n";
-                }
-                else if (temp_d < 0.0 || temp_d > 1.0)
-                {
-                    invalidDataMessage += "The weight for recommended skills must be between 0.0 and 1.0\n";
-                }
             }
             return invalidDataMessage;
         }

@@ -64,6 +64,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\CompanyRegistration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterHomepage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\JobPostingListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Pickers\CompanySizePicker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
@@ -78,5 +79,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Pickers\" />
   </ItemGroup>
 </Project>
