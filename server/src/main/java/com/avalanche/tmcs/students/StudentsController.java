@@ -108,20 +108,24 @@ public class StudentsController {
     }
 
     @RequestMapping(value = "/{id}/matches", method = RequestMethod.GET)
-    public List<Match> getMatchesForStudent(@PathVariable long id) {
+    public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id) {
         validateStudentId(id);
 
         Student student = studentDAO.findOne(id);
         if(student == null) {
-            // 404
+            return ResponseEntity.notFound().build();
         }
         List<Match> matches =  matchDAO.findAllByStudent(student);
-        return matches;
+        return ResponseEntity.ok(matches);
     }
 
     @RequestMapping(value = "/{id}/skills", method = RequestMethod.POST)
-    public Student addSkills(@PathVariable long id, @RequestBody List<Skill> skills){
+    public ResponseEntity<Student> addSkills(@PathVariable long id, @RequestBody List<Skill> skills){
         Student ourstudent = studentDAO.findOne(id);
+        if(ourstudent == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         HashSet<Skill> addThese = new HashSet<Skill>();
         for (Skill s:skills) {
             addThese.add(skillDAO.findByName(s.getName()));
@@ -129,7 +133,7 @@ public class StudentsController {
         ourstudent.setSkills(addThese);
         studentDAO.save(ourstudent);
         matchingService.registerStudent(ourstudent);
-        return ourstudent;
+        return ResponseEntity.ok(ourstudent);
     }
 
     private void validateStudentId(long id) {

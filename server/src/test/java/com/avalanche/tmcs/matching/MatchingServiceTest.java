@@ -85,6 +85,57 @@ public class MatchingServiceTest {
     }
 
     @Test
+    public void testBuildMatchesList_multipleSkills() {
+        Student chompsky = new Student();
+        chompsky.setFirstName("Noam");
+        chompsky.setEmail("universal_grammar@trees.org");
+        chompsky.setSkills(new HashSet<>());
+
+        Map<JobPosting, MatchingService.MatchedSkillsCount> postMap = new HashMap<>();
+        JobPosting posting = new JobPosting();
+        posting.setPositionTitle("Position C");
+        posting.setUrl("https://drive.google.com/drive/u/1/my-drive");
+        posting.setRequiredSkills(new HashSet<>());
+
+        Skill skill = new Skill();
+        skill.setName("Bash");
+        posting.getRequiredSkills().add(skill);
+        chompsky.getSkills().add(skill);
+
+        skill = new Skill();
+        skill.setName("Linux");
+        posting.getRequiredSkills().add(skill);
+        chompsky.getSkills().add(skill);
+
+        skill = new Skill();
+        skill.setName("C");
+        posting.getRequiredSkills().add(skill);
+        chompsky.getSkills().add(skill);
+
+        posting.setRecommendedSkills(new HashSet<>());
+
+        skill = new Skill();
+        skill.setName("Perl");
+        posting.getRecommendedSkills().add(skill);
+
+        MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
+        skillsCount.requiredSkillsCount = 3;
+        skillsCount.recommendedSkillsCount = 1;
+
+        postMap.put(posting, skillsCount);
+
+        List<Match> matches = matchingService.buildMatchesList(chompsky, postMap);
+
+        Assert.assertEquals(1, matches.size());
+
+        Match match = matches.get(0);
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getRecommendedSkills().size();
+
+        Assert.assertEquals(chompsky, match.getStudent());
+        Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
+    }
+
+    @Test
     public void testBuildMatches_noJobs() {
         Student chompsky = new Student();
         chompsky.setFirstName("Noam");
