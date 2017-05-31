@@ -62,6 +62,10 @@ public class Match {
 
     private CurrentPhase currentPhase = CurrentPhase.NONE;
 
+    public Match() {
+        setLastUpdatedTimeToNow();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
@@ -121,6 +125,7 @@ public class Match {
         setLastUpdatedTimeToNow();
     }
 
+    @NotNull
     public Date getTimeLastUpdated() {
         return timeLastUpdated;
     }
@@ -129,6 +134,7 @@ public class Match {
         this.timeLastUpdated = timeLastUpdated;
     }
 
+    @NotNull
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
@@ -138,6 +144,7 @@ public class Match {
         setLastUpdatedTimeToNow();
     }
 
+    @NotNull
     public CurrentPhase getCurrentPhase() {
         return currentPhase;
     }
