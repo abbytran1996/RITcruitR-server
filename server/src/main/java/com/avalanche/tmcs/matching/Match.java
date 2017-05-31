@@ -5,6 +5,9 @@ import com.avalanche.tmcs.students.Student;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.net.URI;
+import java.net.URL;
+import java.sql.Date;
 
 /**
  * Represents a match between a student and a job posting
@@ -15,13 +18,49 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="matches")
 public class Match {
+    public enum ApplicationStatus {
+        // The Match has been generated but the student hasn't interacted with it
+        NEW,
+
+        // The student has pressed the interested button AND neither the student nor the recruiter has rejected the
+        // application
+        IN_PROGRESS,
+
+        // The student has been given an interview
+        ACCEPTED,
+
+        // Either the student or the recruiter has rejected this application
+        REJECTED
+    }
+
+    public enum CurrentPhase {
+        NONE,
+        PROBLEM,
+        PRESENTATION,
+        INTERVIEW
+    }
+
     private long id;
+
+    /* Data about the match */
 
     private Student student;
 
     private JobPosting job;
 
     private float matchStrength;
+
+    /* Data from the student's application process */
+
+    private String studentProblemResponse;
+
+    private URI studentPresentationLink;
+
+    private Date timeLastUpdated;
+
+    private ApplicationStatus applicationStatus = ApplicationStatus.NEW;
+
+    private CurrentPhase currentPhase = CurrentPhase.NONE;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,5 +101,55 @@ public class Match {
 
     public void setJob(JobPosting job) {
         this.job = job;
+    }
+
+    public String getStudentProblemResponse() {
+        return studentProblemResponse;
+    }
+
+    public void setStudentProblemResponse(final String studentProblemResponse) {
+        this.studentProblemResponse = studentProblemResponse;
+        setLastUpdatedTimeToNow();
+    }
+
+    public URI getStudentPresentationLink() {
+        return studentPresentationLink;
+    }
+
+    public void setStudentPresentationLink(final URI studentPresentationLink) {
+        this.studentPresentationLink = studentPresentationLink;
+        setLastUpdatedTimeToNow();
+    }
+
+    public Date getTimeLastUpdated() {
+        return timeLastUpdated;
+    }
+
+    public void setTimeLastUpdated(final Date timeLastUpdated) {
+        this.timeLastUpdated = timeLastUpdated;
+    }
+
+    public ApplicationStatus getApplicationStatus() {
+        return applicationStatus;
+    }
+
+    public void setApplicationStatus(final ApplicationStatus applicationStatus) {
+        this.applicationStatus = applicationStatus;
+        setLastUpdatedTimeToNow();
+    }
+
+    public CurrentPhase getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public void setCurrentPhase(final CurrentPhase currentPhase) {
+        this.currentPhase = currentPhase;
+        setLastUpdatedTimeToNow();
+    }
+
+    public void setLastUpdatedTimeToNow() {
+        // Yes, this is how Java Dates are now. I'm using the parent class to get the current time, then sending that
+        // to the constructor of the child class. Yay Java dates!
+        setTimeLastUpdated(new Date(new java.util.Date().getTime()));
     }
 }
