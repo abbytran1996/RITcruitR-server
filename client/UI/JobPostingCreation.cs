@@ -42,8 +42,6 @@ namespace TMCS_Client.UI
         FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> requiredSkillsSearchResults;
         FormFieldLabel lblChosenRequiredSkills;
         FormListView<Skill, SkillListCell> requiredSkills;
-        FormFieldLabel lblMinMatchedRequiredSkills;
-        FormEntry entMinMatchedRequiredSkills;
 
 		//Recommended Skills
 		AbsoluteLayout recommendedSkillsSection;
@@ -53,30 +51,41 @@ namespace TMCS_Client.UI
 		FormFieldLabel lblChosenRecommendedSkills;
 		FormListView<Skill, SkillListCell> recommendedSkills;
 		FormFieldLabel lblRecommendedSkillsWeight;
-		Label lblRecommendedSkillsWeightValue;
-        Slider slidReocommendedSkillsWeight;
+        AbsoluteLayout recommendedSkillsImportanceLabels;
+		Label lblRecommendedSkillsImportanceLow;
+        Label lblRecommendedSkillsImportanceMed;
+        Label lblRecommendedSkillsImportanceHigh;
+        Slider slidRecommendedSkillsWeight;
 
-        //Recruiter
-        private Recruiter associatedRecruiter = null;
+        //Match Threshold
+        FormFieldLabel lblMatchThreshold;
+        Label lblMatchThresholdLenient;
+		Label lblMatchThresholdModerate;
+		Label lblMatchThresholdStrict;
+		AbsoluteLayout matchThresholdLabels;
+        Slider slidMatchThreshold;
 
 		//Location
 		FormFieldLabel lblLocation;
 		FormEntry entLocation;
 
-        //Phase Timeout
-        FormFieldLabel lblPhaseTimeout;
-        FormEntry entPhaseTimeout;
+		//Phase Timeout
+		FormFieldLabel lblPhaseTimeout;
+		FormEntry entPhaseTimeout;
 
-        //Problem Statement
-        FormFieldLabel lblProblemStatement;
-        FormEditor editorProblemStatement;
+		//Problem Statement
+		FormFieldLabel lblProblemStatement;
+		FormEditor editorProblemStatement;
 
 		//Webpage URL
 		FormFieldLabel lblWebpageURL;
 		FormEntry entWebpageURL;
 
-        //Create
-        FormSubmitButton btnCreate;
+		//Create
+		FormSubmitButton btnCreate;
+
+        //Recruiter
+        private Recruiter associatedRecruiter = null;
 
         public JobPostingCreation(Recruiter associatedRecruiter)
         {
@@ -92,16 +101,17 @@ namespace TMCS_Client.UI
 
             };
 
-			creationForm = new AbsoluteLayout()
-			{
-				HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 24,
-			};
+            creationForm = new AbsoluteLayout()
+            {
+                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 25,
+            };
 
             //Title
-            lblTitle = new PageTitleLabel("Job Posting Creation") {
+            lblTitle = new PageTitleLabel("Job Posting Creation")
+            {
             };
             creationForm.Children.Add(lblTitle,
-                                     new Rectangle(0.0,0.0,1.0,Constants.Forms.Sizes.ROW_HEIGHT),
+                                     new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                      AbsoluteLayoutFlags.WidthProportional |
                                      AbsoluteLayoutFlags.XProportional);
 
@@ -119,34 +129,34 @@ namespace TMCS_Client.UI
             creationForm.Children.Add(positionNameSection,
                                      new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 1,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-                                      AbsoluteLayoutFlags.XProportional | 
+                                      AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-			//Description
-			AbsoluteLayout descriptionSection = new AbsoluteLayout();
+            //Description
+            AbsoluteLayout descriptionSection = new AbsoluteLayout();
 
-			descriptionSection.Children.Add(lblDescription = new FormFieldLabel("Position Description"),
-											new Rectangle(0.5, 0.0, 0.9, 1.0/6.0),
-											 AbsoluteLayoutFlags.All);
-			descriptionSection.Children.Add(editorDescription =
-											 new FormEditor(),
-											new Rectangle(0.5, 1.0, 0.9, 5.0/6.0),
-											AbsoluteLayoutFlags.All);
+            descriptionSection.Children.Add(lblDescription = new FormFieldLabel("Position Description"),
+                                            new Rectangle(0.5, 0.0, 0.9, 1.0 / 6.0),
+                                             AbsoluteLayoutFlags.All);
+            descriptionSection.Children.Add(editorDescription =
+                                             new FormEditor(),
+                                            new Rectangle(0.5, 1.0, 0.9, 5.0 / 6.0),
+                                            AbsoluteLayoutFlags.All);
             editorDescription.Completed += (object sender, EventArgs e) => requiredSkillsSearchBar.Focus();
-			creationForm.Children.Add(descriptionSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 2,
+            creationForm.Children.Add(descriptionSection,
+                                     new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 2,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT * 3),
-									  AbsoluteLayoutFlags.XProportional |
-									  AbsoluteLayoutFlags.WidthProportional);
+                                      AbsoluteLayoutFlags.XProportional |
+                                      AbsoluteLayoutFlags.WidthProportional);
 
             //Required Skills
             requiredSkillsSection = new AbsoluteLayout();
 
             lblRequiredSkills = new SubSectionTitleLabel("Required Skills Selection");
-            
+
             requiredSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
 
-			requiredSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(requiredSkills);
+            requiredSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(requiredSkills);
 
             requiredSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for required skills",
                                                       allSkills, requiredSkillsSearchResults);
@@ -155,128 +165,182 @@ namespace TMCS_Client.UI
 
             requiredSkillsSection.Children.Add(lblRequiredSkills,
                                               new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1),
-                                               AbsoluteLayoutFlags.XProportional | 
+                                               AbsoluteLayoutFlags.XProportional |
                                                AbsoluteLayoutFlags.WidthProportional);
 
             requiredSkillsSection.Children.Add(requiredSkillsSearchBar,
-                                     new Rectangle(0,Constants.Forms.Sizes.ROW_HEIGHT,
-                                                   1.0,Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-									 AbsoluteLayoutFlags.XProportional |
-									AbsoluteLayoutFlags.WidthProportional);
+                                     new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT,
+                                                   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+                                     AbsoluteLayoutFlags.XProportional |
+                                    AbsoluteLayoutFlags.WidthProportional);
 
-			requiredSkillsSection.Children.Add(lblChosenRequiredSkills,
-									 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-									  AbsoluteLayoutFlags.XProportional |
-									  AbsoluteLayoutFlags.WidthProportional);
+            requiredSkillsSection.Children.Add(lblChosenRequiredSkills,
+                                     new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
+                                                  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+                                      AbsoluteLayoutFlags.XProportional |
+                                      AbsoluteLayoutFlags.WidthProportional);
 
             requiredSkillsSection.Children.Add(requiredSkills,
                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2,
-                                                           0.9,Constants.Forms.Sizes.ROW_HEIGHT * 3),
-                                              AbsoluteLayoutFlags.XProportional | 
-                                               AbsoluteLayoutFlags.WidthProportional);
-            
-			requiredSkillsSection.Children.Add(requiredSkillsSearchResults,
-									 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
-									  AbsoluteLayoutFlags.XProportional |
-									  AbsoluteLayoutFlags.WidthProportional);
-
-            requiredSkillsSection.Children.Add(lblMinMatchedRequiredSkills = 
-                                               new FormFieldLabel("Minimum required skills for a match"),
-											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-                                               AbsoluteLayoutFlags.XProportional | 
+                                                           0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
+                                              AbsoluteLayoutFlags.XProportional |
                                                AbsoluteLayoutFlags.WidthProportional);
 
-			requiredSkillsSection.Children.Add(entMinMatchedRequiredSkills = 
-                                               new FormEntry("Minimum skills", Keyboard.Numeric),
-											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-											   AbsoluteLayoutFlags.XProportional |
-											   AbsoluteLayoutFlags.WidthProportional);
-            
+            requiredSkillsSection.Children.Add(requiredSkillsSearchResults,
+                                     new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
+                                                  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
+                                      AbsoluteLayoutFlags.XProportional |
+                                      AbsoluteLayoutFlags.WidthProportional);
+
             creationForm.Children.Add(requiredSkillsSection,
                                      new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 5,
-                                                   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6),
+                                                   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 5),
                                      AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-			//Recommended Skills
-			recommendedSkillsSection = new AbsoluteLayout();
+            //Recommended Skills
+            recommendedSkillsSection = new AbsoluteLayout();
 
-			lblRecommendedSkills = new SubSectionTitleLabel("Recommended Skills Selection");
+            lblRecommendedSkills = new SubSectionTitleLabel("Recommended Skills Selection");
 
-			recommendedSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
+            recommendedSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
 
-			recommendedSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(recommendedSkills);
+            recommendedSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(recommendedSkills);
 
-			recommendedSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for recommended skills",
-													  allSkills, recommendedSkillsSearchResults);
+            recommendedSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for recommended skills",
+                                                      allSkills, recommendedSkillsSearchResults);
 
-			lblChosenRecommendedSkills = new FormFieldLabel("Chosen Recommended Skills");
+            lblChosenRecommendedSkills = new FormFieldLabel("Chosen Recommended Skills");
 
-			recommendedSkillsSection.Children.Add(lblRecommendedSkills,
-											  new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1),
-											   AbsoluteLayoutFlags.XProportional |
-											   AbsoluteLayoutFlags.WidthProportional);
+            recommendedSkillsSection.Children.Add(lblRecommendedSkills,
+                                              new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1),
+                                               AbsoluteLayoutFlags.XProportional |
+                                               AbsoluteLayoutFlags.WidthProportional);
 
-			recommendedSkillsSection.Children.Add(recommendedSkillsSearchBar,
-									 new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT,
-												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-									 AbsoluteLayoutFlags.XProportional |
-									AbsoluteLayoutFlags.WidthProportional);
+            recommendedSkillsSection.Children.Add(recommendedSkillsSearchBar,
+                                     new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT,
+                                                   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+                                     AbsoluteLayoutFlags.XProportional |
+                                    AbsoluteLayoutFlags.WidthProportional);
 
-			recommendedSkillsSection.Children.Add(lblChosenRecommendedSkills,
-									 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-									  AbsoluteLayoutFlags.XProportional |
-									  AbsoluteLayoutFlags.WidthProportional);
+            recommendedSkillsSection.Children.Add(lblChosenRecommendedSkills,
+                                     new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
+                                                  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+                                      AbsoluteLayoutFlags.XProportional |
+                                      AbsoluteLayoutFlags.WidthProportional);
 
-			recommendedSkillsSection.Children.Add(recommendedSkills,
-											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2,
-														   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
-											  AbsoluteLayoutFlags.XProportional |
-											   AbsoluteLayoutFlags.WidthProportional);
+            recommendedSkillsSection.Children.Add(recommendedSkills,
+                                              new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2,
+                                                           0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
+                                              AbsoluteLayoutFlags.XProportional |
+                                               AbsoluteLayoutFlags.WidthProportional);
 
-			recommendedSkillsSection.Children.Add(recommendedSkillsSearchResults,
-									 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
-									  AbsoluteLayoutFlags.XProportional |
-									  AbsoluteLayoutFlags.WidthProportional);
+            recommendedSkillsSection.Children.Add(recommendedSkillsSearchResults,
+                                     new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
+                                                  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
+                                      AbsoluteLayoutFlags.XProportional |
+                                      AbsoluteLayoutFlags.WidthProportional);
 
-			recommendedSkillsSection.Children.Add(lblRecommendedSkillsWeight =
-                                                  new FormFieldLabel("Recommended Skills Weight"),
-											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-											   AbsoluteLayoutFlags.XProportional |
-											   AbsoluteLayoutFlags.WidthProportional);
+            recommendedSkillsSection.Children.Add(lblRecommendedSkillsWeight =
+                                                  new FormFieldLabel("Recommended Skill Importance"),
+                                              new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
+                                                  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+                                               AbsoluteLayoutFlags.XProportional |
+                                               AbsoluteLayoutFlags.WidthProportional);
+
+            recommendedSkillsImportanceLabels = new AbsoluteLayout();
+
+            recommendedSkillsImportanceLabels.Children.Add(lblRecommendedSkillsImportanceLow =
+                                                           new Label() { Text = "Low", 
+                                                            HorizontalTextAlignment = TextAlignment.Start},
+                                                          new Rectangle(0.0,0.0,1.0,1.0),
+                                                          AbsoluteLayoutFlags.All);
+
+			recommendedSkillsImportanceLabels.Children.Add(lblRecommendedSkillsImportanceMed =
+														   new Label()
+														   {
+															   Text = "Medium",
+															   HorizontalTextAlignment = TextAlignment.Center
+														   },
+														  new Rectangle(0.0, 0.0, 1.0, 1.0),
+														  AbsoluteLayoutFlags.All);
+
+			recommendedSkillsImportanceLabels.Children.Add(lblRecommendedSkillsImportanceHigh=
+														   new Label()
+														   {
+															   Text = "High",
+															   HorizontalTextAlignment = TextAlignment.End
+														   },
+														  new Rectangle(0.0, 0.0, 1.0, 1.0),
+														  AbsoluteLayoutFlags.All);
+
+            recommendedSkillsSection.Children.Add(recommendedSkillsImportanceLabels,
+                                                 new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
+                                                              0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+												 AbsoluteLayoutFlags.XProportional |
+											     AbsoluteLayoutFlags.WidthProportional);
             
-			recommendedSkillsSection.Children.Add(slidReocommendedSkillsWeight =
-                                                  new Slider(0.0, 100.0, 50.0) { Margin = new Thickness(0.0, 0.0, 50.0, 0.0) },
-											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
+			recommendedSkillsSection.Children.Add(slidRecommendedSkillsWeight =
+                                                  new Slider( Constants.Forms.RECOMMENDED_SKILLS_WEIGHT.MIN, 
+                                                             Constants.Forms.RECOMMENDED_SKILLS_WEIGHT.MAX,
+                                                            (Constants.Forms.RECOMMENDED_SKILLS_WEIGHT.MAX + 
+                                                              Constants.Forms.RECOMMENDED_SKILLS_WEIGHT.MIN) / 2),
+											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 6,
 												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
 											   AbsoluteLayoutFlags.XProportional |
 											   AbsoluteLayoutFlags.WidthProportional);
-
-            recommendedSkillsSection.Children.Add(lblRecommendedSkillsWeightValue = 
-                                                  new Label(){Text = "50%",
-                                                    HorizontalTextAlignment = TextAlignment.End},
-												 new Rectangle(0.94, Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
-												  50.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-											   AbsoluteLayoutFlags.XProportional);
-
-            slidReocommendedSkillsWeight.ValueChanged += (object sender, ValueChangedEventArgs e) =>
-            {
-                lblRecommendedSkillsWeightValue.Text = ((int)((Slider)sender).Value).ToString() + "%";
-            };
 			
             creationForm.Children.Add(recommendedSkillsSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 11,
-												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6),
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 10,
+												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6.5),
 									 AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
 
+            //Match Threshold
+            AbsoluteLayout matchThresholdSection = new AbsoluteLayout();
+
+            matchThresholdSection.Children.Add(lblMatchThreshold =
+                                               new FormFieldLabel("Match Threshold"),
+											  new Rectangle(0.5, 0.0, 0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+											 AbsoluteLayoutFlags.XProportional |
+											   AbsoluteLayoutFlags.WidthProportional);
+
+            matchThresholdLabels = new AbsoluteLayout();
+
+            matchThresholdLabels.Children.Add(lblMatchThresholdLenient =
+                                              new Label() { Text = "Lenient", HorizontalTextAlignment = TextAlignment.Start },
+                                             new Rectangle(0.0,0.0,1.0,1.0),
+                                             AbsoluteLayoutFlags.All);
+
+			matchThresholdLabels.Children.Add(lblMatchThresholdModerate =
+											  new Label() { Text = "Moderate", HorizontalTextAlignment = TextAlignment.Center },
+											 new Rectangle(0.0, 0.0, 1.0, 1.0),
+											 AbsoluteLayoutFlags.All);
+
+            matchThresholdLabels.Children.Add(lblMatchThresholdLenient =
+                                              new Label() { Text = "Strict", HorizontalTextAlignment = TextAlignment.End },
+											 new Rectangle(0.0, 0.0, 1.0, 1.0),
+											 AbsoluteLayoutFlags.All);
+
+            matchThresholdSection.Children.Add(matchThresholdLabels,
+											  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 0.5,
+												   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+									 AbsoluteLayoutFlags.XProportional |
+                                               AbsoluteLayoutFlags.WidthProportional);
+
+            matchThresholdSection.Children.Add(slidMatchThreshold = new Slider(0.0, 1.0, 0.8),
+                                              new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT,
+                                                   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
+                                     AbsoluteLayoutFlags.XProportional |
+                                               AbsoluteLayoutFlags.WidthProportional);
+            
+            creationForm.Children.Add(matchThresholdSection,
+									 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 16.5,
+												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1.5),
+									 AbsoluteLayoutFlags.XProportional |
+									  AbsoluteLayoutFlags.WidthProportional);
+
+            
 			//Location
 			AbsoluteLayout locationSection = new AbsoluteLayout();
 
@@ -289,7 +353,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			entLocation.Completed += (object sender, EventArgs e) => entPhaseTimeout.Focus();
 			creationForm.Children.Add(locationSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 17,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 18,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -306,7 +370,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			entLocation.Completed += (object sender, EventArgs e) => editorProblemStatement.Focus();
 			creationForm.Children.Add(phaseTimeoutSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 18,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 19,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -322,7 +386,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			editorProblemStatement.Completed += (object sender, EventArgs e) => entWebpageURL.Focus();
 			creationForm.Children.Add(problemStatementSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 19,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 20,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 3),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -339,7 +403,7 @@ namespace TMCS_Client.UI
 											AbsoluteLayoutFlags.All);
 			entWebpageURL.Completed += (object sender, EventArgs e) => entWebpageURL.Unfocus();
 			creationForm.Children.Add(webpageURLSection,
-									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 22,
+									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 23,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 									  AbsoluteLayoutFlags.XProportional |
 									  AbsoluteLayoutFlags.WidthProportional);
@@ -349,7 +413,7 @@ namespace TMCS_Client.UI
             btnCreate.Command = new Command((object obj) => createJobPosting());
 
 			creationForm.Children.Add(btnCreate,
-										  new Rectangle(0.5, ((23.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
+										  new Rectangle(0.5, ((24 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
 										  AbsoluteLayoutFlags.WidthProportional |
 										 AbsoluteLayoutFlags.XProportional);
 
@@ -372,8 +436,8 @@ namespace TMCS_Client.UI
                 newJobPosting.phaseTimeout = int.Parse(entPhaseTimeout.Text);
                 newJobPosting.description = editorDescription.Text;
                 newJobPosting.positionTitle = entPositionTitle.Text;
-                newJobPosting.minMatchedRequiredSkills = int.Parse(entMinMatchedRequiredSkills.Text);
-                newJobPosting.recommendedSkillsWeight = Math.Truncate(slidReocommendedSkillsWeight.Value) / 100.0;
+                newJobPosting.recommendedSkillsWeight = slidRecommendedSkillsWeight.Value;
+                newJobPosting.matchThreshold = slidMatchThreshold.Value;
                 newJobPosting.url = entWebpageURL.Text;
                 newJobPosting.requiredSkills = new List<Skill>(requiredSkills.items);
                 newJobPosting.requiredSkills.Remove(Skill.NullSkill);
@@ -420,20 +484,6 @@ namespace TMCS_Client.UI
 
             if (string.IsNullOrEmpty(editorProblemStatement.Text)){
                 invalidDataMessage += "A problem statement must be provided\n";
-            }
-
-			if (string.IsNullOrEmpty(entMinMatchedRequiredSkills.Text))
-			{
-				invalidDataMessage += "A minimum number of required skills is required\n";
-			}
-			else if (!int.TryParse(entMinMatchedRequiredSkills.Text, out temp))
-			{
-				invalidDataMessage += "The minimum number of required skills must be an integer\n";
-            }else if(temp < 0){
-                invalidDataMessage += "The minimum number of required skills must be non-negative\n";
-            }else if(temp > requiredSkills.items.Count){
-                invalidDataMessage += "The minimum number of required skills cannot be greater than the " +
-                    "selected number of required skills\n";
             }
             return invalidDataMessage;
         }

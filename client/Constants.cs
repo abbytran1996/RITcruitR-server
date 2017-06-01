@@ -80,6 +80,11 @@ namespace TMCS_Client
 #endif
 			}
 
+            public static class RECOMMENDED_SKILLS_WEIGHT{
+				public static double MIN { get { return 0.05; } }
+				public static double MAX { get { return 0.5; } }
+            }
+
             public static class LoginStatusMessage{
                 public static Entry EMPTY = new Entry()
                 {

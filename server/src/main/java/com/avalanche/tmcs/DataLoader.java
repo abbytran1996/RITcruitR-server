@@ -142,7 +142,7 @@ public class DataLoader implements ApplicationRunner {
         seizer.setPositionTitle("Seizer");
         seizer.setDescription("Seize the means of production");
         seizer.setRequiredSkills(skills);
-        seizer.setMinMatchedRequiredSkills(2);
+        seizer.setMatchThreshold(0.8);
         seizer.setRecommendedSkillsWeight(0.1);
         seizer.setLocation("USSR");
         seizer.setPhaseTimeout(30);

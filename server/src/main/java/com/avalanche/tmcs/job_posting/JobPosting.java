@@ -28,11 +28,11 @@ public class JobPosting {
 
     private Set<Skill> requiredSkills;
 
-    private int minMatchedRequiredSkills;
-
     private Set<Skill> recommendedSkills;
 
     private double recommendedSkillsWeight;
+
+    private double matchThreshold;
 
     private Recruiter recruiter;
 
@@ -91,15 +91,6 @@ public class JobPosting {
         this.requiredSkills = requiredSkills;
     }
 
-    @NotNull
-    public int getMinMatchedRequiredSkills() {
-        return minMatchedRequiredSkills;
-    }
-
-    public void setMinMatchedRequiredSkills(int minMatchedRequiredSkills) {
-        this.minMatchedRequiredSkills = minMatchedRequiredSkills;
-    }
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     public Set<Skill> getRecommendedSkills() {
@@ -117,6 +108,15 @@ public class JobPosting {
 
     public void setRecommendedSkillsWeight(double recommendedSkillsWeight) {
         this.recommendedSkillsWeight = recommendedSkillsWeight;
+    }
+
+    @NotNull
+    public double getMatchThreshold() {
+        return matchThreshold;
+    }
+
+    public void setMatchThreshold(double matchThreshold) {
+        this.matchThreshold = matchThreshold;
     }
 
     @NotNull
