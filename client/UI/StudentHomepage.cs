@@ -108,7 +108,8 @@ namespace TMCS_Client.UI {
             matches = studentController.getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
-            var postings = matches.Where(match => match.matchStrength > 0.1)
+            var postings = matches.Where(match => match.applicationStatus == Match.ApplicationStatus.NEW)
+                                  .Where(match => match.matchStrength > 0.1)
                                   .OrderByDescending(match => match.matchStrength)
                                   .Select(match => new CellData() {
                                       PositionTitle = match.job.positionTitle,
