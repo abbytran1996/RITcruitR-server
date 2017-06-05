@@ -65,6 +65,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterHomepage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\JobPostingListCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Pickers\CompanySizePicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ProblemReponses.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\ProblemResponseListCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

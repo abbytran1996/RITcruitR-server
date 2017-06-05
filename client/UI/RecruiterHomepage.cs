@@ -27,6 +27,10 @@ namespace TMCS_Client.UI
             jobPostingsList = new FormListView<JobPosting, JobPostingListCell>(
                 JobPosting.NullJobPosting);
 
+            jobPostingsList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
+                Navigation.PushAsync(new ProblemResponses((JobPosting)jobPostingsList.SelectedItem));
+            };
+
             pageContent.Children.Add(jobPostingsList,
                                     new Rectangle(0.0, 0.0, 1.0, 1.0),
                                      AbsoluteLayoutFlags.All);

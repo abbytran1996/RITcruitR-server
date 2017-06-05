@@ -5,9 +5,7 @@ namespace TMCS_Client.DTOs
     public class JobPosting
     {
         public static JobPosting NullJobPosting = new JobPosting() { 
-            id = -1,
-            positionTitle = "No job postings created",
-            location = "San Jose, CA"
+            id = -1
         };
 
         public long id { get; set; }
