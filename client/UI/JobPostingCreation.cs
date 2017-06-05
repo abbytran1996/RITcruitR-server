@@ -35,27 +35,27 @@ namespace TMCS_Client.UI
         //All Skills: Get the list of skills from skills controller call
         List<Skill> allSkills;
 
-        //Required Skills
-        AbsoluteLayout requiredSkillsSection;
-        SubSectionTitleLabel lblRequiredSkills;
-        FormSearchBar<Skill, SkillSearchResultCell, SkillListCell> requiredSkillsSearchBar;
-        FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> requiredSkillsSearchResults;
-        FormFieldLabel lblChosenRequiredSkills;
-        FormListView<Skill, SkillListCell> requiredSkills;
+        //Important Skills
+        AbsoluteLayout importantSkillsSection;
+        SubSectionTitleLabel lblImportantSkills;
+        FormSearchBar<Skill, SkillSearchResultCell, SkillListCell> importantSkillsSearchBar;
+        FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> importantSkillsSearchResults;
+        FormFieldLabel lblChosenImportantSkills;
+        FormListView<Skill, SkillListCell> importantSkills;
 
-		//Recommended Skills
-		AbsoluteLayout recommendedSkillsSection;
-		SubSectionTitleLabel lblRecommendedSkills;
-		FormSearchBar<Skill, SkillSearchResultCell, SkillListCell> recommendedSkillsSearchBar;
-		FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> recommendedSkillsSearchResults;
-		FormFieldLabel lblChosenRecommendedSkills;
-		FormListView<Skill, SkillListCell> recommendedSkills;
-		FormFieldLabel lblRecommendedSkillsWeight;
-        AbsoluteLayout recommendedSkillsImportanceLabels;
-		Label lblRecommendedSkillsImportanceLow;
-        Label lblRecommendedSkillsImportanceMed;
-        Label lblRecommendedSkillsImportanceHigh;
-        Slider slidRecommendedSkillsWeight;
+		//Nice-to-have Skills
+        AbsoluteLayout nicetohaveSkillsSection;
+        SubSectionTitleLabel lblNicetohaveSkills;
+        FormSearchBar<Skill, SkillSearchResultCell, SkillListCell> nicetohaveSkillsSearchBar;
+        FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> nicetohaveSkillsSearchResults;
+        FormFieldLabel lblChosenNicetohaveSkills;
+        FormListView<Skill, SkillListCell> nicetohaveSkills;
+        FormFieldLabel lblNicetohaveSkillsWeight;
+        AbsoluteLayout nicetohaveSkillsImportanceLabels;
+        Label lblNicetohaveSkillsImportanceLow;
+        Label lblNicetohaveSkillsImportanceMed;
+        Label lblNicetohaveSkillsImportanceHigh;
+        Slider slidNicetohaveSkillsWeight;
 
         //Match Threshold
         FormFieldLabel lblMatchThreshold;
@@ -142,121 +142,121 @@ namespace TMCS_Client.UI
                                              new FormEditor(),
                                             new Rectangle(0.5, 1.0, 0.9, 5.0 / 6.0),
                                             AbsoluteLayoutFlags.All);
-            editorDescription.Completed += (object sender, EventArgs e) => requiredSkillsSearchBar.Focus();
+            editorDescription.Completed += (object sender, EventArgs e) => importantSkillsSearchBar.Focus();
             creationForm.Children.Add(descriptionSection,
                                      new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 2,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT * 3),
                                       AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-            //Required Skills
-            requiredSkillsSection = new AbsoluteLayout();
+            //Important Skills
+            importantSkillsSection = new AbsoluteLayout();
 
-            lblRequiredSkills = new SubSectionTitleLabel("Required Skills Selection");
+            lblImportantSkills = new SubSectionTitleLabel("Important Skills Selection");
 
-            requiredSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
+            importantSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
 
-            requiredSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(requiredSkills);
+            importantSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(importantSkills);
 
-            requiredSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for required skills",
-                                                      allSkills, requiredSkillsSearchResults);
+            importantSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for required skills",
+                                                      allSkills, importantSkillsSearchResults);
 
-            lblChosenRequiredSkills = new FormFieldLabel("Chosen Required Skills");
+            lblChosenImportantSkills = new FormFieldLabel("Chosen Important Skills");
 
-            requiredSkillsSection.Children.Add(lblRequiredSkills,
+            importantSkillsSection.Children.Add(lblImportantSkills,
                                               new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1),
                                                AbsoluteLayoutFlags.XProportional |
                                                AbsoluteLayoutFlags.WidthProportional);
 
-            requiredSkillsSection.Children.Add(requiredSkillsSearchBar,
+            importantSkillsSection.Children.Add(importantSkillsSearchBar,
                                      new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
                                      AbsoluteLayoutFlags.XProportional |
                                     AbsoluteLayoutFlags.WidthProportional);
 
-            requiredSkillsSection.Children.Add(lblChosenRequiredSkills,
+            importantSkillsSection.Children.Add(lblChosenImportantSkills,
                                      new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
                                                   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
                                       AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-            requiredSkillsSection.Children.Add(requiredSkills,
+            importantSkillsSection.Children.Add(importantSkills,
                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2,
                                                            0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
                                               AbsoluteLayoutFlags.XProportional |
                                                AbsoluteLayoutFlags.WidthProportional);
 
-            requiredSkillsSection.Children.Add(requiredSkillsSearchResults,
+            importantSkillsSection.Children.Add(importantSkillsSearchResults,
                                      new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
                                                   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
                                       AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-            creationForm.Children.Add(requiredSkillsSection,
+            creationForm.Children.Add(importantSkillsSection,
                                      new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 5,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT * 5),
                                      AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-            //Recommended Skills
-            recommendedSkillsSection = new AbsoluteLayout();
+            //Nice-to-have Skills
+            nicetohaveSkillsSection = new AbsoluteLayout();
 
-            lblRecommendedSkills = new SubSectionTitleLabel("Recommended Skills Selection");
+            lblNicetohaveSkills = new SubSectionTitleLabel("Nice-to-have Skills Selection");
 
-            recommendedSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
+            nicetohaveSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
 
-            recommendedSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(recommendedSkills);
+            nicetohaveSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(nicetohaveSkills);
 
-            recommendedSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for recommended skills",
-                                                      allSkills, recommendedSkillsSearchResults);
+            nicetohaveSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for recommended skills",
+                                                      allSkills, nicetohaveSkillsSearchResults);
 
-            lblChosenRecommendedSkills = new FormFieldLabel("Chosen Recommended Skills");
+            lblChosenNicetohaveSkills = new FormFieldLabel("Chosen Nice-to-have Skills");
 
-            recommendedSkillsSection.Children.Add(lblRecommendedSkills,
+            nicetohaveSkillsSection.Children.Add(lblNicetohaveSkills,
                                               new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1),
                                                AbsoluteLayoutFlags.XProportional |
                                                AbsoluteLayoutFlags.WidthProportional);
 
-            recommendedSkillsSection.Children.Add(recommendedSkillsSearchBar,
+            nicetohaveSkillsSection.Children.Add(nicetohaveSkillsSearchBar,
                                      new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT,
                                                    1.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
                                      AbsoluteLayoutFlags.XProportional |
                                     AbsoluteLayoutFlags.WidthProportional);
 
-            recommendedSkillsSection.Children.Add(lblChosenRecommendedSkills,
+            nicetohaveSkillsSection.Children.Add(lblChosenNicetohaveSkills,
                                      new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
                                                   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
                                       AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-            recommendedSkillsSection.Children.Add(recommendedSkills,
+            nicetohaveSkillsSection.Children.Add(nicetohaveSkills,
                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2,
                                                            0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
                                               AbsoluteLayoutFlags.XProportional |
                                                AbsoluteLayoutFlags.WidthProportional);
 
-            recommendedSkillsSection.Children.Add(recommendedSkillsSearchResults,
+            nicetohaveSkillsSection.Children.Add(nicetohaveSkillsSearchResults,
                                      new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
                                                   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
                                       AbsoluteLayoutFlags.XProportional |
                                       AbsoluteLayoutFlags.WidthProportional);
 
-            recommendedSkillsSection.Children.Add(lblRecommendedSkillsWeight =
+            nicetohaveSkillsSection.Children.Add(lblNicetohaveSkillsWeight =
                                                   new FormFieldLabel("Recommended Skill Importance"),
                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
                                                   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
                                                AbsoluteLayoutFlags.XProportional |
                                                AbsoluteLayoutFlags.WidthProportional);
 
-            recommendedSkillsImportanceLabels = new AbsoluteLayout();
+            nicetohaveSkillsImportanceLabels = new AbsoluteLayout();
 
-            recommendedSkillsImportanceLabels.Children.Add(lblRecommendedSkillsImportanceLow =
+            nicetohaveSkillsImportanceLabels.Children.Add(lblNicetohaveSkillsImportanceLow =
                                                            new Label() { Text = "Low", 
                                                             HorizontalTextAlignment = TextAlignment.Start},
                                                           new Rectangle(0.0,0.0,1.0,1.0),
                                                           AbsoluteLayoutFlags.All);
 
-			recommendedSkillsImportanceLabels.Children.Add(lblRecommendedSkillsImportanceMed =
+			nicetohaveSkillsImportanceLabels.Children.Add(lblNicetohaveSkillsImportanceMed =
 														   new Label()
 														   {
 															   Text = "Medium",
@@ -265,7 +265,7 @@ namespace TMCS_Client.UI
 														  new Rectangle(0.0, 0.0, 1.0, 1.0),
 														  AbsoluteLayoutFlags.All);
 
-			recommendedSkillsImportanceLabels.Children.Add(lblRecommendedSkillsImportanceHigh=
+			nicetohaveSkillsImportanceLabels.Children.Add(lblNicetohaveSkillsImportanceHigh=
 														   new Label()
 														   {
 															   Text = "High",
@@ -274,13 +274,13 @@ namespace TMCS_Client.UI
 														  new Rectangle(0.0, 0.0, 1.0, 1.0),
 														  AbsoluteLayoutFlags.All);
 
-            recommendedSkillsSection.Children.Add(recommendedSkillsImportanceLabels,
+            nicetohaveSkillsSection.Children.Add(nicetohaveSkillsImportanceLabels,
                                                  new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT * 5.5,
                                                               0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
 												 AbsoluteLayoutFlags.XProportional |
 											     AbsoluteLayoutFlags.WidthProportional);
             
-			recommendedSkillsSection.Children.Add(slidRecommendedSkillsWeight =
+			nicetohaveSkillsSection.Children.Add(slidNicetohaveSkillsWeight =
                                                   new Slider( Constants.Forms.RECOMMENDED_SKILLS_WEIGHT.MIN, 
                                                              Constants.Forms.RECOMMENDED_SKILLS_WEIGHT.MAX,
                                                             (Constants.Forms.RECOMMENDED_SKILLS_WEIGHT.MAX + 
@@ -290,7 +290,7 @@ namespace TMCS_Client.UI
 											   AbsoluteLayoutFlags.XProportional |
 											   AbsoluteLayoutFlags.WidthProportional);
 			
-            creationForm.Children.Add(recommendedSkillsSection,
+            creationForm.Children.Add(nicetohaveSkillsSection,
 									 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 10,
 												   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6.5),
 									 AbsoluteLayoutFlags.XProportional |
@@ -317,7 +317,7 @@ namespace TMCS_Client.UI
 											 new Rectangle(0.0, 0.0, 1.0, 1.0),
 											 AbsoluteLayoutFlags.All);
 
-            matchThresholdLabels.Children.Add(lblMatchThresholdLenient =
+            matchThresholdLabels.Children.Add(lblMatchThresholdStrict =
                                               new Label() { Text = "Strict", HorizontalTextAlignment = TextAlignment.End },
 											 new Rectangle(0.0, 0.0, 1.0, 1.0),
 											 AbsoluteLayoutFlags.All);
@@ -436,12 +436,12 @@ namespace TMCS_Client.UI
                 newJobPosting.phaseTimeout = int.Parse(entPhaseTimeout.Text);
                 newJobPosting.description = editorDescription.Text;
                 newJobPosting.positionTitle = entPositionTitle.Text;
-                newJobPosting.recommendedSkillsWeight = slidRecommendedSkillsWeight.Value;
+                newJobPosting.recommendedSkillsWeight = slidNicetohaveSkillsWeight.Value;
                 newJobPosting.matchThreshold = slidMatchThreshold.Value;
                 newJobPosting.url = entWebpageURL.Text;
-                newJobPosting.requiredSkills = new List<Skill>(requiredSkills.items);
+                newJobPosting.requiredSkills = new List<Skill>(importantSkills.items);
                 newJobPosting.requiredSkills.Remove(Skill.NullSkill);
-                newJobPosting.recommendedSkills = new List<Skill>(recommendedSkills.items);
+                newJobPosting.recommendedSkills = new List<Skill>(nicetohaveSkills.items);
                 newJobPosting.recommendedSkills.Remove(Skill.NullSkill);
                 newJobPosting.recruiter = associatedRecruiter;
                 newJobPosting.problemStatement = editorProblemStatement.Text;
@@ -478,7 +478,7 @@ namespace TMCS_Client.UI
 				invalidDataMessage += "A position title is required\n";
 			}
 
-            if(requiredSkills.items.Count < 1){
+            if(importantSkills.items.Count < 1){
                 invalidDataMessage += "Atleast 1 required skill is required\n";
             }
 
