@@ -30,7 +30,10 @@ public class Match {
         ACCEPTED,
 
         // Either the student or the recruiter has rejected this application
-        REJECTED
+        REJECTED,
+
+        // One of the parties took too long to respond
+        TIMED_OUT
     }
 
     public enum CurrentPhase {

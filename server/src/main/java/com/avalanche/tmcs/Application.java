@@ -12,6 +12,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import javax.servlet.Filter;
@@ -22,6 +23,7 @@ import javax.servlet.Filter;
  * @since 28-Feb-17.
  */
 @SpringBootApplication
+@EnableScheduling
 public class Application {
     private static Logger LOG = LoggerFactory.getLogger(Application.class);
 
@@ -41,6 +43,7 @@ public class Application {
             public void run(final String... args) throws Exception {
                 PropertySource<?> ps = new SimpleCommandLinePropertySource(args);
                 shouldDeleteDatabase = Boolean.parseBoolean((String) ps.getProperty("rebuildDatabase"));
+
 
             }
         };

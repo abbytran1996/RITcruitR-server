@@ -8,7 +8,8 @@ namespace TMCS_Client.DTOs {
             NEW,
             IN_PROGRESS,
             ACCEPTED,
-            REJECTED
+            REJECTED,
+            TIMED_OUT
         }
 
         public enum CurrentPhase {
