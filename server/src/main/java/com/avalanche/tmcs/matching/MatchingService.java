@@ -4,8 +4,6 @@ import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,8 +72,8 @@ public class MatchingService {
      */
     public void registerJobPosting(final JobPosting posting) {
         executor.execute(() -> {
-            final Map<Student, Integer> numberOfMatchedRequiredSkills = countStudentsWithSkillInList(posting.getRequiredSkills());
-            final Map<Student, Integer> numberOfMatchedRecommendedSkills = countStudentsWithSkillInList(posting.getRecommendedSkills());
+            final Map<Student, Integer> numberOfMatchedRequiredSkills = countStudentsWithSkillInList(posting.getImportantSkills());
+            final Map<Student, Integer> numberOfMatchedRecommendedSkills = countStudentsWithSkillInList(posting.getNicetohaveSkills());
 
             final List<Match> matches = new ArrayList<>();
             for(Student student : numberOfMatchedRequiredSkills.keySet()) {
@@ -134,9 +132,9 @@ public class MatchingService {
         final List<Match> matches = new ArrayList<>();
         for(JobPosting posting : matchedSkillsCountMap.keySet()) {
             MatchedSkillsCount matchedSkillsCount = matchedSkillsCountMap.get(posting);
-            float numRequiredSkills = posting.getRequiredSkills().size();
+            float numRequiredSkills = posting.getImportantSkills().size();
             float weight = matchedSkillsCount.requiredSkillsCount * requiredSkillsWeight / numRequiredSkills;
-            float numRecommendedSkills = posting.getRecommendedSkills().size();
+            float numRecommendedSkills = posting.getNicetohaveSkills().size();
             if(numRecommendedSkills > 0) {
                 weight += matchedSkillsCount.recommendedSkillsCount * (1.0f - requiredSkillsWeight) / numRecommendedSkills;
             }

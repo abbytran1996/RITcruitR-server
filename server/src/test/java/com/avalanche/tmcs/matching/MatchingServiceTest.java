@@ -47,25 +47,25 @@ public class MatchingServiceTest {
         JobPosting posting = new JobPosting();
         posting.setPositionTitle("Position C");
         posting.setUrl("https://drive.google.com/drive/u/1/my-drive");
-        posting.setRequiredSkills(new HashSet<>());
+        posting.setImportantSkills(new HashSet<>());
 
         Skill skill = new Skill();
         skill.setName("Bash");
-        posting.getRequiredSkills().add(skill);
+        posting.getImportantSkills().add(skill);
 
         skill = new Skill();
         skill.setName("Linux");
-        posting.getRequiredSkills().add(skill);
+        posting.getImportantSkills().add(skill);
 
         skill = new Skill();
         skill.setName("C");
-        posting.getRequiredSkills().add(skill);
+        posting.getImportantSkills().add(skill);
 
-        posting.setRecommendedSkills(new HashSet<>());
+        posting.setNicetohaveSkills(new HashSet<>());
 
         skill = new Skill();
         skill.setName("Perl");
-        posting.getRecommendedSkills().add(skill);
+        posting.getNicetohaveSkills().add(skill);
 
         MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
         skillsCount.requiredSkillsCount = 3;
@@ -78,7 +78,7 @@ public class MatchingServiceTest {
         Assert.assertEquals(1, matches.size());
 
         Match match = matches.get(0);
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getRecommendedSkills().size();
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getImportantSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNicetohaveSkills().size();
 
         Assert.assertEquals(chompsky, match.getStudent());
         Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
@@ -96,27 +96,27 @@ public class MatchingServiceTest {
         JobPosting posting = new JobPosting();
         posting.setPositionTitle("Position C");
         posting.setUrl("https://drive.google.com/drive/u/1/my-drive");
-        posting.setRequiredSkills(new HashSet<>());
+        posting.setImportantSkills(new HashSet<>());
 
         Skill skill = new Skill();
         skill.setName("Bash");
-        posting.getRequiredSkills().add(skill);
+        posting.getImportantSkills().add(skill);
         chompsky.getSkills().add(skill);
 
         skill = new Skill();
         skill.setName("Linux");
-        posting.getRequiredSkills().add(skill);
+        posting.getImportantSkills().add(skill);
         chompsky.getSkills().add(skill);
 
         skill = new Skill();
         skill.setName("C");
-        posting.getRequiredSkills().add(skill);
+        posting.getImportantSkills().add(skill);
         chompsky.getSkills().add(skill);
-        posting.setRecommendedSkills(new HashSet<>());
+        posting.setNicetohaveSkills(new HashSet<>());
 
         skill = new Skill();
         skill.setName("Perl");
-        posting.getRecommendedSkills().add(skill);
+        posting.getNicetohaveSkills().add(skill);
 
         MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
         skillsCount.requiredSkillsCount = 3;
@@ -130,7 +130,7 @@ public class MatchingServiceTest {
 
         Match match = matches.get(0);
 
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getRecommendedSkills().size();
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getImportantSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNicetohaveSkills().size();
 
         Assert.assertEquals(chompsky, match.getStudent());
         Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
