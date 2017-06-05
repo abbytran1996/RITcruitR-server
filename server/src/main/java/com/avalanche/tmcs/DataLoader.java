@@ -142,7 +142,7 @@ public class DataLoader implements ApplicationRunner {
         seizer.setDescription("Seize the means of production");
         seizer.setImportantSkills(skills);
         seizer.setMatchThreshold(0.8);
-        seizer.setRecommendedSkillsWeight(0.1);
+        seizer.setNicetohaveSkillsWeight(0.1);
         seizer.setLocation("USSR");
         seizer.setPhaseTimeout(30);
         seizer.setProblemStatement("The bourgeoisie have ten cows. They pay you $3 per hour to milk the cows. " +

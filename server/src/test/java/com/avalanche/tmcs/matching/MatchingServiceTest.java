@@ -278,8 +278,8 @@ public class MatchingServiceTest {
         setupJobPostings();
 
         JobPostingDAO jobPostingDAO = mock(JobPostingDAO.class);
-        when(jobPostingDAO.findAllByRecommendedSkillsContains(any())).thenReturn(recommended);
-        when(jobPostingDAO.findAllByRequiredSkillsContains(any())).thenReturn(required);
+        when(jobPostingDAO.findAllByNicetohaveSkillsContains(any())).thenReturn(recommended);
+        when(jobPostingDAO.findAllByImportantSkillsContains(any())).thenReturn(required);
 
         return jobPostingDAO;
     }

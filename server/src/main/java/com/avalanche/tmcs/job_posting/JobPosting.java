@@ -28,7 +28,7 @@ public class JobPosting {
 
     private Set<Skill> nicetohaveSkills;
 
-    private double recommendedSkillsWeight;
+    private double nicetohaveSkillsWeight;
 
     private double matchThreshold;
 
@@ -100,12 +100,12 @@ public class JobPosting {
     }
 
     @NotNull
-    public double getRecommendedSkillsWeight() {
-        return recommendedSkillsWeight;
+    public double getNicetohaveSkillsWeight() {
+        return nicetohaveSkillsWeight;
     }
 
-    public void setRecommendedSkillsWeight(double recommendedSkillsWeight) {
-        this.recommendedSkillsWeight = recommendedSkillsWeight;
+    public void setNicetohaveSkillsWeight(double nicetohaveSkillsWeight) {
+        this.nicetohaveSkillsWeight = nicetohaveSkillsWeight;
     }
 
     @NotNull

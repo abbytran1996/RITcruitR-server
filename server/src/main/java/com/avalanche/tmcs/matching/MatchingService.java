@@ -155,7 +155,7 @@ public class MatchingService {
      * @param skill The skill to search for
      */
     public void countJobPostingsThatRecommendSkill(final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap, final Skill skill) {
-        Collection<JobPosting> postingsWithAtLeastOneRecommendedSkill = jobPostingDAO.findAllByRecommendedSkillsContains(skill);
+        Collection<JobPosting> postingsWithAtLeastOneRecommendedSkill = jobPostingDAO.findAllByNicetohaveSkillsContains(skill);
         for(JobPosting posting : postingsWithAtLeastOneRecommendedSkill) {
             if(!matchedSkillsCountMap.containsKey(posting)) {
                 matchedSkillsCountMap.put(posting, new MatchedSkillsCount());
@@ -171,7 +171,7 @@ public class MatchingService {
      * @param skill The skill to search for
      */
     public void countJobPostingsThatRequireSkill(final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap, final Skill skill) {
-        Collection<JobPosting> postingsWithAtLeastOneRequiredSkill = jobPostingDAO.findAllByRequiredSkillsContains(skill);
+        Collection<JobPosting> postingsWithAtLeastOneRequiredSkill = jobPostingDAO.findAllByImportantSkillsContains(skill);
         for(JobPosting posting : postingsWithAtLeastOneRequiredSkill) {
             if(!matchedSkillsCountMap.containsKey(posting)) {
                 matchedSkillsCountMap.put(posting, new MatchedSkillsCount());
