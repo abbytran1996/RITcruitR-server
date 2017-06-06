@@ -3,6 +3,8 @@ package com.avalanche.tmcs.utils;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.students.NewStudent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,13 +22,14 @@ import java.util.HashSet;
  * @since 5/15/17.
  */
 public class TestUtils {
-    private static String LOGIN_EMAIL           = "student@rit.edu";
-    private static String LOGIN_PASSWORD        = "Password1!";
+    private static final Logger LOG = LoggerFactory.getLogger(TestUtils.class);
+    private static final String LOGIN_EMAIL           = "student@rit.edu";
+    private static final String LOGIN_PASSWORD        = "Password1!";
 
-    private static String LOGIN_URL             = "/user/login";
-    private static String REGISTER_STUDENT_URL  = "/students";
+    private static final String LOGIN_URL             = "/user/login";
+    private static final String REGISTER_STUDENT_URL  = "/students";
 
-    private static RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     public static void ensureTestStudent() {
         NewStudent newStudent = new NewStudent();
@@ -51,6 +54,8 @@ public class TestUtils {
         User user = new User();
         user.setUsername(LOGIN_EMAIL);
         user.setPassword(LOGIN_PASSWORD);
+
+        LOG.info("Logging in as {}", user);
 
         HttpHeaders headers = restTemplate.exchange(
                 ServerContext.urlBase + LOGIN_URL,

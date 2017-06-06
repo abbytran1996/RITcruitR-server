@@ -18,7 +18,8 @@ namespace TMCS_Client.DTOs {
 
         public enum CurrentPhase {
             NONE,
-            PROBLEM,
+            PROBLEM_WAITING_FOR_STUDENT,
+            PROBLEM_WAITING_FOR_RECRUITER,
             PRESENTATION,
             INTERVIEW
         }
