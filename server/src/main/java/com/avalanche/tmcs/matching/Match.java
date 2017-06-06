@@ -56,6 +56,9 @@ public class Match {
 
     /* Data from the student's application process */
 
+    // Tag created by the recruiter to help organize students
+    private String tag;
+
     private String studentProblemResponse;
 
     private URI studentPresentationLink;
