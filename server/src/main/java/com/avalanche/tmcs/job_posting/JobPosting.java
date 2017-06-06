@@ -2,12 +2,10 @@ package com.avalanche.tmcs.job_posting;
 
 
 import com.avalanche.tmcs.Recruiter.Recruiter;
-import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -26,11 +24,11 @@ public class JobPosting {
 
     private String description;
 
-    private Set<Skill> requiredSkills;
+    private Set<Skill> importantSkills;
 
-    private Set<Skill> recommendedSkills;
+    private Set<Skill> nicetohaveSkills;
 
-    private double recommendedSkillsWeight;
+    private double nicetohaveSkillsWeight;
 
     private double matchThreshold;
 
@@ -83,31 +81,31 @@ public class JobPosting {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
-    public Set<Skill> getRequiredSkills() {
-        return requiredSkills;
+    public Set<Skill> getImportantSkills() {
+        return importantSkills;
     }
 
-    public void setRequiredSkills(Set<Skill> requiredSkills) {
-        this.requiredSkills = requiredSkills;
+    public void setImportantSkills(Set<Skill> importantSkills) {
+        this.importantSkills = importantSkills;
     }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
-    public Set<Skill> getRecommendedSkills() {
-        return recommendedSkills;
+    public Set<Skill> getNicetohaveSkills() {
+        return nicetohaveSkills;
     }
 
-    public void setRecommendedSkills(Set<Skill> recommendedSkills) {
-        this.recommendedSkills = recommendedSkills;
+    public void setNicetohaveSkills(Set<Skill> nicetohaveSkills) {
+        this.nicetohaveSkills = nicetohaveSkills;
     }
 
     @NotNull
-    public double getRecommendedSkillsWeight() {
-        return recommendedSkillsWeight;
+    public double getNicetohaveSkillsWeight() {
+        return nicetohaveSkillsWeight;
     }
 
-    public void setRecommendedSkillsWeight(double recommendedSkillsWeight) {
-        this.recommendedSkillsWeight = recommendedSkillsWeight;
+    public void setNicetohaveSkillsWeight(double nicetohaveSkillsWeight) {
+        this.nicetohaveSkillsWeight = nicetohaveSkillsWeight;
     }
 
     @NotNull

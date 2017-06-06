@@ -1,9 +1,13 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace TMCS_Client.DTOs {
     public class Match {
+		public static Match NullMatch = new Match()
+		{
+			id = -1
+		};
         public enum ApplicationStatus {
             NEW,
             IN_PROGRESS,

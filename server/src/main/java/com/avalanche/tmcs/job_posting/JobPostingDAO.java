@@ -15,8 +15,8 @@ import java.util.Set;
 public interface JobPostingDAO extends CrudRepository<JobPosting, Long> {
     List<JobPosting> findAllByRecruiter(Recruiter recruiter);
 
-    List<JobPosting> findAllByRequiredSkillsContains(Skill skill);
+    List<JobPosting> findAllByImportantSkillsContains(Skill skill);
 
-    List<JobPosting> findAllByRecommendedSkillsContains(Skill skill);
+    List<JobPosting> findAllByNicetohaveSkillsContains(Skill skill);
 
 }

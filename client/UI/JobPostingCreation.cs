@@ -242,7 +242,7 @@ namespace TMCS_Client.UI
                                       AbsoluteLayoutFlags.WidthProportional);
 
             nicetohaveSkillsSection.Children.Add(lblNicetohaveSkillsWeight =
-                                                  new FormFieldLabel("Nice-to-have Skill Importance"),
+                                                  new FormFieldLabel("Nice-to-have Skills Importance"),
                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 5,
                                                   0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
                                                AbsoluteLayoutFlags.XProportional |

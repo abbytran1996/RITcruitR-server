@@ -5,6 +5,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 {
     public class JobPostingListCell : ViewCell
 	{
+        //TODO Refector to be more like ProblemResponseListCell
 		public static readonly BindableProperty JobPostingIDProperty =
 			BindableProperty.Create("jobPostingID", typeof(long), typeof(JobPostingListCell), -1L);
 
