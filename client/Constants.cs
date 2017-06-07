@@ -50,6 +50,10 @@ namespace TMCS_Client
             public static string GET_JOB_POSTING_RESOURCE { get { return "/jobposting/{0}"; } }
             public static string GET_JOB_POSTING_BY_RECRUITER_RESOURCE { get { return "/jobposting/recruiter/{id}"; } }
         }
+        public static class Matches
+        {
+            public static string ACCEPT_JOB_POSTING { get { return "/matches/{id}/accept"; } }
+        }
 
         public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }
 

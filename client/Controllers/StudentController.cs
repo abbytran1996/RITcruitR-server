@@ -84,5 +84,17 @@ namespace TMCS_Client.Controllers {
 
             return response.Data;
         }
+
+        public void acceptMatch(Match match, bool acceptthis)
+        {
+            var request = new RestRequest(Constants.Matches.ACCEPT_JOB_POSTING, Method.POST);
+            request.AddUrlSegment("id", match.id.ToString());
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(acceptthis);
+
+            var response = client.Execute(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
+            return;
+        }
     }
 }

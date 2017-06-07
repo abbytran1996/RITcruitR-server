@@ -82,21 +82,28 @@ namespace TMCS_Client.UI {
         }
 
         private void onItemTapped(object sender, ItemTappedEventArgs e) {
-            var selectedMatch = e.Item;
+            var selectedMatch = ((CellData)e.Item).Match;
 
             bottomItems.Children.Clear();
-            bottomItems.Children.Add(new Button() {
+            Button declineButton = new Button()
+            {
                 Text = "Not Interested",
                 BackgroundColor = Constants.Forms.Colors.FAILURE,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
-            },
+            };
+            declineButton.Clicked += (object sender2, EventArgs e2) =>
+                acceptPosting(selectedMatch, true);
+            bottomItems.Children.Add(declineButton,
             new Rectangle(0, 0, 0.5, 1), AbsoluteLayoutFlags.All);
-
-            bottomItems.Children.Add(new Button() {
+            Button acceptButton = new Button()
+            {
                 Text = "Interested",
                 BackgroundColor = Constants.Forms.Colors.SUCCESS,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
-            },
+            };
+            acceptButton.Clicked += (object sender2, EventArgs e2) =>
+                acceptPosting(selectedMatch, true);
+            bottomItems.Children.Add(acceptButton,
             new Rectangle(1, 0, 0.5, 1), AbsoluteLayoutFlags.All);
         }
 
@@ -123,6 +130,12 @@ namespace TMCS_Client.UI {
             matchesList.RowHeight = 110;
 
             matchesList.ItemTapped += onItemTapped;
+        }
+
+        private void acceptPosting(Match match, bool accept)
+        {
+            studentController.acceptMatch(match, accept);
+            setupMatchedList();
         }
 
         class CellData {
