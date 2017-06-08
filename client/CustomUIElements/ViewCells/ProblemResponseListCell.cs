@@ -77,13 +77,13 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             };
 
             cellLayout.Children.Add(lblProblemResponse,
-                                   new Rectangle(0.5, 0.0, 0.95, 0.8),
+                                   new Rectangle(0.5, 0.0, 0.95, 0.75),
                                     AbsoluteLayoutFlags.All);
             cellLayout.Children.Add(lblTag,
-                                    new Rectangle(0.5, 1.0, 0.95, 0.2),
+                                    new Rectangle(0.05, 1.0, 0.475, 0.25),
 								   AbsoluteLayoutFlags.All);
             cellLayout.Children.Add(lblProblemResponseTimeSubmitted,
-                                   new Rectangle(0.5, 1.0, 0.95, 0.2),
+                                   new Rectangle(0.95, 1.0, 0.475, 0.25),
                                    AbsoluteLayoutFlags.All);
 
 			
