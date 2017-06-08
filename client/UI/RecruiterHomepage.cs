@@ -64,12 +64,10 @@ namespace TMCS_Client.UI
 
         protected override void OnAppearing()
         {
-            jobPostingsList.clearItems();
-            foreach(JobPosting jobPosting in JobPostingController.getJobPostingController().
-                    getJobPostingsByRecruiter(this.loggedInRecruiter)){
-                jobPostingsList.addItem(jobPosting);
-            }
-            base.OnAppearing();
+            jobPostingsList.updateItems(
+                JobPostingController.getJobPostingController().
+                getJobPostingsByRecruiter(this.loggedInRecruiter));
+			base.OnAppearing();
         }
     }
 }
