@@ -1,0 +1,183 @@
+﻿using System;
+using TMCS_Client.CustomUIElements.Labels;
+using TMCS_Client.DTOs;
+using TMCS_Client.Controllers;
+using System.Linq;
+using TMCS_Client.UI;
+
+using Xamarin.Forms;
+
+namespace TMCS_Client.UI
+{
+    public class StudentProblemPhase : ContentPage
+    {
+
+        //Whole Page
+        private ScrollView pageContent;
+        private AbsoluteLayout problemPage;
+
+
+        //Problem Statement
+        private Label lblPostingProblem;
+        private Editor lblProblemStatement;
+
+        //Response
+        private FormFieldLabel lblStudentResponse;
+        private Editor txtStudentResponse;
+
+        //Submit Response
+        private Button btnSubmit;
+
+        //Not Interested
+        private Button btnNotInterested;
+
+        private StudentController studentController = StudentController.getStudentController();
+
+
+        public StudentProblemPhase(Match selectedMatch)
+        {
+
+            var problem = selectedMatch.job.problemStatement;
+
+            this.Title = "Problem Phase";
+
+            //Whole page
+            pageContent = new ScrollView()
+            {
+                Orientation = ScrollOrientation.Vertical,
+            };
+
+            problemPage = new AbsoluteLayout()
+            {
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 4.0),
+            };
+
+
+            AbsoluteLayout postingProblem = new AbsoluteLayout()
+            {
+            };
+
+            postingProblem.Children.Add(lblPostingProblem =
+                                        new FormFieldLabel("Recruiter's Problem:"),
+                                        new Rectangle(0.5, 0, 0.9, 0.25),
+                                        AbsoluteLayoutFlags.All);
+            postingProblem.Children.Add(lblProblemStatement =
+                                        new Editor
+                                        {
+                                            IsEnabled = false,
+                                            Text = problem,
+                                            FontSize = 16
+                                        },
+                                        new Rectangle(0.5, .25, 0.9, 0.85),
+                          AbsoluteLayoutFlags.All);
+
+            problemPage.Children.Add(postingProblem,
+                                     new Rectangle(0, 0, 1.0, 4 * Constants.Forms.Sizes.ROW_HEIGHT),
+                                    AbsoluteLayoutFlags.WidthProportional);
+
+            AbsoluteLayout responseEntry = new AbsoluteLayout()
+            {
+            };
+
+            responseEntry.Children.Add(lblStudentResponse =
+                                        new FormFieldLabel("Your Response:"),
+                                        new Rectangle(0.5, 0, 0.9, 0.2),
+                                        AbsoluteLayoutFlags.All);
+
+            responseEntry.Children.Add(txtStudentResponse =
+                                      new Editor
+                                      {
+                                          Keyboard = Keyboard.Text,
+                                          FontSize = 12,
+                                          BackgroundColor = Color.GhostWhite,
+                                      },
+                                      new Rectangle(0.5, 1.0, 0.9, 0.85),
+                                      AbsoluteLayoutFlags.All);
+
+            //txtStudentResponse.Completed += (object sender, EventArgs e) => checkResponse();
+
+            txtStudentResponse.TextChanged += (object sender, TextChangedEventArgs e) => checkResponse();
+
+            problemPage.Children.Add(responseEntry,
+                             new Rectangle(0, 4 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 4 * Constants.Forms.Sizes.ROW_HEIGHT),
+                              AbsoluteLayoutFlags.WidthProportional);
+
+            AbsoluteLayout buttons = new AbsoluteLayout()
+            {
+            };
+
+            buttons.Children.Add(btnSubmit =
+            new Button()
+            {
+                Text = "Submit",
+                FontSize = 28,
+                TextColor = Color.White,
+                BackgroundColor = Color.MediumSeaGreen,
+                IsEnabled = false,
+
+                Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
+            },
+
+
+                new Rectangle(0.9, 1.0, 0.4, 0.9),
+                AbsoluteLayoutFlags.All
+            );
+            btnSubmit.IsEnabled = false;
+
+            buttons.Children.Add(btnNotInterested =
+               new Button()
+               {
+                   Text = "Not Interested",
+                   FontSize = 22,
+                   TextColor = Color.White,
+                   BackgroundColor = Color.Red,
+                   Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
+               },
+                    new Rectangle(0.1, 1.0, 0.4, 0.9),
+                    AbsoluteLayoutFlags.All
+               );
+            
+            btnSubmit.Clicked += (object sender, EventArgs e) => saveResponse(selectedMatch);
+            btnSubmit.Clicked += (object sender2, EventArgs e2) => acceptPosting(selectedMatch, true);
+            btnNotInterested.Clicked += (object sender2, EventArgs e2) => acceptPosting(selectedMatch, true);
+
+            problemPage.Children.Add(buttons,
+                                new Rectangle(0.5, 8.5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                AbsoluteLayoutFlags.WidthProportional |
+                                AbsoluteLayoutFlags.XProportional);
+
+            pageContent.Content = problemPage;
+
+            Content = pageContent;
+
+
+        }
+        private void checkResponse()
+        {
+            if (!string.IsNullOrEmpty(txtStudentResponse.Text))
+            {
+                btnSubmit.IsEnabled = true;
+            }
+            else if ((txtStudentResponse.Text == null) || (txtStudentResponse.Text == ""))
+            {
+                btnSubmit.IsEnabled = false;
+            }
+
+        }
+
+
+        private void acceptPosting(Match match, bool accept)
+        {
+            studentController.acceptMatch(match, accept);
+            match.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER;
+        }
+
+        private void saveResponse(Match match)
+        {
+            string response = txtStudentResponse.Text;
+            var id = match.id;
+            StudentController.getStudentController().addStudentResponse(id, response);
+        }
+    }
+}
+
