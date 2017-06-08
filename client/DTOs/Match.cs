@@ -29,6 +29,7 @@ namespace TMCS_Client.DTOs {
         public Student student { get; set; }
         public float matchStrength { get; set; }
 
+        public String tag { get; set; }
         public String studentProblemResponse { get; set; }
         public Uri studentPresentationLink { get; set; }
         public DateTime timeLastUpdated { get; set; }

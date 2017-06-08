@@ -114,6 +114,15 @@ public class Match {
         this.job = job;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(final String tag) {
+        this.tag = tag;
+        setLastUpdatedTimeToNow();
+    }
+
     public String getStudentProblemResponse() {
         return studentProblemResponse;
     }
