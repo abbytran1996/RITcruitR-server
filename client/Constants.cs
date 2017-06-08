@@ -25,6 +25,7 @@ namespace TMCS_Client
             public static string ADD_SKILLS_RESOURCE { get { return "/students/{id}/skills"; } }
             public static string GET_MATCHES_RESORUCE { get { return "/students/{id}/matches"; } }
             public static string GET_STUDENT_BY_EMAIL_RESOURCE { get { return "/students/byEmail/{email}"; } }
+
         }
         public static class Recruiters
         {
@@ -53,6 +54,7 @@ namespace TMCS_Client
         public static class Matches
         {
             public static string ACCEPT_JOB_POSTING { get { return "/matches/{id}/accept"; } }
+            public static string ADD_RESPONSE_RESOURCE { get { return "/matches/id/{id}/response/{response}"; } }
         }
 
         public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }

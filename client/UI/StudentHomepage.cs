@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
@@ -99,7 +99,8 @@ namespace TMCS_Client.UI {
             {
                 Text = "Interested",
                 BackgroundColor = Constants.Forms.Colors.SUCCESS,
-                HorizontalOptions = LayoutOptions.CenterAndExpand
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                Command = new Command((object obj) => Navigation.PushAsync(new StudentProblemPhase(selectedMatch))),
             };
             acceptButton.Clicked += (object sender2, EventArgs e2) =>
                 acceptPosting(selectedMatch, true);

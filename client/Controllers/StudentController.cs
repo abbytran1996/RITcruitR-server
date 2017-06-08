@@ -96,5 +96,19 @@ namespace TMCS_Client.Controllers {
             ensureStatusCode(response, HttpStatusCode.OK);
             return;
         }
+
+        public void addStudentResponse(long id, string matchResponse)
+		{
+            string url = Constants.Matches.ADD_RESPONSE_RESOURCE;
+            url = url.Replace("{id}", id.ToString());
+            url = url.Replace("{response}", matchResponse);
+			var request = new RestRequest(url, Method.POST);
+			request.RequestFormat = DataFormat.Json;
+            request.AddBody(matchResponse);
+
+			var response = client.Execute(request);
+			ensureStatusCode(response, HttpStatusCode.OK);
+			return;
+		}
     }
 }
