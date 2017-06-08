@@ -53,6 +53,7 @@ namespace TMCS_Client
         public static class Matches
         {
             public static string ACCEPT_JOB_POSTING { get { return "/matches/{id}/accept"; } }
+            public static string GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING { get { return "/matches/{jobPostingID}/problemResponsePending"; } }
         }
 
         public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }

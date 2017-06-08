@@ -67,6 +67,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Pickers\CompanySizePicker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterProblemResponses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\ProblemResponseListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\MatchController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

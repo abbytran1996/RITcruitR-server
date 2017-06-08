@@ -85,10 +85,9 @@ namespace TMCS_Client.UI
         protected override void OnAppearing()
         {
             problemResponseList.clearItems();
-            //TODO Get matches from server
-            //foreach(match in ){
-            //    problemResponseList.addItem(match);
-            //}
+            foreach(Match match in MatchController.getMatchController().getMatchesWithProblemResponsePending(activeJobPosting.id)){
+                problemResponseList.addItem(match);
+            }
             base.OnAppearing();
         }
     }

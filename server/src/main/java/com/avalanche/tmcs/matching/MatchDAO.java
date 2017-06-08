@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,4 +15,6 @@ public interface MatchDAO extends CrudRepository<Match, Long> {
     List<Match> findAllByStudent(Student student);
 
     List<Match> findAllByApplicationStatus(Match.ApplicationStatus status);
+
+    List<Match> findAllByJobAndCurrentPhase(JobPosting job, Match.CurrentPhase currentPhase);
 }

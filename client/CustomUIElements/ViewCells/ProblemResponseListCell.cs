@@ -106,7 +106,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                 };
                 ((AbsoluteLayout)this.View).Children.Add(new Label()
                 {
-                    Text = "No problem responses submitted yet",
+                    Text = "No pending problem responses",
                     VerticalTextAlignment = TextAlignment.Center,
                     HorizontalTextAlignment = TextAlignment.Center,
                     FontSize = 22.0,
@@ -115,7 +115,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             }else{
                 //TODO Truncate/convert these values
                 lblProblemResponse.Text = problemResponse;
-                lblTag.Text = "Tag: " + tag.ToString();
+                lblTag.Text = "Tag: " + tag;
                 lblProblemResponseTimeSubmitted.Text = problemResponseTimeSubmitted.ToString();
             }
         }

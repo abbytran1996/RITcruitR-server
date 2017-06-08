@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.matching;
 
+        import com.avalanche.tmcs.job_posting.JobPosting;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RestController;
         import com.avalanche.tmcs.auth.*;
@@ -10,6 +11,8 @@ package com.avalanche.tmcs.matching;
         import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
+
+        import java.util.List;
 
 /**
  * Allows you to easily interact with matches
@@ -45,5 +48,15 @@ public class MatchController {
         }
         matchDAO.save(match);
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{jobPostingID}/problemResponsePending", method = RequestMethod.GET)
+    public ResponseEntity<List<Match>> getMatchesWithProblemResponsePending(@PathVariable long jobPostingID){
+        JobPosting job = new JobPosting();
+        job.setId(jobPostingID);
+        List<Match> matches = matchDAO.findAllByJobAndCurrentPhase(job,
+                Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+
+        return ResponseEntity.ok(matches);
     }
 }
