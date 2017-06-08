@@ -31,5 +31,18 @@ namespace TMCS_Client.Controllers
 
 			return response.Data;
         }
+        /*
+		public void addStudentResponse(Match match)
+		{
+			var matchResponse = match.studentProblemResponse;
+			var id = match.id;
+			var request = new RestRequest(Constants.Matches.ADD_RESPONSE_RESOURCE, Method.POST);
+			request.AddUrlSegment("{id}", id.ToString());
+			request.AddUrlSegment("{response}", matchResponse);
+			request.RequestFormat = DataFormat.Json;
+			request.AddBody(match);
+
+			var response = client.Execute(request);
+		}*/
     }
 }
