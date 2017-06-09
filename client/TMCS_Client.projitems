@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Skill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Student.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\PostingDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\SkillsEditing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Login.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentHomepage.cs" />
