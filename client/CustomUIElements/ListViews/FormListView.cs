@@ -9,7 +9,7 @@ namespace TMCS_Client.CustomUIElements.ListViews
 {
     public class FormListView<T, CustomDisplayCell> : ListView
     {
-        public ObservableCollection<T> items { get; }
+        public ObservableCollection<T> items { get; internal set; }
 
         private T emptyListItem;
 
@@ -28,12 +28,27 @@ namespace TMCS_Client.CustomUIElements.ListViews
             base.HasUnevenRows = true;
         }
 
+        public void updateItems(List<T> newItems){
+            foreach(T item in newItems){
+                this.addItem(item);
+			}
+
+            int i = 0;
+            while(i < items.Count){
+                if(!newItems.Contains(items[i])){
+                    this.removeItem(items[i]);
+                }else{
+                    i++;
+                }
+            }
+        }
+
         public void addItem(T newItem){
             items.Remove(emptyListItem);
             if (!items.Contains(newItem))
-                {
-                    items.Add(newItem);
-                }
+            {
+                items.Add(newItem);
+            }
         }
 
         public void removeItem(T toRemove){

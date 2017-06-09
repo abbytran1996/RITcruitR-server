@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -66,8 +66,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterHomepage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\JobPostingListCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Pickers\CompanySizePicker.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\ProblemReponses.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterProblemResponses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\ProblemResponseListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\MatchController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentProblemPhase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

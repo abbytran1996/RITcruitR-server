@@ -12,8 +12,8 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 		public static readonly BindableProperty ProblemResponseProperty =
 			BindableProperty.Create("problemResponse", typeof(String), typeof(ProblemResponseListCell), "");
 
-		public static readonly BindableProperty ProblemResponseReferenceProperty =
-			BindableProperty.Create("problemResponseReference", typeof(long), typeof(ProblemResponseListCell), -1L);
+        public static readonly BindableProperty TagProperty =
+			BindableProperty.Create("tag", typeof(String), typeof(ProblemResponseListCell), "");
 
 		public static readonly BindableProperty ProblemResponseTimeSubmittedProperty =
 			BindableProperty.Create("problemResponseTimeSubmitted", typeof(DateTime), typeof(ProblemResponseListCell), DateTime.Now);
@@ -30,10 +30,10 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 			set { SetValue(ProblemResponseProperty, value); }
 		}
 
-		public long problemResponseReference
+        public String tag
 		{
-			get { return (long)GetValue(ProblemResponseReferenceProperty); }
-			set { SetValue(ProblemResponseReferenceProperty, value); }
+			get { return (String)GetValue(TagProperty); }
+            set { SetValue(TagProperty, value); }
 		}
 
 		public DateTime problemResponseTimeSubmitted
@@ -43,7 +43,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 		}
 
         private Label lblProblemResponse;
-        private Label lblProblemResponseReference;
+        private Label lblTag;
         private Label lblProblemResponseTimeSubmitted;
 
         public ProblemResponseListCell()
@@ -61,7 +61,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                 FontSize = 14.0,
             };
 
-            lblProblemResponseReference = new Label()
+            lblTag = new Label()
             {
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Start,
@@ -77,20 +77,20 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             };
 
             cellLayout.Children.Add(lblProblemResponse,
-                                   new Rectangle(0.5, 0.0, 0.95, 0.8),
+                                   new Rectangle(0.5, 0.0, 0.95, 0.75),
                                     AbsoluteLayoutFlags.All);
-            cellLayout.Children.Add(lblProblemResponseReference,
-                                    new Rectangle(0.5, 1.0, 0.95, 0.2),
+            cellLayout.Children.Add(lblTag,
+                                    new Rectangle(0.05, 1.0, 0.475, 0.25),
 								   AbsoluteLayoutFlags.All);
             cellLayout.Children.Add(lblProblemResponseTimeSubmitted,
-                                   new Rectangle(0.5, 1.0, 0.95, 0.2),
+                                   new Rectangle(0.95, 1.0, 0.475, 0.25),
                                    AbsoluteLayoutFlags.All);
 
 			
 			this.SetBinding(ProblemResponseListCell.MatchIDProperty, "id");
-            //this.SetBinding(ProblemResponseListCell.ProblemResponseProperty, "studentProblemResponse"); //TODO check the variable name in the string
-            //this.SetBinding(ProblemResponseListCell.ProblemResponseReferenceProperty, ""); //TODO check the variable name in the string
-			//this.SetBinding(ProblemResponseListCell.ProblemResponseTimeSubmittedProperty, "timeLastUpdated"); //TODO check the variable name in the string
+            this.SetBinding(ProblemResponseListCell.ProblemResponseProperty, "studentProblemResponse");
+            this.SetBinding(ProblemResponseListCell.TagProperty, "tag");
+			this.SetBinding(ProblemResponseListCell.ProblemResponseTimeSubmittedProperty, "timeLastUpdated");
 
             View = cellLayout;
         }
@@ -106,7 +106,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                 };
                 ((AbsoluteLayout)this.View).Children.Add(new Label()
                 {
-                    Text = "No problem responses submitted yet",
+                    Text = "No pending problem responses",
                     VerticalTextAlignment = TextAlignment.Center,
                     HorizontalTextAlignment = TextAlignment.Center,
                     FontSize = 22.0,
@@ -115,7 +115,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             }else{
                 //TODO Truncate/convert these values
                 lblProblemResponse.Text = problemResponse;
-                lblProblemResponseReference.Text = "Reference #" + problemResponseReference.ToString();
+                lblTag.Text = "Tag: " + tag;
                 lblProblemResponseTimeSubmitted.Text = problemResponseTimeSubmitted.ToString();
             }
         }

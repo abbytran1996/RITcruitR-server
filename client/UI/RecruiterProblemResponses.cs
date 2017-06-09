@@ -9,7 +9,7 @@ using TMCS_Client.CustomUIElements.ViewCells;
 
 namespace TMCS_Client.UI
 {
-    public class ProblemResponses : ContentPage
+    public class RecruiterProblemResponses : ContentPage
     {
         private JobPosting activeJobPosting;
 
@@ -23,7 +23,7 @@ namespace TMCS_Client.UI
         private Label lblResponseList;
         private FormListView<Match, ProblemResponseListCell> problemResponseList;
 
-        public ProblemResponses(JobPosting jobPosting)
+        public RecruiterProblemResponses(JobPosting jobPosting)
         {
             activeJobPosting = jobPosting;
             this.Title = "Problem Responses";
@@ -84,11 +84,9 @@ namespace TMCS_Client.UI
 
         protected override void OnAppearing()
         {
-            problemResponseList.clearItems();
-            //TODO Get matches from server
-            //foreach(match in ){
-            //    problemResponseList.addItem(match);
-            //}
+            problemResponseList.updateItems(
+                MatchController.getMatchController().
+                getMatchesWithProblemResponsePending(activeJobPosting.id));
             base.OnAppearing();
         }
     }
