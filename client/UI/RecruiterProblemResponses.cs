@@ -69,7 +69,9 @@ namespace TMCS_Client.UI
             problemResponseList = new FormListView<Match, ProblemResponseListCell>(
                 Match.NullMatch
             );
-            //TODO add event to pop up modal
+            problemResponseList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
+                Navigation.PushModalAsync(new RecruiterProblemResponseModal((Match)problemResponseList.SelectedItem));
+            };
             problemResponseSection.Children.Add(problemResponseList,
                                               new Rectangle(0.0, 1.0, 1.0, 0.925),
                                               AbsoluteLayoutFlags.All);

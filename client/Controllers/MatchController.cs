@@ -31,6 +31,14 @@ namespace TMCS_Client.Controllers
 
 			return response.Data;
         }
+
+        public void updateMatch(Match match){
+            var request = new RestRequest(Constants.Matches.UPDATE_MATCH, Method.POST);
+            request.AddUrlSegment("id",match.id.ToString());
+            request.AddBody(match);
+
+            var response = client.Execute(request);
+        }
         /*
 		public void addStudentResponse(Match match)
 		{

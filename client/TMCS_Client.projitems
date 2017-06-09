@@ -69,6 +69,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\ProblemResponseListCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\MatchController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentProblemPhase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterProblemResponseModal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
