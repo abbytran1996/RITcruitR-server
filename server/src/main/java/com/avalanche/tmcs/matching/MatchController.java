@@ -74,7 +74,7 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
-    @RequestMapping(value = "/{id}/update/", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
             matchDAO.save(match);

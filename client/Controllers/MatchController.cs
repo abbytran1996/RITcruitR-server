@@ -37,7 +37,7 @@ namespace TMCS_Client.Controllers
             request.AddUrlSegment("id",match.id.ToString());
             request.AddBody(match);
 
-            var response = client.Execute(request);
+            var response = client.Execute<Boolean>(request);
         }
         /*
 		public void addStudentResponse(Match match)
