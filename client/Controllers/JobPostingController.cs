@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Net;
 using TMCS_Client.ServerComms;
 using TMCS_Client.DTOs;
 using System.Collections.Generic;
+using RestSharp;
 
 namespace TMCS_Client.Controllers
 {
-    public class JobPostingController
+    public class JobPostingController : ServerCommsBase
     {
         private JobPostingComms jobPostingComms = new JobPostingComms();
         private static JobPostingController jobPostingController = null;
@@ -36,6 +38,17 @@ namespace TMCS_Client.Controllers
 
         public List<JobPosting> getJobPostingsByRecruiter(Recruiter recruiter){
             return jobPostingComms.getJobPostingsByRecruiter(recruiter.id);
+        }
+
+        public long getProbPhasePosts(JobPosting job)
+        {
+            var request = new RestRequest(Constants.Matches.GET_PROBLEM_PHASE_MATCHES, Method.GET);
+            request.AddUrlSegment("id", job.id.ToString());
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute<long>(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
+            return response.Data;
         }
     }
 }

@@ -54,6 +54,7 @@ namespace TMCS_Client
         public static class Matches
         {
             public static string ACCEPT_JOB_POSTING { get { return "/matches/{id}/accept"; } }
+            public static string GET_PROBLEM_PHASE_MATCHES { get { return "/matches/posting/{id}/probphase"; } }
             public static string GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING { get { return "/matches/{jobPostingID}/problemResponsePending"; } }
             public static string ADD_RESPONSE_RESOURCE { get { return "/matches/id/{id}/response/{response}"; } }
             public static string UPDATE_MATCH { get { return "/matches/{id}/update"; } }
