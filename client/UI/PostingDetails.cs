@@ -35,7 +35,7 @@ namespace TMCS_Client.UI
             };
             problemStatementSection.BackgroundColor = Color.AliceBlue;
             problemStatementSection.Clicked += (object sender, EventArgs e) => {
-                Navigation.PushAsync(new ProblemResponses(activeJobPosting));
+                Navigation.PushAsync(new RecruiterProblemResponses(activeJobPosting));
             };
             
 
