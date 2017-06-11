@@ -35,7 +35,7 @@ namespace TMCS_Client.CustomUIElements.ListViews
 
             int i = 0;
             while(i < items.Count){
-                if(!newItems.Contains(items[i])){
+                if((!newItems.Contains(items[i])) && (!items[i].Equals(emptyListItem))){
                     this.removeItem(items[i]);
                 }else{
                     i++;

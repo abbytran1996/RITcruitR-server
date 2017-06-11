@@ -33,7 +33,8 @@ namespace TMCS_Client.Controllers
         }
 
         public void updateMatch(Match match){
-            var request = new RestRequest(Constants.Matches.UPDATE_MATCH, Method.POST);
+            var request = new RestRequest(Constants.Matches.UPDATE_MATCH, Method.PUT);
+            request.RequestFormat = DataFormat.Json;
             request.AddUrlSegment("id",match.id.ToString());
             request.AddBody(match);
 
