@@ -51,6 +51,7 @@ namespace TMCS_Client.UI
                 BackgroundColor = Color.Transparent,
                 BorderColor = Color.Transparent,
                 BorderWidth = 0.0,
+                BorderRadius = 0,
             };
             pageContent.Children.Add(btnAddJobPosting,
                                     new Rectangle(0.95,0.95,80.0,80.0),
