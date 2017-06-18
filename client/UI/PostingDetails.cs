@@ -61,7 +61,7 @@ namespace TMCS_Client.UI
             var jobPostingsController = JobPostingController.getJobPostingController();
             problemStatementSection.Text = "Problem Phase - " + jobPostingsController.getProbPhasePosts(activeJobPosting).ToString();
 
-            var numPresentationPhaseMatches = MatchController.getMatchController().getNumMatchesInPresentationPhase(activeJobPosting).Count;
+            var numPresentationPhaseMatches = MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting).Count;
             presentationSection.Text = String.Format("Presentation Phase - {0}", numPresentationPhaseMatches);
 
             base.OnAppearing();

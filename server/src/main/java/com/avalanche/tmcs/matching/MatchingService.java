@@ -143,6 +143,8 @@ public class MatchingService {
             match.setMatchStrength(weight);
             match.setJob(posting);
             match.setStudent(student);
+            match.setApplicationStatus(Match.ApplicationStatus.NEW);
+            match.setCurrentPhase(Match.CurrentPhase.NONE);
             matches.add(match);
         }
         return matches;

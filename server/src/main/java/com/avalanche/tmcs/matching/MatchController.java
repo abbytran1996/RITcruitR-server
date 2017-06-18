@@ -2,6 +2,7 @@ package com.avalanche.tmcs.matching;
 
         import com.avalanche.tmcs.job_posting.JobPosting;
         import com.avalanche.tmcs.job_posting.JobPostingDAO;
+        import com.sun.org.apache.regexp.internal.RE;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RestController;
         import com.avalanche.tmcs.auth.*;
@@ -59,7 +60,8 @@ public class MatchController {
         if(job ==null){
             return ResponseEntity.notFound().build();
         }
-        Long numInProbPhase = (matchDAO.findAllByJob(job).stream().filter(p->p.getCurrentPhase()== Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER)).count();
+        List<Match> matchesForJob = matchDAO.findAllByJob(job);
+        Long numInProbPhase = matchesForJob.stream().filter(p->p.getCurrentPhase()== Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER).count();
 
         return ResponseEntity.ok(numInProbPhase);
     }
@@ -96,5 +98,18 @@ public class MatchController {
         }
 
         return ResponseEntity.ok(true); //TODO make the result variable
+    }
+
+    @RequestMapping(value = "{id}/response/{response}", method = RequestMethod.POST)
+    public ResponseEntity<?> setProblemResponse(@PathVariable long id, @PathVariable String response) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        match.setStudentProblemResponse(response);
+        matchDAO.save(match);
+
+        return ResponseEntity.ok().build();
     }
 }

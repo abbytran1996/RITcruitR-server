@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.ListViews;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
@@ -26,7 +27,7 @@ namespace TMCS_Client.UI {
                 Match.NullMatch
                 );
             presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                // Navigation.PushModalAsync(new RecruiterPresentationResponseModal((Match)presentationResponsesList.SelectedItem));
+                Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
             };
             pageContent.Children.Add(presentationResponsesList,
                 new Rectangle(0.0, 1.0, 1.0, 0.925),
@@ -35,17 +36,29 @@ namespace TMCS_Client.UI {
             Content = pageContent;
         }
 
+        protected override void OnAppearing() {
+            base.OnAppearing();
+            presentationResponsesList.updateItems(MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting));
+        }
+
         class PresentationPhaseResponseCell : ViewCell {
             public static readonly BindableProperty MatchIDProperty =
                 BindableProperty.Create("matchID", typeof(long), typeof(PresentationPhaseResponseCell), -1L);
 
             private Label tag;
             private Label timeSubmitted;
+            private Label url;
 
             public PresentationPhaseResponseCell() {
                 var cellLayout = new AbsoluteLayout() {
                     HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
                     BackgroundColor = Color.White
+                };
+
+                url = new Label() {
+                    VerticalTextAlignment = TextAlignment.Start,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    FontSize = 14.0
                 };
 
                 tag = new Label() {
@@ -61,8 +74,13 @@ namespace TMCS_Client.UI {
                     TextColor = Color.Gray
                 };
 
+                url.SetBinding(Label.TextProperty, new Binding("studentPresentationLink"));
                 tag.SetBinding(Label.TextProperty, new Binding("tag"));
                 timeSubmitted.SetBinding(Label.TextProperty, new Binding("timeLastUpdated"));
+
+                cellLayout.Children.Add(url,
+                    new Rectangle(0.5, 0.0, 0.95, 0.75),
+                    AbsoluteLayoutFlags.All);
 
                 cellLayout.Children.Add(tag,
                     new Rectangle(0.05, 1.0, 0.475, 0.25),

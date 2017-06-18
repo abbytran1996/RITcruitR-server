@@ -120,7 +120,9 @@ public class Match {
 
     public void setTag(final String tag) {
         this.tag = tag;
-        setLastUpdatedTimeToNow();
+        if(tag != null) {
+            setLastUpdatedTimeToNow();
+        }
     }
 
     public String getStudentProblemResponse() {
@@ -129,7 +131,11 @@ public class Match {
 
     public void setStudentProblemResponse(final String studentProblemResponse) {
         this.studentProblemResponse = studentProblemResponse;
-        setLastUpdatedTimeToNow();
+        if(studentProblemResponse != null) {
+            setApplicationStatus(ApplicationStatus.IN_PROGRESS);
+            setCurrentPhase(CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+            setLastUpdatedTimeToNow();
+        }
     }
 
     public URI getStudentPresentationLink() {
@@ -138,7 +144,11 @@ public class Match {
 
     public void setStudentPresentationLink(final URI studentPresentationLink) {
         this.studentPresentationLink = studentPresentationLink;
-        setLastUpdatedTimeToNow();
+        if(studentPresentationLink != null) {
+            setApplicationStatus(ApplicationStatus.IN_PROGRESS);
+            setCurrentPhase(CurrentPhase.PRESENTATION);
+            setLastUpdatedTimeToNow();
+        }
     }
 
     @NotNull
@@ -151,23 +161,23 @@ public class Match {
     }
 
     @NotNull
+    // @Enumerated(EnumType.STRING)
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
 
     public void setApplicationStatus(final ApplicationStatus applicationStatus) {
         this.applicationStatus = applicationStatus;
-        setLastUpdatedTimeToNow();
     }
 
     @NotNull
+    // @Enumerated(EnumType.STRING)
     public CurrentPhase getCurrentPhase() {
         return currentPhase;
     }
 
     public void setCurrentPhase(final CurrentPhase currentPhase) {
         this.currentPhase = currentPhase;
-        setLastUpdatedTimeToNow();
     }
 
     public void setLastUpdatedTimeToNow() {

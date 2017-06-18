@@ -54,8 +54,8 @@ namespace TMCS_Client.Controllers
 			var response = client.Execute(request);
 		}*/
 
-        internal List<Match> getNumMatchesInPresentationPhase(JobPosting job) {
-            var request = new RestRequest(Constants.Matches.GET_NUM_PRESENTATION_PHASE_MATCHES, Method.GET);
+        internal List<Match> getMatchesInPresentationPhase(JobPosting job) {
+            var request = new RestRequest(Constants.Matches.GET_PRESENTATION_PHASE_MATCHES, Method.GET);
             request.AddUrlSegment("id", job.id.ToString());
             request.RequestFormat = DataFormat.Json;
 
