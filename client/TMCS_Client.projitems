@@ -17,7 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\StudentController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
