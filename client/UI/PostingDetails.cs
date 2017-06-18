@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using TMCS_Client.CustomUIElements.ListViews;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.ViewCells;
+using System.Collections.Generic;
 
 namespace TMCS_Client.UI
 {
@@ -18,7 +19,7 @@ namespace TMCS_Client.UI
         private Button problemStatementSection;
         private Label probStatementlbl;
 
-        private AbsoluteLayout presentationSection;
+        private Button presentationSection;
         private AbsoluteLayout interviewSection;
 
 
@@ -43,14 +44,26 @@ namespace TMCS_Client.UI
                                     new Rectangle(1.0,0.0,1.0,0.2),
                                     AbsoluteLayoutFlags.All);
 
+            presentationSection = new Button() {
+                Text = "Presentation Phase",
+                BackgroundColor = Color.AliceBlue
+            };
+            presentationSection.Clicked += (object sender, EventArgs e) => Navigation.PushAsync(new RecruiterPresentationResponses(activeJobPosting));
+
+            pageContent.Children.Add(presentationSection,
+                new Rectangle(1, 0.25, 1, 0.2),
+                AbsoluteLayoutFlags.All);
 
             Content = pageContent;
         }
 
-        protected override void OnAppearing()
-        {
-            problemStatementSection.Text = "Problem Phase - " + JobPostingController.getJobPostingController().getProbPhasePosts(activeJobPosting).ToString();
-            
+        protected override void OnAppearing() {
+            var jobPostingsController = JobPostingController.getJobPostingController();
+            problemStatementSection.Text = "Problem Phase - " + jobPostingsController.getProbPhasePosts(activeJobPosting).ToString();
+
+            var numPresentationPhaseMatches = MatchController.getMatchController().getNumMatchesInPresentationPhase(activeJobPosting);
+            presentationSection.Text = String.Format("Presentation Phase - {0}", numPresentationPhaseMatches.Count);
+
             base.OnAppearing();
         }
     }

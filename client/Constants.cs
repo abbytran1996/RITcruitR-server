@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using RestSharp;
 using Xamarin.Forms;
 
 namespace TMCS_Client
@@ -58,6 +59,8 @@ namespace TMCS_Client
             public static string GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING { get { return "/matches/{jobPostingID}/problemResponsePending"; } }
             public static string ADD_RESPONSE_RESOURCE { get { return "/matches/id/{id}/response/{response}"; } }
             public static string UPDATE_MATCH { get { return "/matches/{id}/update"; } }
+
+            public static string GET_NUM_PRESENTATION_PHASE_MATCHES { get { return "/matches/{id}/presentationResponsePending"; } }
         }
 
         public static string PASSWORD_REGEX { get { return "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%&~`]).{8}"; } }

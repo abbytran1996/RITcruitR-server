@@ -75,6 +75,20 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
+    @RequestMapping(value = "/{jobPostingId}/presentationResponsePending", method = RequestMethod.GET)
+    public ResponseEntity<List<Match>> getMatchesWithPresentationResponsePending(@PathVariable long jobPostingId) {
+        JobPosting job = jobDAO.findOne(jobPostingId);
+        if(job == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
+                Match.CurrentPhase.PRESENTATION,
+                Match.ApplicationStatus.IN_PROGRESS);
+
+        return ResponseEntity.ok(matches);
+    }
+
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
