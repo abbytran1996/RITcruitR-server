@@ -13,6 +13,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\ServerController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AcceptButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\DeclineButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
@@ -30,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Student.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\PostingDetails.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterPresentationResponseModal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterPresentationResponses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\SkillsEditing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Login.cs" />
@@ -79,7 +82,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\" />
     <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\" />

@@ -6,6 +6,7 @@ import com.avalanche.tmcs.matching.Match;
 import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.data.repository.CrudRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import java.util.Set;
  * @author David Dubois
  * @since 16-Apr-17.
  */
+@Transactional
 public interface MatchDAO extends CrudRepository<Match, Long> {
     List<Match> findAllByStudent(Student student);
 

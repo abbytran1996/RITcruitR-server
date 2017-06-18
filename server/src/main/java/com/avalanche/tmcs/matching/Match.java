@@ -61,7 +61,7 @@ public class Match {
 
     private String studentProblemResponse;
 
-    private URI studentPresentationLink;
+    private String studentPresentationLink;
 
     private Date timeLastUpdated;
 
@@ -138,11 +138,11 @@ public class Match {
         }
     }
 
-    public URI getStudentPresentationLink() {
+    public String getStudentPresentationLink() {
         return studentPresentationLink;
     }
 
-    public void setStudentPresentationLink(final URI studentPresentationLink) {
+    public void setStudentPresentationLink(final String studentPresentationLink) {
         this.studentPresentationLink = studentPresentationLink;
         if(studentPresentationLink != null) {
             setApplicationStatus(ApplicationStatus.IN_PROGRESS);
@@ -161,7 +161,7 @@ public class Match {
     }
 
     @NotNull
-    // @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
@@ -171,7 +171,7 @@ public class Match {
     }
 
     @NotNull
-    // @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     public CurrentPhase getCurrentPhase() {
         return currentPhase;
     }
