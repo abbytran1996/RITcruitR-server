@@ -7,7 +7,8 @@ using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
 using TMCS_Client.CustomUIElements.Buttons;
 using TMCS_Client.CustomUIElements.Pickers;
-
+//using Plugin.FilePicker;
+//using Plugin.FilePicker.Abstractions;
 using Xamarin.Forms;
 
 namespace TMCS_Client.UI
@@ -61,6 +62,12 @@ namespace TMCS_Client.UI
         private FormFieldLabel lblPreferredCompanySize;
         private CompanySizePicker pickPreferredCompanySize;
 
+        //Resume
+        private FormFieldLabel lblResumeFile;
+        private FormEntry entResumeFileLocation;
+        private Button btnOpenFilePicker;
+        //private FileData resume;
+
         //Register Button
         private Button btnRegister;
         
@@ -76,7 +83,7 @@ namespace TMCS_Client.UI
 
             registrationForm = new AbsoluteLayout()
             {
-                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 12.0),
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 13.0),
 			};
 
 
@@ -303,12 +310,47 @@ namespace TMCS_Client.UI
 										 new Rectangle(0, 10.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
 										  AbsoluteLayoutFlags.WidthProportional);
 
+            //Registration
+            AbsoluteLayout resumeUpload = new AbsoluteLayout()
+            {
+            };
+
+			resumeUpload.Children.Add(lblResumeFile = new FormFieldLabel("Resume Upload"),
+									   new Rectangle(0.5, 0, 0.9, 0.5),
+									   AbsoluteLayoutFlags.All);
+            AbsoluteLayout resumeUploadEntrySection = new AbsoluteLayout();
+
+            resumeUploadEntrySection.Children.Add(entResumeFileLocation = new FormEntry("/path/to/resume", Keyboard.Text){
+                IsEnabled = false,
+            },
+									   new Rectangle(0.0, 0.5, 0.9, 1.0),
+									   AbsoluteLayoutFlags.All);
+
+            resumeUploadEntrySection.Children.Add(btnOpenFilePicker = new Button(){
+                Text = "B",
+            }, new Rectangle(1.0,0.5,0.1,1.0),AbsoluteLayoutFlags.All);
+            /*btnOpenFilePicker.Clicked += async (object sender, EventArgs e) => {
+                resume = await CrossFilePicker.Current.PickFile();
+                if (resume != null)
+                {
+                    entResumeFileLocation.Text = resume.FileName;
+                }
+            };*/
+
+            resumeUpload.Children.Add(resumeUploadEntrySection,
+                                     new Rectangle(0.5,1.0,0.9,0.5),
+                                     AbsoluteLayoutFlags.All);
+
+            registrationForm.Children.Add(resumeUpload,
+                                         new Rectangle(0, 11.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
             //Register Button
             btnRegister = new FormSubmitButton("Register");
             btnRegister.Command = new Command((object obj) => register());
 
             registrationForm.Children.Add(btnRegister,
-                                          new Rectangle(0.5, ((11.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
+                                          new Rectangle(0.5, ((12.0 * Constants.Forms.Sizes.ROW_HEIGHT) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
                                           AbsoluteLayoutFlags.WidthProportional |
                                          AbsoluteLayoutFlags.XProportional);
 

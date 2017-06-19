@@ -68,8 +68,7 @@ public class MatchController {
 
     @RequestMapping(value = "/{jobPostingID}/problemResponsePending", method = RequestMethod.GET)
     public ResponseEntity<List<Match>> getMatchesWithProblemResponsePending(@PathVariable long jobPostingID){
-        JobPosting job = new JobPosting();
-        job.setId(jobPostingID);
+        JobPosting job = jobDAO.findOne(jobPostingID);
         List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
@@ -89,6 +88,14 @@ public class MatchController {
                 Match.ApplicationStatus.IN_PROGRESS);
 
         return ResponseEntity.ok(matches);
+    }
+
+    @RequestMapping(value="/{jobPostingID}/interviewPhaseMatchesCount", method= RequestMethod.GET)
+    public ResponseEntity<Long> getInterviewPhaseMatchesCount(@PathVariable long jobPostingID){
+        return ResponseEntity.ok(
+                 matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(jobDAO.findOne(jobPostingID),
+                        Match.CurrentPhase.INTERVIEW,
+                        Match.ApplicationStatus.IN_PROGRESS));
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)

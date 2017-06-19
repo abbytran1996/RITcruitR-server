@@ -27,7 +27,7 @@ namespace TMCS_Client.UI {
                 Match.NullMatch
                 );
             presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
+                //Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
             };
             pageContent.Children.Add(presentationResponsesList,
                 new Rectangle(0.0, 1.0, 1.0, 0.925),

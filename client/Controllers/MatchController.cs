@@ -26,6 +26,7 @@ namespace TMCS_Client.Controllers
         public List<Match> getMatchesWithProblemResponsePending(long jobPostingID){
             var request = new RestRequest(Constants.Matches.GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING, Method.GET);
 			request.AddUrlSegment("jobPostingID", jobPostingID.ToString());
+			request.RequestFormat = DataFormat.Json;
 
 			var response = client.Execute<List<Match>>(request);
 
@@ -61,6 +62,15 @@ namespace TMCS_Client.Controllers
 
             var response = client.Execute<List<Match>>(request);
             ensureStatusCode(response, HttpStatusCode.OK);
+            return response.Data;
+        }
+
+        public long getInterviewPhaseMatchesCount(JobPosting job){
+            var request = new RestRequest(Constants.Matches.GET_INTERVIEW_PHASE_MATCHES_COUNT, Method.GET);
+			request.AddUrlSegment("jobPostingID", job.id.ToString());
+			request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute<long>(request);
             return response.Data;
         }
     }

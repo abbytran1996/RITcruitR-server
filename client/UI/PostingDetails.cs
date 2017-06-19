@@ -17,11 +17,10 @@ namespace TMCS_Client.UI
         private AbsoluteLayout pageContent;
 
         private Button problemStatementSection;
-        private Label probStatementlbl;
 
         private Button presentationSection;
-        private AbsoluteLayout interviewSection;
 
+        private Button interviewSection;
 
         public PostingDetails(JobPosting jobPosting)
         {
@@ -54,6 +53,16 @@ namespace TMCS_Client.UI
                 new Rectangle(1, 0.25, 1, 0.2),
                 AbsoluteLayoutFlags.All);
 
+            interviewSection = new Button()
+            {
+                Text = "Interview Phase",
+                BackgroundColor = Color.AliceBlue
+            };
+            //interviewSection.Clicked += (object sender, EventArgs e) => Navigation.PushAsync(new RecruiterInterviewPhase(activeJobPosting));
+            pageContent.Children.Add(interviewSection,
+                                    new Rectangle(1.0, 0.5, 1, 0.2),
+                                    AbsoluteLayoutFlags.All);
+
             Content = pageContent;
         }
 
@@ -63,6 +72,10 @@ namespace TMCS_Client.UI
 
             var numPresentationPhaseMatches = MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting).Count;
             presentationSection.Text = String.Format("Presentation Phase - {0}", numPresentationPhaseMatches);
+
+            interviewSection.Text = 
+                String.Format("Interview Phase - {0}", 
+                              MatchController.getMatchController().getInterviewPhaseMatchesCount(activeJobPosting));
 
             base.OnAppearing();
         }
