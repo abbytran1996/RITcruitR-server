@@ -4,6 +4,7 @@ using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.Controllers;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using TMCS_Client.CustomUIElements.Buttons;
 
 namespace TMCS_Client.UI
 {
@@ -92,14 +93,7 @@ namespace TMCS_Client.UI
 
             buttons = new AbsoluteLayout();
 
-            btnDecline = new Button()
-            {
-                Text = "Decline",
-                BackgroundColor = Color.Red,
-                TextColor = Color.White,
-				FontSize = 18.0,
-				FontAttributes = FontAttributes.Bold,
-            };
+            btnDecline = new DeclineButton();
             btnDecline.Clicked += (object sender, EventArgs e) => {
                 activeMatch.applicationStatus = Match.ApplicationStatus.REJECTED;
                 buttonPushed();
@@ -126,14 +120,7 @@ namespace TMCS_Client.UI
 															0.3, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),
 											   AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
 
-            btnAccept = new Button()
-            {
-                Text = "Accept",
-                BackgroundColor = Color.Green,
-                TextColor = Color.White,
-                FontSize = 18.0,
-                FontAttributes = FontAttributes.Bold,
-			};
+            btnAccept = new AcceptButton();
 			btnAccept.Clicked += (object sender, EventArgs e) =>
 			{
                 activeMatch.currentPhase = Match.CurrentPhase.PRESENTATION;
