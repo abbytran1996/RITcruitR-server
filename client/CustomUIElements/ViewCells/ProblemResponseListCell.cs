@@ -6,42 +6,6 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 {
     public class ProblemResponseListCell : ViewCell
 	{
-		public static readonly BindableProperty MatchIDProperty =
-			BindableProperty.Create("matchID", typeof(long), typeof(ProblemResponseListCell), -1L);
-
-		public static readonly BindableProperty ProblemResponseProperty =
-			BindableProperty.Create("problemResponse", typeof(String), typeof(ProblemResponseListCell), "");
-
-        public static readonly BindableProperty TagProperty =
-			BindableProperty.Create("tag", typeof(String), typeof(ProblemResponseListCell), "");
-
-		public static readonly BindableProperty ProblemResponseTimeSubmittedProperty =
-			BindableProperty.Create("problemResponseTimeSubmitted", typeof(DateTime), typeof(ProblemResponseListCell), DateTime.Now);
-
-		public long matchID
-		{
-			get { return (long)GetValue(MatchIDProperty); }
-			set { SetValue(MatchIDProperty, value); }
-		}
-
-		public String problemResponse
-		{
-			get { return (String)GetValue(ProblemResponseProperty); }
-			set { SetValue(ProblemResponseProperty, value); }
-		}
-
-        public String tag
-		{
-			get { return (String)GetValue(TagProperty); }
-            set { SetValue(TagProperty, value); }
-		}
-
-		public DateTime problemResponseTimeSubmitted
-		{
-			get { return (DateTime)GetValue(ProblemResponseTimeSubmittedProperty); }
-			set { SetValue(ProblemResponseTimeSubmittedProperty, value); }
-		}
-
         private Label lblProblemResponse;
         private Label lblTag;
         private Label lblProblemResponseTimeSubmitted;
@@ -86,19 +50,13 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                                    new Rectangle(0.95, 1.0, 0.475, 0.25),
                                    AbsoluteLayoutFlags.All);
 
-			
-			this.SetBinding(ProblemResponseListCell.MatchIDProperty, "id");
-            this.SetBinding(ProblemResponseListCell.ProblemResponseProperty, "studentProblemResponse");
-            this.SetBinding(ProblemResponseListCell.TagProperty, "tag");
-			this.SetBinding(ProblemResponseListCell.ProblemResponseTimeSubmittedProperty, "timeLastUpdated");
-
             View = cellLayout;
         }
 
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            if (matchID == -1)
+            if ((BindingContext != null) && (((Match)BindingContext) == Match.EmptyMatch))
             {
                 this.View = new AbsoluteLayout()
                 {
@@ -112,11 +70,11 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                     FontSize = 22.0,
                 }, new Rectangle(0.0, 0.0, 1.0, 1.0),
                                                          AbsoluteLayoutFlags.All);
-            }else{
+            }else if(BindingContext != null){
                 //TODO Truncate/convert these values
-                lblProblemResponse.Text = problemResponse;
-                lblTag.Text = "Tag: " + tag;
-                lblProblemResponseTimeSubmitted.Text = problemResponseTimeSubmitted.ToString();
+                lblProblemResponse.Text = ((Match)BindingContext).studentProblemResponse;
+                lblTag.Text = "Tag: " + (((Match)BindingContext).tag == null?"":((Match)BindingContext).tag);
+                lblProblemResponseTimeSubmitted.Text = ((Match)BindingContext).timeLastUpdated.ToString();
             }
         }
     }

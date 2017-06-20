@@ -73,5 +73,15 @@ namespace TMCS_Client.Controllers
             var response = client.Execute<long>(request);
             return response.Data;
         }
+
+		public List<Match> getInterviewPhaseMatches(JobPosting job)
+		{
+			var request = new RestRequest(Constants.Matches.GET_INTERVIEW_PHASE_MATCHES, Method.GET);
+			request.AddUrlSegment("jobPostingID", job.id.ToString());
+			request.RequestFormat = DataFormat.Json;
+
+			var response = client.Execute<List<Match>>(request);
+			return response.Data;
+		}
     }
 }

@@ -24,7 +24,7 @@ namespace TMCS_Client.UI {
             pageContent.Children.Add(responseListLabel);
 
             presentationResponsesList = new FormListView<Match, PresentationPhaseResponseCell>(
-                Match.NullMatch
+                Match.EmptyMatch
                 );
             presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
                 //Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));

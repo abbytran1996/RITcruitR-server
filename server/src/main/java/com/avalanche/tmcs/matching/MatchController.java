@@ -98,6 +98,14 @@ public class MatchController {
                         Match.ApplicationStatus.IN_PROGRESS));
     }
 
+    @RequestMapping(value="/{jobPostingID}/interviewPhaseMatches", method= RequestMethod.GET)
+    public ResponseEntity<List<Match>> getInterviewPhaseMatches(@PathVariable long jobPostingID){
+        return ResponseEntity.ok(
+                matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(jobDAO.findOne(jobPostingID),
+                        Match.CurrentPhase.INTERVIEW,
+                        Match.ApplicationStatus.IN_PROGRESS));
+    }
+
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){

@@ -67,10 +67,13 @@ namespace TMCS_Client.UI
                                                AbsoluteLayoutFlags.All);
 
             problemResponseList = new FormListView<Match, ProblemResponseListCell>(
-                Match.NullMatch
+                Match.EmptyMatch
             );
             problemResponseList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                Navigation.PushModalAsync(new RecruiterProblemResponseModal((Match)problemResponseList.SelectedItem));
+                if ((Match)problemResponseList.SelectedItem != Match.EmptyMatch)
+                {
+                    Navigation.PushModalAsync(new RecruiterProblemResponseModal((Match)problemResponseList.SelectedItem));
+                }
             };
             problemResponseSection.Children.Add(problemResponseList,
                                               new Rectangle(0.0, 1.0, 1.0, 0.925),

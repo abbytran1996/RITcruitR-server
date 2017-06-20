@@ -75,6 +75,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\MatchController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentProblemPhase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterProblemResponseModal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterInterviewPhase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\InterviewPhaseListCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

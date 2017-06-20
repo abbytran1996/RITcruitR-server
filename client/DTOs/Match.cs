@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TMCS_Client.DTOs {
     public class Match {
-		public static Match NullMatch = new Match()
+		public static Match EmptyMatch = new Match()
 		{
 			id = -1
 		};
