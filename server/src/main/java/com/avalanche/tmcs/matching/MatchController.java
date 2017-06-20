@@ -60,8 +60,9 @@ public class MatchController {
         if(job ==null){
             return ResponseEntity.notFound().build();
         }
-        List<Match> matchesForJob = matchDAO.findAllByJob(job);
-        Long numInProbPhase = matchesForJob.stream().filter(p->p.getCurrentPhase()== Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER).count();
+        List<Match> matchesForJob = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+                Match.ApplicationStatus.IN_PROGRESS);
+        Long numInProbPhase = (long)matchesForJob.size()/*.stream().filter(p->p.getCurrentPhase()== Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER).count()*/;
 
         return ResponseEntity.ok(numInProbPhase);
     }
@@ -90,20 +91,24 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
-    @RequestMapping(value="/{jobPostingID}/interviewPhaseMatchesCount", method= RequestMethod.GET)
+    @RequestMapping(value="/{jobPostingID}/interviewPhaseMatches/Count", method= RequestMethod.GET)
     public ResponseEntity<Long> getInterviewPhaseMatchesCount(@PathVariable long jobPostingID){
-        return ResponseEntity.ok(
-                 matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(jobDAO.findOne(jobPostingID),
-                        Match.CurrentPhase.INTERVIEW,
-                        Match.ApplicationStatus.IN_PROGRESS));
+        JobPosting job = jobDAO.findOne(jobPostingID);
+        long matches = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,
+                Match.CurrentPhase.INTERVIEW,
+                Match.ApplicationStatus.IN_PROGRESS);
+
+        return ResponseEntity.ok(matches);
     }
 
     @RequestMapping(value="/{jobPostingID}/interviewPhaseMatches", method= RequestMethod.GET)
     public ResponseEntity<List<Match>> getInterviewPhaseMatches(@PathVariable long jobPostingID){
-        return ResponseEntity.ok(
-                matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(jobDAO.findOne(jobPostingID),
-                        Match.CurrentPhase.INTERVIEW,
-                        Match.ApplicationStatus.IN_PROGRESS));
+        JobPosting job = jobDAO.findOne(jobPostingID);
+        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
+                Match.CurrentPhase.INTERVIEW,
+                Match.ApplicationStatus.IN_PROGRESS);
+
+        return ResponseEntity.ok(matches);
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)

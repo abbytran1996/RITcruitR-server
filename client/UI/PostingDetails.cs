@@ -58,7 +58,7 @@ namespace TMCS_Client.UI
                 Text = "Interview Phase",
                 BackgroundColor = Color.AliceBlue
             };
-            //interviewSection.Clicked += (object sender, EventArgs e) => Navigation.PushAsync(new RecruiterInterviewPhase(activeJobPosting));
+            interviewSection.Clicked += (object sender, EventArgs e) => Navigation.PushAsync(new RecruiterInterviewPhase(activeJobPosting));
             pageContent.Children.Add(interviewSection,
                                     new Rectangle(1.0, 0.5, 1, 0.2),
                                     AbsoluteLayoutFlags.All);

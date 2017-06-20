@@ -60,7 +60,7 @@ namespace TMCS_Client
             public static string ADD_RESPONSE_RESOURCE { get { return "/matches/{id}/response/{response}"; } }
             public static string UPDATE_MATCH { get { return "/matches/{id}/update"; } }
             public static string GET_PRESENTATION_PHASE_MATCHES { get { return "/matches/{id}/presentationResponsePending"; } }
-            public static string GET_INTERVIEW_PHASE_MATCHES_COUNT { get { return "/matches/{jobPostingID}/interviewPhaseMatchesCount"; } }
+            public static string GET_INTERVIEW_PHASE_MATCHES_COUNT { get { return "/matches/{jobPostingID}/interviewPhaseMatches/Count"; } }
             public static string GET_INTERVIEW_PHASE_MATCHES { get { return "/matches/{jobPostingID}/interviewPhaseMatches"; } }
         }
 

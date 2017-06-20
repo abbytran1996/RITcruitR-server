@@ -34,7 +34,7 @@ namespace TMCS_Client.UI
                                     new Rectangle(0.5,0.0,0.9,0.06),
                                     AbsoluteLayoutFlags.All);
 
-            interviewPhaseList = new FormListView<Match, InterviewPhaseListCell>(null);
+            interviewPhaseList = new FormListView<Match, InterviewPhaseListCell>(Match.EmptyMatch);
             pageContent.Children.Add(interviewPhaseList,
                                     new Rectangle(0.5,1.0,1.0,0.94),
                                     AbsoluteLayoutFlags.All);
