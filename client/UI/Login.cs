@@ -156,7 +156,7 @@ namespace TMCS_Client.UI
                         var student = StudentController.getStudentController().getStudent(email);
                         (App.Current as App).CurrentStudent = student;
                         Console.WriteLine("Student login detected");
-                        Navigation.InsertPageBefore(new StudentHomepage(), Login.getLoginPage());
+                        Navigation.InsertPageBefore(new StudentTab(), Login.getLoginPage());
                         break;
                     }
                     else if (role.name == Role.Name.Recruiter.ToString().ToLower())
