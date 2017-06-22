@@ -3,6 +3,7 @@ package com.avalanche.tmcs.matching;
         import com.avalanche.tmcs.job_posting.JobPosting;
         import com.avalanche.tmcs.job_posting.JobPostingDAO;
         import com.sun.org.apache.regexp.internal.RE;
+        import org.hibernate.annotations.DynamicUpdate;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RestController;
         import com.avalanche.tmcs.auth.*;
@@ -111,7 +112,7 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.PATCH)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
             matchDAO.save(match);

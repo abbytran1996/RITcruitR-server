@@ -1,15 +1,35 @@
 ﻿using System;
 using Xamarin.Forms;
 using TMCS_Client.DTOs;
+using TMCS_Client.CustomUIElements.Labels;
 
 namespace TMCS_Client.CustomUIElements.ViewCells
 {
     public class InterviewPhaseListCell : ViewCell
     {
-
+        FormFieldLabel lblStudentName;
+        Label lblInterview;
+        Label lblTag;
 
         public InterviewPhaseListCell()
         {
+            AbsoluteLayout cellLayout = new AbsoluteLayout();
+
+            cellLayout.Children.Add(lblStudentName = new FormFieldLabel(""),
+                                   new Rectangle(0.5,0.0,0.9,0.5),
+                                    AbsoluteLayoutFlags.All);
+
+            cellLayout.Children.Add(lblInterview = new Label(){
+                TextColor = Color.Gray,
+            }, new Rectangle(0.5,1.0,0.9,0.5), AbsoluteLayoutFlags.All);
+
+			cellLayout.Children.Add(lblTag= new Label()
+			{
+				TextColor = Color.Gray,
+                HorizontalTextAlignment = TextAlignment.End,
+			}, new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
+
+            this.View = cellLayout;
         }
 
 		protected override void OnBindingContextChanged()
@@ -32,7 +52,11 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 			}
 			else if (BindingContext != null)
 			{
-				//TODO Truncate/convert these values
+                //TODO Truncate/convert these values
+                lblStudentName.Text = ((Match)BindingContext).student.firstName + " " +
+                                 ((Match)BindingContext).student.lastName[0] + ".";
+                lblInterview.Text = "Interview: ";// + ((Match)BindingContext).interview...
+                lblTag.Text = "Tag: " + ((Match)BindingContext).tag;
 			}
 		}
     }

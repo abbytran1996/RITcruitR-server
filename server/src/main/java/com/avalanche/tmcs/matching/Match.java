@@ -2,6 +2,7 @@ package com.avalanche.tmcs.matching;
 
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.sql.Date;
  * @since 16-Apr-17.
  */
 @Entity
+@DynamicUpdate(false)
 @Table(name="matches")
 public class Match {
     public enum ApplicationStatus {

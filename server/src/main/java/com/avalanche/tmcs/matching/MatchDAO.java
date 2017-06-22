@@ -25,5 +25,4 @@ public interface MatchDAO extends CrudRepository<Match, Long> {
     List<Match> findAllByJob(JobPosting job);
 
     long countAllByJobAndCurrentPhaseAndApplicationStatus(JobPosting job, Match.CurrentPhase currentPhase, Match.ApplicationStatus applicationStatus);
-
 }

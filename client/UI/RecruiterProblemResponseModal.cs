@@ -79,7 +79,6 @@ namespace TMCS_Client.UI
                 ItemsSource = new List<String>(new String[] { "Great", "Good", "Alright", "Bad" }),
                 SelectedItem = activeMatch.tag,
             };
-            //TODO Test this
             pickTag.PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) => {
                 if (e.PropertyName == Picker.SelectedItemProperty.PropertyName){
                     activeMatch.tag = pickTag.SelectedItem.ToString();
