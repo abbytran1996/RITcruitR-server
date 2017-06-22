@@ -38,18 +38,14 @@ namespace TMCS_Client.UI {
             setupMatchedList();
             menu = new AbsoluteLayout();
 
-            pageContent.Children.Add(new SubSectionTitleLabel("You have been matched with the following jobs:"));
+            pageContent.Children.Add(new SubSectionTitleLabel("You have are in the problem phase with the following jobs:"));
 
             matchesListContainer.Content = matchesList;
             matchesListContainer.Margin = new Thickness(22, 0);
 
             pageContent.Children.Add(matchesListContainer);
 
-            bottomItems.Children.Add(new Label()
-            {
-                Text = "Select a position you may be interested in"
-            },
-            new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+            
             Content = pageContent;
 
         }
