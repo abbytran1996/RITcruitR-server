@@ -17,7 +17,6 @@ import java.sql.Date;
  * @since 16-Apr-17.
  */
 @Entity
-@DynamicUpdate(false)
 @Table(name="matches")
 public class Match {
     public enum ApplicationStatus {
@@ -163,7 +162,7 @@ public class Match {
     }
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
@@ -173,7 +172,7 @@ public class Match {
     }
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     public CurrentPhase getCurrentPhase() {
         return currentPhase;
     }
