@@ -132,11 +132,6 @@ public class Match {
 
     public void setStudentProblemResponse(final String studentProblemResponse) {
         this.studentProblemResponse = studentProblemResponse;
-        if(studentProblemResponse != null) {
-            setApplicationStatus(ApplicationStatus.IN_PROGRESS);
-            setCurrentPhase(CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
-            setLastUpdatedTimeToNow();
-        }
     }
 
     public String getStudentPresentationLink() {
@@ -145,11 +140,6 @@ public class Match {
 
     public void setStudentPresentationLink(final String studentPresentationLink) {
         this.studentPresentationLink = studentPresentationLink;
-        if(studentPresentationLink != null) {
-            setApplicationStatus(ApplicationStatus.IN_PROGRESS);
-            setCurrentPhase(CurrentPhase.PRESENTATION);
-            setLastUpdatedTimeToNow();
-        }
     }
 
     @NotNull
