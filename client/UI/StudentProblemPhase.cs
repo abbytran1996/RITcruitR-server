@@ -68,10 +68,17 @@ namespace TMCS_Client.UI
                                             Text = problem,
                                             FontSize = 16
                                         },
+
+#if __IOS__
                                         new Rectangle(0.5, .25, 0.9, 0.85),
                           AbsoluteLayoutFlags.All);
+#endif
+#if __ANDROID__
+                                        new Rectangle(0.5, .25, 0.9, 0.45),
+                          AbsoluteLayoutFlags.All);
+#endif
 
-            problemPage.Children.Add(postingProblem,
+             problemPage.Children.Add(postingProblem,
                                      new Rectangle(0, 0, 1.0, 4 * Constants.Forms.Sizes.ROW_HEIGHT),
                                     AbsoluteLayoutFlags.WidthProportional);
 
