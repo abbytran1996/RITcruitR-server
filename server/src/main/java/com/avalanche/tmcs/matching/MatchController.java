@@ -2,15 +2,11 @@ package com.avalanche.tmcs.matching;
 
         import com.avalanche.tmcs.job_posting.JobPosting;
         import com.avalanche.tmcs.job_posting.JobPostingDAO;
-        import com.sun.org.apache.regexp.internal.RE;
+        import org.springframework.transaction.annotation.Transactional;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RestController;
         import com.avalanche.tmcs.auth.*;
-        import com.avalanche.tmcs.exceptions.ResourceNotFound;
-        import com.avalanche.tmcs.matching.Match;
-        import com.avalanche.tmcs.matching.MatchDAO;
         import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
 
@@ -60,17 +56,16 @@ public class MatchController {
         if(job ==null){
             return ResponseEntity.notFound().build();
         }
-        List<Match> matchesForJob = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+        long matchesForJob = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
-        Long numInProbPhase = (long)matchesForJob.size()/*.stream().filter(p->p.getCurrentPhase()== Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER).count()*/;
 
-        return ResponseEntity.ok(numInProbPhase);
+        return ResponseEntity.ok(matchesForJob);
     }
 
     @RequestMapping(value = "/{jobPostingID}/problemResponsePending", method = RequestMethod.GET)
     public ResponseEntity<List<Match>> getMatchesWithProblemResponsePending(@PathVariable long jobPostingID){
         JobPosting job = jobDAO.findOne(jobPostingID);
-        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
+        List<Match> matches = matchDAO.readAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
 
@@ -84,7 +79,7 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
+        List<Match> matches = matchDAO.readAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.PRESENTATION,
                 Match.ApplicationStatus.IN_PROGRESS);
 
@@ -104,14 +99,14 @@ public class MatchController {
     @RequestMapping(value="/{jobPostingID}/interviewPhaseMatches", method= RequestMethod.GET)
     public ResponseEntity<List<Match>> getInterviewPhaseMatches(@PathVariable long jobPostingID){
         JobPosting job = jobDAO.findOne(jobPostingID);
-        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
+        List<Match> matches = matchDAO.readAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.INTERVIEW,
                 Match.ApplicationStatus.IN_PROGRESS);
 
         return ResponseEntity.ok(matches);
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.PATCH)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
             matchDAO.save(match);

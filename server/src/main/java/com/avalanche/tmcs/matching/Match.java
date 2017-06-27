@@ -2,6 +2,7 @@ package com.avalanche.tmcs.matching;
 
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -131,11 +132,6 @@ public class Match {
 
     public void setStudentProblemResponse(final String studentProblemResponse) {
         this.studentProblemResponse = studentProblemResponse;
-        if(studentProblemResponse != null) {
-            setApplicationStatus(ApplicationStatus.IN_PROGRESS);
-            setCurrentPhase(CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
-            setLastUpdatedTimeToNow();
-        }
     }
 
     public String getStudentPresentationLink() {
@@ -144,11 +140,6 @@ public class Match {
 
     public void setStudentPresentationLink(final String studentPresentationLink) {
         this.studentPresentationLink = studentPresentationLink;
-        if(studentPresentationLink != null) {
-            setApplicationStatus(ApplicationStatus.IN_PROGRESS);
-            setCurrentPhase(CurrentPhase.PRESENTATION);
-            setLastUpdatedTimeToNow();
-        }
     }
 
     @NotNull
@@ -161,7 +152,7 @@ public class Match {
     }
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
@@ -171,7 +162,7 @@ public class Match {
     }
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     public CurrentPhase getCurrentPhase() {
         return currentPhase;
     }
