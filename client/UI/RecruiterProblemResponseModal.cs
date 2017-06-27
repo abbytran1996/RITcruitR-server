@@ -37,7 +37,7 @@ namespace TMCS_Client.UI
 
             lblProblemResponseHeader = new Label()
             {
-                Text = "Problem Respone Review",
+                Text = "Problem Response Review",
                 FontSize = 24.0,
                 HorizontalTextAlignment = TextAlignment.Center,
             };

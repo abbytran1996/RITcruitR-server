@@ -1,4 +1,4 @@
-﻿﻿using RestSharp;
+﻿﻿﻿using RestSharp;
 using TMCS_Client.Controllers;
 using TMCS_Client.DTOs;
 using TMCS_Client.ServerComms;
@@ -18,7 +18,7 @@ namespace TMCS_Client.UI
         {
             InitializeComponent();
 
-            //MainPage = new NavigationPage(new JobPostingCreation(null));
+            //MainPage = new NavigationPage(new StudentPresentationPhase());
             MainPage = new NavigationPage(Login.getLoginPage());
 		}
 
