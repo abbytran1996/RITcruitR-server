@@ -127,4 +127,18 @@ public class MatchController {
 
         return ResponseEntity.ok().build();
     }
+
+
+    @RequestMapping(value = "{id}/link/{link}", method = RequestMethod.POST)
+    public ResponseEntity<?> setStudentLink(@PathVariable long id, @PathVariable String link) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        match.setStudentProblemResponse(link);
+        matchDAO.save(match);
+
+        return ResponseEntity.ok().build();
+    }
 }

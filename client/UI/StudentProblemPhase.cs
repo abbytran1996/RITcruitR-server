@@ -71,7 +71,7 @@ namespace TMCS_Client.UI
 
 #if __IOS__
                                         new Rectangle(0.5, .25, 0.9, 0.85),
-                          AbsoluteLayoutFlags.All);
+                          AbsoluteLayoutFlags.All); 
 #endif
 #if __ANDROID__
                                         new Rectangle(0.5, .25, 0.9, 0.45),

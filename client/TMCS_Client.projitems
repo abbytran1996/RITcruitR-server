@@ -80,6 +80,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterInterviewPhase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\InterviewPhaseListCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentPresentationPhase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentPresentationList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

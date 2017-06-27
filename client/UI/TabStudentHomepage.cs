@@ -17,24 +17,24 @@ namespace TMCS_Client.UI
         {
 #if __IOS__
             var matchesPage = new StudentHomepage();
+            var probPage = new StudentProblemList();
+            var presentationPage = new StudentPresentationList();
 
 #endif
 #if __ANDROID__
             var matchesPage = new NavigationPage(new StudentHomepage());
-#endif
-            matchesPage.Title = "Matches";
-
-            Children.Add(matchesPage);
-#if __IOS__
-            var probPage = new StudentProblemList();
-
-#endif
-#if __ANDROID__
             var probPage = new NavigationPage(new StudentProblemList());
+            var presentationPage = new NavigationPage(new StudentPresentationList());
+
 #endif
+			matchesPage.Title = "Matches";
+			Children.Add(matchesPage);
             probPage.Title = "Problem Phase";
             Children.Add(probPage);
-            
+            presentationPage.Title = "Presentation Phase";
+            Children.Add(presentationPage);
+
+
         }
 
        

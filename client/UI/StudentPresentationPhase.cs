@@ -177,7 +177,7 @@ namespace TMCS_Client.UI
 		{
 			string response = txtStudentURL.Text;
 			var id = match.id;
-			StudentController.getStudentController().addStudentResponse(id, response);
+            StudentController.getStudentController().addStudentLink(id, response);
 		}
 
 	}
