@@ -33,11 +33,6 @@ namespace TMCS_Client.UI
             Children.Add(probPage);
             presentationPage.Title = "Presentation Phase";
             Children.Add(presentationPage);
-
-
         }
-
-       
-        
     }
 }

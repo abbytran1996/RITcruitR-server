@@ -100,10 +100,13 @@ namespace TMCS_Client.UI {
                 Text = "Interested",
                 BackgroundColor = Constants.Forms.Colors.SUCCESS,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Command = new Command((object obj) => Navigation.PushAsync(new StudentProblemPhase(selectedMatch))),
+                //Command = new Command((object obj) => Navigation.PushAsync(new StudentProblemPhase(selectedMatch))),
             };
             acceptButton.Clicked += (object sender2, EventArgs e2) =>
+            {
                 acceptPosting(selectedMatch, true);
+                selectedMatch.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
+            };
             bottomItems.Children.Add(acceptButton,
             new Rectangle(1, 0, 0.5, 1), AbsoluteLayoutFlags.All);
         }
