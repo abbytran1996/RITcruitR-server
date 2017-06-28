@@ -46,6 +46,7 @@ public class MatchController {
         else{
             match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
         }
+        match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
         return ResponseEntity.ok().build();
     }
@@ -109,6 +110,7 @@ public class MatchController {
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PATCH)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
+            match.setLastUpdatedTimeToNow();
             matchDAO.save(match);
         }
 
