@@ -44,16 +44,16 @@ namespace TMCS_Client.UI {
 
             pageContent.Children.Add(matchesListContainer);
 
-            bottomItems.Children.Add(new Label() {
-                Text = "Select a position you may be interested in"
-            },
-            new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
-#if __IOS__
-            ToolbarItem btnAddJobPosting;
-            ToolbarItems.Add(btnAddJobPosting = new ToolbarItem()
+            bottomItems.Children.Add(new Label()
             {
-                Icon = "TMCS_Client.iOS.Resources.add.png",
-            });
+                Text = "Select a position you may be interested in",
+            },
+            new Rectangle(0, 0 , 1, 0.25), AbsoluteLayoutFlags.All);
+#if __IOS__
+            ToolbarItems.Add(new ToolbarItem("Add", "TMCS_Client.iOS.Resources.add.png",()=>
+            {
+                    Navigation.PushAsync(new SkillsEditing(app.CurrentStudent));
+            }));
 #endif
 #if __ANDROID__
             Button btnAddJobPosting;
@@ -67,9 +67,9 @@ namespace TMCS_Client.UI {
             menu.Children.Add(btnAddJobPosting,
                                     new Rectangle(0.95,0.95,80.0,80.0),
                                     AbsoluteLayoutFlags.PositionProportional);
-#endif
-            btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
+                btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
                 Navigation.PushAsync(new SkillsEditing(app.CurrentStudent));
+#endif
 
             Content = pageContent;
         

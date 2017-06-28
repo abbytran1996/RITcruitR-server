@@ -42,6 +42,7 @@ public class MatchController {
         }
         if(acceptthis){
             match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
+            match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
         }
         else{
             match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
@@ -125,6 +126,20 @@ public class MatchController {
         }
 
         match.setStudentProblemResponse(response);
+        matchDAO.save(match);
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    @RequestMapping(value = "{id}/link/{link}", method = RequestMethod.POST)
+    public ResponseEntity<?> setStudentLink(@PathVariable long id, @PathVariable String link) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        match.setStudentProblemResponse(link);
         matchDAO.save(match);
 
         return ResponseEntity.ok().build();

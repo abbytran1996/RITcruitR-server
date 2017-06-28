@@ -152,7 +152,7 @@ public class Match {
     }
 
     @NotNull
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
@@ -162,7 +162,7 @@ public class Match {
     }
 
     @NotNull
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     public CurrentPhase getCurrentPhase() {
         return currentPhase;
     }

@@ -37,7 +37,7 @@ namespace TMCS_Client.UI
 
             lblProblemResponseHeader = new Label()
             {
-                Text = "Problem Respone Review",
+                Text = "Problem Response Review",
                 FontSize = 24.0,
                 HorizontalTextAlignment = TextAlignment.Center,
             };
@@ -122,7 +122,7 @@ namespace TMCS_Client.UI
             btnAccept = new AcceptButton();
 			btnAccept.Clicked += (object sender, EventArgs e) =>
 			{
-                activeMatch.currentPhase = Match.CurrentPhase.PRESENTATION;
+                activeMatch.currentPhase = Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT;
 				buttonPushed();
 			};
 			buttons.Children.Add(btnAccept,

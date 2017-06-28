@@ -20,7 +20,8 @@ namespace TMCS_Client.DTOs {
             NONE,
             PROBLEM_WAITING_FOR_STUDENT,
             PROBLEM_WAITING_FOR_RECRUITER,
-            PRESENTATION,
+            PRESENTATION_WAITING_FOR_STUDENT,
+            PRESENTATION_WAITING_FOR_RECRUITER,
             INTERVIEW
         }
 
