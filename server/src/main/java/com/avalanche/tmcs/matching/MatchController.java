@@ -42,6 +42,7 @@ public class MatchController {
         }
         if(acceptthis){
             match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
+            match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
         }
         else{
             match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
