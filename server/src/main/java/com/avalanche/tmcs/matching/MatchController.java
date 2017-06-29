@@ -51,7 +51,7 @@ public class MatchController {
         matchDAO.save(match);
         return ResponseEntity.ok().build();
     }
-
+/*
     @RequestMapping(value = "/{id}/accept", method = RequestMethod.POST)
     public ResponseEntity<?> showInterestProblem(@PathVariable long id, @RequestBody boolean acceptthis) {
         Match match = matchDAO.findOne(id);
@@ -69,6 +69,7 @@ public class MatchController {
         matchDAO.save(match);
         return ResponseEntity.ok().build();
     }
+    */
 
     @RequestMapping(value = "/posting/{id}/probphase", method=RequestMethod.GET)
     public ResponseEntity<Long> getProbPhaseMatches(@PathVariable long id){

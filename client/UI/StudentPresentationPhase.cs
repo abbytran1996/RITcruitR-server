@@ -37,15 +37,17 @@ namespace TMCS_Client.UI
 		private StudentController studentController = StudentController.getStudentController();
 
 
-
+        private Match selectedMatch;
 
         public StudentPresentationPhase(Match selectedMatch)
 		{
+            this.selectedMatch = selectedMatch;
+
             var presentation = selectedMatch.job.url;
 
-			var companyPresentation = new WebView()
-			{
-                Source = activeJobPosting.url,
+            var companyPresentation = new WebView()
+            {
+                Source = presentation,
 			};
 
 			this.Title = "Presentation Phase";
@@ -117,7 +119,7 @@ namespace TMCS_Client.UI
 				BackgroundColor = Color.MediumSeaGreen,
 				IsEnabled = false,
 
-				Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
+                Command = new Command((object obj) => Navigation.PopAsync(true)),
 			},
 
 

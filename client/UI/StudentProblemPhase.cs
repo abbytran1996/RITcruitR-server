@@ -134,7 +134,7 @@ namespace TMCS_Client.UI
 			btnSubmit.Clicked += (object sender, EventArgs e) =>
 		    {
 				selectedMatch.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER;
-				selectedMatch.applicationStatus = Match.ApplicationStatus.ACCEPTED;
+                selectedMatch.applicationStatus = Match.ApplicationStatus.IN_PROGRESS;
 				updateMatch();
 				saveResponse(selectedMatch);
 						//acceptPosting(selectedMatch, true);
