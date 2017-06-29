@@ -51,25 +51,6 @@ public class MatchController {
         matchDAO.save(match);
         return ResponseEntity.ok().build();
     }
-/*
-    @RequestMapping(value = "/{id}/accept", method = RequestMethod.POST)
-    public ResponseEntity<?> showInterestProblem(@PathVariable long id, @RequestBody boolean acceptthis) {
-        Match match = matchDAO.findOne(id);
-        if(match ==null){
-            return ResponseEntity.notFound().build();
-        }
-        if(acceptthis){
-            match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
-            match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
-        }
-        else{
-            match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
-        }
-        match.setLastUpdatedTimeToNow();
-        matchDAO.save(match);
-        return ResponseEntity.ok().build();
-    }
-    */
 
     @RequestMapping(value = "/posting/{id}/probphase", method=RequestMethod.GET)
     public ResponseEntity<Long> getProbPhaseMatches(@PathVariable long id){

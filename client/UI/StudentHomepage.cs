@@ -80,6 +80,11 @@ namespace TMCS_Client.UI {
             Content = pageContent;
            
         }
+		protected override void OnAppearing()
+		{
+            setupMatchedList();
+			base.OnAppearing();
+		}
 
         private void onItemTapped(object sender, ItemTappedEventArgs e) {
             var selectedMatch = ((CellData)e.Item).Match;

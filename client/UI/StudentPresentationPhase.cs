@@ -118,15 +118,19 @@ namespace TMCS_Client.UI
 				TextColor = Color.White,
 				BackgroundColor = Color.MediumSeaGreen,
 				IsEnabled = false,
-
-                Command = new Command((object obj) => Navigation.PopAsync(true)),
-			},
+   			},
 
 
 				new Rectangle(0.9, 1.0, 0.4, 0.9),
 				AbsoluteLayoutFlags.All
 			);
-			btnSubmit.IsEnabled = false;
+			btnSubmit.Clicked += (object sender, EventArgs e) =>
+		    {
+               selectedMatch.currentPhase = Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER;
+			   selectedMatch.applicationStatus = Match.ApplicationStatus.IN_PROGRESS;
+			   updateMatch();
+			   saveResponse(selectedMatch);
+			};
 
 			buttons.Children.Add(btnNotInterested =
 			   new Button()
@@ -141,7 +145,12 @@ namespace TMCS_Client.UI
 					AbsoluteLayoutFlags.All
 			   );
 
-            btnSubmit.Clicked += (object sender, EventArgs e) => saveResponse(selectedMatch);
+			btnNotInterested.Clicked += (object sender, EventArgs e2) =>
+			{
+				selectedMatch.applicationStatus = Match.ApplicationStatus.REJECTED;
+				selectedMatch.currentPhase = Match.CurrentPhase.NONE;
+				updateMatch();
+			};
 
 			presentationPage.Children.Add(buttons,
 								new Rectangle(0.5, 8.5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -178,9 +187,17 @@ namespace TMCS_Client.UI
 		private void saveResponse(Match match)
 		{
 			string response = txtStudentURL.Text;
+            response = response.Replace("/", "|");
 			var id = match.id;
             StudentController.getStudentController().addStudentLink(id, response);
 		}
+
+		void updateMatch()
+		{
+			MatchController.getMatchController().updateMatch(selectedMatch);
+			Navigation.PopAsync(true);
+		}
+
 
 	}
 

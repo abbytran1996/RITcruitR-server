@@ -125,6 +125,12 @@ namespace TMCS_Client.UI
 			}
 		}
 
+		protected override void OnAppearing()
+		{
+			setupMatchedList();
+			base.OnAppearing();
+		}
+
 
 	}
 }

@@ -113,7 +113,7 @@ namespace TMCS_Client.Controllers {
 
 		public void addStudentLink(long id, string responseLink)
 		{
-			string url = Constants.Matches.ADD_RESPONSE_RESOURCE;
+			string url = Constants.Matches.ADD_LINK_RESOURCE;
 			url = url.Replace("{id}", id.ToString());
 			url = url.Replace("{link}", responseLink);
 			var request = new RestRequest(url, Method.POST);

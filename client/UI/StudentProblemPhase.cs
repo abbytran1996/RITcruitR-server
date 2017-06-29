@@ -204,6 +204,7 @@ namespace TMCS_Client.UI
             MatchController.getMatchController().updateMatch(selectedMatch);
             Navigation.PopAsync(true);
 		}
+
     }
 }
 

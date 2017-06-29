@@ -19,7 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\StudentController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\CompanyComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentPresentationPhase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentPresentationList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterProfileManagement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

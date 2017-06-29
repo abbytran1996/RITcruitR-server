@@ -76,7 +76,6 @@ namespace TMCS_Client.UI {
         private void onItemTapped(object sender, ItemTappedEventArgs e)
         {
             var selectedMatch = ((CellData)e.Item).Match;
-
             Navigation.PushAsync(new StudentProblemPhase(selectedMatch));
             
         }
@@ -119,7 +118,10 @@ namespace TMCS_Client.UI {
                 View = cellWrapper;
             }
         }
-
-
+		protected override void OnAppearing()
+		{
+			setupMatchedList();
+			base.OnAppearing();
+		}
     }
 }

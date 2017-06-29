@@ -16,8 +16,10 @@ namespace TMCS_Client.UI {
 
             var pageContent = new AbsoluteLayout();
 
+            string link = match.studentPresentationLink.ToString();
+            link = link.Replace("|", "/");
             var studentPresentation = new WebView() {
-                Source = match.studentPresentationLink,
+                Source = link,
             };
 
             pageContent.Children.Add(studentPresentation,
