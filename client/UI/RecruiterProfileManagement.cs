@@ -9,7 +9,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
+//using Xamarin.Forms.Platform.iOS;
 
 namespace TMCS_Client.UI
 {

@@ -77,14 +77,19 @@ namespace TMCS_Client.UI
 
 			matchesList.ItemTapped += onItemTapped;
 		}
-
+        private bool wasExecuted = false;
 		private void onItemTapped(object sender, ItemTappedEventArgs e)
 		{
-			var selectedMatch = ((CellData)e.Item).Match;
+            if (!wasExecuted)
+            {
+                var selectedMatch = ((CellData)e.Item).Match;
 
-            Navigation.PushAsync(new StudentPresentationPhase(selectedMatch));
+                Navigation.PushAsync(new StudentPresentationPhase(selectedMatch));
+                wasExecuted = true;
+            }
 
 		}
+		
 
 		class CellData
 		{
