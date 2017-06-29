@@ -33,9 +33,11 @@ namespace TMCS_Client.UI
 
         private StudentController studentController = StudentController.getStudentController();
 
+        private Match selectedMatch;
 
         public StudentProblemPhase(Match selectedMatch)
         {
+            this.selectedMatch = selectedMatch;
 
             var problem = selectedMatch.job.problemStatement;
 
@@ -122,14 +124,22 @@ namespace TMCS_Client.UI
                 BackgroundColor = Color.MediumSeaGreen,
                 IsEnabled = false,
 
-                Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
+                //Command = new Command((object obj) => Navigation.PopAsync(true)),
             },
 
 
                 new Rectangle(0.9, 1.0, 0.4, 0.9),
                 AbsoluteLayoutFlags.All
             );
-            btnSubmit.IsEnabled = false;
+			btnSubmit.Clicked += (object sender, EventArgs e) =>
+		    {
+				selectedMatch.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER;
+				selectedMatch.applicationStatus = Match.ApplicationStatus.ACCEPTED;
+				updateMatch();
+				saveResponse(selectedMatch);
+						//acceptPosting(selectedMatch, true);
+			};
+            //btnSubmit.IsEnabled = false;
 
             buttons.Children.Add(btnNotInterested =
                new Button()
@@ -138,15 +148,17 @@ namespace TMCS_Client.UI
                    FontSize = 22,
                    TextColor = Color.White,
                    BackgroundColor = Color.Red,
-                   Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
-               },
+				   //Command = new Command((object obj) => Navigation.PopAsync(true)),
+			   },
                     new Rectangle(0.1, 1.0, 0.4, 0.9),
                     AbsoluteLayoutFlags.All
                );
-            
-            btnSubmit.Clicked += (object sender, EventArgs e) => saveResponse(selectedMatch);
-            btnSubmit.Clicked += (object sender2, EventArgs e2) => acceptPosting(selectedMatch, true);
-            btnNotInterested.Clicked += (object sender2, EventArgs e2) => acceptPosting(selectedMatch, true);
+            btnNotInterested.Clicked += (object sender, EventArgs e2) =>
+            {
+                selectedMatch.applicationStatus = Match.ApplicationStatus.REJECTED;
+                selectedMatch.currentPhase = Match.CurrentPhase.NONE;
+                updateMatch();
+            };
 
             problemPage.Children.Add(buttons,
                                 new Rectangle(0.5, 8.5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -184,7 +196,14 @@ namespace TMCS_Client.UI
             string response = txtStudentResponse.Text;
             var id = match.id;
             StudentController.getStudentController().addStudentResponse(id, response);
+
         }
+
+		void updateMatch()
+		{
+            MatchController.getMatchController().updateMatch(selectedMatch);
+            Navigation.PopAsync(true);
+		}
     }
 }
 

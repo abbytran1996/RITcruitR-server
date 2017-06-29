@@ -52,6 +52,24 @@ public class MatchController {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/{id}/accept", method = RequestMethod.POST)
+    public ResponseEntity<?> showInterestProblem(@PathVariable long id, @RequestBody boolean acceptthis) {
+        Match match = matchDAO.findOne(id);
+        if(match ==null){
+            return ResponseEntity.notFound().build();
+        }
+        if(acceptthis){
+            match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
+            match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
+        }
+        else{
+            match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
+        }
+        match.setLastUpdatedTimeToNow();
+        matchDAO.save(match);
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/posting/{id}/probphase", method=RequestMethod.GET)
     public ResponseEntity<Long> getProbPhaseMatches(@PathVariable long id){
         JobPosting job = jobDAO.findOne(id);
@@ -59,6 +77,17 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
         long matchesForJob = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+                Match.ApplicationStatus.IN_PROGRESS);
+
+        return ResponseEntity.ok(matchesForJob);
+    }
+    @RequestMapping(value = "/posting/{id}/presentationphase", method=RequestMethod.GET)
+    public ResponseEntity<Long> getPresentationPhaseMatches(@PathVariable long id){
+        JobPosting job = jobDAO.findOne(id);
+        if(job ==null){
+            return ResponseEntity.notFound().build();
+        }
+        long matchesForJob = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
 
         return ResponseEntity.ok(matchesForJob);
@@ -82,7 +111,7 @@ public class MatchController {
         }
 
         List<Match> matches = matchDAO.readAllByJobAndCurrentPhaseAndApplicationStatus(job,
-                Match.CurrentPhase.PRESENTATION,
+                Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
 
         return ResponseEntity.ok(matches);
@@ -139,7 +168,7 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        match.setStudentProblemResponse(link);
+        match.setStudentPresentationLink(link);
         matchDAO.save(match);
 
         return ResponseEntity.ok().build();
