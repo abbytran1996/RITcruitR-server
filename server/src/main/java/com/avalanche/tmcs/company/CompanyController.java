@@ -24,12 +24,13 @@ public class CompanyController {
             this.companyDAO = companyDAO;
         }
 
-    /*private void validateCompanyId(long id) {
-            if(!companyDAO.exists(id)){
-                throw ExceptionHandler("");
-            }
+
+    @RequestMapping(value = "", method=RequestMethod.POST)
+    public void addCompany(@RequestBody Company newCompany) {
+        companyDAO.save(newCompany);
     }
-    */
+
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Company getCompany(@PathVariable long id){

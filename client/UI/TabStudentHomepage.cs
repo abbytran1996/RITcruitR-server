@@ -15,18 +15,11 @@ namespace TMCS_Client.UI
 
         public StudentTab()
         {
-#if __IOS__
             var matchesPage = new StudentHomepage();
             var probPage = new StudentProblemList();
             var presentationPage = new StudentPresentationList();
 
-#endif
-#if __ANDROID__
-            var matchesPage = new NavigationPage(new StudentHomepage());
-            var probPage = new NavigationPage(new StudentProblemList());
-            var presentationPage = new NavigationPage(new StudentPresentationList());
 
-#endif
 			matchesPage.Title = "Matches";
 			Children.Add(matchesPage);
             probPage.Title = "Problem Phase";

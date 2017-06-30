@@ -24,16 +24,16 @@ namespace TMCS_Client.DTOs
 		/// <returns>The created company</returns>
 
 		public static NewCompany createAndValidate(string companyName, string emailSuffix,
-                                                   string companyDescription, string location,
-                                                   string size, string presentation,
+                                                   string companyDescription,
+                                                   string size, string location, string presentation,
                                                   string websiteURL)
 		{
 			var newCompany = new NewCompany();
 			newCompany.companyName = companyName;
             newCompany.emailSuffix = emailSuffix;
 			newCompany.companyDescription = companyDescription;
-            newCompany.location = location;
             newCompany.size = size;
+            newCompany.location = location;
             newCompany.presentation = presentation;
             newCompany.websiteURL = websiteURL;
 

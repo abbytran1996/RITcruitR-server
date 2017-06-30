@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/company/email_suffix/{emailSuffix}").permitAll()
                 .antMatchers(HttpMethod.POST,"/recruiters").permitAll()
                 .antMatchers(HttpMethod.GET, "/company/company_name/{companyName}").permitAll()
+                .antMatchers(HttpMethod.POST, "/company").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .logout()

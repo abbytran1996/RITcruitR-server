@@ -10,37 +10,37 @@ using Xamarin.Forms;
 
 namespace TMCS_Client.UI
 {
-	public class StudentPresentationPhase : ContentPage
-	{
-		private JobPosting activeJobPosting;
-		private WebView recruiterPresentation;
+    public class StudentPresentationPhase : ContentPage
+    {
+        private JobPosting activeJobPosting;
+        private WebView recruiterPresentation;
 
-		//Whole Page
-		private ScrollView pageContent;
-		private AbsoluteLayout presentationPage;
+        //Whole Page
+        private ScrollView pageContent;
+        private AbsoluteLayout presentationPage;
 
 
-		//presentation Statement
-		private Label lblPostingpresentation;
-		//private  lblpresentationStatement;
+        //presentation Statement
+        private Label lblPostingpresentation;
+        //private  lblpresentationStatement;
 
-		//Response
-		private FormFieldLabel lblStudentResponse;
-		private FormEntry txtStudentURL;
+        //Response
+        private FormFieldLabel lblStudentResponse;
+        private FormEntry txtStudentURL;
 
-		//Submit Response
-		private Button btnSubmit;
+        //Submit Response
+        private Button btnSubmit;
 
-		//Not Interested
-		private Button btnNotInterested;
+        //Not Interested
+        private Button btnNotInterested;
 
-		private StudentController studentController = StudentController.getStudentController();
+        private StudentController studentController = StudentController.getStudentController();
 
 
         private Match selectedMatch;
 
         public StudentPresentationPhase(Match selectedMatch)
-		{
+        {
             this.selectedMatch = selectedMatch;
 
             var presentation = selectedMatch.job.url;
@@ -48,20 +48,20 @@ namespace TMCS_Client.UI
             var companyPresentation = new WebView()
             {
                 Source = presentation,
-			};
+            };
 
-			this.Title = "Presentation Phase";
+            this.Title = "Presentation Phase";
 
-			//Whole page
-			pageContent = new ScrollView()
-			{
-				Orientation = ScrollOrientation.Vertical,
-			};
+            //Whole page
+            pageContent = new ScrollView()
+            {
+                Orientation = ScrollOrientation.Vertical,
+            };
 
-			presentationPage = new AbsoluteLayout()
-			{
-				HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 6.0),
-			};
+            presentationPage = new AbsoluteLayout()
+            {
+                HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 7.0),
+            };
 
 
 			AbsoluteLayout postingPresentation = new AbsoluteLayout()
@@ -103,7 +103,7 @@ namespace TMCS_Client.UI
 			txtStudentURL.TextChanged += (object sender, TextChangedEventArgs e) => checkResponse();
 
 			presentationPage.Children.Add(responseEntry,
-							 new Rectangle(0, 5.5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 1.5 * Constants.Forms.Sizes.ROW_HEIGHT),
+							 new Rectangle(0, 6.5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 1.5 * Constants.Forms.Sizes.ROW_HEIGHT),
 							  AbsoluteLayoutFlags.WidthProportional);
 
 			AbsoluteLayout buttons = new AbsoluteLayout()
@@ -132,19 +132,20 @@ namespace TMCS_Client.UI
 			   saveResponse(selectedMatch);
 			};
 
-			buttons.Children.Add(btnNotInterested =
-			   new Button()
-			   {
-				   Text = "Not Interested",
-				   FontSize = 22,
-				   TextColor = Color.White,
-				   BackgroundColor = Color.Red,
-				   Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
-			   },
+            buttons.Children.Add(btnNotInterested =
+               new Button()
+               {
+
+                   Text = "Not Interested",
+                   FontSize = 22,
+                   TextColor = Color.White,
+                   BackgroundColor = Color.Red,
+                   Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
+
+               },
 					new Rectangle(0.1, 1.0, 0.4, 0.9),
 					AbsoluteLayoutFlags.All
 			   );
-
 			btnNotInterested.Clicked += (object sender, EventArgs e2) =>
 			{
 				selectedMatch.applicationStatus = Match.ApplicationStatus.REJECTED;
