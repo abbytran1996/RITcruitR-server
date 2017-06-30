@@ -15,6 +15,7 @@ import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
+import com.github.javafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,11 @@ import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -86,6 +91,54 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void performAdditionOfTestData() throws URISyntaxException {
+
+
+
+        //faker data generation
+
+        final int DATA_SIZE=10;
+
+        Faker faker=new Faker();
+
+        //putting these in lists to view while debugging
+        ArrayList<User> testUsers=new ArrayList<User>();
+        ArrayList<Skill> testSkills=new ArrayList<Skill>();
+        ArrayList<Student> testStudents=new ArrayList<Student>();
+        ArrayList<Company> testCompanies=new ArrayList<Company>();
+        List<Recruiter> testRecruiters=new ArrayList<Recruiter>();
+        List<JobPosting> testJobs=new ArrayList<JobPosting>();
+
+        for(int i=0;i<50;i++){
+            testSkills.add(new Skill(faker.superhero().power()));
+        }
+
+        for(int i=0;i<DATA_SIZE;i++){
+            User user1=newTestUser(faker);
+            User amUser=userService.save(user1,Role.RoleName.Student);
+            testUsers.add(amUser);
+            testStudents.add(newTestStudent(faker,amUser,testSkills));
+
+            User user2=newTestUser(faker);
+            User refUser=userService.save(user2,Role.RoleName.Recruiter);
+            testUsers.add(refUser);
+            Company pleasantCompany=newTestCompany(faker,refUser);
+            testCompanies.add(pleasantCompany);
+            Recruiter rec=newTestRecruiter(faker,refUser,pleasantCompany);
+            testRecruiters.add(rec);
+            testJobs.add(newTestJobPosting(faker,rec,testSkills));
+        }
+
+        //persist data
+        skillDAO.save(testSkills);
+        studentDAO.save(testStudents);
+        companyDAO.save(testCompanies);
+        recruiterDAO.save(testRecruiters);
+        jobPostingDAO.save(testJobs);
+        for(Student s:testStudents)
+            matchingService.registerStudent(s);
+
+
+
         Skill seizing = skillDAO.findByName("Revolution");
         if(seizing != null) {
             LOG.warn("Already added test data, not adding it again");
@@ -155,5 +208,101 @@ public class DataLoader implements ApplicationRunner {
         matchingService.registerStudent(karlMarx);
 
         LOG.info("Test data added");
+    }
+
+    private User newTestUser(Faker faker){
+        User user=new User();
+
+        user.setUsername(faker.internet().emailAddress(
+                faker.hacker().ingverb()+faker.team().creature()+faker.number().digits(4)
+        ).replaceAll(" ",""));
+        user.setPassword(faker.hacker().adjective()+faker.hacker().adjective()+faker.hacker().noun());
+        user.setPasswordConfirm(user.getPassword());
+
+        return user;
+    }
+
+    private Student newTestStudent(Faker faker,User user,ArrayList<Skill> possibleSkills){
+        Student stud= new Student();
+
+        stud.setFirstName(faker.name().firstName());
+        stud.setLastName(faker.name().lastName());
+        stud.setEmail(user.getUsername());
+
+        Calendar javaSucks=Calendar.getInstance();
+        javaSucks.set(Calendar.YEAR,faker.number().numberBetween(2018,2025));
+        javaSucks.set(Calendar.MONTH,faker.number().numberBetween(1,12));
+        javaSucks.set(Calendar.DAY_OF_MONTH,faker.number().numberBetween(1,28));
+
+        stud.setGraduationDate(new Date(javaSucks.getTimeInMillis()));
+
+        stud.setUser(user);
+
+        stud.setPreferredCompanySize(randomSize(faker));
+
+        HashSet<Skill> skills=new HashSet<Skill>();
+        for(int i=0;i<15;i++)
+            skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
+        stud.setSkills(skills);
+        stud.setSchool("RIT");
+
+        return stud;
+    }
+
+    private Company newTestCompany(Faker faker,User user){
+        Company comp = new Company();
+
+        comp.setCompanyName(faker.company().name());
+        comp.setLocation(faker.address().fullAddress());
+        comp.setSize(randomSize(faker));
+        comp.setApprovalStatus(true);
+        comp.setCompanyDescription(faker.company().catchPhrase());
+        comp.setWebsiteURL(faker.company().url());
+        comp.setEmailSuffix(comp.getWebsiteURL().replaceFirst("www\\.",""));
+        comp.setPresentation("sample.youtube.com");
+        comp.setUser(user);
+
+
+        return comp;
+    }
+
+    private Recruiter newTestRecruiter(Faker faker,User user,Company comp){
+        Recruiter rec = new Recruiter();
+        rec.setFirstName(faker.name().firstName());
+        rec.setLastName(faker.name().lastName());
+        rec.setEmail(rec.getFirstName().toLowerCase()+"@"+comp.getEmailSuffix());
+        rec.setCompany(comp);
+        rec.setUser(user);
+        rec.setPhoneNumber(faker.phoneNumber().phoneNumber());
+
+        return rec;
+    }
+
+    private JobPosting newTestJobPosting(Faker faker,Recruiter rec,ArrayList<Skill> possibleSkills){
+        JobPosting job = new JobPosting();
+        job.setPositionTitle(faker.company().profession());
+        job.setDescription(faker.company().bs());
+
+
+        HashSet<Skill> skills=new HashSet<Skill>();
+        for(int i=0;i<15;i++)
+            skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
+        job.setImportantSkills(skills);
+        job.setMatchThreshold(0.8);
+        job.setNicetohaveSkillsWeight(0.1);
+        job.setLocation(rec.getCompany().getLocation());
+        job.setPhaseTimeout(30);
+
+        //have to do a replace here since pi is an invalid character in sql
+        job.setProblemStatement(faker.chuckNorris().fact().replaceAll("π","pi"));
+        job.setUrl("<insert job url here>");
+        job.setRecruiter(rec);
+
+        return job;
+    }
+
+    private Company.Size randomSize(Faker faker){
+        List<Company.Size> sizes= Arrays.asList(Company.Size.values());
+        return sizes.get(faker.number().numberBetween(0,sizes.size()));
     }
 }
