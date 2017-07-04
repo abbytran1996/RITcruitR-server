@@ -27,8 +27,8 @@ namespace TMCS_Client.UI
             Children.Add(probPage);
             presentationPage.Title = "Presentation Phase";
             Children.Add(presentationPage);
-            interviewPage.title = "Interview Phase";
-            ChildAdded.Add(interviewPage);
+            interviewPage.Title = "Interview Phase";
+            Children.Add(interviewPage);
         }
     }
 }

@@ -35,6 +35,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\RecruiterPresentationResponses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\SkillsEditing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Login.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentInterviewList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentInterviewPhase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\StudentListPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentProblemList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\TabStudentHomepage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\StudentHomepage.cs" />

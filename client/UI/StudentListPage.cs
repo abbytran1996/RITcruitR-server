@@ -11,7 +11,7 @@ namespace TMCS_Client.UI {
     /// <summary>
     /// Useful superclass for lists of matches in one of the phases
     /// </summary>
-    abstract class StudentListPage : ContentPage {
+    public abstract class StudentListPage : ContentPage {
         private AbsoluteLayout menu;
         private StackLayout pageContent = new StackLayout();
         private ScrollView matchesListContainer = new ScrollView();
@@ -26,12 +26,9 @@ namespace TMCS_Client.UI {
         private List<Match> matches;
 
         private Match.CurrentPhase phase;
-        private bool wasExecuted = false;
-        private Type detailsPage;
 
-        public StudentListPage(String sectionLabel, Match.CurrentPhase currentPhase, Type detailsPage) {
+        public StudentListPage(String sectionLabel, Match.CurrentPhase currentPhase) {
             phase = currentPhase;
-            this.detailsPage = detailsPage;
 
             matchesList.IsPullToRefreshEnabled = true;
             matchesList.RefreshCommand = new Command(() => {
@@ -51,18 +48,17 @@ namespace TMCS_Client.UI {
             matchesListContainer.Margin = new Thickness(22, 0);
 
             pageContent.Children.Add(matchesListContainer);
-
-
+            
             Content = pageContent;
-
         }
 
-        private void setupMatchedList() {
+        protected void setupMatchedList() {
             var student = app.CurrentStudent;
             matches = studentController.getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
             var postings = matches.Where(match => match.currentPhase == phase)
+                                  .Where(match => match.matchStrength > 0.1)
                                   .OrderByDescending(match => match.timeLastUpdated)
                                   .Select(match => new CellData(match));
 
@@ -72,17 +68,9 @@ namespace TMCS_Client.UI {
             matchesList.ItemTapped += onItemTapped;
         }
 
-        private void onItemTapped(object sender, ItemTappedEventArgs e) {
-            if(!wasExecuted) {
-                var selectedMatch = ((CellData)e.Item).Match;
+        protected abstract void onItemTapped(object sender, ItemTappedEventArgs e);
 
-                Navigation.PushAsync(detailsPage.TypeInitializer.Invoke(new object[]{ selectedMatch }) as Page);
-                wasExecuted = true;
-            }
-
-        }
-
-        class CellData {
+        protected class CellData {
             public string PositionTitle { get; private set; }
             public string CompanyName { get; private set; }
             public string Location { get; private set; }
@@ -98,7 +86,7 @@ namespace TMCS_Client.UI {
             }
         }
 
-        class MatchCell : ViewCell {
+        protected class MatchCell : ViewCell {
             public MatchCell() {
                 StackLayout cellWrapper = new StackLayout();
                 StackLayout layout = new StackLayout();

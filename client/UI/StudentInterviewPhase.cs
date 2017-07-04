@@ -5,7 +5,9 @@ using Xamarin.Forms;
 
 namespace TMCS_Client.UI {
     public class StudentInterviewPhase : ContentPage {
-        public StudentInterviewPhase(JobPosting job) {
+        public StudentInterviewPhase(Match match) {
+            var job = match.job;
+
             Content = new StackLayout {
                 Children = {
                     new PageTitleLabel(job.positionTitle),
