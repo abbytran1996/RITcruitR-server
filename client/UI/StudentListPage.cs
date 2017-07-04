@@ -58,6 +58,7 @@ namespace TMCS_Client.UI {
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
             var postings = matches.Where(match => match.currentPhase == phase)
+                                  .Where(match => match.applicationStatus == Match.ApplicationStatus.NEW || match.applicationStatus == Match.ApplicationStatus.IN_PROGRESS)
                                   .Where(match => match.matchStrength > 0.1)
                                   .OrderByDescending(match => match.timeLastUpdated)
                                   .Select(match => new CellData(match));
