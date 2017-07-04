@@ -176,7 +176,7 @@ public class DataLoader implements ApplicationRunner {
         ussr.setApprovalStatus(true);
         ussr.setCompanyDescription("Union of Soviet Socialist Republics");
         ussr.setEmailSuffix("ussr.gov");
-        ussr.setPresentation("sample.youtube.com");
+        ussr.setPresentation("https://www.youtube.com/embed/fSQgCy_iIcc");
         ussr.setUser(user1);
         ussr.setWebsiteURL("ussr.gov");
         ussr = companyDAO.save(ussr);
@@ -259,7 +259,7 @@ public class DataLoader implements ApplicationRunner {
         comp.setCompanyDescription(faker.company().catchPhrase());
         comp.setWebsiteURL(faker.company().url());
         comp.setEmailSuffix(comp.getWebsiteURL().replaceFirst("www\\.",""));
-        comp.setPresentation("sample.youtube.com");
+        comp.setPresentation("https://www.youtube.com/embed/fSQgCy_iIcc");
         comp.setUser(user);
 
 
