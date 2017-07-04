@@ -18,6 +18,7 @@ namespace TMCS_Client.UI
             var matchesPage = new StudentHomepage();
             var probPage = new StudentProblemList();
             var presentationPage = new StudentPresentationList();
+            var interviewPage = new StudentInterviewList();
 
 
 			matchesPage.Title = "Matches";
@@ -26,6 +27,8 @@ namespace TMCS_Client.UI
             Children.Add(probPage);
             presentationPage.Title = "Presentation Phase";
             Children.Add(presentationPage);
+            interviewPage.title = "Interview Phase";
+            ChildAdded.Add(interviewPage);
         }
     }
 }
