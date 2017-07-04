@@ -7,9 +7,11 @@ using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
 using TMCS_Client.CustomUIElements.Buttons;
 using TMCS_Client.CustomUIElements.Pickers;
-//using Plugin.FilePicker;
-//using Plugin.FilePicker.Abstractions;
 using Xamarin.Forms;
+#if __IOS__
+using MobileCoreServices;
+using UIKit;
+#endif
 
 namespace TMCS_Client.UI
 {
@@ -70,7 +72,7 @@ namespace TMCS_Client.UI
 
         //Register Button
         private Button btnRegister;
-        
+
         public StudentRegistration()
         {
             this.Title = "Student Registration";
@@ -84,13 +86,13 @@ namespace TMCS_Client.UI
             registrationForm = new AbsoluteLayout()
             {
                 HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 13.0),
-			};
+            };
 
 
             //Title
             registrationForm.Children.Add(lblTitle =
                                           new PageTitleLabel("Student Registration"),
-                                          new Rectangle(0,0,1.0,Constants.Forms.Sizes.ROW_HEIGHT), 
+                                          new Rectangle(0, 0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
 
@@ -99,245 +101,253 @@ namespace TMCS_Client.UI
             {
             };
 
-            firstNameInput.Children.Add(lblFirstName = 
-                                        new FormFieldLabel("First Name"), 
-                                        new Rectangle(0.5,0,0.9,0.5), 
+            firstNameInput.Children.Add(lblFirstName =
+                                        new FormFieldLabel("First Name"),
+                                        new Rectangle(0.5, 0, 0.9, 0.5),
                                         AbsoluteLayoutFlags.All);
 
-            firstNameInput.Children.Add(entFirstName = 
-                                        new FormEntry("First Name", Keyboard.Text), 
-                                        new Rectangle(0.5, 1.0, 0.9, 0.5), 
+            firstNameInput.Children.Add(entFirstName =
+                                        new FormEntry("First Name", Keyboard.Text),
+                                        new Rectangle(0.5, 1.0, 0.9, 0.5),
                                         AbsoluteLayoutFlags.All);
 
             entFirstName.Completed += (object sender, EventArgs e) => entLastName.Focus();
 
             registrationForm.Children.Add(firstNameInput,
-                                         new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT, 
+                                         new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT,
                                                        1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
-			//Last Name
-			AbsoluteLayout lastNameInput = new AbsoluteLayout()
-			{
-			};
-
-			lastNameInput.Children.Add(lblLastName = 
-                                       new FormFieldLabel("Last Name"), 
-                                       new Rectangle(0.5, 0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
-
-            lastNameInput.Children.Add(entLastName = 
-                                       new FormEntry("Last Name", Keyboard.Text), 
-                                       new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
-
-			entLastName.Completed += (object sender, EventArgs e) => entEmail.Focus();
-
-			registrationForm.Children.Add(lastNameInput,
-										 new Rectangle(0, 2.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
-
-			//Email
-			AbsoluteLayout emailInput = new AbsoluteLayout()
-			{
-			};
-
-			emailInput.Children.Add(lblEmail =
-									   new FormFieldLabel("Email"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-			emailInput.Children.Add(entEmail =
-									new FormEntry("Email", Keyboard.Email), 
-                                    new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                    AbsoluteLayoutFlags.All);
-
-			entEmail.Completed += (object sender, EventArgs e) => entPassword.Focus();
-            entEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
-
-			registrationForm.Children.Add(emailInput,
-										 new Rectangle(0, 3.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
-
-			//Password
-			AbsoluteLayout passwordInput = new AbsoluteLayout()
-			{
-			};
-
-			passwordInput.Children.Add(lblPassword =
-									   new FormFieldLabel("Password"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-            passwordInput.Children.Add(entPassword = 
-                                       new FormEntry("Password", Keyboard.Text, true),
-                                       new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
-
-			entPassword.Completed += (object sender, EventArgs e) => entRetypePassword.Focus();
-            entPassword.Unfocused += (object sender, FocusEventArgs e) => passwordCheck();
-
-			registrationForm.Children.Add(passwordInput,
-										 new Rectangle(0, 4.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
-
-			//Retype Password
-			AbsoluteLayout retypePasswordInput = new AbsoluteLayout()
-			{
-			};
-
-			retypePasswordInput.Children.Add(lblRetypePassword =
-									   new FormFieldLabel("Retype Password"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-			retypePasswordInput.Children.Add(entRetypePassword =
-									   new FormEntry("Retype Password", Keyboard.Text, true),
-									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
-
-			entRetypePassword.Completed += (object sender, EventArgs e) => entSchoolName.Focus();
-            entRetypePassword.Unfocused += (object sender, FocusEventArgs e) => retypePasswordCheck();
-
-			registrationForm.Children.Add(retypePasswordInput,
-										 new Rectangle(0, 5.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
-
-			//School Name
-			AbsoluteLayout schoolNameInput = new AbsoluteLayout()
-			{
-			};
-
-			schoolNameInput.Children.Add(lblSchoolName =
-									   new FormFieldLabel("School Name"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-			schoolNameInput.Children.Add(entSchoolName =
-									   new FormEntry("School Name", Keyboard.Text),
-									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
-
-			entSchoolName.Completed += (object sender, EventArgs e) => entGraduationDate.Focus();
-
-			registrationForm.Children.Add(schoolNameInput,
-										 new Rectangle(0, 6.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
-
-			//Graduation Date
-			AbsoluteLayout graduationDateInput = new AbsoluteLayout()
-			{
-			};
-
-			graduationDateInput.Children.Add(lblGraduationDate =
-									   new FormFieldLabel("Graduation Date"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-			graduationDateInput.Children.Add(entGraduationDate =
-									   new FormEntry("mm/yy", Keyboard.Numeric),
-									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
-
-			entGraduationDate.Completed += (object sender, EventArgs e) => entPhoneNumber.Focus();
-            entGraduationDate.TextChanged += (object sender, TextChangedEventArgs e) => graduationDateUpdate();
-            entGraduationDate.Unfocused += (object sender, FocusEventArgs e) => graduationDateCheck();
-
-			registrationForm.Children.Add(graduationDateInput,
-									   new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-									   AbsoluteLayoutFlags.WidthProportional);
-
-			//Phone Number
-			AbsoluteLayout phoneNumberInput = new AbsoluteLayout()
-			{
-			};
-
-            phoneNumberInput.Children.Add(lblPhoneNumber = 
-                                       new FormFieldLabel("Phone Number (Optional)"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
-
-			phoneNumberInput.Children.Add(entPhoneNumber =
-                                       new FormEntry("(xxx) xxx-xxxx", Keyboard.Numeric),
-									   new Rectangle(0.5, 1.0, 0.9, 0.5), 
-                                       AbsoluteLayoutFlags.All);
-
-            entPhoneNumber.Completed += (object sender, EventArgs e) =>entPreferredLocation.Focus();
-            entPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => phoneNumberUpdate();
-            entPhoneNumber.Unfocused += (object sender, FocusEventArgs e) => phoneNumberCheck();
-
-			registrationForm.Children.Add(phoneNumberInput,
-										 new Rectangle(0, 8.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
-
-			//Prefered Location
-			AbsoluteLayout preferredLocationInput = new AbsoluteLayout()
+            //Last Name
+            AbsoluteLayout lastNameInput = new AbsoluteLayout()
             {
             };
 
-			preferredLocationInput.Children.Add(lblPreferredLocationn =
-									   new FormFieldLabel("What is your preferred work location?"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
+            lastNameInput.Children.Add(lblLastName =
+                                       new FormFieldLabel("Last Name"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
 
-			preferredLocationInput.Children.Add(entPreferredLocation =
-									   new FormEntry("State, State, ...", Keyboard.Text), 
-                                       new Rectangle(0.5, 1.0, 0.9, 0.5), 
+            lastNameInput.Children.Add(entLastName =
+                                       new FormEntry("Last Name", Keyboard.Text),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            entLastName.Completed += (object sender, EventArgs e) => entEmail.Focus();
+
+            registrationForm.Children.Add(lastNameInput,
+                                         new Rectangle(0, 2.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
+            //Email
+            AbsoluteLayout emailInput = new AbsoluteLayout()
+            {
+            };
+
+            emailInput.Children.Add(lblEmail =
+                                       new FormFieldLabel("Email"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            emailInput.Children.Add(entEmail =
+                                    new FormEntry("Email", Keyboard.Email),
+                                    new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                    AbsoluteLayoutFlags.All);
+
+            entEmail.Completed += (object sender, EventArgs e) => entPassword.Focus();
+            entEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
+
+            registrationForm.Children.Add(emailInput,
+                                         new Rectangle(0, 3.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
+            //Password
+            AbsoluteLayout passwordInput = new AbsoluteLayout()
+            {
+            };
+
+            passwordInput.Children.Add(lblPassword =
+                                       new FormFieldLabel("Password"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            passwordInput.Children.Add(entPassword =
+                                       new FormEntry("Password", Keyboard.Text, true),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            entPassword.Completed += (object sender, EventArgs e) => entRetypePassword.Focus();
+            entPassword.Unfocused += (object sender, FocusEventArgs e) => passwordCheck();
+
+            registrationForm.Children.Add(passwordInput,
+                                         new Rectangle(0, 4.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
+            //Retype Password
+            AbsoluteLayout retypePasswordInput = new AbsoluteLayout()
+            {
+            };
+
+            retypePasswordInput.Children.Add(lblRetypePassword =
+                                       new FormFieldLabel("Retype Password"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            retypePasswordInput.Children.Add(entRetypePassword =
+                                       new FormEntry("Retype Password", Keyboard.Text, true),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            entRetypePassword.Completed += (object sender, EventArgs e) => entSchoolName.Focus();
+            entRetypePassword.Unfocused += (object sender, FocusEventArgs e) => retypePasswordCheck();
+
+            registrationForm.Children.Add(retypePasswordInput,
+                                         new Rectangle(0, 5.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
+            //School Name
+            AbsoluteLayout schoolNameInput = new AbsoluteLayout()
+            {
+            };
+
+            schoolNameInput.Children.Add(lblSchoolName =
+                                       new FormFieldLabel("School Name"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            schoolNameInput.Children.Add(entSchoolName =
+                                       new FormEntry("School Name", Keyboard.Text),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            entSchoolName.Completed += (object sender, EventArgs e) => entGraduationDate.Focus();
+
+            registrationForm.Children.Add(schoolNameInput,
+                                         new Rectangle(0, 6.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
+            //Graduation Date
+            AbsoluteLayout graduationDateInput = new AbsoluteLayout()
+            {
+            };
+
+            graduationDateInput.Children.Add(lblGraduationDate =
+                                       new FormFieldLabel("Graduation Date"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            graduationDateInput.Children.Add(entGraduationDate =
+                                       new FormEntry("mm/yy", Keyboard.Numeric),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            entGraduationDate.Completed += (object sender, EventArgs e) => entPhoneNumber.Focus();
+            entGraduationDate.TextChanged += (object sender, TextChangedEventArgs e) => graduationDateUpdate();
+            entGraduationDate.Unfocused += (object sender, FocusEventArgs e) => graduationDateCheck();
+
+            registrationForm.Children.Add(graduationDateInput,
+                                       new Rectangle(0, 7.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                       AbsoluteLayoutFlags.WidthProportional);
+
+            //Phone Number
+            AbsoluteLayout phoneNumberInput = new AbsoluteLayout()
+            {
+            };
+
+            phoneNumberInput.Children.Add(lblPhoneNumber =
+                                       new FormFieldLabel("Phone Number (Optional)"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            phoneNumberInput.Children.Add(entPhoneNumber =
+                                       new FormEntry("(xxx) xxx-xxxx", Keyboard.Numeric),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            entPhoneNumber.Completed += (object sender, EventArgs e) => entPreferredLocation.Focus();
+            entPhoneNumber.TextChanged += (object sender, TextChangedEventArgs e) => phoneNumberUpdate();
+            entPhoneNumber.Unfocused += (object sender, FocusEventArgs e) => phoneNumberCheck();
+
+            registrationForm.Children.Add(phoneNumberInput,
+                                         new Rectangle(0, 8.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
+            //Prefered Location
+            AbsoluteLayout preferredLocationInput = new AbsoluteLayout()
+            {
+            };
+
+            preferredLocationInput.Children.Add(lblPreferredLocationn =
+                                       new FormFieldLabel("What is your preferred work location?"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
+
+            preferredLocationInput.Children.Add(entPreferredLocation =
+                                       new FormEntry("State, State, ...", Keyboard.Text),
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
                                        AbsoluteLayoutFlags.All);
 
             entPreferredLocation.Completed += (object sender, EventArgs e) => pickPreferredCompanySize.Focus();
 
-			registrationForm.Children.Add(preferredLocationInput,
+            registrationForm.Children.Add(preferredLocationInput,
                                          new Rectangle(0, 9.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
-			//Prefered Company Size
-			AbsoluteLayout preferredCompanySizeInput = new AbsoluteLayout()
+            //Prefered Company Size
+            AbsoluteLayout preferredCompanySizeInput = new AbsoluteLayout()
             {
             };
 
-			preferredCompanySizeInput.Children.Add(lblPreferredCompanySize =
-									   new FormFieldLabel("What is your preferred company size?"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
+            preferredCompanySizeInput.Children.Add(lblPreferredCompanySize =
+                                       new FormFieldLabel("What is your preferred company size?"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
 
-            preferredCompanySizeInput.Children.Add(pickPreferredCompanySize = 
+            preferredCompanySizeInput.Children.Add(pickPreferredCompanySize =
                                        new CompanySizePicker(),
-									   new Rectangle(0.5, 1.0, 0.9, 0.5),
-			                           AbsoluteLayoutFlags.All);
+                                       new Rectangle(0.5, 1.0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
 
-			registrationForm.Children.Add(preferredCompanySizeInput,
-										 new Rectangle(0, 10.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional);
+            registrationForm.Children.Add(preferredCompanySizeInput,
+                                         new Rectangle(0, 10.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
 
             //Registration
             AbsoluteLayout resumeUpload = new AbsoluteLayout()
             {
             };
 
-			resumeUpload.Children.Add(lblResumeFile = new FormFieldLabel("Resume Upload"),
-									   new Rectangle(0.5, 0, 0.9, 0.5),
-									   AbsoluteLayoutFlags.All);
+            resumeUpload.Children.Add(lblResumeFile = new FormFieldLabel("Resume Upload"),
+                                       new Rectangle(0.5, 0, 0.9, 0.5),
+                                       AbsoluteLayoutFlags.All);
             AbsoluteLayout resumeUploadEntrySection = new AbsoluteLayout();
 
-            resumeUploadEntrySection.Children.Add(entResumeFileLocation = new FormEntry("/path/to/resume", Keyboard.Text){
+            resumeUploadEntrySection.Children.Add(entResumeFileLocation = new FormEntry("/path/to/resume", Keyboard.Text)
+            {
                 IsEnabled = false,
             },
-									   new Rectangle(0.0, 0.5, 0.9, 1.0),
-									   AbsoluteLayoutFlags.All);
+                                       new Rectangle(0.0, 0.5, 0.9, 1.0),
+                                       AbsoluteLayoutFlags.All);
 
-            resumeUploadEntrySection.Children.Add(btnOpenFilePicker = new Button(){
+            resumeUploadEntrySection.Children.Add(btnOpenFilePicker = new Button()
+            {
                 Text = "B",
-            }, new Rectangle(1.0,0.5,0.1,1.0),AbsoluteLayoutFlags.All);
-            /*btnOpenFilePicker.Clicked += async (object sender, EventArgs e) => {
-                resume = await CrossFilePicker.Current.PickFile();
-                if (resume != null)
-                {
-                    entResumeFileLocation.Text = resume.FileName;
-                }
-            };*/
+            }, new Rectangle(1.0, 0.5, 0.1, 1.0), AbsoluteLayoutFlags.All);
 
-            resumeUpload.Children.Add(resumeUploadEntrySection,
+            btnOpenFilePicker.Clicked += (object sender, EventArgs e) =>
+            {
+#if __IOS__
+                //UIDocumentMenuViewController documentPicker = 
+                //    new UIDocumentMenuViewController(new String[] { UTType.PDF }, UIDocumentPickerMode.Import);
+                //var thing =
+                //Navigation.NavigationStack[Navigation.NavigationStack.Count - 1].CreateViewController();
+                //documentPicker.ShowViewController(thing, documentPicker);
+#elif __ANDROID__
+                Navigation.PushAsync(new FilePickerAndroid());
+#endif
+            };
+
+			resumeUpload.Children.Add(resumeUploadEntrySection,
                                      new Rectangle(0.5,1.0,0.9,0.5),
                                      AbsoluteLayoutFlags.All);
 
