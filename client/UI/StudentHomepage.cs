@@ -1,9 +1,4 @@
-﻿﻿using System.Collections.Generic;
-using System.Linq;
-using TMCS_Client.Controllers;
-using TMCS_Client.CustomUIElements.Labels;
-using TMCS_Client.CustomUIElements.ListViews;
-using TMCS_Client.CustomUIElements.ViewCells;
+﻿using TMCS_Client.Controllers;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 using System;

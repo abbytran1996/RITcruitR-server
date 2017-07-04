@@ -79,11 +79,6 @@ namespace TMCS_Client.UI
 									 new Rectangle(0, 0, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT),
 									AbsoluteLayoutFlags.WidthProportional);
 
-			/*presentationResponsesList = new FormListView<Match, PresentationPhaseResponseCell>(
-            Match.NullMatch
-            );
-            */
-
 			AbsoluteLayout responseEntry = new AbsoluteLayout()
 			{
 			};
@@ -97,9 +92,7 @@ namespace TMCS_Client.UI
 									   new FormEntry("Your Presentation's Youtube Link", Keyboard.Text),
 									  new Rectangle(0.5, 1.0, 0.9, 0.7),
 									  AbsoluteLayoutFlags.All);
-
-			//txtStudentResponse.Completed += (object sender, EventArgs e) => checkResponse();
-
+            
 			txtStudentURL.TextChanged += (object sender, TextChangedEventArgs e) => checkResponse();
 
 			presentationPage.Children.Add(responseEntry,
@@ -161,14 +154,11 @@ namespace TMCS_Client.UI
 			pageContent.Content = presentationPage;
 
 			Content = pageContent;
-
-
 		}
 
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
-			//presentationResponsesList.updateItems(MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting));
 		}
 		
 		private void checkResponse()

@@ -1,12 +1,19 @@
-﻿using TMCS_Client.CustomUIElements.Buttons;
+﻿using TMCS_Client.Controllers;
+using TMCS_Client.CustomUIElements.Buttons;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
 namespace TMCS_Client.UI {
     public class StudentInterviewPhase : ContentPage {
+        private Match match;
+
         public StudentInterviewPhase(Match match) {
+            this.match = match;
             var job = match.job;
+
+            var declineButton = new DeclineButton();
+            declineButton.Clicked += onDeclineButtonClicked;
 
             Content = new StackLayout {
                 Children = {
@@ -18,9 +25,15 @@ namespace TMCS_Client.UI {
                     new SubSectionTitleLabel("Recruiter Contact Information"),
                     new Label { Text = "Email:\t" + job.recruiter.email },
                     new Label { Text = "Phone:\t" + job.recruiter.phoneNumber },
-                    new DeclineButton()
+                    declineButton
                 }
             };
+        }
+
+        private void onDeclineButtonClicked(object sender, System.EventArgs e) {
+            match.applicationStatus = Match.ApplicationStatus.REJECTED;
+            MatchController.getMatchController().updateMatch(match);
+            Navigation.PopAsync(true);
         }
     }
 }
