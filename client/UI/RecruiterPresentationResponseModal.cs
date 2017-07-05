@@ -23,10 +23,11 @@ namespace TMCS_Client.UI {
             };
 
             pageContent.Children.Add(studentPresentation,
-                new Rectangle(0.05, 0.05, 0.9, 0.250625),
-                AbsoluteLayoutFlags.All);
+				new Rectangle(0, 0, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT),
+									AbsoluteLayoutFlags.WidthProportional);
 
-            var buttons = new AbsoluteLayout();
+
+			var buttons = new AbsoluteLayout();
             var declineButton = new DeclineButton();
             declineButton.Clicked += (object sender, EventArgs e) => {
                 match.applicationStatus = Match.ApplicationStatus.REJECTED;
@@ -42,8 +43,9 @@ namespace TMCS_Client.UI {
                 updateMatch();
             };
             buttons.Children.Add(acceptButton,
-                new Rectangle(1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1 / 6, 0.3, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),
-                AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+				new Rectangle(0.5, 8.5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
+								AbsoluteLayoutFlags.WidthProportional |
+								AbsoluteLayoutFlags.XProportional);
 
             pageContent.Children.Add(buttons,
                  new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 25 / 6, 0.9, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),

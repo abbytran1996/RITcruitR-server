@@ -22,7 +22,7 @@ namespace TMCS_Client.CustomUIElements.ListViews
                 items = initialItems;
             }
             this.emptyListItem = emptyListItem;
-            SeparatorVisibility = SeparatorVisibility.None;
+            SeparatorVisibility = SeparatorVisibility.Default;
             base.ItemsSource = items;
             base.ItemTemplate = new DataTemplate(typeof(CustomDisplayCell));
             base.HasUnevenRows = true;
@@ -31,6 +31,7 @@ namespace TMCS_Client.CustomUIElements.ListViews
         public void updateItems(List<T> newItems){
             foreach(T item in newItems){
                 this.addItem(item);
+                SeparatorColor = Color.LightGray;
 			}
 
             int i = 0;
