@@ -343,7 +343,12 @@ namespace TMCS_Client.UI
                 //Navigation.NavigationStack[Navigation.NavigationStack.Count - 1].CreateViewController();
                 //documentPicker.ShowViewController(thing, documentPicker);
 #elif __ANDROID__
-                Navigation.PushAsync(new FilePickerAndroid());
+                FilePickerAndroid filePicker = new FilePickerAndroid();
+                filePicker.PickedFileEvent += (object pickedFileSender, PickedFileEventArgs pickedFileArgs) => {
+                    entResumeFileLocation.Text = pickedFileArgs.selectedFilePath;
+                    Navigation.PopModalAsync();
+                };
+                Navigation.PushModalAsync(filePicker);
 #endif
             };
 

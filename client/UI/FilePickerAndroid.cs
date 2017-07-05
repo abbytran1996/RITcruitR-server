@@ -15,6 +15,9 @@ namespace TMCS_Client.UI
 
         private AbsoluteLayout pageContent;
 
+        public delegate void PickedFileHandler(object sender, PickedFileEventArgs e);
+        public event PickedFileHandler PickedFileEvent;
+
         public FilePickerAndroid()
         {
             Title = "Resume Upload";
@@ -31,7 +34,7 @@ namespace TMCS_Client.UI
             directoryListingView.ItemTapped += (object sender, ItemTappedEventArgs e) => {
                 if(((string)e.Item).EndsWith(".pdf",StringComparison.CurrentCultureIgnoreCase))
                 {
-                    //Select file
+                    PickedFileEvent(this, new PickedFileEventArgs(directoryListingView.Header + ((string)e.Item)));
 				}
 				else
 				{
@@ -86,6 +89,15 @@ namespace TMCS_Client.UI
 					}
 				}
             }
+        }
+    }
+
+    public class PickedFileEventArgs : EventArgs
+    {
+        public string selectedFilePath { get; set; }
+
+        public PickedFileEventArgs(string selectedFilePath){
+            this.selectedFilePath = selectedFilePath;
         }
     }
 }
