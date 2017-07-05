@@ -15,7 +15,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             AbsoluteLayout cellLayout = new AbsoluteLayout()
             {
                 HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.FromHex("cadbdf"),
             };
 
             lblProblemResponse = new Label()
