@@ -30,7 +30,15 @@ namespace TMCS_Client.UI
                 Order = ToolbarItemOrder.Secondary
             };
 
+			var manageSkillsButton = new ToolbarItem()
+			{
+				Text = "Manage Skills",
+                Command = new Command(goToManageSkills),
+                Order = ToolbarItemOrder.Secondary
+			};
+
             ToolbarItems.Add(editProfileButton);
+            ToolbarItems.Add(manageSkillsButton);
             matchesPage.Title = "Matches";
 			Children.Add(matchesPage);
             probPage.Title = "Problem Phase";
@@ -44,6 +52,11 @@ namespace TMCS_Client.UI
         private void goToEditProfile()
         {
             Navigation.PushAsync(new StudentEditProfile(((App)App.Current).CurrentStudent));
+        }
+
+        private void goToManageSkills()
+        {
+            Navigation.PushAsync(new SkillsEditing(((App)App.Current).CurrentStudent));
         }
     }
 }
