@@ -427,6 +427,8 @@ __pycache__/
 
 **.DS_Store
 
+server/resumes/**
+
 # Cake - Uncomment if you are using it
 # tools/**
 # !tools/packages.config
