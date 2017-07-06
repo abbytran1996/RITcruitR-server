@@ -42,6 +42,8 @@ namespace TMCS_Client.UI
             {
                 Icon = "TMCS_Client.iOS.Resources.add.png",
             });
+
+            
 #endif
 #if __ANDROID__
             Button btnAddJobPosting;
@@ -56,11 +58,34 @@ namespace TMCS_Client.UI
             pageContent.Children.Add(btnAddJobPosting,
                                     new Rectangle(0.95,0.95,80.0,80.0),
                                     AbsoluteLayoutFlags.PositionProportional);
+
+            
 #endif
-			btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
+            btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
 				Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
+            var editCompanyButton = new ToolbarItem()
+            {
+                Text = "Edit company",
+                Order = ToolbarItemOrder.Secondary,
+                Command = new Command(editCompanyButton_clicked)
+            };
+
+            ToolbarItems.Add(editCompanyButton);
+
+            var editProfileButton = new ToolbarItem()
+            {
+                Text = "Edit profile",
+                Command = new Command(goToProfile),
+                Order = ToolbarItemOrder.Secondary
+            };
+
+            ToolbarItems.Add(editProfileButton);
 
             Content = pageContent;
+        }
+
+        private void editCompanyButton_clicked() {
+            Navigation.PushAsync(new RecruiterCompanyEditPage(loggedInRecruiter.company));
         }
 
         protected override void OnAppearing()
@@ -69,6 +94,11 @@ namespace TMCS_Client.UI
                 JobPostingController.getJobPostingController().
                 getJobPostingsByRecruiter(this.loggedInRecruiter));
 			base.OnAppearing();
+        }
+    
+        private void goToProfile()
+        {
+            Navigation.PushAsync(new RecruiterProfileManagement());
         }
     }
 }

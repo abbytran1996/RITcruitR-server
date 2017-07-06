@@ -35,6 +35,9 @@ namespace TMCS_Client.UI
                                     AbsoluteLayoutFlags.All);
 
             interviewPhaseList = new FormListView<Match, InterviewPhaseListCell>(Match.EmptyMatch);
+            interviewPhaseList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
+                Navigation.PushModalAsync(new RecruiterInterviewModal(interviewPhaseList.SelectedItem as Match));
+            };
             pageContent.Children.Add(interviewPhaseList,
                                     new Rectangle(0.5,1.0,1.0,0.94),
                                     AbsoluteLayoutFlags.All);

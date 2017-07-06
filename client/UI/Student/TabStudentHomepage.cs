@@ -21,7 +21,17 @@ namespace TMCS_Client.UI
             var interviewPage = new StudentInterviewList();
 
 
-			matchesPage.Title = "Matches";
+
+            var editProfileButton = new ToolbarItem()
+            {
+                //TODO PUT STUDENT PROFILE MANAGEMENT LINK in the "GOTO" function
+                Text = "Edit profile (page doesn't exist)",
+                Command = new Command(goToEditProfile),
+                Order = ToolbarItemOrder.Secondary
+            };
+
+            ToolbarItems.Add(editProfileButton);
+            matchesPage.Title = "Matches";
 			Children.Add(matchesPage);
             probPage.Title = "Problem Phase";
             Children.Add(probPage);
@@ -29,6 +39,12 @@ namespace TMCS_Client.UI
             Children.Add(presentationPage);
             interviewPage.Title = "Interview Phase";
             Children.Add(interviewPage);
+        }
+
+        private void goToEditProfile()
+        {
+            //TODO uncomment this to hook up the profile editing
+            //Navigation.PushAsync(new StudentProfilePage());
         }
     }
 }
