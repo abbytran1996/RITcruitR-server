@@ -38,7 +38,7 @@ namespace TMCS_Client.UI {
                 Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
                 Navigation.PopToRootAsync();
             } catch(Exception e) {
-                Console.WriteLine(e.ToString());
+                DisplayAlert("Error", e.Message, "Ok");
             }
         }
     }
