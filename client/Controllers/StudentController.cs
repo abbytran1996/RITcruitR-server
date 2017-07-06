@@ -124,5 +124,15 @@ namespace TMCS_Client.Controllers {
 			ensureStatusCode(response, HttpStatusCode.OK);
 			return;
 		}
+
+        public void uploadResume(long id, Resume resume){
+			var request = new RestRequest(Constants.Students.UPLOAD_RESUME, Method.PUT);
+			request.AddUrlSegment("id", id.ToString());
+			request.RequestFormat = DataFormat.Json;
+			request.AddBody(resume);
+
+			var response = client.Execute(request);
+			ensureStatusCode(response, HttpStatusCode.OK);
+        }
     }
 }

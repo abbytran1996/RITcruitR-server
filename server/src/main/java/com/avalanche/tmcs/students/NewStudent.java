@@ -9,6 +9,8 @@ public class NewStudent extends Student {
 
     private String passwordConfirm;
 
+    private Resume resume;
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -23,6 +25,12 @@ public class NewStudent extends Student {
 
     public String getPasswordConfirm() {
         return passwordConfirm;
+    }
+
+    public Resume getResume(){return resume;}
+
+    public void setResume(Resume newResume){
+        resume = newResume;
     }
 
     /**

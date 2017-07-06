@@ -417,12 +417,13 @@ namespace TMCS_Client.UI
                     entSchoolName.Text,
                     entGraduationDate.Text.Length < 5 ? "0" + entGraduationDate.Text :
                         entGraduationDate.Text,
-                    entPhoneNumber.Text.Replace("(","").Replace(")","")
-                        .Replace(" ","").Replace("-", ""),
-                    new List<String>(entPreferredLocation.Text.Replace(", ",",").Split(',')),
+                    entPhoneNumber.Text != null ? entPhoneNumber.Text.Replace("(", "").Replace(")", "")
+                        .Replace(" ", "").Replace("-", "") : "",
+                    new List<String>(entPreferredLocation.Text.Replace(", ", ",").Split(',')),
                     pickPreferredCompanySize.getPreferredSize(),
                     entPassword.Text,
-                    entRetypePassword.Text
+                    entRetypePassword.Text,
+                    entResumeFileLocation.Text != null ? new Resume(entResumeFileLocation.Text) : null
                 );
 
                 try

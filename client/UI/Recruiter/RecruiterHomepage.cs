@@ -38,17 +38,12 @@ namespace TMCS_Client.UI
 
 #if __IOS__
             ToolbarItem btnAddJobPosting;
-            ToolbarItem editCompanyButton;
             ToolbarItems.Add(btnAddJobPosting = new ToolbarItem()
             {
                 Icon = "TMCS_Client.iOS.Resources.add.png",
             });
 
-            editCompanyButton = new ToolbarItem() {
-                Text = "Edit company"
-            };
-
-            ToolbarItems.Add(editCompanyButton);
+            
 #endif
 #if __ANDROID__
             Button btnAddJobPosting;
@@ -64,22 +59,32 @@ namespace TMCS_Client.UI
                                     new Rectangle(0.95,0.95,80.0,80.0),
                                     AbsoluteLayoutFlags.PositionProportional);
 
-            Button editCompanyButton = new Button() {
-                Text = "Edit Company"
-            };
-            pageContent.Children.Add(editCompanyButton,
-                                    new Rectangle(0.5, 0.95, 160, 80),
-                                    AbsoluteLayoutFlags.PositionProportional);
+            
 #endif
-			btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
+            btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
 				Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
+            var editCompanyButton = new ToolbarItem()
+            {
+                Text = "Edit company",
+                Order = ToolbarItemOrder.Secondary,
+                Command = new Command(editCompanyButton_clicked)
+            };
 
-            editCompanyButton.Clicked += editCompanyButton_clicked;
+            ToolbarItems.Add(editCompanyButton);
+
+            var editProfileButton = new ToolbarItem()
+            {
+                Text = "Edit profile",
+                Command = new Command(goToProfile),
+                Order = ToolbarItemOrder.Secondary
+            };
+
+            ToolbarItems.Add(editProfileButton);
 
             Content = pageContent;
         }
 
-        private void editCompanyButton_clicked(object sender, EventArgs e) {
+        private void editCompanyButton_clicked() {
             Navigation.PushAsync(new RecruiterCompanyEditPage(loggedInRecruiter.company));
         }
 
@@ -89,6 +94,11 @@ namespace TMCS_Client.UI
                 JobPostingController.getJobPostingController().
                 getJobPostingsByRecruiter(this.loggedInRecruiter));
 			base.OnAppearing();
+        }
+    
+        private void goToProfile()
+        {
+            Navigation.PushAsync(new RecruiterProfileManagement());
         }
     }
 }

@@ -8,8 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.net.URI;
 import java.sql.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -42,6 +42,8 @@ public class Student {
     private Set<String> preferredStates;
 
     private Company.Size preferredCompanySize;
+
+    private String resumeLocation;
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -153,6 +155,14 @@ public class Student {
 
     public void setPreferredCompanySize(Company.Size preferredCompanySize) {
         this.preferredCompanySize = preferredCompanySize;
+    }
+
+    public String getResumeLocation(){
+        return resumeLocation;
+    }
+
+    public void setResumeLocation(String newResume){
+        this.resumeLocation = newResume;
     }
 
     @Override

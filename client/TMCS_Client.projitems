@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\PostingDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterCompanyEditPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterInterviewModal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterPresentationResponseModal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterPresentationResponses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Student\SkillsEditing.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterProfileManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\FilePickerAndroid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DTOs\Resume.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

@@ -17,5 +17,6 @@ namespace TMCS_Client.DTOs {
         public string preferredCompanySize { get; set; }
         public int id { get; internal set; }
         public User user { get; set; }
+        public String resumeLocation { get; set; }
     }
 }
