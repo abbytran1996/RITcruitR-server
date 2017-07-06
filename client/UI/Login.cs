@@ -163,7 +163,6 @@ namespace TMCS_Client.UI
                     {
                         // We're a recruiter!
                         var recruiter = RecruiterController.getRecruiterController().getRecruiter(email);
-                        //
                         Console.WriteLine("Recruiter login detected");
                         Navigation.InsertPageBefore(new RecruiterHomepage(recruiter), Login.getLoginPage());
                         break;

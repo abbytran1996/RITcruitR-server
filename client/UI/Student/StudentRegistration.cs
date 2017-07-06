@@ -406,6 +406,7 @@ namespace TMCS_Client.UI
                     Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
                     Navigation.PopToRootAsync();
                 }catch(Exception e){
+                    DisplayAlert("Error", e.Message, "Ok");
                     Console.WriteLine(e.ToString());
                 }
             }

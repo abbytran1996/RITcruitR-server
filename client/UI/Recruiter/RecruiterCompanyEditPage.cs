@@ -23,22 +23,20 @@ namespace TMCS_Client.UI {
 
         protected override void onRegisterButtonClick() {
             string presentation = txtPresentationLink.Text.Replace("/", "|");
-            Company newCompany = new Company() {
-                companyName = txtCompanyName.Text,
-                emailSuffix = txtCompanyEmailSuffix.Text,
-                companyDescription = txtCompanyDescription.Text,
-                size = txtCompanySize.Text,
-                location = txtCompanyLocation.Text,
-                presentation = presentation,
-                websiteURL = txtWebsiteURL.Text
-            };
+            company.companyName = txtCompanyName.Text;
+            company.emailSuffix = txtCompanyEmailSuffix.Text;
+            company.companyDescription = txtCompanyDescription.Text;
+            company.size = txtCompanySize.Text;
+            company.location = txtCompanyLocation.Text;
+            company.presentation = presentation;
+            company.websiteURL = txtWebsiteURL.Text;
 
             try {
-                CompanyController.getCompanyController().updateCompany(newCompany);
+                CompanyController.getCompanyController().updateCompany(company);
                 Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
                 Navigation.PopToRootAsync();
             } catch(Exception e) {
-                Console.WriteLine(e.ToString());
+                DisplayAlert("Error", e.Message, "Ok");
             }
         }
     }
