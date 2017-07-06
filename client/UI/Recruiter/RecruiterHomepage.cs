@@ -38,10 +38,17 @@ namespace TMCS_Client.UI
 
 #if __IOS__
             ToolbarItem btnAddJobPosting;
+            ToolbarItem editCompanyButton;
             ToolbarItems.Add(btnAddJobPosting = new ToolbarItem()
             {
                 Icon = "TMCS_Client.iOS.Resources.add.png",
             });
+
+            editCompanyButton = new ToolbarItem() {
+                Text = "Edit company"
+            };
+
+            ToolbarItems.Add(editCompanyButton);
 #endif
 #if __ANDROID__
             Button btnAddJobPosting;
@@ -56,11 +63,24 @@ namespace TMCS_Client.UI
             pageContent.Children.Add(btnAddJobPosting,
                                     new Rectangle(0.95,0.95,80.0,80.0),
                                     AbsoluteLayoutFlags.PositionProportional);
+
+            Button editCompanyButton = new Button() {
+                Text = "Edit Company"
+            };
+            pageContent.Children.Add(editCompanyButton,
+                                    new Rectangle(0.5, 0.95, 160, 80),
+                                    AbsoluteLayoutFlags.PositionProportional);
 #endif
 			btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
 				Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
 
+            editCompanyButton.Clicked += editCompanyButton_clicked;
+
             Content = pageContent;
+        }
+
+        private void editCompanyButton_clicked(object sender, EventArgs e) {
+            Navigation.PushAsync(new RecruiterCompanyEditPage(loggedInRecruiter.company));
         }
 
         protected override void OnAppearing()

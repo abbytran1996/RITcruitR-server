@@ -34,6 +34,7 @@ namespace TMCS_Client.Controllers
 		{
 			companyComms.addCompany(company);
 		}
+
 		/// <summary>
 		/// Gets Company by Id
 		/// </summary>
@@ -51,5 +52,10 @@ namespace TMCS_Client.Controllers
 		{
             return companyComms.getCompanyByName(companyName);
 		}
-	}
+
+        internal void updateCompany(Company newCompany) {
+            // TODO: Make this method as part of my next task
+            throw new NotImplementedException();
+        }
+    }
 }

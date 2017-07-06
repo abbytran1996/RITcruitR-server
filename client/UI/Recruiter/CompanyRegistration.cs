@@ -21,34 +21,34 @@ namespace TMCS_Client.UI
 
         //CompanyEmail
         private FormFieldLabel lblCompanyEmailSuffix;
-        private FormEntry txtCompanyEmailSuffix;
+        protected FormEntry txtCompanyEmailSuffix;
 
         //Company Name
         private FormFieldLabel lblCompanyName;
-        private FormEntry txtCompanyName;
+        protected FormEntry txtCompanyName;
 
         //Location
         private FormFieldLabel lblCompanyLocation;
-        private FormEntry txtCompanyLocation;
+        protected FormEntry txtCompanyLocation;
 
 
         //New Company* Description
         private FormFieldLabel lblCompanyDescription;
-        private Editor txtCompanyDescription;
+        protected Editor txtCompanyDescription;
 
         //Company Size
         private FormFieldLabel lblCompanySize;
-        private FormEntry txtCompanySize;
+        protected FormEntry txtCompanySize;
 
         //Company Presentation
         private FormFieldLabel lblPresentationLink;
-        private FormEntry txtPresentationLink;
+        protected FormEntry txtPresentationLink;
 
         private FormFieldLabel lblWebsiteURL;
-        private FormEntry txtWebsiteURL;
+        protected FormEntry txtWebsiteURL;
 
         //Register Button
-        private Button btnRegister;
+        protected Button btnRegister;
 
 #if __IOS__
         const double ROW_HEIGHT = 60.0;
@@ -57,9 +57,9 @@ namespace TMCS_Client.UI
         const double ROW_HEIGHT = 80.0;
 #endif
 
-        public CompanyRegistration()
+        public CompanyRegistration(string title = "Company Registration")
         {
-            this.Title = "Company Registration";
+            this.Title = title;
 
             //Whole page
             pageContent = new ScrollView()
@@ -75,7 +75,7 @@ namespace TMCS_Client.UI
 
             //Title
             registrationForm.Children.Add(lblTitle =
-                                          new PageTitleLabel("Company Registration"),
+                                          new PageTitleLabel(title),
                                           new Rectangle(0, 0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
@@ -247,7 +247,7 @@ namespace TMCS_Client.UI
                 FontSize = 24,
                 TextColor = Color.White,
                 BackgroundColor = Color.Blue,
-                Command = new Command((object obj) => register()),
+                Command = new Command((object obj) => onRegisterButtonClick()),
             };
 
             registrationForm.Children.Add(btnRegister,
@@ -261,7 +261,7 @@ namespace TMCS_Client.UI
 
         }
 
-        private void register()
+        virtual protected void onRegisterButtonClick()
         {
             String invalidDataMessage = "";
 
@@ -301,6 +301,7 @@ namespace TMCS_Client.UI
 
         private bool suffixCheck()
         {
+            // so rigorous wow
             return true;
         }
 
