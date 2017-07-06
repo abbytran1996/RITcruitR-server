@@ -89,7 +89,9 @@ public class StudentsController {
             newStudent.setUser(newUser);
             newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
-            uploadResume(savedStudent.getId(),newStudent.getResume());
+            if(newStudent.getResume()!= null) {
+                uploadResume(savedStudent.getId(), newStudent.getResume());
+            }
 
             matchingService.registerStudent(savedStudent);
 
