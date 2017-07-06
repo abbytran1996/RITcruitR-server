@@ -18,60 +18,59 @@ namespace TMCS_Client.UI
     public class StudentRegistration : ContentPage
     {
         //Whole Page
-        private ScrollView pageContent;
-        private AbsoluteLayout registrationForm;
+        protected ScrollView pageContent;
+        protected AbsoluteLayout registrationForm;
 
         //Title
-        private PageTitleLabel lblTitle;
+        protected PageTitleLabel lblTitle;
 
         //First Name
-        private FormFieldLabel lblFirstName;
-        private FormEntry entFirstName;
+        protected FormFieldLabel lblFirstName;
+        protected FormEntry entFirstName;
 
         //Last Name
-        private FormFieldLabel lblLastName;
-        private FormEntry entLastName;
+        protected FormFieldLabel lblLastName;
+        protected FormEntry entLastName;
 
         //Email
-        private FormFieldLabel lblEmail;
-        private FormEntry entEmail;
+        protected FormFieldLabel lblEmail;
+        protected FormEntry entEmail;
 
         //Password
-        private FormFieldLabel lblPassword;
-        private FormEntry entPassword;
+        protected FormFieldLabel lblPassword;
+        protected FormEntry entPassword;
 
         //Retype Password
-        private FormFieldLabel lblRetypePassword;
-        private FormEntry entRetypePassword;
+        protected FormFieldLabel lblRetypePassword;
+        protected FormEntry entRetypePassword;
 
         //School Name
-        private FormFieldLabel lblSchoolName;
-        private FormEntry entSchoolName;
+        protected FormFieldLabel lblSchoolName;
+        protected FormEntry entSchoolName;
 
         //Graduation Date
-        private FormFieldLabel lblGraduationDate;
-        private FormEntry entGraduationDate;
+        protected FormFieldLabel lblGraduationDate;
+        protected FormEntry entGraduationDate;
 
         //Phone Number
-        private FormFieldLabel lblPhoneNumber;
-        private FormEntry entPhoneNumber;
+        protected FormFieldLabel lblPhoneNumber;
+        protected FormEntry entPhoneNumber;
 
         //Prefered Location
-        private FormFieldLabel lblPreferredLocationn;
-        private FormEntry entPreferredLocation;
+        protected FormFieldLabel lblPreferredLocationn;
+        protected FormEntry entPreferredLocation;
 
         //Prefered Company Size
-        private FormFieldLabel lblPreferredCompanySize;
-        private CompanySizePicker pickPreferredCompanySize;
+        protected FormFieldLabel lblPreferredCompanySize;
+        protected CompanySizePicker pickPreferredCompanySize;
 
         //Resume
-        private FormFieldLabel lblResumeFile;
-        private FormEntry entResumeFileLocation;
-        private Button btnOpenFilePicker;
-        //private FileData resume;
+        protected FormFieldLabel lblResumeFile;
+        protected FormEntry entResumeFileLocation;
+        protected Button btnOpenFilePicker;
 
         //Register Button
-        private Button btnRegister;
+        protected Button btnRegister;
 
         public StudentRegistration()
         {
@@ -312,7 +311,7 @@ namespace TMCS_Client.UI
                                          new Rectangle(0, 10.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
                                           AbsoluteLayoutFlags.WidthProportional);
 
-            //Registration
+            //Resume
             AbsoluteLayout resumeUpload = new AbsoluteLayout()
             {
             };
@@ -377,32 +376,7 @@ namespace TMCS_Client.UI
 
         private void register()
         {
-            String invalidDataMessage = "";
-            //Student loggedInStudent;
-
-            if (!emailCheck())
-            {
-                invalidDataMessage += "Email is not in proper format.\n";
-            }
-			if (!passwordCheck())
-			{
-				invalidDataMessage += "Password does not meet the complexity requirements.\n";
-			}
-			if (!retypePasswordCheck())
-			{
-				invalidDataMessage += "Passwords do not match.\n";
-			}
-			if (!graduationDateCheck())
-			{
-				invalidDataMessage += "Date is not a valid future date.\n";
-			}
-			if (!phoneNumberCheck())
-			{
-				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
-			}
-            if (pickPreferredCompanySize.getPreferredSize() == null){
-                invalidDataMessage += "A preferred company size must be selected.\n";
-            }
+            String invalidDataMessage = formValidation();
 
             if (invalidDataMessage != "")
             {
@@ -435,6 +409,38 @@ namespace TMCS_Client.UI
                     Console.WriteLine(e.ToString());
                 }
             }
+        }
+
+        protected String formValidation(){
+			String invalidDataMessage = "";
+			//Student loggedInStudent;
+
+			if (!emailCheck())
+			{
+				invalidDataMessage += "Email is not in proper format.\n";
+			}
+			if (!passwordCheck())
+			{
+				invalidDataMessage += "Password does not meet the complexity requirements.\n";
+			}
+			if (!retypePasswordCheck())
+			{
+				invalidDataMessage += "Passwords do not match.\n";
+			}
+			if (!graduationDateCheck())
+			{
+				invalidDataMessage += "Date is not a valid future date.\n";
+			}
+			if (!phoneNumberCheck())
+			{
+				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
+			}
+			if (pickPreferredCompanySize.getPreferredSize() == null)
+			{
+				invalidDataMessage += "A preferred company size must be selected.\n";
+			}
+
+            return invalidDataMessage;
         }
 
         private void graduationDateUpdate(){

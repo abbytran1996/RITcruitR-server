@@ -89,6 +89,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\FilePickerAndroid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Resume.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Student\StudentEditProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

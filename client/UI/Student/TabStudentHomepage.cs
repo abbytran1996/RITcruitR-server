@@ -4,6 +4,7 @@ using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.ListViews;
 using TMCS_Client.CustomUIElements.ViewCells;
+using TMCS_Client.UI.Student;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 using System;
@@ -24,8 +25,7 @@ namespace TMCS_Client.UI
 
             var editProfileButton = new ToolbarItem()
             {
-                //TODO PUT STUDENT PROFILE MANAGEMENT LINK in the "GOTO" function
-                Text = "Edit profile (page doesn't exist)",
+                Text = "Edit profile",
                 Command = new Command(goToEditProfile),
                 Order = ToolbarItemOrder.Secondary
             };
@@ -43,8 +43,7 @@ namespace TMCS_Client.UI
 
         private void goToEditProfile()
         {
-            //TODO uncomment this to hook up the profile editing
-            //Navigation.PushAsync(new StudentProfilePage());
+            Navigation.PushAsync(new StudentEditProfile(((App)App.Current).CurrentStudent));
         }
     }
 }

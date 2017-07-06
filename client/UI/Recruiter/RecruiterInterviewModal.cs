@@ -10,7 +10,7 @@ using Xamarin.Forms;
 namespace TMCS_Client.UI {
     class RecruiterInterviewModal : ContentPage {
         private Match match;
-        private Student student;
+        private DTOs.Student student;
 
         public RecruiterInterviewModal(Match match) {
             this.match = match;
