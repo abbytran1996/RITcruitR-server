@@ -1,6 +1,9 @@
 ﻿using System;
 using TMCS_Client.CustomUIElements.Buttons;
 using Xamarin.Forms;
+using System.Collections.Generic;
+using TMCS_Client.Controllers;
+using TMCS_Client.DTOs;
 
 namespace TMCS_Client.UI.Student
 {
@@ -8,9 +11,11 @@ namespace TMCS_Client.UI.Student
     {
         private AbsoluteLayout buttons;
         private FormSubmitButton btnCancel;
+        private DTOs.Student student;
 
         public StudentEditProfile(DTOs.Student student) : base()
         {
+            this.student = student;
 
             //Populate field with student data
             entFirstName.Text = student.firstName;
@@ -22,9 +27,13 @@ namespace TMCS_Client.UI.Student
             entPassword.Placeholder = "New Password";
             entRetypePassword.Placeholder = "Retype New Password";
             entSchoolName.Text = student.school;
-            entGraduationDate.Text = student.graduationDate.ToString("mm/yy");
+            entGraduationDate.Text = student.graduationDate.ToString("MM/yy");
             entPhoneNumber.Text = student.phoneNumber != null ? student.phoneNumber:null;
-            entPreferredLocation.Text = student.preferredStates.ToArray().ToString();
+            entPreferredLocation.Text = "";
+            foreach(String location in student.preferredStates.ToArray()){
+                entPreferredLocation.Text += location + ", ";
+            }
+            entPreferredLocation.Text = entPreferredLocation.Text.Substring(0, entPreferredLocation.Text.Length - 2);
             pickPreferredCompanySize.SelectedItem = student.preferredCompanySize;
             entResumeFileLocation.Text = student.resumeLocation;
 
@@ -58,7 +67,30 @@ namespace TMCS_Client.UI.Student
         }
 
         private void update(){
-            Console.WriteLine("Got Here");
+            String invalidDataMessage = formValidation(false);
+
+            if (invalidDataMessage != "")
+            {
+                this.DisplayAlert("Invalid Data:", invalidDataMessage, "OK");
+            }
+            else
+            {
+                //TODO implement password updating
+
+                student.school = entSchoolName.Text;
+                student.graduationDate = DateTime.ParseExact(entGraduationDate.Text.Length < 5 ? "0" + entGraduationDate.Text :
+                    entGraduationDate.Text, "MM/yy", null);
+                student.phoneNumber = entPhoneNumber.Text != null ? entPhoneNumber.Text.Replace("(", "").Replace(")", "")
+                    .Replace(" ", "").Replace("-", "") : "";
+                student.preferredStates = new List<String>(entPreferredLocation.Text.Replace(", ", ",").Split(','));
+                student.preferredCompanySize = pickPreferredCompanySize.getPreferredSize();
+                StudentController.getStudentController().updateStudent(student);
+
+                if(entResumeFileLocation.Text != student.resumeLocation){
+                    StudentController.getStudentController().uploadResume(student.id, new Resume(entResumeFileLocation.Text));
+                }
+                Navigation.PopAsync();
+            }
         }
     }
 }

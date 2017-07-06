@@ -26,7 +26,8 @@ namespace TMCS_Client
             public static string ADD_SKILLS_RESOURCE { get { return "/students/{id}/skills"; } }
             public static string GET_MATCHES_RESORUCE { get { return "/students/{id}/matches"; } }
             public static string GET_STUDENT_BY_EMAIL_RESOURCE { get { return "/students/byEmail/{email}"; } }
-            public static string UPLOAD_RESUME{ get { return "/students/{id}/uploadResume"; }}
+			public static string UPLOAD_RESUME { get { return "/students/{id}/uploadResume"; } }
+			public static string UPDATE_STUDENT { get { return "/students/{id}/update"; } }
 
         }
         public static class Recruiters

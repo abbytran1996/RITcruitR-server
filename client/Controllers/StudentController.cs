@@ -134,5 +134,15 @@ namespace TMCS_Client.Controllers {
 			var response = client.Execute(request);
 			ensureStatusCode(response, HttpStatusCode.OK);
         }
+
+        public void updateStudent(Student student){
+            var request = new RestRequest(Constants.Students.UPDATE_STUDENT, Method.PUT);
+			request.AddUrlSegment("id", student.id.ToString());
+			request.RequestFormat = DataFormat.Json;
+			request.AddBody(student);
+
+			var response = client.Execute(request);
+			ensureStatusCode(response, HttpStatusCode.OK);
+        }
     }
 }

@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.HashSet;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.tomcat.jni.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,13 +108,10 @@ public class StudentsController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
-
-        updatedStudent.setId(id);
         studentDAO.save(updatedStudent);
-
         return ResponseEntity.ok().build();
     }
 
@@ -150,6 +148,10 @@ public class StudentsController {
         Student student = studentDAO.findOne(id);
         boolean success = false;
         try {
+            if(student.getResumeLocation() != null){
+                //TODO Delete old resume first
+            }
+
             File resumeFile = new File("./resumes/" + Long.toString(id) + "/" +
                     resume.getFileName());
             File resumePath = new File("./resumes/" + Long.toString(id) + "/");
@@ -166,6 +168,7 @@ public class StudentsController {
 
         return ResponseEntity.ok(success);
     }
+
 
     private void validateStudentId(long id) {
         if(!studentDAO.exists(id)) {

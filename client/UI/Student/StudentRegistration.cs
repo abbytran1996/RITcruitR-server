@@ -412,7 +412,7 @@ namespace TMCS_Client.UI
             }
         }
 
-        protected String formValidation(){
+        protected String formValidation(bool needPassword = true){
 			String invalidDataMessage = "";
 			//Student loggedInStudent;
 
@@ -420,11 +420,11 @@ namespace TMCS_Client.UI
 			{
 				invalidDataMessage += "Email is not in proper format.\n";
 			}
-			if (!passwordCheck())
+			if (!passwordCheck() && needPassword)
 			{
 				invalidDataMessage += "Password does not meet the complexity requirements.\n";
 			}
-			if (!retypePasswordCheck())
+			if (!retypePasswordCheck() && needPassword)
 			{
 				invalidDataMessage += "Passwords do not match.\n";
 			}
