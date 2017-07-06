@@ -89,7 +89,7 @@ public class StudentsController {
             newStudent.setUser(newUser);
             newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
-            if(newStudent.getResume()!= null) {
+            if(newStudent.getResume() != null) {
                 uploadResume(savedStudent.getId(), newStudent.getResume());
             }
 
@@ -154,7 +154,7 @@ public class StudentsController {
                     resume.getFileName());
             File resumePath = new File("./resumes/" + Long.toString(id) + "/");
             resumePath.mkdirs();
-            student.setResumeLocation(resumeFile.getPath());
+            student.setResumeLocation(resume.getFileName());
             Files.write(Paths.get(resumeFile.getCanonicalPath()), resume.getFile());
             studentDAO.save(student);
             success = true;

@@ -47,12 +47,12 @@ namespace TMCS_Client.UI
 
 
         //Recruiter
-        private Student associatedStudent = null;
+        private DTOs.Student associatedStudent = null;
 
         //Create
         FormSubmitButton btnSave;
 
-        public SkillsEditing(Student associatedStudent)
+        public SkillsEditing(DTOs.Student associatedStudent)
         {
             this.Title = "Edit your skills";
 
