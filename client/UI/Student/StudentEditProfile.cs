@@ -1,7 +1,6 @@
 ﻿using System;
 using TMCS_Client.CustomUIElements.Buttons;
 using Xamarin.Forms;
-using TMCS_Client.DTOs;
 
 namespace TMCS_Client.UI.Student
 {
@@ -14,9 +13,22 @@ namespace TMCS_Client.UI.Student
         {
 
             //Populate field with student data
+            entFirstName.Text = student.firstName;
+            entFirstName.IsEnabled = false;
+			entLastName.Text = student.lastName;
+			entLastName.IsEnabled = false;
+			entEmail.Text = student.email;
+			entEmail.IsEnabled = false;
+            entPassword.Placeholder = "New Password";
+            entRetypePassword.Placeholder = "Retype New Password";
+            entSchoolName.Text = student.school;
+            entGraduationDate.Text = student.graduationDate.ToString("mm/yy");
+            entPhoneNumber.Text = student.phoneNumber != null ? student.phoneNumber:null;
+            entPreferredLocation.Text = student.preferredStates.ToArray().ToString();
+            pickPreferredCompanySize.SelectedItem = student.preferredCompanySize;
+            entResumeFileLocation.Text = student.resumeLocation;
 
             //Update existing ui
-
             lblTitle.Text = Title = "Student Profile Update";
 
             btnCancel = new FormSubmitButton("Cancel")
