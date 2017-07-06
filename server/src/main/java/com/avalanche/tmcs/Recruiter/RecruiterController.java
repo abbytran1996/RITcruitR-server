@@ -119,6 +119,14 @@ public class RecruiterController {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateRecruiter(@PathVariable long id, @RequestBody Recruiter updateRecruiter){
+        updateRecruiter.setId(id);
+        recruiterRepo.save(updateRecruiter);
+
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/company/{id}", method = RequestMethod.GET)
     public Company getCompany(@PathVariable long id){
         //validateCompanyId(id);

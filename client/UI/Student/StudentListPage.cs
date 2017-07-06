@@ -64,7 +64,7 @@ namespace TMCS_Client.UI {
                                   .Select(match => new CellData(match));
 
             matchesList.ItemsSource = postings;
-            matchesList.RowHeight = 110;
+            matchesList.RowHeight = 130;
 
             matchesList.ItemTapped += onItemTapped;
         }
@@ -93,7 +93,7 @@ namespace TMCS_Client.UI {
                 StackLayout layout = new StackLayout();
 
                 Label title = new Label() {
-                    FontSize = 20
+                    FontSize = 18
                 };
                 Label company = new Label();
                 Label location = new Label();

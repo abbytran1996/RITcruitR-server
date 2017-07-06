@@ -98,7 +98,7 @@ namespace TMCS_Client.UI
     
         private void goToProfile()
         {
-            Navigation.PushAsync(new RecruiterProfileManagement());
+            Navigation.PushAsync(new RecruiterProfileManagement(loggedInRecruiter));
         }
     }
 }

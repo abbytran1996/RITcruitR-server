@@ -23,34 +23,34 @@ namespace TMCS_Client.UI
 
 		//First Name
 		private FormFieldLabel lblFirstName;
-		private FormEntry txtFirstName;
+		protected FormEntry txtFirstName;
 
 		//Last Name
 		private FormFieldLabel lblLastName;
-		private FormEntry txtLastName;
+		protected FormEntry txtLastName;
 
 		//Email
 		private FormFieldLabel lblCompanyEmail;
-		private FormEntry txtCompanyEmail;
+		protected FormEntry txtCompanyEmail;
 
 		//Password
 		private FormFieldLabel lblPassword;
-		private FormEntry txtPassword;
+		protected FormEntry txtPassword;
 
 		//Retype Password
 		private FormFieldLabel lblRetypePassword;
-		private FormEntry txtRetypePassword;
+		protected FormEntry txtRetypePassword;
 
 		//Company Name
 		private FormFieldLabel lblCompanyName;
-		private FormEntry txtCompanyName;
+		protected FormEntry txtCompanyName;
 
 		//Phone Number
 		private FormFieldLabel lblPhoneNumber;
-		private FormEntry txtPhoneNumber;
+        protected FormEntry txtPhoneNumber;
         
 		//Register Button
-		private Button btnRegister;
+		protected Button btnRegister;
 
 #if __IOS__
 		const double ROW_HEIGHT = 60.0;
@@ -59,9 +59,9 @@ namespace TMCS_Client.UI
         const double ROW_HEIGHT = 80.0;
 #endif
 
-		public RecruiterRegistration()
+		public RecruiterRegistration(string title = "Recruiter Registration")
 		{
-            this.Title = "Recruiter Registration";
+            this.Title = title;
 
 			//Whole page
 			pageContent = new ScrollView()

@@ -68,7 +68,7 @@ namespace TMCS_Client.UI {
                                   });
 
             matchesList.ItemsSource = postings;
-            matchesList.RowHeight = 110;
+            matchesList.RowHeight = 130;
 
             matchesList.ItemTapped += onItemTapped;
         }
@@ -104,7 +104,7 @@ namespace TMCS_Client.UI {
 
                 Label title = new Label()
                 {
-                    FontSize = 20
+                    FontSize = 18
                 };
                 Label company = new Label();
                 Label location = new Label();
