@@ -87,7 +87,7 @@ namespace TMCS_Client.UI
                 TextColor = Color.Blue,
                 BorderColor = Color.Blue,
                 BorderWidth = 2,
-                Command = new Command((object obj) => this.Navigation.PushAsync(RegistrationMain.getRegistrationMainPage())),
+                Command = new Command((object obj) => Navigation.PushAsync(RegistrationMain.getRegistrationMainPage())),
 			},
 										new Rectangle(0.5, 0.2, 0.25, 0.25),
 										AbsoluteLayoutFlags.All);

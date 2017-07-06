@@ -11,6 +11,8 @@ namespace TMCS_Client.DTOs {
 
         public string passwordConfirm { get; set; }
 
+        public Resume resume { get; set; }
+
         // I want this to be private so you have to use the method which validates the student
         private NewStudent() { }
 
@@ -31,7 +33,7 @@ namespace TMCS_Client.DTOs {
         /// <returns>The created student</returns>
         public static NewStudent createAndValidate(string firstName, string lastName, string email, string school,
             string graduationDate, string phoneNumber, List<string> preferredStates, string preferredCompanySize,
-            string password, string passwordConfirm) {
+            string password, string passwordConfirm, Resume resume) {
 
             // Validation
             if(password != passwordConfirm) {
@@ -53,6 +55,7 @@ namespace TMCS_Client.DTOs {
             newStudent.preferredCompanySize = preferredCompanySize;
             newStudent.password = password;
             newStudent.passwordConfirm = passwordConfirm;
+            newStudent.resume = resume;
 
             return newStudent;
         }

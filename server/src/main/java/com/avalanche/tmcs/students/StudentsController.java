@@ -7,13 +7,20 @@ import com.avalanche.tmcs.matching.MatchDAO;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.matching.Skill;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.HashSet;
+
+import org.apache.tomcat.jni.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -82,6 +89,7 @@ public class StudentsController {
             newStudent.setUser(newUser);
             newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
+            uploadResume(savedStudent.getId(),newStudent.getResume());
 
             matchingService.registerStudent(savedStudent);
 
@@ -133,6 +141,28 @@ public class StudentsController {
         studentDAO.save(ourstudent);
         matchingService.registerStudent(ourstudent);
         return ResponseEntity.ok(ourstudent);
+    }
+
+    @RequestMapping(value = "/{id}/uploadResume", method = RequestMethod.PUT)
+    public ResponseEntity<Boolean> uploadResume(@PathVariable long id, @RequestBody Resume resume){
+        Student student = studentDAO.findOne(id);
+        boolean success = false;
+        try {
+            File resumeFile = new File("./resumes/" + Long.toString(id) + "/" +
+                    resume.getFileName());
+            File resumePath = new File("./resumes/" + Long.toString(id) + "/");
+            resumePath.mkdirs();
+            student.setResumeLocation(resumeFile.getPath());
+            Files.write(Paths.get(resumeFile.getCanonicalPath()), resume.getFile());
+            studentDAO.save(student);
+            success = true;
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.ok(success);
     }
 
     private void validateStudentId(long id) {
