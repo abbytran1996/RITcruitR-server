@@ -32,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\PostingDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterCompanyEditPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterInterviewModal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterPresentationResponseModal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterPresentationResponses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Student\SkillsEditing.cs" />
