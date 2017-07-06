@@ -91,54 +91,6 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void performAdditionOfTestData() throws URISyntaxException {
-
-
-
-        //faker data generation
-
-        final int DATA_SIZE=10;
-
-        Faker faker=new Faker();
-
-        //putting these in lists to view while debugging
-        ArrayList<User> testUsers=new ArrayList<User>();
-        ArrayList<Skill> testSkills=new ArrayList<Skill>();
-        ArrayList<Student> testStudents=new ArrayList<Student>();
-        ArrayList<Company> testCompanies=new ArrayList<Company>();
-        List<Recruiter> testRecruiters=new ArrayList<Recruiter>();
-        List<JobPosting> testJobs=new ArrayList<JobPosting>();
-
-        for(int i=0;i<50;i++){
-            testSkills.add(new Skill(faker.superhero().power()));
-        }
-
-        for(int i=0;i<DATA_SIZE;i++){
-            User user1=newTestUser(faker);
-            User amUser=userService.save(user1,Role.RoleName.Student);
-            testUsers.add(amUser);
-            testStudents.add(newTestStudent(faker,amUser,testSkills));
-
-            User user2=newTestUser(faker);
-            User refUser=userService.save(user2,Role.RoleName.Recruiter);
-            testUsers.add(refUser);
-            Company pleasantCompany=newTestCompany(faker,refUser);
-            testCompanies.add(pleasantCompany);
-            Recruiter rec=newTestRecruiter(faker,refUser,pleasantCompany);
-            testRecruiters.add(rec);
-            testJobs.add(newTestJobPosting(faker,rec,testSkills));
-        }
-
-        //persist data
-        skillDAO.save(testSkills);
-        studentDAO.save(testStudents);
-        companyDAO.save(testCompanies);
-        recruiterDAO.save(testRecruiters);
-        jobPostingDAO.save(testJobs);
-        for(Student s:testStudents)
-            matchingService.registerStudent(s);
-
-
-
         Skill seizing = skillDAO.findByName("Revolution");
         if(seizing != null) {
             LOG.warn("Already added test data, not adding it again");
@@ -206,6 +158,49 @@ public class DataLoader implements ApplicationRunner {
         jobPostingDAO.save(seizer);
 
         matchingService.registerStudent(karlMarx);
+
+        //faker data generation
+
+        final int DATA_SIZE=10;
+
+        Faker faker=new Faker();
+
+        //putting these in lists to view while debugging
+        ArrayList<User> testUsers=new ArrayList<User>();
+        ArrayList<Skill> testSkills=new ArrayList<Skill>();
+        ArrayList<Student> testStudents=new ArrayList<Student>();
+        ArrayList<Company> testCompanies=new ArrayList<Company>();
+        List<Recruiter> testRecruiters=new ArrayList<Recruiter>();
+        List<JobPosting> testJobs=new ArrayList<JobPosting>();
+
+        for(int i=0;i<50;i++){
+            testSkills.add(new Skill(faker.superhero().power()));
+        }
+
+        for(int i=0;i<DATA_SIZE;i++){
+            user1=newTestUser(faker);
+            User amUser=userService.save(user1,Role.RoleName.Student);
+            testUsers.add(amUser);
+            testStudents.add(newTestStudent(faker,amUser,testSkills));
+
+            User user2=newTestUser(faker);
+            User refUser=userService.save(user2,Role.RoleName.Recruiter);
+            testUsers.add(refUser);
+            Company pleasantCompany=newTestCompany(faker,refUser);
+            testCompanies.add(pleasantCompany);
+            Recruiter rec=newTestRecruiter(faker,refUser,pleasantCompany);
+            testRecruiters.add(rec);
+            testJobs.add(newTestJobPosting(faker,rec,testSkills));
+        }
+
+        //persist data
+        skillDAO.save(testSkills);
+        studentDAO.save(testStudents);
+        companyDAO.save(testCompanies);
+        recruiterDAO.save(testRecruiters);
+        jobPostingDAO.save(testJobs);
+        for(Student s:testStudents)
+            matchingService.registerStudent(s);
 
         LOG.info("Test data added");
     }
