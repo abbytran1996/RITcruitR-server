@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using TMCS_Client.DTOs;
 using TMCS_Client.ServerComms;
@@ -12,11 +13,10 @@ namespace TMCS_Client.Controllers
 /// A controller to interact with companies
 /// </summary>
 {
-	public class CompanyController {
+	public class CompanyController : ServerCommsBase {
         RestClient client = (Application.Current as App).Server;
 
         private static CompanyController companyController = null;
-		private CompanyComms companyComms = new CompanyComms();
 
         private CompanyController(){
             
@@ -85,10 +85,17 @@ namespace TMCS_Client.Controllers
         }
 
         internal void updateCompany(Company company) {
+            Console.WriteLine("Updating company");
+
             string url = Constants.Company.UPDATE_COMPANY_RESORUCE;
-            url = url.Replace("id", company.id.ToString());
+            url = url.Replace("{id}", company.id.ToString());
+
             var request = new RestRequest(url, Method.PUT);
+            request.AddJsonBody(company);
+
             var response = client.Execute<Company>(request);
+
+            ensureStatusCode(response, HttpStatusCode.OK);
         }
     }
 }
