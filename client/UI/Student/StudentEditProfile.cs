@@ -29,11 +29,14 @@ namespace TMCS_Client.UI.Student
             entSchoolName.Text = student.school;
             entGraduationDate.Text = student.graduationDate.ToString("MM/yy");
             entPhoneNumber.Text = student.phoneNumber != null ? student.phoneNumber:null;
-            entPreferredLocation.Text = "";
-            foreach(String location in student.preferredStates.ToArray()){
-                entPreferredLocation.Text += location + ", ";
+			if (student.preferredStates.Count > 0)
+			{
+                entPreferredLocation.Text = "";
+	            foreach(String location in student.preferredStates){
+	                entPreferredLocation.Text += location + ", ";
+	            }
+                entPreferredLocation.Text = entPreferredLocation.Text.Substring(0, entPreferredLocation.Text.Length - 2);
             }
-            entPreferredLocation.Text = entPreferredLocation.Text.Substring(0, entPreferredLocation.Text.Length - 2);
             pickPreferredCompanySize.SelectedItem = student.preferredCompanySize;
             entResumeFileLocation.Text = student.resumeLocation;
 
