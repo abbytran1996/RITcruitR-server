@@ -33,7 +33,10 @@ namespace TMCS_Client.UI {
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
             declineButton.Clicked += (object sender2, EventArgs e2) =>
-                acceptPosting(selectedMatch, true);
+            {
+                acceptPosting(selectedMatch, false);
+				bottomItems.Children.Clear();
+			};
             bottomItems.Children.Add(declineButton,
             new Rectangle(0, 0, 0.5, 1), AbsoluteLayoutFlags.All);
             Button acceptButton = new Button()
@@ -46,7 +49,8 @@ namespace TMCS_Client.UI {
             {
                 acceptPosting(selectedMatch, true);
                 selectedMatch.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
-            };
+				bottomItems.Children.Clear();
+			};
             bottomItems.Children.Add(acceptButton,
             new Rectangle(1, 0, 0.5, 1), AbsoluteLayoutFlags.All);
         }
