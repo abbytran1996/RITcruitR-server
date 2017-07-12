@@ -24,7 +24,6 @@ namespace TMCS_Client
         {
             public static string ADD_STUDENT_RESOURCE { get { return "/students"; } }
             public static string ADD_SKILLS_RESOURCE { get { return "/students/{id}/skills"; } }
-            public static string GET_MATCHES_RESORUCE { get { return "/students/{id}/matches"; } }
             public static string GET_STUDENT_BY_EMAIL_RESOURCE { get { return "/students/byEmail/{email}"; } }
 			public static string UPLOAD_RESUME { get { return "/students/{id}/uploadResume"; } }
 			public static string UPDATE_STUDENT { get { return "/students/{id}/update"; } }
@@ -59,7 +58,8 @@ namespace TMCS_Client
         }
         public static class Matches
         {
-            public static string ACCEPT_JOB_POSTING { get { return "/matches/{id}/accept"; } }
+			public static string ACCEPT_JOB_POSTING { get { return "/matches/{id}/accept"; } }
+			public static string GET_MATCHES_RESORUCE { get { return "/matches/studentMatches/{id}/"; } }
             public static string GET_PROBLEM_PHASE_MATCHES { get { return "/matches/posting/{id}/probphase"; } }
             public static string GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING { get { return "/matches/{jobPostingID}/problemResponsePending"; } }
             public static string ADD_RESPONSE_RESOURCE { get { return "/matches/{id}/response/{response}"; } }

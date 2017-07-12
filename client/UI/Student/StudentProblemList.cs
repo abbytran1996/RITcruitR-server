@@ -53,7 +53,7 @@ namespace TMCS_Client.UI {
         private void setupMatchedList()
         {
             var student = app.CurrentStudent;
-            matches = studentController.getMatchesForStudent(student);
+            matches = MatchController.getMatchController().getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
             var postings = matches.Where(match => match.currentPhase == Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT)

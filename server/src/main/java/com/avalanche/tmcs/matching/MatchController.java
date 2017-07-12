@@ -2,7 +2,8 @@ package com.avalanche.tmcs.matching;
 
         import com.avalanche.tmcs.job_posting.JobPosting;
         import com.avalanche.tmcs.job_posting.JobPostingDAO;
-        import org.springframework.transaction.annotation.Transactional;
+        import com.avalanche.tmcs.students.Student;
+        import com.avalanche.tmcs.students.StudentDAO;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RestController;
         import com.avalanche.tmcs.auth.*;
@@ -23,29 +24,43 @@ package com.avalanche.tmcs.matching;
 public class MatchController {
     private MatchDAO matchDAO;
     private JobPostingDAO jobDAO;
+    private StudentDAO studentDAO;
     private UserService userService;
     private SecurityService securityServices;
 
     @Autowired
-    public MatchController(MatchDAO matchDAO, JobPostingDAO jobDao, UserService userService, SecurityService securityService) {
+    public MatchController(MatchDAO matchDAO, JobPostingDAO jobDAO, StudentDAO studentDAO, UserService userService, SecurityService securityService) {
         this.matchDAO = matchDAO;
         this.userService = userService;
         this.securityServices = securityService;
-        this.jobDAO = jobDao;
+        this.jobDAO = jobDAO;
+        this.studentDAO = studentDAO;
+    }
+
+    @RequestMapping(value = "/studentMatches/{id}/", method = RequestMethod.GET)
+    public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id) {
+        Student student = studentDAO.findOne(id);
+        if(student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Match> matches =  matchDAO.findAllByStudent(student);
+        return ResponseEntity.ok(matches);
     }
 
     @RequestMapping(value = "/{id}/accept", method = RequestMethod.POST)
     public ResponseEntity<?> showInterest(@PathVariable long id, @RequestBody boolean acceptthis) {
         Match match = matchDAO.findOne(id);
-        if(match ==null){
+        if(match == null){
             return ResponseEntity.notFound().build();
         }
         if(acceptthis){
             match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
             match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+            match.setViewedSinceLastUpdate(false);
         }
         else{
             match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
+            match.setViewedSinceLastUpdate(true);
         }
         match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
@@ -78,9 +93,13 @@ public class MatchController {
     @RequestMapping(value = "/{jobPostingID}/problemResponsePending", method = RequestMethod.GET)
     public ResponseEntity<List<Match>> getMatchesWithProblemResponsePending(@PathVariable long jobPostingID){
         JobPosting job = jobDAO.findOne(jobPostingID);
-        List<Match> matches = matchDAO.readAllByJobAndCurrentPhaseAndApplicationStatus(job,
+        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
+        for(Match m : matches){
+            m.setViewedSinceLastUpdate(true);
+        }
+        matchDAO.save(matches);
 
         return ResponseEntity.ok(matches);
     }
@@ -92,9 +111,13 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Match> matches = matchDAO.readAllByJobAndCurrentPhaseAndApplicationStatus(job,
+        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
+        for(Match m : matches){
+            m.setViewedSinceLastUpdate(true);
+        }
+        matchDAO.save(matches);
 
         return ResponseEntity.ok(matches);
     }
@@ -112,9 +135,13 @@ public class MatchController {
     @RequestMapping(value="/{jobPostingID}/interviewPhaseMatches", method= RequestMethod.GET)
     public ResponseEntity<List<Match>> getInterviewPhaseMatches(@PathVariable long jobPostingID){
         JobPosting job = jobDAO.findOne(jobPostingID);
-        List<Match> matches = matchDAO.readAllByJobAndCurrentPhaseAndApplicationStatus(job,
+        List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.INTERVIEW,
                 Match.ApplicationStatus.IN_PROGRESS);
+        for(Match m : matches){
+            m.setViewedSinceLastUpdate(true);
+        }
+        matchDAO.save(matches);
 
         return ResponseEntity.ok(matches);
     }
@@ -122,6 +149,7 @@ public class MatchController {
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PATCH)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
+            match.setViewedSinceLastUpdate(false);
             match.setLastUpdatedTimeToNow();
             matchDAO.save(match);
         }
@@ -137,6 +165,9 @@ public class MatchController {
         }
 
         match.setStudentProblemResponse(response);
+        match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+        match.setViewedSinceLastUpdate(false);
+        match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
 
         return ResponseEntity.ok().build();
@@ -151,6 +182,9 @@ public class MatchController {
         }
 
         match.setStudentPresentationLink(link);
+        match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+        match.setViewedSinceLastUpdate(false);
+        match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
 
         return ResponseEntity.ok().build();
