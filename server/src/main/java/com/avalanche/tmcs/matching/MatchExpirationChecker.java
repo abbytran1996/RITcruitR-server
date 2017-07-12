@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Component
 public class MatchExpirationChecker {
-    private static final long HOURS_TO_MILLISECONDS   = 1000 * 60 * 60;
+    private static final long HOURS_TO_MILLISECONDS = 1000 * 60 * 60;
     private static final Logger LOGGER = LoggerFactory.getLogger(MatchExpirationChecker.class);
 
     private final MatchDAO matchDAO;
@@ -31,7 +31,7 @@ public class MatchExpirationChecker {
     }
 
     /**
-     *
+     * Checks every hour if any of the matches in the database haven't been updated recently
      */
     @Scheduled(fixedDelay = HOURS_TO_MILLISECONDS)
     public void checkForExpiredMatches() {
@@ -40,7 +40,7 @@ public class MatchExpirationChecker {
         allMatches.stream()
                 .filter(match -> {
                     // Assume the phase timeout is hours
-                    long matchUpdateTime = match.getJob().getPhaseTimeout() * HOURS_TO_MILLISECONDS;
+                    long matchUpdateTime = match.getJob().getPhaseTimeout() * 24 * HOURS_TO_MILLISECONDS;
                     Date updateDate = new Date(new java.util.Date().getTime() + matchUpdateTime);
                     return match.getTimeLastUpdated().compareTo(updateDate) < 0;
                 })

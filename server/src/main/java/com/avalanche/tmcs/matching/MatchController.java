@@ -119,7 +119,7 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
             match.setLastUpdatedTimeToNow();
@@ -137,6 +137,7 @@ public class MatchController {
         }
 
         match.setStudentProblemResponse(response);
+        match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
 
         return ResponseEntity.ok().build();
@@ -151,6 +152,7 @@ public class MatchController {
         }
 
         match.setStudentPresentationLink(link);
+        match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
 
         return ResponseEntity.ok().build();
