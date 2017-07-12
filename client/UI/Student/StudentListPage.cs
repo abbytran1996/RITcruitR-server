@@ -50,6 +50,9 @@ namespace TMCS_Client.UI {
             pageContent.Children.Add(matchesListContainer);
             
             Content = pageContent;
+
+
+            matchesList.ItemTapped += onItemTapped;
         }
 
         protected void setupMatchedList() {
@@ -66,7 +69,6 @@ namespace TMCS_Client.UI {
             matchesList.ItemsSource = postings;
             matchesList.RowHeight = 130;
 
-            matchesList.ItemTapped += onItemTapped;
         }
 
         protected abstract void onItemTapped(object sender, ItemTappedEventArgs e);

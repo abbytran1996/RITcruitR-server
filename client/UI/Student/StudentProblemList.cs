@@ -48,6 +48,8 @@ namespace TMCS_Client.UI {
             
             Content = pageContent;
 
+            matchesList.ItemTapped += onItemTapped;
+
         }
 
         private void setupMatchedList()
@@ -70,7 +72,6 @@ namespace TMCS_Client.UI {
             matchesList.ItemsSource = postings;
             matchesList.RowHeight = 130;
 
-            matchesList.ItemTapped += onItemTapped;
         }
 
 		private void onItemTapped(object sender, ItemTappedEventArgs e)
