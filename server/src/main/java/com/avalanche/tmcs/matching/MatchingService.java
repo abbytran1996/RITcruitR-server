@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 /**
  * Matches students and job postings
@@ -47,16 +48,34 @@ public class MatchingService {
     public void registerStudent(final Student student) {
         executor.execute(() -> {
             final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap = new HashMap<>();
+            final List<Match> studentMatches = matchDAO.findAllByStudent(student);
+            Predicate<JobPosting> newJobFilter = posting -> studentMatches.stream().noneMatch(match -> match.getJob().equals(posting));
             for (Skill skill : student.getSkills()) {
                 // This does one DB call for each skill in the student's profile
                 // Based on what I've seen on LinkedIn, I'd expect students to have maybe a hundred skill max? That's
                 // 100 calls. Would be better if we didn't need that many, but should be fine for a POC
-                MatchingService.this.countJobPostingsThatRequireSkill(matchedSkillsCountMap, skill);
+                List<JobPosting> postingsWithAtLeastOneRequiredSkill = jobPostingDAO.findAllByImportantSkillsContains(skill);
+                postingsWithAtLeastOneRequiredSkill.stream()
+                        .filter(newJobFilter)
+                        .forEach(posting -> {
+                            if(!matchedSkillsCountMap.containsKey(posting)) {
+                                matchedSkillsCountMap.put(posting, new MatchedSkillsCount());
+                            }
+                            matchedSkillsCountMap.get(posting).requiredSkillsCount += 1;
+                        });
 
-                MatchingService.this.countJobPostingsThatRecommendSkill(matchedSkillsCountMap, skill);
+                List<JobPosting> postingsWithAtLeastOneRecommendedSkill = jobPostingDAO.findAllByNicetohaveSkillsContains(skill);
+                postingsWithAtLeastOneRecommendedSkill.stream()
+                        .filter(newJobFilter)
+                        .forEach(posting -> {
+                            if(!matchedSkillsCountMap.containsKey(posting)) {
+                                matchedSkillsCountMap.put(posting, new MatchedSkillsCount());
+                            }
+                            matchedSkillsCountMap.get(posting).recommendedSkillsCount += 1;
+                        });
             }
 
-            final List<Match> matches = MatchingService.this.buildMatchesList(student, matchedSkillsCountMap);
+            final List<Match> matches = buildMatchesList(student, matchedSkillsCountMap);
 
             matchDAO.save(matches);
         });
@@ -103,7 +122,7 @@ public class MatchingService {
      * @param skills The list of skills to look for students with
      * @return A map from students who have at least one skill on the list to the number of skills on the list they have
      */
-    public Map<Student, Integer> countStudentsWithSkillInList(final Iterable<Skill> skills) {
+    Map<Student, Integer> countStudentsWithSkillInList(final Iterable<Skill> skills) {
         final Map<Student, Integer> skillsCount = new HashMap<>();
         for(Skill skill : skills) {
             Set<Student> studentsWithSkill = studentDAO.findAllBySkillsContains(skill);
@@ -128,7 +147,7 @@ public class MatchingService {
      * @param matchedSkillsCountMap A count of how many skills the student has in common with each job posting
      * @return A list of all the Match objects that could be generated
      */
-    public List<Match> buildMatchesList(final Student student, final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap) {
+    List<Match> buildMatchesList(final Student student, final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap) {
         final List<Match> matches = new ArrayList<>();
         for(JobPosting posting : matchedSkillsCountMap.keySet()) {
             MatchedSkillsCount matchedSkillsCount = matchedSkillsCountMap.get(posting);
@@ -150,39 +169,7 @@ public class MatchingService {
         return matches;
     }
 
-    /**
-     * Counts all the jobs in the database which list the provided skill as a required skill
-     *
-     * @param matchedSkillsCountMap A map which stores how many skills are matched for each JobPosting
-     * @param skill The skill to search for
-     */
-    public void countJobPostingsThatRecommendSkill(final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap, final Skill skill) {
-        Collection<JobPosting> postingsWithAtLeastOneRecommendedSkill = jobPostingDAO.findAllByNicetohaveSkillsContains(skill);
-        for(JobPosting posting : postingsWithAtLeastOneRecommendedSkill) {
-            if(!matchedSkillsCountMap.containsKey(posting)) {
-                matchedSkillsCountMap.put(posting, new MatchedSkillsCount());
-            }
-            matchedSkillsCountMap.get(posting).recommendedSkillsCount += 1;
-        }
-    }
-
-    /**
-     * Counts all the jobs in the database which list the provided skill as a recommended skill
-     *
-     * @param matchedSkillsCountMap A map which stores how many skills are matched for each JobPosting
-     * @param skill The skill to search for
-     */
-    public void countJobPostingsThatRequireSkill(final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap, final Skill skill) {
-        Collection<JobPosting> postingsWithAtLeastOneRequiredSkill = jobPostingDAO.findAllByImportantSkillsContains(skill);
-        for(JobPosting posting : postingsWithAtLeastOneRequiredSkill) {
-            if(!matchedSkillsCountMap.containsKey(posting)) {
-                matchedSkillsCountMap.put(posting, new MatchedSkillsCount());
-            }
-            matchedSkillsCountMap.get(posting).requiredSkillsCount += 1;
-        }
-    }
-
-    public static class MatchedSkillsCount {
+    static class MatchedSkillsCount {
         int requiredSkillsCount = 0;
         int recommendedSkillsCount = 0;
     }
