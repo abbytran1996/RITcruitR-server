@@ -329,8 +329,16 @@ namespace TMCS_Client.UI
                                        AbsoluteLayoutFlags.All);
 
             resumeUploadEntrySection.Children.Add(btnOpenFilePicker = new Button()
-            {
-                Text = "B",
+			{
+				BorderColor = Color.White,
+			    BorderWidth = 0.0,
+			    BackgroundColor = Color.White,
+			    BorderRadius = 0,
+#if __IOS__
+                Image = "TMCS_Client.iOS.Resources.folder.png",
+#elif __ANDROID__
+                Image = "folder.png",
+#endif
             }, new Rectangle(1.0, 0.5, 0.1, 1.0), AbsoluteLayoutFlags.All);
 
             btnOpenFilePicker.Clicked += (object sender, EventArgs e) =>

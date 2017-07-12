@@ -72,12 +72,12 @@ namespace TMCS_Client.Controllers {
             return response.Data;
         }
 
-        public Student addSkillsForStudent(Student student, List<Skill> skills)
+        public Student updateSkillsForStudent(Student student)
         {
             var request = new RestRequest(Constants.Students.ADD_SKILLS_RESOURCE, Method.POST);
             request.AddUrlSegment("id", student.id.ToString());
             request.RequestFormat = DataFormat.Json;
-            request.AddBody(skills);
+            request.AddBody(student.skills);
 
             var response = client.Execute<Student>(request);
             ensureStatusCode(response, HttpStatusCode.OK);

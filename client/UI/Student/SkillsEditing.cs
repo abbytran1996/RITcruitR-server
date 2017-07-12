@@ -77,7 +77,8 @@ namespace TMCS_Client.UI
 
             lblRequiredSkills = new SubSectionTitleLabel("Skills Selection");
             
-            requiredSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill);
+            requiredSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill,
+                                                                   new ObservableCollection<Skill>(associatedStudent.skills));
 
 			requiredSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(requiredSkills);
 
@@ -138,7 +139,8 @@ namespace TMCS_Client.UI
 
         private void saveSkills(){
             List<Skill> skillslist = new List<Skill>(requiredSkills.items);
-            StudentController.getStudentController().addSkillsForStudent(associatedStudent, skillslist);
+            associatedStudent.skills = skillslist;
+            StudentController.getStudentController().updateSkillsForStudent(associatedStudent);
             Navigation.PopAsync(true);
         }
 

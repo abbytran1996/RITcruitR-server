@@ -27,6 +27,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Defines and implements the API for interacting with Students
@@ -111,7 +112,13 @@ public class StudentsController {
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
-        studentDAO.save(updatedStudent);
+        Student student = studentDAO.findOne(id);
+        student.setSchool(updatedStudent.getSchool());
+        student.setGraduationDate(updatedStudent.getGraduationDate());
+        student.setPhoneNumber(updatedStudent.getPhoneNumber());
+        student.setPreferredStates(updatedStudent.getPreferredStates());
+        student.setPreferredCompanySize(updatedStudent.getPreferredCompanySize());
+        studentDAO.save(student);
         return ResponseEntity.ok().build();
     }
 
@@ -128,16 +135,12 @@ public class StudentsController {
     }
 
     @RequestMapping(value = "/{id}/skills", method = RequestMethod.POST)
-    public ResponseEntity<Student> addSkills(@PathVariable long id, @RequestBody List<Skill> skills){
+    public ResponseEntity<Student> updateSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
         Student ourstudent = studentDAO.findOne(id);
         if(ourstudent == null) {
             return ResponseEntity.notFound().build();
         }
-        HashSet<Skill> addThese = new HashSet<Skill>();
-        for (Skill s:skills) {
-            addThese.add(skillDAO.findByName(s.getName()));
-        }
-        ourstudent.setSkills(addThese);
+        ourstudent.setSkills(skills);
         studentDAO.save(ourstudent);
         matchingService.registerStudent(ourstudent);
         return ResponseEntity.ok(ourstudent);

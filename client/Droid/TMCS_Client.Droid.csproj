@@ -119,6 +119,7 @@
     <AndroidResource Include="Resources\drawable\add_job_posting.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\folder.png" />
   </ItemGroup>
   <Import Project="..\TMCS_Client.projitems" Label="Shared" Condition="Exists('..\TMCS_Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

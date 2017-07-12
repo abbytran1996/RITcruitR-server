@@ -13,6 +13,7 @@ namespace TMCS_Client.DTOs {
         public string email { get; set; }
         public string lastName { get; set; }
         public string firstName { get; set; }
+        public List<Skill> skills { get; set; }
         public List<string> preferredStates { get; set; }
         public string preferredCompanySize { get; set; }
         public int id { get; internal set; }
