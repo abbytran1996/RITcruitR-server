@@ -66,6 +66,7 @@ namespace TMCS_Client.UI {
 			declineButton.Clicked += (object sender, EventArgs e) =>
 			{
 				match.applicationStatus = Match.ApplicationStatus.REJECTED;
+                match.currentPhase = Match.CurrentPhase.NONE;
 				updateMatch();
 			};
             buttons.Children.Add(declineButton,
@@ -77,6 +78,7 @@ namespace TMCS_Client.UI {
 			acceptButton.Clicked += (object sender, EventArgs e) =>
 			{
 				match.currentPhase = Match.CurrentPhase.INTERVIEW;
+                match.applicationStatus = Match.ApplicationStatus.ACCEPTED;
 				updateMatch();
 			};
 
