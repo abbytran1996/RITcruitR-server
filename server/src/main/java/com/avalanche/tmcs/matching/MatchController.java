@@ -146,7 +146,7 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.PATCH)
     public ResponseEntity<Boolean> updateMatch(@PathVariable long id, @RequestBody Match match){
         if(id == match.getId()){
             match.setViewedSinceLastUpdate(false);
@@ -157,7 +157,7 @@ public class MatchController {
         return ResponseEntity.ok(true); //TODO make the result variable
     }
 
-    @RequestMapping(value = "{id}/response/{response}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/submitresponse/{response}", method = RequestMethod.POST)
     public ResponseEntity<?> setProblemResponse(@PathVariable long id, @PathVariable String response) {
         Match match = matchDAO.findOne(id);
         if(match == null) {
@@ -174,7 +174,7 @@ public class MatchController {
     }
 
 
-    @RequestMapping(value = "{id}/link/{link}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/submitlink/{link}", method = RequestMethod.POST)
     public ResponseEntity<?> setStudentLink(@PathVariable long id, @PathVariable String link) {
         Match match = matchDAO.findOne(id);
         if(match == null) {
