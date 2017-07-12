@@ -439,10 +439,10 @@ namespace TMCS_Client.UI
                 newJobPosting.recommendedSkillsWeight = slidNicetohaveSkillsWeight.Value;
                 newJobPosting.matchThreshold = slidMatchThreshold.Value;
                 newJobPosting.url = entWebpageURL.Text;
-                newJobPosting.requiredSkills = new List<Skill>(importantSkills.items);
-                newJobPosting.requiredSkills.Remove(Skill.NullSkill);
-                newJobPosting.recommendedSkills = new List<Skill>(nicetohaveSkills.items);
-                newJobPosting.recommendedSkills.Remove(Skill.NullSkill);
+                newJobPosting.importantSkills = new List<Skill>(importantSkills.items);
+                newJobPosting.importantSkills.Remove(Skill.NullSkill);
+                newJobPosting.nicetohaveSkills = new List<Skill>(nicetohaveSkills.items);
+                newJobPosting.nicetohaveSkills.Remove(Skill.NullSkill);
                 newJobPosting.recruiter = associatedRecruiter;
                 newJobPosting.problemStatement = editorProblemStatement.Text;
 

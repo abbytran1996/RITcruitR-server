@@ -12,8 +12,8 @@ namespace TMCS_Client.DTOs
         public int status { get; set; }
         public string positionTitle { get; set; }
         public string description { get; set; }
-        public List<Skill> requiredSkills { get; set; }
-		public List<Skill> recommendedSkills { get; set; }
+        public List<Skill> importantSkills { get; set; }
+		public List<Skill> nicetohaveSkills { get; set; }
 		public double matchThreshold { get; set; }
         public double recommendedSkillsWeight { get; set; }
         public Recruiter recruiter { get; set; }
