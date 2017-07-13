@@ -188,7 +188,7 @@ namespace TMCS_Client.UI
 
         private void acceptPosting(Match match, bool accept)
         {
-            studentController.acceptMatch(match, accept);
+            MatchController.getMatchController().acceptMatch(match, accept);
             match.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER;
         }
 
@@ -196,7 +196,7 @@ namespace TMCS_Client.UI
         {
             string response = txtStudentResponse.Text;
             var id = match.id;
-            StudentController.getStudentController().addStudentResponse(id, response);
+            MatchController.getMatchController().addStudentResponse(id, response);
 
         }
 

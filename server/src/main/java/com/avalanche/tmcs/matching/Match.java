@@ -2,6 +2,7 @@ package com.avalanche.tmcs.matching;
 
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 
@@ -66,6 +67,8 @@ public class Match {
     private String studentProblemResponse;
 
     private String studentPresentationLink;
+
+    private boolean viewedSinceLastUpdate = false;
 
     private Date timeLastUpdated;
 
@@ -143,6 +146,14 @@ public class Match {
 
     public void setStudentPresentationLink(final String studentPresentationLink) {
         this.studentPresentationLink = studentPresentationLink;
+    }
+
+    public boolean getViewedSinceLastUpdate(){
+        return viewedSinceLastUpdate;
+    }
+
+    public void setViewedSinceLastUpdate(boolean viewed){
+        viewedSinceLastUpdate = viewed;
     }
 
     @NotNull

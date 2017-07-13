@@ -57,7 +57,7 @@ namespace TMCS_Client.UI {
 
         protected void setupMatchedList() {
             var student = app.CurrentStudent;
-            matches = studentController.getMatchesForStudent(student);
+            matches = MatchController.getMatchController().getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
             var postings = matches.Where(match => match.currentPhase == phase)

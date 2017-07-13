@@ -180,7 +180,7 @@ namespace TMCS_Client.UI
 			string response = txtStudentURL.Text;
             response = response.Replace("/", "|");
 			var id = match.id;
-            StudentController.getStudentController().addStudentLink(id, response);
+            MatchController.getMatchController().addStudentLink(id, response);
 		}
 
 		void updateMatch()

@@ -57,7 +57,7 @@ namespace TMCS_Client.UI {
 
         private void acceptPosting(Match match, bool accept)
         {
-            studentController.acceptMatch(match, accept);
+            MatchController.getMatchController().acceptMatch(match, accept);
             setupMatchedList();
         }
     }

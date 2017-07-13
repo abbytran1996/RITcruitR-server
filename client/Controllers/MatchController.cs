@@ -41,20 +41,64 @@ namespace TMCS_Client.Controllers
 
             var response = client.Execute<Boolean>(request);
             Console.WriteLine(response.Data);
-        }
-        /*
-		public void addStudentResponse(Match match)
-		{
-			var matchResponse = match.studentProblemResponse;
-			var id = match.id;
-			var request = new RestRequest(Constants.Matches.ADD_RESPONSE_RESOURCE, Method.POST);
-			request.AddUrlSegment("{id}", id.ToString());
-			request.AddUrlSegment("{response}", matchResponse);
-			request.RequestFormat = DataFormat.Json;
-			request.AddBody(match);
+		}
 
-			var response = client.Execute(request);
-		}*/
+        public void acceptMatch(Match match, bool acceptthis)
+        {
+            var request = new RestRequest(Constants.Matches.ACCEPT_JOB_POSTING, Method.POST);
+            request.AddUrlSegment("id", match.id.ToString());
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(acceptthis);
+
+            var response = client.Execute(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
+            return;
+        }
+
+        public void addStudentResponse(long id, string matchResponse)
+        {
+            string url = Constants.Matches.ADD_RESPONSE_RESOURCE;
+            url = url.Replace("{id}", id.ToString());
+            url = url.Replace("{response}", matchResponse);
+            var request = new RestRequest(url, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(matchResponse);
+
+            var response = client.Execute(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
+            return;
+        }
+
+        public void addStudentLink(long id, string responseLink)
+        {
+            string url = Constants.Matches.ADD_LINK_RESOURCE;
+            url = url.Replace("{id}", id.ToString());
+            url = url.Replace("{link}", responseLink);
+            var request = new RestRequest(url, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(responseLink);
+
+            var response = client.Execute(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
+            return;
+        }
+
+		/// <summary>
+		/// Gets all the Match objects associated with the given student
+		/// </summary>
+		/// <param name="student">The student to get all the matches of</param>
+		/// <returns>All the matches associated with the given student</returns>
+		public List<Match> getMatchesForStudent(Student student)
+		{
+			var request = new RestRequest(Constants.Matches.GET_MATCHES_RESORUCE, Method.GET);
+			request.AddUrlSegment("id", student.id.ToString());
+			request.RequestFormat = DataFormat.Json;
+
+			var response = client.Execute<List<Match>>(request);
+			ensureStatusCode(response, HttpStatusCode.OK);
+
+			return response.Data;
+		}
 
         internal List<Match> getMatchesInPresentationPhase(JobPosting job) {
             var request = new RestRequest(Constants.Matches.GET_PRESENTATION_PHASE_MATCHES, Method.GET);
