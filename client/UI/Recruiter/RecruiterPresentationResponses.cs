@@ -21,13 +21,18 @@ namespace TMCS_Client.UI {
                 FontSize = 24.0,
                 HorizontalTextAlignment = TextAlignment.Center
             };
-            pageContent.Children.Add(responseListLabel);
+            pageContent.Children.Add(responseListLabel,
+                                    new Rectangle(0.5,0.0,0.9,0.075),
+                                    AbsoluteLayoutFlags.All);
 
             presentationResponsesList = new FormListView<Match, PresentationPhaseResponseCell>(
                 Match.EmptyMatch
                 );
             presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
+                if ((Match)presentationResponsesList.SelectedItem != Match.EmptyMatch)
+                {
+                    Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
+                }
             };
             pageContent.Children.Add(presentationResponsesList,
                 new Rectangle(0.0, 1.0, 1.0, 0.925),
@@ -93,9 +98,9 @@ namespace TMCS_Client.UI {
                 View = cellLayout;
             }
 
-            /*protected override void OnBindingContextChanged() {
+            protected override void OnBindingContextChanged() {
                 base.OnBindingContextChanged();
-                if(matchID == -1) {
+                if(((Match)BindingContext).id == -1) {
                     this.View = new AbsoluteLayout() {
                         HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
                     };
@@ -109,9 +114,9 @@ namespace TMCS_Client.UI {
                 } else {
                     //TODO Truncate/convert these values
                     tag.Text = "Tag: " + tag;
-                    timeSubmitted.Text = problemResponseTimeSubmitted.ToString();
+                    timeSubmitted.Text = ((Match)BindingContext).timeLastUpdated.ToString();
                 }
-            }*/
+            }
         }
     }
 }

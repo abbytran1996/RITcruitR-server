@@ -28,7 +28,9 @@ namespace TMCS_Client.UI
                 JobPosting.NullJobPosting);
 
             jobPostingsList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                Navigation.PushAsync(new PostingDetails((JobPosting)jobPostingsList.SelectedItem));
+                if ((JobPosting)jobPostingsList.SelectedItem != JobPosting.NullJobPosting){
+                    Navigation.PushAsync(new PostingDetails((JobPosting)jobPostingsList.SelectedItem));
+                }
             };
 
             pageContent.Children.Add(jobPostingsList,
