@@ -137,7 +137,7 @@ public class MatchController {
         JobPosting job = jobDAO.findOne(jobPostingID);
         List<Match> matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.INTERVIEW,
-                Match.ApplicationStatus.IN_PROGRESS);
+                Match.ApplicationStatus.ACCEPTED);
         for(Match m : matches){
             m.setViewedSinceLastUpdate(true);
         }

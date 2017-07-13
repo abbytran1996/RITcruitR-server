@@ -36,7 +36,7 @@ namespace TMCS_Client.UI {
                 }
             };
             pageContent.Children.Add(presentationResponsesList,
-                new Rectangle(0.0, 1.0, 1.0, 0.925),
+                new Rectangle(0.5, 1.0, 1.0, 0.925),
                 AbsoluteLayoutFlags.All);
 
             Content = pageContent;
@@ -76,7 +76,7 @@ namespace TMCS_Client.UI {
 
                 timeSubmitted = new Label() {
                     VerticalTextAlignment = TextAlignment.Start,
-                    HorizontalTextAlignment = TextAlignment.Start,
+                    HorizontalTextAlignment = TextAlignment.End,
                     FontSize = 12.0,
                     TextColor = Color.Gray
                 };
@@ -102,7 +102,7 @@ namespace TMCS_Client.UI {
 
             protected override void OnBindingContextChanged() {
                 base.OnBindingContextChanged();
-                if(((Match)BindingContext).id == -1) {
+                if ((BindingContext != null) && (((Match)BindingContext) == Match.EmptyMatch)){
                     this.View = new AbsoluteLayout() {
                         HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
                     };
@@ -113,9 +113,9 @@ namespace TMCS_Client.UI {
                         FontSize = 22.0,
                     }, new Rectangle(0.0, 0.0, 1.0, 1.0),
                                                              AbsoluteLayoutFlags.All);
-                } else {
+                }else if(BindingContext != null){
                     //TODO Truncate/convert these values
-                    tag.Text = "Tag: " + tag;
+                    tag.Text = "Tag: " + (((Match)BindingContext).tag == null ? "" : ((Match)BindingContext).tag);
                     timeSubmitted.Text = ((Match)BindingContext).timeLastUpdated.ToString();
                 }
             }
