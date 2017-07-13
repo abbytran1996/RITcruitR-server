@@ -3,6 +3,8 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.Recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -85,6 +87,7 @@ public class JobPosting {
         this.positionTitle = positionTitle;
     }
 
+    @Lob
     @NotNull
     public String getDescription() {
         return description;

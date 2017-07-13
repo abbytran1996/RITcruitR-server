@@ -38,12 +38,13 @@ namespace TMCS_Client.UI {
             if(matches.Count == 0) {
                 outputHolder.Children.Add(new SubSectionTitleLabel("No pending presentation responses"));
             } else {
-                var list = new ListView() {
-                    ItemsSource = matches,
-                    ItemTemplate = new DataTemplate(() => {
-                        return new PresentationPhaseResponseCell();
-                    })
+                var list = new FormListView<Match, PresentationPhaseResponseCell>(Match.EmptyMatch);
+                list.updateItems(matches);
+                list.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
+                    Navigation.PushModalAsync(new RecruiterPresentationResponseModal(list.SelectedItem as Match));
                 };
+
+                outputHolder.Children.Add(list);
             }
         }
 

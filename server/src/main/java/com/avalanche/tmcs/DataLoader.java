@@ -91,8 +91,8 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void performAdditionOfTestData() throws URISyntaxException {
-        Skill seizing = skillDAO.findByName("Revolution");
-        if(seizing != null) {
+        Skill xd = skillDAO.findByName("Experience Design");
+        if(xd != null) {
             LOG.warn("Already added test data, not adding it again");
             return;
         }
