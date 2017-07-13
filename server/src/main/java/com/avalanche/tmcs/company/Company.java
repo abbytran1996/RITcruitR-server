@@ -100,6 +100,7 @@ public class Company {
     }
 
     @NotNull
+    @Lob
     public String getCompanyDescription(){
         return companyDescription;
     }

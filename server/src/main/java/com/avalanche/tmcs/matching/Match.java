@@ -4,6 +4,7 @@ import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -62,6 +63,7 @@ public class Match {
     // Tag created by the recruiter to help organize students
     private String tag;
 
+    @Column(length = 1000)
     private String studentProblemResponse;
 
     private String studentPresentationLink;
@@ -188,4 +190,5 @@ public class Match {
         // to the constructor of the child class. Yay Java dates!
         setTimeLastUpdated(new Date(new java.util.Date().getTime()));
     }
+
 }

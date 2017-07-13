@@ -15,17 +15,17 @@ namespace TMCS_Client.UI {
         private AbsoluteLayout menu;
         private StackLayout pageContent = new StackLayout();
         private ScrollView matchesListContainer = new ScrollView();
-        private ListView matchesList = new ListView();
         private AbsoluteLayout bottomItems = new AbsoluteLayout() {
             HorizontalOptions = LayoutOptions.CenterAndExpand
         };
-
-        private App app = Application.Current as App;
+        
         private StudentController studentController = StudentController.getStudentController();
 
-        private List<Match> matches;
+        protected Match.CurrentPhase phase;
 
-        private Match.CurrentPhase phase;
+        protected App app = Application.Current as App;
+        protected List<Match> matches;
+        protected ListView matchesList = new ListView();
 
         public StudentListPage(String sectionLabel, Match.CurrentPhase currentPhase) {
             phase = currentPhase;
@@ -55,7 +55,7 @@ namespace TMCS_Client.UI {
             matchesList.ItemTapped += onItemTapped;
         }
 
-        protected void setupMatchedList() {
+        protected virtual void setupMatchedList() {
             var student = app.CurrentStudent;
             matches = MatchController.getMatchController().getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));

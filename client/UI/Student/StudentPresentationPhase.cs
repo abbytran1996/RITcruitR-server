@@ -43,7 +43,7 @@ namespace TMCS_Client.UI
         {
             this.selectedMatch = selectedMatch;
 
-            var presentation = selectedMatch.job.url;
+            var presentation = selectedMatch.job.recruiter.company.presentation;
 
             var companyPresentation = new WebView()
             {

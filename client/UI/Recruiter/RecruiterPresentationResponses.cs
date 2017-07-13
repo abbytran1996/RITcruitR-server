@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TMCS_Client.Controllers;
+using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.ListViews;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
@@ -43,7 +44,8 @@ namespace TMCS_Client.UI {
 
         protected override void OnAppearing() {
             base.OnAppearing();
-            presentationResponsesList.updateItems(MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting));
+            var matches = MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting);
+            presentationResponsesList.updateItems(matches);
         }
 
         class PresentationPhaseResponseCell : ViewCell {
