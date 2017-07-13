@@ -47,6 +47,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 					VerticalTextAlignment = TextAlignment.Center,
 					HorizontalTextAlignment = TextAlignment.Center,
 					FontSize = 22.0,
+                    IsEnabled = false,
 				}, new Rectangle(0.0, 0.0, 1.0, 1.0),
 														 AbsoluteLayoutFlags.All);
 			}

@@ -133,6 +133,7 @@ namespace TMCS_Client.UI
             );
 			btnSubmit.Clicked += (object sender, EventArgs e) =>
 		    {
+                txtStudentResponse.Text = txtStudentResponse.Text.Replace("\n", "|");
 				selectedMatch.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER;
                 selectedMatch.applicationStatus = Match.ApplicationStatus.IN_PROGRESS;
 				updateMatch();

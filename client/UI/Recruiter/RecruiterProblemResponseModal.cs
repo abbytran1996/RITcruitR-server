@@ -44,13 +44,20 @@ namespace TMCS_Client.UI
             problemResponseSection.Children.Add(lblProblemResponseHeader,
                                                 new Rectangle(0.5,0,0.9,Constants.Forms.Sizes.ROW_HEIGHT*2/3),
                                                 AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+            
+            var response = activeMatch.studentProblemResponse.Replace("|","\n");
+            ScrollView scroll = new ScrollView()
+            {
+                Content = lblProblemResponse,
+            };
 
             lblProblemResponse = new Label()
-            {
-                Text = activeMatch.studentProblemResponse,
-                FontSize = 19.0,
+			{
+				Text = response,
+				FontSize = 14.0,
 
-            };
+			};
+ 
             problemResponseSection.Children.Add(lblProblemResponse,
                                     new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT*2/3,
                                                   0.9,Constants.Forms.Sizes.ROW_HEIGHT*2),
