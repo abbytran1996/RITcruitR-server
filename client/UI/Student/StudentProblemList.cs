@@ -48,12 +48,14 @@ namespace TMCS_Client.UI {
             
             Content = pageContent;
 
+            matchesList.ItemTapped += onItemTapped;
+
         }
 
         private void setupMatchedList()
         {
             var student = app.CurrentStudent;
-            matches = studentController.getMatchesForStudent(student);
+            matches = MatchController.getMatchController().getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
 
             var postings = matches.Where(match => match.currentPhase == Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT)
@@ -70,7 +72,6 @@ namespace TMCS_Client.UI {
             matchesList.ItemsSource = postings;
             matchesList.RowHeight = 130;
 
-            matchesList.ItemTapped += onItemTapped;
         }
 
 		private void onItemTapped(object sender, ItemTappedEventArgs e)
