@@ -14,6 +14,21 @@ import java.util.Set;
  */
 @Entity
 public class JobPosting {
+    public enum Status{
+        OPEN(0),
+        FULFILLED(1),
+        DELETED(2);
+
+        private int status;
+
+        Status(int status){
+            this.status = status;
+        }
+
+        int toInt(){
+            return status;
+        }
+    }
 
     private long id;
 
@@ -177,21 +192,5 @@ public class JobPosting {
         result = 31 * result + getPositionTitle().hashCode();
         result = 31 * result + getUrl().hashCode();
         return result;
-    }
-}
-
-enum Status{
-    OPEN(0),
-    FULFILLED(1),
-    DELETED(2);
-
-    private int status;
-
-    Status(int status){
-        this.status = status;
-    }
-
-    int toInt(){
-        return status;
     }
 }

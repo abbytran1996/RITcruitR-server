@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TMCS_Client.Controllers;
+using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.ListViews;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
@@ -9,7 +10,7 @@ using Xamarin.Forms;
 namespace TMCS_Client.UI {
     class RecruiterPresentationResponses : ContentPage {
         private JobPosting activeJobPosting;
-        private FormListView<Match, PresentationPhaseResponseCell> presentationResponsesList;
+        private StackLayout outputHolder = new StackLayout();
 
         public RecruiterPresentationResponses(JobPosting activeJobPosting) {
             this.activeJobPosting = activeJobPosting;
@@ -23,13 +24,7 @@ namespace TMCS_Client.UI {
             };
             pageContent.Children.Add(responseListLabel);
 
-            presentationResponsesList = new FormListView<Match, PresentationPhaseResponseCell>(
-                Match.EmptyMatch
-                );
-            presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
-            };
-            pageContent.Children.Add(presentationResponsesList,
+            pageContent.Children.Add(outputHolder,
                 new Rectangle(0.0, 1.0, 1.0, 0.925),
                 AbsoluteLayoutFlags.All);
 
@@ -38,7 +33,18 @@ namespace TMCS_Client.UI {
 
         protected override void OnAppearing() {
             base.OnAppearing();
-            presentationResponsesList.updateItems(MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting));
+            outputHolder.Children.Clear();
+            var matches = MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting);
+            if(matches.Count == 0) {
+                outputHolder.Children.Add(new SubSectionTitleLabel("No pending presentation responses"));
+            } else {
+                var list = new ListView() {
+                    ItemsSource = matches,
+                    ItemTemplate = new DataTemplate(() => {
+                        return new PresentationPhaseResponseCell();
+                    })
+                };
+            }
         }
 
         class PresentationPhaseResponseCell : ViewCell {
@@ -92,26 +98,6 @@ namespace TMCS_Client.UI {
 
                 View = cellLayout;
             }
-
-            /*protected override void OnBindingContextChanged() {
-                base.OnBindingContextChanged();
-                if(matchID == -1) {
-                    this.View = new AbsoluteLayout() {
-                        HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
-                    };
-                    ((AbsoluteLayout)this.View).Children.Add(new Label() {
-                        Text = "No pending presentation responses",
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        FontSize = 22.0,
-                    }, new Rectangle(0.0, 0.0, 1.0, 1.0),
-                                                             AbsoluteLayoutFlags.All);
-                } else {
-                    //TODO Truncate/convert these values
-                    tag.Text = "Tag: " + tag;
-                    timeSubmitted.Text = problemResponseTimeSubmitted.ToString();
-                }
-            }*/
         }
     }
 }
