@@ -16,7 +16,7 @@ namespace TMCS_Client.UI
 
         private AbsoluteLayout problemResponseSection;
         private Label lblProblemResponseHeader;
-        private Label lblProblemResponse;
+        private Editor lblProblemResponse;
         private FormFieldLabel lblTag;
         private Picker pickTag;
         private Label lblTimeSubmitted;
@@ -46,18 +46,15 @@ namespace TMCS_Client.UI
                                                 AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
             
             var response = activeMatch.studentProblemResponse.Replace("|","\n");
-            ScrollView scroll = new ScrollView()
+
+            lblProblemResponse = new Editor()
             {
-                Content = lblProblemResponse,
+                Text = response,
+                FontSize = 14.0,
+                IsEnabled = false,
+
+
             };
-
-            lblProblemResponse = new Label()
-			{
-				Text = response,
-				FontSize = 14.0,
-
-			};
- 
             problemResponseSection.Children.Add(lblProblemResponse,
                                     new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT*2/3,
                                                   0.9,Constants.Forms.Sizes.ROW_HEIGHT*2),
@@ -143,7 +140,7 @@ namespace TMCS_Client.UI
                                                AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
 
             pageContent.Children.Add(problemResponseSection,
-                                    new Rectangle(0.0,0.1,1.0,Constants.Forms.Sizes.ROW_HEIGHT * 5.0),
+                                    new Rectangle(0.0,Constants.Forms.Sizes.ROW_HEIGHT * 5.0,1.0,Constants.Forms.Sizes.ROW_HEIGHT * 5.0),
                                     AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.YProportional |
                                     AbsoluteLayoutFlags.WidthProportional);
 

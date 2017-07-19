@@ -55,6 +55,8 @@ public class JobPosting {
 
     private long phaseTimeout;
 
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride (name = "problemStatement", column = @Column(length = 1000))})
     private String problemStatement;
 
     private String url;
