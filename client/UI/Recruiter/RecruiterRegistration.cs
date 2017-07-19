@@ -364,19 +364,21 @@ namespace TMCS_Client.UI
 
 		private bool emailCheck()
 		{
+            if(txtCompanyEmail.Text == null) {
+                txtCompanyEmail.BackgroundColor = Color.PaleVioletRed;
+                return false;
+            }
 
-            bool result;
             if (Regex.IsMatch(txtCompanyEmail.Text, Constants.Emails.RECRUITER))
 			{
 				txtCompanyEmail.BackgroundColor = Color.PaleGreen;
-				result = true;
+				return true;
 			}
 			else
 			{
 				txtCompanyEmail.BackgroundColor = Color.PaleVioletRed;
-				result = false;
+				return false;
 			}
-			return result;
 		}
 
 		private void PhoneNumberUpdate()
@@ -409,18 +411,21 @@ namespace TMCS_Client.UI
 
 		private bool passwordCheck()
 		{
-			bool result;
+            if(txtPassword.Text == null) {
+                txtPassword.BackgroundColor = Color.PaleVioletRed;
+                return false;
+            }
+
 			if (Regex.IsMatch(txtPassword.Text, Constants.PASSWORD_REGEX))
 			{
 				txtPassword.BackgroundColor = Color.PaleGreen;
-				result = true;
+                return true;
 			}
 			else
 			{
 				txtPassword.BackgroundColor = Color.PaleVioletRed;
-				result = false;
+                return false;
 			}
-			return result;
 		}
 
 		private bool retypePasswordCheck()

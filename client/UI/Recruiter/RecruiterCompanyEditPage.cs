@@ -14,7 +14,7 @@ namespace TMCS_Client.UI {
             txtCompanyEmailSuffix.Text = company.emailSuffix;
             txtCompanyName.Text = company.companyName;
             txtCompanyLocation.Text = company.location;
-            txtCompanySize.Text = company.size;
+            //txtCompanySize. = company.size;
             txtPresentationLink.Text = company.presentation;
             txtWebsiteURL.Text = company.websiteURL;
 
@@ -26,7 +26,7 @@ namespace TMCS_Client.UI {
             company.companyName = txtCompanyName.Text;
             company.emailSuffix = txtCompanyEmailSuffix.Text;
             company.companyDescription = txtCompanyDescription.Text;
-            company.size = txtCompanySize.Text;
+            company.size = txtCompanySize.SelectedItem.ToString();
             company.location = txtCompanyLocation.Text;
             company.presentation = presentation;
             company.websiteURL = txtWebsiteURL.Text;

@@ -11,6 +11,15 @@ namespace TMCS_Client.DTOs
 	
 	public class Company
 	{
+        public enum Size {
+            DONT_CARE,
+            STARTUP,
+            SMALL,
+            MEDIUM,
+            LARGE,
+            HUGE,
+        };
+
         public long id { get; set; }
         public User user { get; set; }
         public string companyName { get; set; }

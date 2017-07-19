@@ -7,6 +7,7 @@ using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.CustomUIElements.Entries;
 
 using Xamarin.Forms;
+using TMCS_Client.CustomUIElements.Pickers;
 
 namespace TMCS_Client.UI
 {
@@ -38,7 +39,7 @@ namespace TMCS_Client.UI
 
         //Company Size
         private FormFieldLabel lblCompanySize;
-        protected FormEntry txtCompanySize;
+        protected Picker txtCompanySize;
 
         //Company Presentation
         private FormFieldLabel lblPresentationLink;
@@ -157,12 +158,9 @@ namespace TMCS_Client.UI
                                        new Rectangle(0.5, 0, 0.9, 0.5),
                                        AbsoluteLayoutFlags.All);
 
-            SizeInput.Children.Add(txtCompanySize =
-                                       new FormEntry("Company Size", Keyboard.Text),
+            SizeInput.Children.Add(txtCompanySize = new CompanySizePicker(),
                                        new Rectangle(0.5, 1.0, 0.9, 0.5),
                                        AbsoluteLayoutFlags.All);
-
-            txtCompanySize.Completed += (object sender, EventArgs e) => txtCompanyDescription.Focus();
 
             registrationForm.Children.Add(SizeInput,
                                          new Rectangle(0, 4 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -277,7 +275,7 @@ namespace TMCS_Client.UI
                     txtCompanyName.Text,
                     txtCompanyEmailSuffix.Text,
                     txtCompanyDescription.Text,
-                    txtCompanySize.Text,
+                    txtCompanySize.SelectedItem.ToString(),
                     txtCompanyLocation.Text,
                     presentation,
                     txtWebsiteURL.Text

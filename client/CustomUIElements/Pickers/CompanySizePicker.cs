@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
 namespace TMCS_Client.CustomUIElements.Pickers
@@ -8,9 +9,9 @@ namespace TMCS_Client.CustomUIElements.Pickers
     {
         public CompanySizePicker()
         {
-			this.Items.Add("Large");
-			this.Items.Add("Medium");
-			this.Items.Add("Small");
+            foreach(Company.Size size in Enum.GetValues(typeof(Company.Size))) {
+                Items.Add(size.ToString());
+            }
 			this.Title = "Preferred Company Size";
         }
 
