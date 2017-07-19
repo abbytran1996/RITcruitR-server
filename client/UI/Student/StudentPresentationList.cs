@@ -8,12 +8,12 @@ namespace TMCS_Client.UI {
         public StudentPresentationList() : base("You are in the presentation phase with the following jobs:", Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT) { }
 
         protected override void onItemTapped(object sender, ItemTappedEventArgs e) {
-            if(!wasExecuted) {
+            //if(!wasExecuted) {
                 var selectedMatch = ((CellData)e.Item).Match;
 
                 Navigation.PushAsync(new StudentPresentationPhase(selectedMatch));
-                wasExecuted = true;
-            }
+            //    wasExecuted = true;
+            //}
         }
     }
 }

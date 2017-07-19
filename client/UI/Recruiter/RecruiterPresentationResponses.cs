@@ -10,7 +10,7 @@ using Xamarin.Forms;
 namespace TMCS_Client.UI {
     class RecruiterPresentationResponses : ContentPage {
         private JobPosting activeJobPosting;
-        private StackLayout outputHolder = new StackLayout();
+        private FormListView<Match, PresentationPhaseResponseCell> presentationResponsesList;
 
         public RecruiterPresentationResponses(JobPosting activeJobPosting) {
             this.activeJobPosting = activeJobPosting;
@@ -22,10 +22,21 @@ namespace TMCS_Client.UI {
                 FontSize = 24.0,
                 HorizontalTextAlignment = TextAlignment.Center
             };
-            pageContent.Children.Add(responseListLabel);
+            pageContent.Children.Add(responseListLabel,
+                                    new Rectangle(0.5,0.0,0.9,0.075),
+                                    AbsoluteLayoutFlags.All);
 
-            pageContent.Children.Add(outputHolder,
-                new Rectangle(0.0, 1.0, 1.0, 0.925),
+            presentationResponsesList = new FormListView<Match, PresentationPhaseResponseCell>(
+                Match.EmptyMatch
+                );
+            presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
+                if ((Match)presentationResponsesList.SelectedItem != Match.EmptyMatch)
+                {
+                    Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
+                }
+            };
+            pageContent.Children.Add(presentationResponsesList,
+                new Rectangle(0.5, 1.0, 1.0, 0.925),
                 AbsoluteLayoutFlags.All);
 
             Content = pageContent;
@@ -33,19 +44,8 @@ namespace TMCS_Client.UI {
 
         protected override void OnAppearing() {
             base.OnAppearing();
-            outputHolder.Children.Clear();
             var matches = MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting);
-            if(matches.Count == 0) {
-                outputHolder.Children.Add(new SubSectionTitleLabel("No pending presentation responses"));
-            } else {
-                var list = new FormListView<Match, PresentationPhaseResponseCell>(Match.EmptyMatch);
-                list.updateItems(matches);
-                list.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                    Navigation.PushModalAsync(new RecruiterPresentationResponseModal(list.SelectedItem as Match));
-                };
-
-                outputHolder.Children.Add(list);
-            }
+            presentationResponsesList.updateItems(matches);
         }
 
         class PresentationPhaseResponseCell : ViewCell {
@@ -76,7 +76,7 @@ namespace TMCS_Client.UI {
 
                 timeSubmitted = new Label() {
                     VerticalTextAlignment = TextAlignment.Start,
-                    HorizontalTextAlignment = TextAlignment.Start,
+                    HorizontalTextAlignment = TextAlignment.End,
                     FontSize = 12.0,
                     TextColor = Color.Gray
                 };
@@ -98,6 +98,26 @@ namespace TMCS_Client.UI {
                     AbsoluteLayoutFlags.All);
 
                 View = cellLayout;
+            }
+
+            protected override void OnBindingContextChanged() {
+                base.OnBindingContextChanged();
+                if ((BindingContext != null) && (((Match)BindingContext) == Match.EmptyMatch)){
+                    this.View = new AbsoluteLayout() {
+                        HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
+                    };
+                    ((AbsoluteLayout)this.View).Children.Add(new Label() {
+                        Text = "No pending presentation responses",
+                        VerticalTextAlignment = TextAlignment.Center,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        FontSize = 22.0,
+                    }, new Rectangle(0.0, 0.0, 1.0, 1.0),
+                                                             AbsoluteLayoutFlags.All);
+                }else if(BindingContext != null){
+                    //TODO Truncate/convert these values
+                    tag.Text = "Tag: " + (((Match)BindingContext).tag == null ? "" : ((Match)BindingContext).tag);
+                    timeSubmitted.Text = ((Match)BindingContext).timeLastUpdated.ToString();
+                }
             }
         }
     }
