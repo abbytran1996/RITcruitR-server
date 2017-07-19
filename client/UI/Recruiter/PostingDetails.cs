@@ -68,14 +68,22 @@ namespace TMCS_Client.UI
 
         protected override void OnAppearing() {
             var jobPostingsController = JobPostingController.getJobPostingController();
-            problemStatementSection.Text = "Problem Phase - " + jobPostingsController.getProbPhasePosts(activeJobPosting).ToString();
+            var matchController = MatchController.getMatchController();
 
-            var numPresentationPhaseMatches = MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting).Count;
-            presentationSection.Text = String.Format("Presentation Phase - {0}", numPresentationPhaseMatches);
+            var numProblemPhaseMatches = jobPostingsController.getProbPhasePosts(activeJobPosting);
+            long numUnviewedProblemPhaseMatches = matchController.getUnviewedProbPhaseMatches(activeJobPosting);
+            problemStatementSection.Text = String.Format("Problem Phase - {0}", numProblemPhaseMatches) + 
+                (numUnviewedProblemPhaseMatches > 0 ? String.Format(" ({0} new)",numUnviewedProblemPhaseMatches) : "");
 
-            interviewSection.Text = 
-                String.Format("Interview Phase - {0}", 
-                              MatchController.getMatchController().getInterviewPhaseMatchesCount(activeJobPosting));
+            var numPresentationPhaseMatches = MatchController.getMatchController().getPresentationPhaseMatchesCount(activeJobPosting);
+			var numUnviewedPresentationPhaseMatches = matchController.getUnviewedPresentationPhaseMatchesCount(activeJobPosting);
+			presentationSection.Text = String.Format("Presentation Phase - {0}", numPresentationPhaseMatches) +
+				(numUnviewedPresentationPhaseMatches > 0 ? String.Format(" ({0} new)", numUnviewedPresentationPhaseMatches) : "");
+
+			var numInterviewPhaseMatches = MatchController.getMatchController().getInterviewPhaseMatchesCount(activeJobPosting);
+			var numUnviewedInterviewPhaseMatches = matchController.getUnviewedInterviewPhaseMatchesCount(activeJobPosting);
+			interviewSection.Text = String.Format("Interview Phase - {0}", numInterviewPhaseMatches) +
+				(numUnviewedInterviewPhaseMatches > 0 ? String.Format(" ({0} new)", numUnviewedInterviewPhaseMatches) : "");
 
             base.OnAppearing();
         }

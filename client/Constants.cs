@@ -60,13 +60,17 @@ namespace TMCS_Client
         {
 			public static string ACCEPT_JOB_POSTING { get { return "/matches/{id}/accept"; } }
 			public static string GET_MATCHES_RESORUCE { get { return "/matches/studentMatches/{id}/"; } }
-            public static string GET_PROBLEM_PHASE_MATCHES { get { return "/matches/posting/{id}/probphase"; } }
+			public static string GET_PROBLEM_PHASE_MATCHES { get { return "/matches/posting/{id}/probphase"; } }
+			public static string GET_UNVIEWED_PROBLEM_PHASE_MATCHES { get { return "/matches/posting/{id}/probphase/unviewed"; } }
             public static string GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING { get { return "/matches/{jobPostingID}/problemResponsePending"; } }
             public static string ADD_RESPONSE_RESOURCE { get { return "/matches/{id}/submitresponse/{response}"; } }
             public static string ADD_LINK_RESOURCE { get { return "/matches/{id}/submitlink/{link}"; } }
             public static string UPDATE_MATCH { get { return "/matches/{id}/update"; } }
             public static string GET_PRESENTATION_PHASE_MATCHES { get { return "/matches/{id}/presentationResponsePending"; } }
             public static string GET_INTERVIEW_PHASE_MATCHES_COUNT { get { return "/matches/{jobPostingID}/interviewPhaseMatches/Count"; } }
+			public static string GET_UNVIEWED_INTERVIEW_PHASE_MATCHES_COUNT { get { return "/matches/{jobPostingID}/interviewPhaseMatches/unviewed/Count"; } }
+			public static string GET_PRESENTATION_PHASE_MATCHES_COUNT { get { return "/matches/{jobPostingID}/presentationPhaseMatches/Count"; } }
+			public static string GET_UNVIEWED_PRESENTATION_PHASE_MATCHES_COUNT { get { return "/matches/{jobPostingID}/presentationPhaseMatches/unviewed/Count"; } }
             public static string GET_INTERVIEW_PHASE_MATCHES { get { return "/matches/{jobPostingID}/interviewPhaseMatches"; } }
         }
 

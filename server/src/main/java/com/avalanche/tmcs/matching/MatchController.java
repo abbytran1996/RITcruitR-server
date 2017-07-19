@@ -78,6 +78,20 @@ public class MatchController {
 
         return ResponseEntity.ok(matchesForJob);
     }
+
+    @RequestMapping(value = "/posting/{id}/probphase/unviewed", method=RequestMethod.GET)
+    public ResponseEntity<Long> getUnviewedProbPhaseMatches(@PathVariable long id){
+        JobPosting job = jobDAO.findOne(id);
+        if(job ==null){
+            return ResponseEntity.notFound().build();
+        }
+        long matchesForJob = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatusAndViewedSinceLastUpdateIsFalse(job,
+                Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+                Match.ApplicationStatus.IN_PROGRESS);
+
+        return ResponseEntity.ok(matchesForJob);
+    }
+
     @RequestMapping(value = "/posting/{id}/presentationphase", method=RequestMethod.GET)
     public ResponseEntity<Long> getPresentationPhaseMatches(@PathVariable long id){
         JobPosting job = jobDAO.findOne(id);
@@ -127,6 +141,36 @@ public class MatchController {
         JobPosting job = jobDAO.findOne(jobPostingID);
         long matches = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,
                 Match.CurrentPhase.INTERVIEW,
+                Match.ApplicationStatus.ACCEPTED);
+
+        return ResponseEntity.ok(matches);
+    }
+
+    @RequestMapping(value="/{jobPostingID}/interviewPhaseMatches/unviewed/Count", method= RequestMethod.GET)
+    public ResponseEntity<Long> getUnviewedInterviewPhaseMatchesCount(@PathVariable long jobPostingID){
+        JobPosting job = jobDAO.findOne(jobPostingID);
+        long matches = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatusAndViewedSinceLastUpdateIsFalse(job,
+                Match.CurrentPhase.INTERVIEW,
+                Match.ApplicationStatus.ACCEPTED);
+
+        return ResponseEntity.ok(matches);
+    }
+
+    @RequestMapping(value="/{jobPostingID}/presentationPhaseMatches/Count", method= RequestMethod.GET)
+    public ResponseEntity<Long> getPresentationPhaseMatchesCount(@PathVariable long jobPostingID){
+        JobPosting job = jobDAO.findOne(jobPostingID);
+        long matches = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,
+                Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
+                Match.ApplicationStatus.IN_PROGRESS);
+
+        return ResponseEntity.ok(matches);
+    }
+
+    @RequestMapping(value="/{jobPostingID}/presentationPhaseMatches/unviewed/Count", method= RequestMethod.GET)
+    public ResponseEntity<Long> getUnviewedPresentationPhaseMatchesCount(@PathVariable long jobPostingID){
+        JobPosting job = jobDAO.findOne(jobPostingID);
+        long matches = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatusAndViewedSinceLastUpdateIsFalse(job,
+                Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
                 Match.ApplicationStatus.IN_PROGRESS);
 
         return ResponseEntity.ok(matches);

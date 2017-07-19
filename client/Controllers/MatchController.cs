@@ -119,6 +119,45 @@ namespace TMCS_Client.Controllers
             return response.Data;
         }
 
+        public long getUnviewedInterviewPhaseMatchesCount(JobPosting job)
+        {
+			var request = new RestRequest(Constants.Matches.GET_UNVIEWED_INTERVIEW_PHASE_MATCHES_COUNT, Method.GET);
+			request.AddUrlSegment("jobPostingID", job.id.ToString());
+			request.RequestFormat = DataFormat.Json;
+
+			var response = client.Execute<long>(request);
+			return response.Data;
+        }
+
+		public long getPresentationPhaseMatchesCount(JobPosting job)
+		{
+			var request = new RestRequest(Constants.Matches.GET_PRESENTATION_PHASE_MATCHES_COUNT, Method.GET);
+			request.AddUrlSegment("jobPostingID", job.id.ToString());
+			request.RequestFormat = DataFormat.Json;
+
+			var response = client.Execute<long>(request);
+			return response.Data;
+		}
+
+		public long getUnviewedPresentationPhaseMatchesCount(JobPosting job)
+		{
+			var request = new RestRequest(Constants.Matches.GET_UNVIEWED_PRESENTATION_PHASE_MATCHES_COUNT, Method.GET);
+			request.AddUrlSegment("jobPostingID", job.id.ToString());
+			request.RequestFormat = DataFormat.Json;
+
+			var response = client.Execute<long>(request);
+			return response.Data;
+		}
+
+        public long getUnviewedProbPhaseMatches(JobPosting job){
+            var request = new RestRequest(Constants.Matches.GET_UNVIEWED_PROBLEM_PHASE_MATCHES, Method.GET);
+            request.AddUrlSegment("id",job.id.ToString());
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute<long>(request);
+            return response.Data;
+        }
+
 		public List<Match> getInterviewPhaseMatches(JobPosting job)
 		{
 			var request = new RestRequest(Constants.Matches.GET_INTERVIEW_PHASE_MATCHES, Method.GET);

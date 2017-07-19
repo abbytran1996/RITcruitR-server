@@ -81,10 +81,6 @@ namespace TMCS_Client.UI {
                     TextColor = Color.Gray
                 };
 
-                url.SetBinding(Label.TextProperty, new Binding("studentPresentationLink"));
-                tag.SetBinding(Label.TextProperty, new Binding("tag"));
-                timeSubmitted.SetBinding(Label.TextProperty, new Binding("timeLastUpdated"));
-
                 cellLayout.Children.Add(url,
                     new Rectangle(0.5, 0.0, 0.95, 0.75),
                     AbsoluteLayoutFlags.All);
@@ -116,6 +112,7 @@ namespace TMCS_Client.UI {
                 }else if(BindingContext != null){
                     //TODO Truncate/convert these values
                     tag.Text = "Tag: " + (((Match)BindingContext).tag == null ? "" : ((Match)BindingContext).tag);
+                    url.Text = /*"URL: " + */(((Match)BindingContext).studentPresentationLink == null ? "" : ((Match)BindingContext).studentPresentationLink.ToString());
                     timeSubmitted.Text = ((Match)BindingContext).timeLastUpdated.ToString();
                 }
             }

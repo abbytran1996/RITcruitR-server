@@ -76,7 +76,7 @@ namespace TMCS_Client.UI
                 }
             };
             problemResponseSection.Children.Add(problemResponseList,
-                                              new Rectangle(0.5, 1.0, 0.85, 0.925),
+                                              new Rectangle(0.5, 1.0, 1.0, 0.925),
                                               AbsoluteLayoutFlags.All);
 
 

@@ -1,19 +1,15 @@
 ﻿using System;
+using TMCS_Client.DTOs;
+using TMCS_Client.Controllers;
 using Xamarin.Forms;
 
 namespace TMCS_Client.CustomUIElements.ViewCells
 {
     public class JobPostingListCell : ViewCell
 	{
-        //TODO Refector to be more like ProblemResponseListCell
-		public static readonly BindableProperty JobPostingIDProperty =
-			BindableProperty.Create("jobPostingID", typeof(long), typeof(JobPostingListCell), -1L);
-
-		public long jobPostingID
-		{
-			get { return (long)GetValue(JobPostingIDProperty); }
-			set { SetValue(JobPostingIDProperty, value); }
-		}
+        Label lblJobPostingPositionTitle;
+        Label lblJobPostingLocation;
+        Label lblJobPostingNewApplicants;
 
         public JobPostingListCell()
         {
@@ -23,45 +19,40 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                 BackgroundColor = Color.White,
             };
 
-            Label jobPostingPositionTitle = new Label()
+            lblJobPostingPositionTitle = new Label()
             {
                 VerticalTextAlignment = TextAlignment.End,
                 HorizontalTextAlignment = TextAlignment.Start,
                 FontSize = 20.0,
             };
 
-            Label jobPostingLocation = new Label()
+            lblJobPostingLocation = new Label()
             {
                 VerticalTextAlignment = TextAlignment.Start,
                 HorizontalTextAlignment = TextAlignment.Start,
                 FontSize = 14.0,
             };
 
-            Label jobPostingNewApplicants = new Label()
+            lblJobPostingNewApplicants = new Label()
             {
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.End,
-                FontSize = 18.0,
+                FontSize = 14.0,
                 TextColor = Color.Red,
-                Text = "400 new",//Change to binding later
+                Text = ""
             };
 
-            cellLayout.Children.Add(jobPostingPositionTitle,
+            cellLayout.Children.Add(lblJobPostingPositionTitle,
                                    new Rectangle(16.0, 0.0, 0.7, 0.5),
                                     AbsoluteLayoutFlags.SizeProportional |
                                    AbsoluteLayoutFlags.YProportional);
-            cellLayout.Children.Add(jobPostingLocation,
+            cellLayout.Children.Add(lblJobPostingLocation,
                                     new Rectangle(16.0,1.0,0.7,0.5),
 								   AbsoluteLayoutFlags.SizeProportional |
 								   AbsoluteLayoutFlags.YProportional);
-            cellLayout.Children.Add(jobPostingNewApplicants,
+            cellLayout.Children.Add(lblJobPostingNewApplicants,
                                    new Rectangle(0.9,0.0,0.2,1.0),
                                    AbsoluteLayoutFlags.All);
-
-            jobPostingPositionTitle.SetBinding(Label.TextProperty, "positionTitle");
-            jobPostingLocation.SetBinding(Label.TextProperty, "location");
-
-            this.SetBinding(JobPostingListCell.JobPostingIDProperty,"id");
 
             View = cellLayout;
         }
@@ -69,7 +60,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            if (jobPostingID == -1)
+            if ((BindingContext != null) && (((JobPosting)BindingContext) == JobPosting.NullJobPosting))
             {
                 this.View = new AbsoluteLayout()
                 {
@@ -83,6 +74,13 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                     FontSize = 22.0,
                 }, new Rectangle(0.0, 0.0, 1.0, 1.0),
                                                          AbsoluteLayoutFlags.All);
+            }else if(BindingContext != null){
+                lblJobPostingLocation.Text = ((JobPosting)BindingContext).location;
+                lblJobPostingPositionTitle.Text = ((JobPosting)BindingContext).positionTitle;
+                lblJobPostingNewApplicants.Text = 
+                    MatchController.getMatchController().getUnviewedProbPhaseMatches(((JobPosting)BindingContext)) +
+                    MatchController.getMatchController().getUnviewedPresentationPhaseMatchesCount(((JobPosting)BindingContext)) +
+                    MatchController.getMatchController().getUnviewedInterviewPhaseMatchesCount(((JobPosting)BindingContext)) > 0 ?"NEW":"";
             }
         }
     }

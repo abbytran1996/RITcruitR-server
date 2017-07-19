@@ -16,7 +16,6 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             {
                 HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
                 BackgroundColor = Color.FromHex("eaeff2"),
-                Padding = new Thickness(15, 15, 15, 15),
             };
 
             lblProblemResponse = new Label()
