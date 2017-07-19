@@ -85,12 +85,15 @@ namespace TMCS_Client.UI.Student
                     entGraduationDate.Text, "MM/yy", null);
                 student.phoneNumber = entPhoneNumber.Text != null ? entPhoneNumber.Text.Replace("(", "").Replace(")", "")
                     .Replace(" ", "").Replace("-", "") : "";
-                student.preferredStates = new List<String>(entPreferredLocation.Text.Replace(", ", ",").Split(','));
+                student.preferredStates = String.IsNullOrEmpty(entPreferredLocation.Text)?new List<String>():
+                    new List<String>(entPreferredLocation.Text.Trim(new char[] {' ', ','}).Replace(", ", ",").Split(','));
                 student.preferredCompanySize = pickPreferredCompanySize.getPreferredSize();
                 StudentController.getStudentController().updateStudent(student);
 
                 if(entResumeFileLocation.Text != student.resumeLocation){
-                    StudentController.getStudentController().uploadResume(student.id, new Resume(entResumeFileLocation.Text));
+                    Resume newResume = new Resume(entResumeFileLocation.Text);
+                    StudentController.getStudentController().uploadResume(student.id, newResume);
+                    student.resumeLocation = newResume.fileName;
                 }
                 Navigation.PopAsync();
             }

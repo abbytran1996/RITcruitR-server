@@ -140,7 +140,11 @@ public class StudentsController {
         boolean success = false;
         try {
             if(student.getResumeLocation() != null){
-                //TODO Delete old resume first
+                File oldResumeFile = new File("./resumes/" + Long.toString(id) + "/" +
+                                        student.getResumeLocation());
+                if(oldResumeFile.exists()){
+                    oldResumeFile.delete();
+                }
             }
 
             File resumeFile = new File("./resumes/" + Long.toString(id) + "/" +

@@ -401,7 +401,8 @@ namespace TMCS_Client.UI
                         entGraduationDate.Text,
                     entPhoneNumber.Text != null ? entPhoneNumber.Text.Replace("(", "").Replace(")", "")
                         .Replace(" ", "").Replace("-", "") : "",
-                    new List<String>(entPreferredLocation.Text.Replace(", ", ",").Split(',')),
+                    String.IsNullOrEmpty(entPreferredLocation.Text)?new List<String>():
+                        new List<String>(entPreferredLocation.Text.Trim(new char[] { ' ', ',' }).Replace(", ", ",").Split(',')),
                     pickPreferredCompanySize.getPreferredSize(),
                     entPassword.Text,
                     entRetypePassword.Text,
@@ -428,11 +429,11 @@ namespace TMCS_Client.UI
 			{
 				invalidDataMessage += "Email is not in proper format.\n";
 			}
-			if (!passwordCheck() && needPassword)
+			if (needPassword && !passwordCheck())
 			{
 				invalidDataMessage += "Password does not meet the complexity requirements.\n";
 			}
-			if (!retypePasswordCheck() && needPassword)
+			if (needPassword && !retypePasswordCheck())
 			{
 				invalidDataMessage += "Passwords do not match.\n";
 			}
