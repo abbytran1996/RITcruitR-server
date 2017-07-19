@@ -18,11 +18,13 @@ namespace TMCS_Client.CustomUIElements.ListViews
             if (initialItems == null){
                 items = new ObservableCollection<T>();
                 items.Add(emptyListItem);
+                IsEnabled = false;
             }else{
                 items = initialItems;
+                IsEnabled = true;
             }
             this.emptyListItem = emptyListItem;
-            SeparatorVisibility = SeparatorVisibility.Default;
+            SeparatorVisibility = SeparatorVisibility.None;
             base.ItemsSource = items;
             base.ItemTemplate = new DataTemplate(typeof(CustomDisplayCell));
             base.HasUnevenRows = true;
@@ -31,7 +33,6 @@ namespace TMCS_Client.CustomUIElements.ListViews
         public void updateItems(List<T> newItems){
             foreach(T item in newItems){
                 this.addItem(item);
-                SeparatorColor = Color.LightGray;
 			}
 
             int i = 0;
@@ -49,13 +50,15 @@ namespace TMCS_Client.CustomUIElements.ListViews
             if (!items.Contains(newItem))
             {
                 items.Add(newItem);
+                this.IsEnabled = true;
             }
         }
 
         public void removeItem(T toRemove){
             items.Remove(toRemove);
             if(items.Count == 0){
-                items.Add(emptyListItem); 
+                items.Add(emptyListItem);
+                this.IsEnabled = false;
             }
         }
 
