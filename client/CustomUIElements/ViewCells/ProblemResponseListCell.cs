@@ -14,7 +14,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
         {
             AbsoluteLayout cellLayout = new AbsoluteLayout()
             {
-                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
+                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
                 BackgroundColor = Color.FromHex("eaeff2"),
             };
 
@@ -22,7 +22,8 @@ namespace TMCS_Client.CustomUIElements.ViewCells
             {
                 VerticalTextAlignment = TextAlignment.Start,
                 HorizontalTextAlignment = TextAlignment.Start,
-                FontSize = 14.0,
+                LineBreakMode = LineBreakMode.WordWrap,
+                FontSize = 20.0,
             };
 
             lblTag = new Label()
