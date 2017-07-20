@@ -88,5 +88,17 @@ namespace TMCS_Client.Controllers {
 			var response = client.Execute(request);
 			ensureStatusCode(response, HttpStatusCode.OK);
         }
+
+        public byte[] getResumeforStudent(long id)
+        {
+            var request = new RestRequest(Constants.Students.DOWNLOAD_RESUME, Method.GET);
+            request.AddUrlSegment("id", id.ToString());
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.DownloadData(request);
+
+            return response;
+
+        }
     }
 }
