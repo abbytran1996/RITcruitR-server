@@ -1,21 +1,15 @@
 package com.avalanche.tmcs.Recruiter;
 
-import com.avalanche.tmcs.Recruiter.NewRecruiter;
-import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.SecurityService;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
-import com.avalanche.tmcs.company.NewCompany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import java.net.URI;
-
 
 import java.net.URI;
 
@@ -46,13 +40,11 @@ public class RecruiterController {
      * @return TODO
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Recruiter> addRecruiter(@RequestBody NewRecruiter newRecruiter) {
-        User newUser = new User(newRecruiter.getEmail(), newRecruiter.getPassword(), newRecruiter.getPasswordConfirm());
-        newUser = userService.save(newUser, Role.RoleName.Recruiter);
-        if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
+    public ResponseEntity<Recruiter> addRecruiter(@RequestBody Recruiter newRecruiter) {
+        User newUser = newRecruiter.getUser();
+        if(securityService.login(newUser.getUsername(), newUser.getPassword())) {
             newRecruiter.setUser(newUser);
-            Recruiter savedRecruiter = recruiterRepo.save(newRecruiter.toRecruiter());
-
+            Recruiter savedRecruiter = recruiterRepo.save(newRecruiter);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()

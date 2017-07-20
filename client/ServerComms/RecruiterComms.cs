@@ -19,7 +19,7 @@ namespace TMCS_Client.ServerComms {
         /// <param name="recruiter"></param>
         /// <returns>The status of the response</returns>
         /// <exception cref="RestException">Throws a RestException when the server doesn't return a success</exception>
-        public void addRecruiter(NewRecruiter recruiter) {
+        public void addRecruiter(Recruiter recruiter) {
             var request = new RestRequest(Constants.Recruiters.ADD_RECRUITER_RESOURCE, Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(recruiter);
