@@ -51,8 +51,6 @@ namespace TMCS_Client.UI
         //Register Button
         protected Button btnRegister;
 
-        private User user;
-
 #if __IOS__
         const double ROW_HEIGHT = 60.0;
 #endif
@@ -60,9 +58,8 @@ namespace TMCS_Client.UI
         const double ROW_HEIGHT = 80.0;
 #endif
 
-        public CompanyRegistration(User user, string title = "Company Registration")
+        public CompanyRegistration(string title = "Company Registration")
         {
-            this.user = user;
             this.Title = title;
 
             //Whole page
@@ -266,10 +263,13 @@ namespace TMCS_Client.UI
         {
             String invalidDataMessage = "";
 
-            if (!suffixCheck()) {
+            if (!suffixCheck())
+            {
                 invalidDataMessage += "Email Suffix already exists in our system, Please register as a Recruiter with company email.\n";
-            
-            },else {
+            }
+
+            else
+            {
                 string presentation = txtPresentationLink.Text.Replace("/","|");
                 NewCompany newCompany = NewCompany.createAndValidate(
                     txtCompanyName.Text,
@@ -278,8 +278,9 @@ namespace TMCS_Client.UI
                     txtCompanySize.SelectedItem.ToString(),
                     txtCompanyLocation.Text,
                     presentation,
-                    txtWebsiteURL.Text,
-                    user
+                    txtWebsiteURL.Text
+
+
                 );
 
                 try

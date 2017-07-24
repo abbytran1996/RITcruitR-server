@@ -141,6 +141,7 @@ namespace TMCS_Client.UI
 									AbsoluteLayoutFlags.All);
 
 			txtCompanyEmail.Completed += (object sender, EventArgs e) => txtPassword.Focus();
+            txtCompanyEmail.Unfocused += async (object sender, FocusEventArgs e) => await SuffixCheck();
             txtCompanyEmail.Unfocused += (object sender, FocusEventArgs e) => emailCheck();
 
 			registrationForm.Children.Add(emailInput,
@@ -259,44 +260,54 @@ namespace TMCS_Client.UI
 
 		}
 
-		private async void register() {
+		private async void register()
+		{
 			String invalidDataMessage = "";
 
-			if(!emailCheck()) {
+			if (!emailCheck())
+			{
 				invalidDataMessage += "Email is not in proper format.\n";
 			}
+            if (!SuffixCheck().Result)
+            {
+                invalidDataMessage += "Company Email must be registered before Recruiter can.\n";
+				var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
+				if (ans == true)
+				{
+					await this.Navigation.PushAsync(new CompanyRegistration());
+					return;
+				}
+				else
+				{
+                    return;
 
-            if (!passwordCheck()) {
-                invalidDataMessage += "Password does not meet the complexity requirements.\n";
+				}
             }
 
-			if (!retypePasswordCheck()) {
+            if (!passwordCheck())
+                {
+                    invalidDataMessage += "Password does not meet the complexity requirements.\n";
+                }
+			if (!retypePasswordCheck())
+			{
 				invalidDataMessage += "Passwords do not match.\n";
 			}
-
-			var user = ServerController.getServerController().registerUser(new User {
-				username = txtCompanyEmail.Text,
-				password = txtPassword.Text,
-				passwordConfirm = txtRetypePassword.Text
-			}, Role.Name.Recruiter);
-            
-			SuffixCheck(user);
-
-			if (!phoneNumberCheck()) {
+			if (!phoneNumberCheck())
+			{
 				invalidDataMessage += "Phone number is not a valid 10 digit phone number.\n";
-
-			} else {
+			}
+			else {
                 var company = CompanyController.getCompanyController().getCompanyByName(txtCompanyName.Text);
-				user.password = txtPassword.Text;
 
-                Recruiter newRecruiter = NewRecruiter.CreateAndValidate(
+                NewRecruiter newRecruiter = NewRecruiter.CreateAndValidate(
 					txtFirstName.Text,
 					txtLastName.Text,
 					txtCompanyEmail.Text,
                     company,
 					txtPhoneNumber.Text.Replace("(", "").Replace(")", "")
 						.Replace(" ", "").Replace("-", ""),
-                    user
+                    txtPassword.Text,
+                    txtRetypePassword.Text
 				);
 
 				try
@@ -312,38 +323,44 @@ namespace TMCS_Client.UI
 				}
 			}
 		}
+        public async Task<bool> SuffixCheck()
+        {
 
-		/// <summary>
-		/// Checks that the email suffix of the recruiter matches one of the suffixes in the database. If not, the
-		/// user is prompted to create a new company
-		/// </summary>
-		/// <param name="user">The user who will be the owner of the new company</param>
-        public async Task<bool> SuffixCheck(User user) {
             //bool result;
             //if (txtCompanyEmail.Text == null)
-            try {
-                MailAddress address = new MailAddress(txtCompanyEmail.Text);
-                string suffix = address.Host;
+            try
+                {
+                    MailAddress address = new MailAddress(txtCompanyEmail.Text);
+                    string suffix = address.Host;
 
                 var CompanySuffix = CompanyController.getCompanyController().getCompanyByEmailSuffix(suffix);
 
-                if(CompanySuffix == null) {
-                    var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
-                    if(ans) {
-                        await this.Navigation.PushAsync(new CompanyRegistration(user));
-                    }
-					
-                    return ans;
+                if (CompanySuffix == null)
+                    {
+                        var ans = await DisplayAlert("Your Company Email Does Not Match Any Company In Our Records.", "Would You Like To Register A New Company", "Yes", "No");
+                        if (ans == true)
+                        {
+                            await this.Navigation.PushAsync(new CompanyRegistration());
+                            return ans;
+                        }
+                        else
+                        {
+                            return ans;
 
-                } else {
-                    txtCompanyName.Text = CompanySuffix.companyName;
+                        }
+                    }
+                    else
+                    {
+                        txtCompanyName.Text = CompanySuffix.companyName;
+                        return true;
+                    }
+                }
+                catch
+                {
                     return true;
                 }
 
-            } catch {
-                return true;
-            }
-		}
+        }
 
 		private bool emailCheck()
 		{

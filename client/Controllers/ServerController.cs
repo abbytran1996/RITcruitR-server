@@ -17,24 +17,6 @@ namespace TMCS_Client.Controllers {
         }
 
         /// <summary>
-        /// Registers a user with the server
-        /// </summary>
-        /// <param name="user">The user to register</param>
-        /// <param name="roleName">The role to register this user to</param>
-        public User registerUser(User user, Role.Name roleName) {
-            var request = new RestRequest(Constants.Login.NEW_USER_RESOURCE, Method.POST);
-            request.RequestFormat = DataFormat.Json;
-
-            request.AddBody(user);
-            request.AddParameter("roleName", roleName.ToString(), ParameterType.UrlSegment);
-
-            var response = client.Execute<User>(request);
-            ensureStatusCode(response, HttpStatusCode.OK);
-
-            return response.Data;
-        }
-
-        /// <summary>
         /// Logs the user in to the server
         /// </summary>
         /// <param name="username">The username of the user to log in</param>
