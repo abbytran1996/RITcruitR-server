@@ -18,6 +18,7 @@ namespace TMCS_Client
         public static string SERVER_URL { get { return "http://127.0.0.1:8080"; } }
 #endif
         public static class Login {
+            public static string NEW_USER_RESOURCE { get { return "/user?roleName={roleName}"; } }
             public static string LOGIN_RESOURCE {  get { return "/user/login"; } }
         }
         public static class Students
