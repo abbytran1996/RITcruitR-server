@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="PdfViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\remove.png">
