@@ -85,7 +85,7 @@ namespace TMCS_Client.UI {
             }
 #elif __IOS__
             var directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var name = student.lastName + "resume.pdf";
+            var name = student.id + "_resume.pdf";
             string filePath = Path.Combine(directory.ToString(), name);
             File.WriteAllBytes(filePath, bytes);
             Navigation.PushAsync(
