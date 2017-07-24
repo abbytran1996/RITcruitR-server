@@ -38,7 +38,7 @@ namespace TMCS_Client.UI
             interviewPhaseList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
                 if ((Match)interviewPhaseList.SelectedItem != Match.EmptyMatch)
                 {
-                    Navigation.PushModalAsync(new RecruiterInterviewModal(interviewPhaseList.SelectedItem as Match));
+                    Navigation.PushAsync(new RecruiterInterviewModal(interviewPhaseList.SelectedItem as Match));
                 }
             };
             pageContent.Children.Add(interviewPhaseList,

@@ -54,7 +54,7 @@ namespace TMCS_Client.UI {
 
         void updateMatch() {
             MatchController.getMatchController().updateMatch(match);
-            Navigation.PopModalAsync();
+            Navigation.PopAsync();
         }
         //only working for android at the moment
         void downloadAndOpenResume(long id)
@@ -88,16 +88,21 @@ namespace TMCS_Client.UI {
             var name = student.lastName + "resume.pdf";
             string filePath = Path.Combine(directory.ToString(), name);
             File.WriteAllBytes(filePath, bytes);
-            Padding = new Thickness (0, 20, 0, 0);
-            Content = new StackLayout {
-                Children = {
-                    new CustomWebView {
-                        Uri = filePath,
-                        HorizontalOptions = LayoutOptions.FillAndExpand,
-                        VerticalOptions = LayoutOptions.FillAndExpand
+            Navigation.PushAsync(
+                new ContentPage()
+                {
+                    Content = new StackLayout
+                    {
+                        Children = {
+                            new CustomWebView {
+                                Uri = filePath,
+                                HorizontalOptions = LayoutOptions.FillAndExpand,
+                                VerticalOptions = LayoutOptions.FillAndExpand
+                            }
+                        }
                     }
                 }
-            };
+            );
 #endif
         }
     }

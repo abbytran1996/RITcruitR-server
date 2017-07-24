@@ -29,8 +29,7 @@ namespace DisplayPDF.iOS
             if (e.NewElement != null)
             {
                 var customWebView = Element as CustomWebView;
-                string fileName = System.IO.Path.Combine(NSBundle.MainBundle.BundlePath, string.Format("Content/{0}", System.Net.WebUtility.UrlEncode(customWebView.Uri)));
-                Control.LoadRequest(new NSUrlRequest(new NSUrl(fileName, false)));
+                Control.LoadRequest(new NSUrlRequest(new NSUrl(customWebView.Uri, false)));
                 Control.ScalesPageToFit = true;
             }
         }
