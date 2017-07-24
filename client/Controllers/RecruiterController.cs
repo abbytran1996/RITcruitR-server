@@ -35,8 +35,8 @@ namespace TMCS_Client.Controllers
 		/// <summary>
 		/// Adds a new recruiter to the server
 		/// </summary>
-		/// <param name="recruiter">The recruiter to add</param>
-        public void addRecruiter(Recruiter recruiter)
+		/// <param name="student">The recruiter to add</param>
+        public void addRecruiter(NewRecruiter recruiter)
 		{
             recruiterComms.addRecruiter(recruiter);
 		}
