@@ -41,7 +41,6 @@ namespace TMCS_Client.UI {
                     new Label { Text = student.school },
                     new SubSectionTitleLabel("Graduation Date"),
                     new Label { Text = student.graduationDate.ToShortDateString() },
-                    //TODO resume section
                     new SubSectionTitleLabel("Resume"),
                     resumebutton,
                     new SubSectionTitleLabel("Student Contact Information"),
@@ -56,7 +55,7 @@ namespace TMCS_Client.UI {
             MatchController.getMatchController().updateMatch(match);
             Navigation.PopAsync();
         }
-        //only working for android at the moment
+
         void downloadAndOpenResume(long id)
         {
             byte[] bytes = StudentController.getStudentController().getResumeforStudent(id);
@@ -81,7 +80,6 @@ namespace TMCS_Client.UI {
             {
                 //assume this means you don't have a pdf viewer installed
                 Android.Widget.Toast.MakeText(Forms.Context.ApplicationContext, "There was an issue opening the file", Android.Widget.ToastLength.Long).Show();
-                
             }
 #elif __IOS__
             var directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -107,13 +105,11 @@ namespace TMCS_Client.UI {
         }
     }
 
-
     public class CustomWebView : WebView
     {
-        public static readonly BindableProperty UriProperty = BindableProperty.Create(propertyName: "Uri",
-                returnType: typeof(string),
-                declaringType: typeof(CustomWebView),
-                defaultValue: default(string));
+        public static readonly BindableProperty UriProperty = 
+            BindableProperty.Create(propertyName: "Uri", returnType: typeof(string), 
+                                    declaringType: typeof(CustomWebView), defaultValue: default(string));
 
         public string Uri
         {

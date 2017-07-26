@@ -7,30 +7,35 @@ using TMCS_Client.CustomUIElements.ListViews;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
-namespace TMCS_Client.UI {
-    class RecruiterPresentationResponses : ContentPage {
+namespace TMCS_Client.UI
+{
+    class RecruiterPresentationResponses : ContentPage
+    {
         private JobPosting activeJobPosting;
         private FormListView<Match, PresentationPhaseResponseCell> presentationResponsesList;
 
-        public RecruiterPresentationResponses(JobPosting activeJobPosting) {
+        public RecruiterPresentationResponses(JobPosting activeJobPosting)
+        {
             this.activeJobPosting = activeJobPosting;
             Title = "Presentation Responses";
 
             var pageContent = new AbsoluteLayout();
-            var responseListLabel = new Label() {
+            var responseListLabel = new Label()
+            {
                 Text = "Student Responses",
                 FontSize = 24.0,
                 HorizontalTextAlignment = TextAlignment.Center
             };
             pageContent.Children.Add(responseListLabel,
-                                    new Rectangle(0.5,0.0,0.9,0.075),
+                                    new Rectangle(0.5, 0.0, 0.9, 0.075),
                                     AbsoluteLayoutFlags.All);
 
             presentationResponsesList = new FormListView<Match, PresentationPhaseResponseCell>(
                 Match.EmptyMatch
                 );
-            presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                if ((Match)presentationResponsesList.SelectedItem != Match.EmptyMatch)
+            presentationResponsesList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) =>
+            {
+                if((Match)presentationResponsesList.SelectedItem != Match.EmptyMatch)
                 {
                     Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
                 }
@@ -42,13 +47,15 @@ namespace TMCS_Client.UI {
             Content = pageContent;
         }
 
-        protected override void OnAppearing() {
+        protected override void OnAppearing()
+        {
             base.OnAppearing();
             var matches = MatchController.getMatchController().getMatchesInPresentationPhase(activeJobPosting);
             presentationResponsesList.updateItems(matches);
         }
 
-        class PresentationPhaseResponseCell : ViewCell {
+        class PresentationPhaseResponseCell : ViewCell
+        {
             public static readonly BindableProperty MatchIDProperty =
                 BindableProperty.Create("matchID", typeof(long), typeof(PresentationPhaseResponseCell), -1L);
 
@@ -56,25 +63,30 @@ namespace TMCS_Client.UI {
             private Label timeSubmitted;
             private Label url;
 
-            public PresentationPhaseResponseCell() {
-                var cellLayout = new AbsoluteLayout() {
+            public PresentationPhaseResponseCell()
+            {
+                var cellLayout = new AbsoluteLayout()
+                {
                     HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
                     BackgroundColor = Color.White
                 };
 
-                url = new Label() {
+                url = new Label()
+                {
                     VerticalTextAlignment = TextAlignment.Start,
                     HorizontalTextAlignment = TextAlignment.Start,
                     FontSize = 14.0
                 };
 
-                tag = new Label() {
+                tag = new Label()
+                {
                     VerticalTextAlignment = TextAlignment.Start,
                     HorizontalTextAlignment = TextAlignment.Start,
                     FontSize = 12.0,
                 };
 
-                timeSubmitted = new Label() {
+                timeSubmitted = new Label()
+                {
                     VerticalTextAlignment = TextAlignment.Start,
                     HorizontalTextAlignment = TextAlignment.End,
                     FontSize = 12.0,
@@ -96,20 +108,25 @@ namespace TMCS_Client.UI {
                 View = cellLayout;
             }
 
-            protected override void OnBindingContextChanged() {
+            protected override void OnBindingContextChanged()
+            {
                 base.OnBindingContextChanged();
-                if ((BindingContext != null) && (((Match)BindingContext) == Match.EmptyMatch)){
-                    this.View = new AbsoluteLayout() {
+                if((BindingContext != null) && (((Match)BindingContext) == Match.EmptyMatch))
+                {
+                    this.View = new AbsoluteLayout()
+                    {
                         HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT,
                     };
-                    ((AbsoluteLayout)this.View).Children.Add(new Label() {
+                    ((AbsoluteLayout)this.View).Children.Add(new Label()
+                    {
                         Text = "No pending presentation responses",
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
                         FontSize = 22.0,
-                    }, new Rectangle(0.0, 0.0, 1.0, 1.0),
-                                                             AbsoluteLayoutFlags.All);
-                }else if(BindingContext != null){
+                    }, new Rectangle(0.0, 0.0, 1.0, 1.0), AbsoluteLayoutFlags.All);
+                }
+                else if(BindingContext != null)
+                {
                     //TODO Truncate/convert these values
                     tag.Text = "Tag: " + (((Match)BindingContext).tag == null ? "" : ((Match)BindingContext).tag);
                     url.Text = /*"URL: " + */(((Match)BindingContext).studentPresentationLink == null ? "" : ((Match)BindingContext).studentPresentationLink.ToString());

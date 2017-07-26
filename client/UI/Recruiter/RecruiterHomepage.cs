@@ -27,25 +27,22 @@ namespace TMCS_Client.UI
             jobPostingsList = new FormListView<JobPosting, JobPostingListCell>(
                 JobPosting.NullJobPosting);
 
-            jobPostingsList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
-                if ((JobPosting)jobPostingsList.SelectedItem != JobPosting.NullJobPosting){
+            jobPostingsList.ItemSelected += (object sender, SelectedItemChangedEventArgs e) =>
+            {
+                if((JobPosting)jobPostingsList.SelectedItem != JobPosting.NullJobPosting)
+                {
                     Navigation.PushAsync(new PostingDetails((JobPosting)jobPostingsList.SelectedItem));
                 }
             };
 
-            pageContent.Children.Add(jobPostingsList,
-                                    new Rectangle(0.0, 0.0, 1.0, 1.0),
-                                     AbsoluteLayoutFlags.All);
-
-
+            pageContent.Children.Add(jobPostingsList, new Rectangle(0.0, 0.0, 1.0, 1.0), AbsoluteLayoutFlags.All);
+            
 #if __IOS__
             ToolbarItem btnAddJobPosting;
             ToolbarItems.Add(btnAddJobPosting = new ToolbarItem()
             {
                 Icon = "TMCS_Client.iOS.Resources.add.png",
             });
-
-            
 #endif
 #if __ANDROID__
             Button btnAddJobPosting;
@@ -57,21 +54,19 @@ namespace TMCS_Client.UI
                 BorderWidth = 0.0,
                 BorderRadius = 0,
             };
-            pageContent.Children.Add(btnAddJobPosting,
-                                    new Rectangle(0.95,0.95,80.0,80.0),
-                                    AbsoluteLayoutFlags.PositionProportional);
-
-            
+            pageContent.Children.Add(btnAddJobPosting, new Rectangle(0.95,0.95,80.0,80.0),
+                                     AbsoluteLayoutFlags.PositionProportional);
 #endif
+
             btnAddJobPosting.Clicked += (object sender, EventArgs e) =>
-				Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
+                Navigation.PushAsync(new JobPostingCreation(loggedInRecruiter));
+            
             var editCompanyButton = new ToolbarItem()
             {
                 Text = "Edit company",
                 Order = ToolbarItemOrder.Secondary,
                 Command = new Command(editCompanyButton_clicked)
             };
-
             ToolbarItems.Add(editCompanyButton);
 
             var editProfileButton = new ToolbarItem()
@@ -80,24 +75,23 @@ namespace TMCS_Client.UI
                 Command = new Command(goToProfile),
                 Order = ToolbarItemOrder.Secondary
             };
-
             ToolbarItems.Add(editProfileButton);
 
             Content = pageContent;
         }
 
-        private void editCompanyButton_clicked() {
+        private void editCompanyButton_clicked()
+        {
             Navigation.PushAsync(new RecruiterCompanyEditPage(loggedInRecruiter.company));
         }
 
         protected override void OnAppearing()
         {
-            jobPostingsList.updateItems(
-                JobPostingController.getJobPostingController().
-                getJobPostingsByRecruiter(this.loggedInRecruiter));
-			base.OnAppearing();
+            jobPostingsList.updateItems( JobPostingController.getJobPostingController().getJobPostingsByRecruiter(
+                this.loggedInRecruiter));
+            base.OnAppearing();
         }
-    
+
         private void goToProfile()
         {
             Navigation.PushAsync(new RecruiterProfileManagement(loggedInRecruiter));

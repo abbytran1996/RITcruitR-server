@@ -3,11 +3,14 @@ using TMCS_Client.Controllers;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
-namespace TMCS_Client.UI {
-    internal class RecruiterCompanyEditPage : CompanyRegistration {
+namespace TMCS_Client.UI
+{
+    internal class RecruiterCompanyEditPage : CompanyRegistration
+    {
         private Company company;
 
-        public RecruiterCompanyEditPage(Company company) : base("Company Editing") {
+        public RecruiterCompanyEditPage(Company company) : base("Company Editing")
+        {
             this.company = company;
 
             txtCompanyDescription.Text = company.companyDescription;
@@ -21,7 +24,8 @@ namespace TMCS_Client.UI {
             btnRegister.Text = "Save";
         }
 
-        protected override void onRegisterButtonClick() {
+        protected override void onRegisterButtonClick()
+        {
             string presentation = txtPresentationLink.Text.Replace("/", "|");
             company.companyName = txtCompanyName.Text;
             company.emailSuffix = txtCompanyEmailSuffix.Text;
@@ -31,11 +35,14 @@ namespace TMCS_Client.UI {
             company.presentation = presentation;
             company.websiteURL = txtWebsiteURL.Text;
 
-            try {
+            try
+            {
                 CompanyController.getCompanyController().updateCompany(company);
                 Login.getLoginPage().updateLoginStatusMessage(Constants.Forms.LoginStatusMessage.REGISTRATION_COMPLETE);
                 Navigation.PopToRootAsync();
-            } catch(Exception e) {
+            }
+            catch(Exception e)
+            {
                 DisplayAlert("Error", e.Message, "Ok");
             }
         }

@@ -42,23 +42,23 @@ namespace TMCS_Client.UI
                 HorizontalTextAlignment = TextAlignment.Center,
             };
             problemResponseSection.Children.Add(lblProblemResponseHeader,
-                                                new Rectangle(0.5,0,0.9,Constants.Forms.Sizes.ROW_HEIGHT*2/3),
-                                                AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
-            
-            var response = activeMatch.studentProblemResponse.Replace("|","\n");
+                                                new Rectangle(0.5, 0, 0.9, Constants.Forms.Sizes.ROW_HEIGHT * 2 / 3),
+                                                AbsoluteLayoutFlags.XProportional | 
+                                                    AbsoluteLayoutFlags.WidthProportional);
+
+            var response = activeMatch.studentProblemResponse.Replace("|", "\n");
 
             editProblemResponse = new Editor()
             {
                 Text = response,
                 FontSize = 14.0,
                 IsEnabled = false,
-
-
             };
             problemResponseSection.Children.Add(editProblemResponse,
-                                    new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT*2/3,
-                                                  0.9,Constants.Forms.Sizes.ROW_HEIGHT*2),
-                                                  AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+                                                new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2 / 3,
+                                                              0.9, Constants.Forms.Sizes.ROW_HEIGHT * 2),
+                                                AbsoluteLayoutFlags.XProportional | 
+                                                    AbsoluteLayoutFlags.WidthProportional);
 
             lblTimeSubmitted = new Label()
             {
@@ -67,87 +67,92 @@ namespace TMCS_Client.UI
                 HorizontalTextAlignment = TextAlignment.End,
                 TextColor = Color.Gray,
             };
-            problemResponseSection.Children.Add(lblTimeSubmitted, 
-                                               new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT*8/3,
-                                                            0.9,Constants.Forms.Sizes.ROW_HEIGHT/3),
-                                               AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+            problemResponseSection.Children.Add(lblTimeSubmitted,
+                                                new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 8 / 3,
+                                                              0.9, Constants.Forms.Sizes.ROW_HEIGHT / 3),
+                                                AbsoluteLayoutFlags.XProportional | 
+                                                    AbsoluteLayoutFlags.WidthProportional);
 
             lblTag = new FormFieldLabel("Tag");
             problemResponseSection.Children.Add(lblTag,
-                                               new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT * 3,
-                                                             0.9,Constants.Forms.Sizes.ROW_HEIGHT / 2),
-                                                AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+                                                new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 3,
+                                                              0.9, Constants.Forms.Sizes.ROW_HEIGHT / 2),
+                                                AbsoluteLayoutFlags.XProportional | 
+                                                    AbsoluteLayoutFlags.WidthProportional);
 
             pickTag = new Picker()
             {
                 ItemsSource = new List<String>(new String[] { "Great", "Good", "Alright", "Bad" }),
                 SelectedItem = activeMatch.tag,
             };
-            pickTag.PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) => {
-                if (e.PropertyName == Picker.SelectedItemProperty.PropertyName){
+            pickTag.PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) =>
+            {
+                if(e.PropertyName == Picker.SelectedItemProperty.PropertyName)
+                {
                     activeMatch.tag = pickTag.SelectedItem.ToString();
                 }
             };
             problemResponseSection.Children.Add(pickTag,
-                                               new Rectangle(0.5,Constants.Forms.Sizes.ROW_HEIGHT * 3.5,
-                                                             0.9,Constants.Forms.Sizes.ROW_HEIGHT / 2),
+                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 3.5,
+                                                             0.9, Constants.Forms.Sizes.ROW_HEIGHT / 2),
                                                AbsoluteLayoutFlags.XProportional |
-                                               AbsoluteLayoutFlags.WidthProportional);
+                                                AbsoluteLayoutFlags.WidthProportional);
 
             buttons = new AbsoluteLayout();
 
             btnDecline = new DeclineButton();
-            btnDecline.Clicked += (object sender, EventArgs e) => {
+            btnDecline.Clicked += (object sender, EventArgs e) =>
+            {
                 activeMatch.applicationStatus = Match.ApplicationStatus.REJECTED;
                 buttonPushed();
             };
-            buttons.Children.Add(btnDecline,
-                                               new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 1/6,
-                                                            0.3, Constants.Forms.Sizes.ROW_HEIGHT*5/6),
-                                               AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+            buttons.Children.Add(btnDecline, 
+                                 new Rectangle(0.0, Constants.Forms.Sizes.ROW_HEIGHT * 1 / 6,
+                                               0.3, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6), 
+                                 AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
 
-			btnSave = new Button()
-			{
-				Text = "Save",
-				BackgroundColor = Color.Blue,
-				TextColor = Color.White,
-				FontSize = 18.0,
-				FontAttributes = FontAttributes.Bold,
-			};
-			btnSave.Clicked += (object sender, EventArgs e) =>
-			{
-				buttonPushed();
-			};
-			buttons.Children.Add(btnSave,
-											   new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1 / 6,
-															0.3, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),
-											   AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+            btnSave = new Button()
+            {
+                Text = "Save",
+                BackgroundColor = Color.Blue,
+                TextColor = Color.White,
+                FontSize = 18.0,
+                FontAttributes = FontAttributes.Bold,
+            };
+            btnSave.Clicked += (object sender, EventArgs e) =>
+            {
+                buttonPushed();
+            };
+            buttons.Children.Add(btnSave, 
+                                 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1 / 6,
+                                               0.3, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6), 
+                                 AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
 
             btnAccept = new AcceptButton();
-			btnAccept.Clicked += (object sender, EventArgs e) =>
-			{
+            btnAccept.Clicked += (object sender, EventArgs e) =>
+            {
                 activeMatch.currentPhase = Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT;
-				buttonPushed();
-			};
-			buttons.Children.Add(btnAccept,
-											   new Rectangle(1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1 / 6,
-															0.3, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),
-											   AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
-            
-            problemResponseSection.Children.Add(buttons,
-											   new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 25 / 6,
-															0.9, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),
-                                               AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
+                buttonPushed();
+            };
+            buttons.Children.Add(btnAccept,
+                                 new Rectangle(1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1 / 6,
+                                               0.3, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),
+                                 AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.WidthProportional);
 
-            pageContent.Children.Add(problemResponseSection,
-                                    new Rectangle(0.0,1.0,1.0,0.9),
-                                    AbsoluteLayoutFlags.XProportional | AbsoluteLayoutFlags.YProportional |
-                                    AbsoluteLayoutFlags.WidthProportional | AbsoluteLayoutFlags.HeightProportional);
+            problemResponseSection.Children.Add(buttons,
+                                                new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 25 / 6,
+                                                              0.9, Constants.Forms.Sizes.ROW_HEIGHT * 5 / 6),
+                                                AbsoluteLayoutFlags.XProportional | 
+                                                    AbsoluteLayoutFlags.WidthProportional);
+
+            pageContent.Children.Add(problemResponseSection, new Rectangle(0.0, 1.0, 1.0, 0.9), 
+                                     AbsoluteLayoutFlags.All);
 
             this.Content = pageContent;
         }
 
-        private void buttonPushed(){
+        private void buttonPushed()
+        {
             MatchController.getMatchController().updateMatch(activeMatch);
             Navigation.PopModalAsync();
         }
