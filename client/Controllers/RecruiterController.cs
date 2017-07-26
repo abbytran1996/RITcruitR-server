@@ -10,16 +10,9 @@ using Xamarin.Forms;
 
 namespace TMCS_Client.Controllers
 {
-	/// <summary>
-	/// A controller to interact with students
-	/// </summary>
-	/// Is this a true MVC controller? I don't know.
     public class RecruiterController : ServerCommsBase
 	{
-		RestClient client = (Application.Current as App).Server;
-
 		private static RecruiterController recruiterController = null;
-        private RecruiterComms recruiterComms = new RecruiterComms();
 
         private RecruiterController(){
         }
@@ -32,28 +25,35 @@ namespace TMCS_Client.Controllers
             return recruiterController;
         }
 
-		/// <summary>
-		/// Adds a new recruiter to the server
-		/// </summary>
-		/// <param name="student">The recruiter to add</param>
         public void addRecruiter(NewRecruiter recruiter)
 		{
-            recruiterComms.addRecruiter(recruiter);
+			var request = new RestRequest(Constants.Recruiters.ADD_RECRUITER_RESOURCE, Method.POST);
+			request.RequestFormat = DataFormat.Json;
+			request.AddBody(recruiter);
+
+			var response = client.Execute(request);
+			if (response.StatusCode != System.Net.HttpStatusCode.Created)
+			{
+				if (response.ErrorException != null)
+				{
+					throw response.ErrorException;
+				}
+				throw new RestException(response.StatusCode);
+			}
 		}
 
-        /// <summary>
-        /// Gets a recruiter by email address
-        /// </summary>
-        /// <param name="email">The email of the recruiter to get</param>
-        /// <returns>The found recruiter</returns>
         public Recruiter getRecruiter(string email) {
-            return recruiterComms.getRecruiter(email);
+			var request = new RestRequest(Constants.Recruiters.GET_RECRUITER_BY_EMAIL_RESOURCE, Method.GET);
+			request.AddUrlSegment("email", email);
+			request.RequestFormat = DataFormat.Json;
+
+			var response = client.Execute<Recruiter>(request);
+
+			return response.Data;
         }
 
         internal void updateRecruiter(Recruiter recruiter)
 		{
-			Console.WriteLine("Updating Recruiter");
-
             string url = Constants.Recruiters.UPDATE_RECRUITER_RESOURCE;
 			url = url.Replace("{id}", recruiter.id.ToString());
 

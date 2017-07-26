@@ -19,9 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\SkillController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\JobPostingComms.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RestException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\SkillsComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\JobPosting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewCompany.cs" />
@@ -49,7 +46,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\FormFieldLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\PageTitleLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\FormEntry.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\RecruiterComms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewRecruiter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Recruiter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\RecruiterController.cs" />
@@ -63,7 +59,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormSearchResultsListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\SubSectionTitleLabel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServerComms\ServerCommsBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AddSkillButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\RemoveSkillButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
@@ -89,6 +84,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\FilePickerAndroid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Resume.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Student\StudentEditProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\RestException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\ServerCommsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">

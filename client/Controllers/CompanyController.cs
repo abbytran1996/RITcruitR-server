@@ -9,12 +9,8 @@ using TMCS_Client.UI;
 using Xamarin.Forms;
 
 namespace TMCS_Client.Controllers
-/// <summary>
-/// A controller to interact with companies
-/// </summary>
 {
 	public class CompanyController : ServerCommsBase {
-        RestClient client = (Application.Current as App).Server;
 
         private static CompanyController companyController = null;
 

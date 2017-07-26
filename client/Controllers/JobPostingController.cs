@@ -9,7 +9,6 @@ namespace TMCS_Client.Controllers
 {
     public class JobPostingController : ServerCommsBase
     {
-        private JobPostingComms jobPostingComms = new JobPostingComms();
         private static JobPostingController jobPostingController = null;
 
         private JobPostingController(){
@@ -25,19 +24,36 @@ namespace TMCS_Client.Controllers
         }
 
         public void createJobPosting(JobPosting newJobPosting){
-            jobPostingComms.createJobPositing(newJobPosting);
+			var request = new RestRequest(Constants.JobPosting.ADD_JOB_POSTING_RESOURCE, Method.POST);
+			request.RequestFormat = DataFormat.Json;
+			request.AddBody(newJobPosting);
+
+			var response = client.Execute(request);
         }
 
         public void deleteJobPosting(JobPosting toDelete){
-            jobPostingComms.deleteJobPosting(toDelete);
+			var request = new RestRequest(Constants.JobPosting.DELETE_JOB_POSTING_RESOURCE, Method.DELETE);
+			request.AddUrlSegment("id", toDelete.id.ToString());
+
+			client.Execute(request);
         }
 
         public JobPosting getJobPostingById(long id){
-            return jobPostingComms.getJobPostingById(id);
+			var request = new RestRequest(Constants.JobPosting.GET_JOB_POSTING_RESOURCE, Method.GET);
+			request.AddUrlSegment("id", id.ToString());
+
+			var response = client.Execute<JobPosting>(request);
+
+			return response.Data;
         }
 
         public List<JobPosting> getJobPostingsByRecruiter(Recruiter recruiter){
-            return jobPostingComms.getJobPostingsByRecruiter(recruiter.id);
+			var request = new RestRequest(Constants.JobPosting.GET_JOB_POSTING_BY_RECRUITER_RESOURCE, Method.GET);
+			request.AddUrlSegment("id", recruiter.id.ToString());
+
+			var response = client.Execute<List<JobPosting>>(request);
+
+			return response.Data;
         }
 
         public long getProbPhasePosts(JobPosting job)
