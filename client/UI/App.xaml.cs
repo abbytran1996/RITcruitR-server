@@ -1,7 +1,5 @@
 ﻿﻿﻿using RestSharp;
-using TMCS_Client.Controllers;
 using TMCS_Client.DTOs;
-using TMCS_Client.ServerComms;
 using Xamarin.Forms;
 
 namespace TMCS_Client.UI
@@ -17,8 +15,6 @@ namespace TMCS_Client.UI
         public App()
         {
             InitializeComponent();
-
-            //MainPage = new NavigationPage(new StudentPresentationPhase());
             MainPage = new NavigationPage(Login.getLoginPage());
 		}
 
