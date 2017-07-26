@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-
-using CoreGraphics;
-using Foundation;
+﻿using Foundation;
 using UIKit;
 using TMCS_Client.UI;
 using Xamarin.Forms.Platform.iOS;

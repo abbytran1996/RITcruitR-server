@@ -13,8 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\ServerController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AcceptButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\DeclineButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\CompanyController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\JobPostingController.cs" />
@@ -43,9 +41,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml.cs">
       <DependentUpon>RegistrationMain.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\FormFieldLabel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\PageTitleLabel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\FormEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\NewRecruiter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Recruiter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\RecruiterController.cs" />
@@ -54,38 +49,42 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterRegistration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\JobPostingCreation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\FormEditor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\FormSearchBar.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormSearchResultsListView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\FormListView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\SubSectionTitleLabel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\AddSkillButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\RemoveSkillButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\SkillListCell.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Buttons\FormSubmitButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Role.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\CompanyRegistration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterHomepage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\JobPostingListCell.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\Pickers\CompanySizePicker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterProblemResponses.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\ProblemResponseListCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\MatchController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Student\StudentProblemPhase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterProblemResponseModal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterInterviewPhase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\InterviewPhaseListCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Student\StudentPresentationPhase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Student\StudentPresentationList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Recruiter\RecruiterProfileManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\StudentController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\FilePickerAndroid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DTOs\Resume.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Student\StudentEditProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\RestException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controllers\ServerCommsBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Buttons\AcceptButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Buttons\AddSkillButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Buttons\DeclineButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Buttons\FormSubmitButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Buttons\RemoveSkillButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Editors\FormEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Entries\FormEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Labels\FormFieldLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Labels\PageTitleLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Labels\SubSectionTitleLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\ListViews\FormListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\ListViews\FormSearchResultsListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\Pickers\CompanySizePicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\SearchBars\FormSearchBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\ViewCells\InterviewPhaseListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\ViewCells\JobPostingListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\ViewCells\ProblemResponseListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\ViewCells\SkillListCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\ViewCells\SkillSearchResultCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)UI\RegistrationMain.xaml">
@@ -93,13 +92,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Labels\" />
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Entries\" />
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Editors\" />
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\SearchBars\" />
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ListViews\" />
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\ViewCells\" />
-    <Folder Include="$(MSBuildThisFileDirectory)CustomUIElements\Pickers\" />
     <Folder Include="$(MSBuildThisFileDirectory)UI\Student\" />
+    <Folder Include="$(MSBuildThisFileDirectory)UI\CustomUIElements\" />
   </ItemGroup>
 </Project>

@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using RestSharp;
 using Xamarin.Forms;
 
 namespace TMCS_Client
 {
-    /// <summary>
-    /// Holds all the constants that the TMCS client uses
-    /// </summary>
     public static class Constants
     {
 #if __ANDROID__

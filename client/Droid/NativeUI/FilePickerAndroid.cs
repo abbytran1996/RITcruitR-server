@@ -7,9 +7,6 @@ namespace TMCS_Client.UI
 {
     public class FilePickerAndroid : ContentPage
     {
-
-		private ListView commonLocationsView;
-
         private ListView directoryListingView;
         private ObservableCollection<String> directoryListing;
 
