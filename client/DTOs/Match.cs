@@ -1,14 +1,17 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TMCS_Client.DTOs {
-    public class Match {
-		public static Match EmptyMatch = new Match()
-		{
-			id = -1
-		};
-        public enum ApplicationStatus {
+namespace TMCS_Client.DTOs
+{
+    public class Match
+    {
+        public static Match EmptyMatch = new Match()
+        {
+            id = -1
+        };
+        public enum ApplicationStatus
+        {
             NEW,
             IN_PROGRESS,
             ACCEPTED,
@@ -16,7 +19,8 @@ namespace TMCS_Client.DTOs {
             TIMED_OUT
         }
 
-        public enum CurrentPhase {
+        public enum CurrentPhase
+        {
             NONE,
             PROBLEM_WAITING_FOR_STUDENT,
             PROBLEM_WAITING_FOR_RECRUITER,
@@ -29,7 +33,6 @@ namespace TMCS_Client.DTOs {
         public JobPosting job { get; set; }
         public Student student { get; set; }
         public float matchStrength { get; set; }
-
         public String tag { get; set; }
         public String studentProblemResponse { get; set; }
         public Uri studentPresentationLink { get; set; }

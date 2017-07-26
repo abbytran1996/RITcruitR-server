@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TMCS_Client.DTOs {
-    /// <summary>
-    /// The DTO for a student
-    /// </summary>
-    public class Student {
+namespace TMCS_Client.DTOs
+{
+    public class Student
+    {
         public string phoneNumber { get; set; }
         public string school { get; set; }
         public DateTime graduationDate { get; set; }
