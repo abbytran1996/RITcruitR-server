@@ -33,7 +33,7 @@ public class MatchExpirationChecker {
     /**
      * Checks every hour if any of the matches in the database haven't been updated recently
      */
-    @Scheduled(fixedDelay = HOURS_TO_MILLISECONDS)
+    // @Scheduled(fixedDelay = HOURS_TO_MILLISECONDS)
     public void checkForExpiredMatches() {
         LOGGER.info("Doing the thing");
         List<Match> allMatches = matchDAO.findAllByApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
