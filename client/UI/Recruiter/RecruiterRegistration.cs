@@ -319,8 +319,6 @@ namespace TMCS_Client.UI
 		/// </summary>
 		/// <param name="user">The user who will be the owner of the new company</param>
         public async Task<bool> SuffixCheck(User user) {
-            //bool result;
-            //if (txtCompanyEmail.Text == null)
             try {
                 MailAddress address = new MailAddress(txtCompanyEmail.Text);
                 string suffix = address.Host;
@@ -345,24 +343,21 @@ namespace TMCS_Client.UI
             }
 		}
 
-		private bool emailCheck()
-		{
+        private bool emailCheck() {
             if(txtCompanyEmail.Text == null) {
                 txtCompanyEmail.BackgroundColor = Color.PaleVioletRed;
                 return false;
             }
 
-            if (Regex.IsMatch(txtCompanyEmail.Text, Constants.Emails.RECRUITER))
-			{
-				txtCompanyEmail.BackgroundColor = Color.PaleGreen;
-				return true;
-			}
-			else
-			{
-				txtCompanyEmail.BackgroundColor = Color.PaleVioletRed;
-				return false;
-			}
-		}
+            if(Regex.IsMatch(txtCompanyEmail.Text, Constants.Emails.RECRUITER)) {
+                txtCompanyEmail.BackgroundColor = Color.PaleGreen;
+                return true;
+
+            } else {
+                txtCompanyEmail.BackgroundColor = Color.PaleVioletRed;
+                return false;
+            }
+        }
 
 		private void PhoneNumberUpdate()
 		{

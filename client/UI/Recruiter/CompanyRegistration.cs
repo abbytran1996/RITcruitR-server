@@ -39,7 +39,7 @@ namespace TMCS_Client.UI
 
         //Company Size
         private FormFieldLabel lblCompanySize;
-        protected Picker txtCompanySize;
+        protected Picker companySizePicker;
 
         //Company Presentation
         private FormFieldLabel lblPresentationLink;
@@ -145,7 +145,7 @@ namespace TMCS_Client.UI
                                        new Rectangle(0.5, 1.0, 0.9, 0.5),
                                        AbsoluteLayoutFlags.All);
             
-            txtCompanyLocation.Completed += (object sender, EventArgs e) => txtCompanySize.Focus();
+            txtCompanyLocation.Completed += (object sender, EventArgs e) => companySizePicker.Focus();
 
             registrationForm.Children.Add(LocationInput,
                                          new Rectangle(0, 3.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
@@ -161,7 +161,7 @@ namespace TMCS_Client.UI
                                        new Rectangle(0.5, 0, 0.9, 0.5),
                                        AbsoluteLayoutFlags.All);
 
-            SizeInput.Children.Add(txtCompanySize = new CompanySizePicker(),
+            SizeInput.Children.Add(companySizePicker = new CompanySizePicker(),
                                        new Rectangle(0.5, 1.0, 0.9, 0.5),
                                        AbsoluteLayoutFlags.All);
 
@@ -269,13 +269,13 @@ namespace TMCS_Client.UI
             if (!suffixCheck()) {
                 invalidDataMessage += "Email Suffix already exists in our system, Please register as a Recruiter with company email.\n";
             
-            },else {
+            } else {
                 string presentation = txtPresentationLink.Text.Replace("/","|");
                 NewCompany newCompany = NewCompany.createAndValidate(
                     txtCompanyName.Text,
                     txtCompanyEmailSuffix.Text,
                     txtCompanyDescription.Text,
-                    txtCompanySize.SelectedItem.ToString(),
+                    companySizePicker.SelectedItem.ToString(),
                     txtCompanyLocation.Text,
                     presentation,
                     txtWebsiteURL.Text,

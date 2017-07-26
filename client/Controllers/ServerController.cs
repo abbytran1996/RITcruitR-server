@@ -49,8 +49,7 @@ namespace TMCS_Client.Controllers {
             request.AddBody(body);
 
             var response = client.Execute<User>(request);
-            if((response.ErrorException != null) && 
-               (response.ErrorException.GetType() == typeof(System.Net.WebException))){
+            if((response.ErrorException != null) && (response.ErrorException.GetType() == typeof(WebException))) {
                 return null;
             }
             else if (response.Data.id == 0)

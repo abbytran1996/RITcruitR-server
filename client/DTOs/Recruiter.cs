@@ -15,6 +15,6 @@ namespace TMCS_Client.DTOs
 		public string email { get; set; }
         public Company company { get; set; }
 		public string phoneNumber { get; set; }
-		//public User user { get; set; }
+		public User user { get; set; }
 	}
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user")
-public class LoginController {
+public class UsersController {
     private SecurityService securityService;
 
     private UserDAO userDAO;
@@ -21,7 +21,7 @@ public class LoginController {
     private UserService userService;
 
     @Autowired
-    public LoginController(SecurityService securityService, UserDAO userDAO, UserService userService) {
+    public UsersController(SecurityService securityService, UserDAO userDAO, UserService userService) {
         this.securityService = securityService;
         this.userDAO = userDAO;
         this.userService = userService;

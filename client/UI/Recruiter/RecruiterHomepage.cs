@@ -87,7 +87,7 @@ namespace TMCS_Client.UI
         }
 
         private void editCompanyButton_clicked() {
-            Navigation.PushAsync(new RecruiterCompanyEditPage(loggedInRecruiter.company));
+            Navigation.PushAsync(new RecruiterCompanyEditPage(loggedInRecruiter));
         }
 
         protected override void OnAppearing()
