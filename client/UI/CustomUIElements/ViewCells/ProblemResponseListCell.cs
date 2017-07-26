@@ -5,7 +5,7 @@ using TMCS_Client.DTOs;
 namespace TMCS_Client.CustomUIElements.ViewCells
 {
     public class ProblemResponseListCell : ViewCell
-	{
+    {
         private Label lblProblemResponse;
         private Label lblTag;
         private Label lblProblemResponseTimeSubmitted;
@@ -46,7 +46,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                                     AbsoluteLayoutFlags.All);
             cellLayout.Children.Add(lblTag,
                                     new Rectangle(0.05, 1.0, 0.475, 0.25),
-								   AbsoluteLayoutFlags.All);
+                                   AbsoluteLayoutFlags.All);
             cellLayout.Children.Add(lblProblemResponseTimeSubmitted,
                                    new Rectangle(0.95, 1.0, 0.475, 0.25),
                                    AbsoluteLayoutFlags.All);
@@ -57,7 +57,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            if ((BindingContext != null) && (((Match)BindingContext) == Match.EmptyMatch))
+            if((BindingContext != null) && (((Match)BindingContext) == Match.EmptyMatch))
             {
                 this.View = new AbsoluteLayout()
                 {
@@ -69,12 +69,13 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                     VerticalTextAlignment = TextAlignment.Center,
                     HorizontalTextAlignment = TextAlignment.Center,
                     FontSize = 22.0,
-                }, new Rectangle(0.0, 0.0, 1.0, 1.0),
-                                                         AbsoluteLayoutFlags.All);
-            }else if(BindingContext != null){
+                }, new Rectangle(0.0, 0.0, 1.0, 1.0), AbsoluteLayoutFlags.All);
+            }
+            else if(BindingContext != null)
+            {
                 //TODO Truncate/convert these values
                 lblProblemResponse.Text = ((Match)BindingContext).studentProblemResponse;
-                lblTag.Text = "Tag: " + (((Match)BindingContext).tag == null?"":((Match)BindingContext).tag);
+                lblTag.Text = "Tag: " + (((Match)BindingContext).tag == null ? "" : ((Match)BindingContext).tag);
                 lblProblemResponseTimeSubmitted.Text = ((Match)BindingContext).timeLastUpdated.ToString();
             }
         }

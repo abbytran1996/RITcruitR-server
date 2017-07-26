@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace TMCS_Client.CustomUIElements.Buttons {
-    class AcceptButton : Button {
-        public AcceptButton() : base() {
+namespace TMCS_Client.CustomUIElements.Buttons
+{
+    class AcceptButton : Button
+    {
+        public AcceptButton() : base()
+        {
             Text = "Accept";
             BackgroundColor = Color.Green;
             TextColor = Color.White;

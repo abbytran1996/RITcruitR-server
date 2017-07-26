@@ -9,17 +9,22 @@ namespace TMCS_Client.CustomUIElements.Pickers
     {
         public CompanySizePicker()
         {
-            foreach(Company.Size size in Enum.GetValues(typeof(Company.Size))) {
+            foreach(Company.Size size in Enum.GetValues(typeof(Company.Size)))
+            {
                 Items.Add(size.ToString());
             }
-			this.Title = "Preferred Company Size";
+            this.Title = "Preferred Company Size";
         }
 
-        public string getPreferredSize(){
+        public string getPreferredSize()
+        {
             String preferredSize;
-            if (this.SelectedItem == null){
+            if(this.SelectedItem == null)
+            {
                 preferredSize = null;
-            }else{
+            }
+            else
+            {
                 preferredSize = this.SelectedItem.ToString().ToUpper();
             }
             return preferredSize;
