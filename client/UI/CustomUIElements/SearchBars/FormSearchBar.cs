@@ -10,7 +10,8 @@ namespace TMCS_Client.CustomUIElements.SearchBars
         private List<T> potentialResults;
         private FormSearchResultsListView<T, CustomSearchResultCell, CustomListCell> searchResultsList;
 
-        public FormSearchBar(String placeholder, List<T> potentialResults, FormSearchResultsListView<T, CustomSearchResultCell, CustomListCell> searchResultsList)
+        public FormSearchBar(String placeholder, List<T> potentialResults, 
+                             FormSearchResultsListView<T, CustomSearchResultCell, CustomListCell> searchResultsList)
         {
             this.potentialResults = potentialResults;
             this.searchResultsList = searchResultsList;
@@ -26,26 +27,28 @@ namespace TMCS_Client.CustomUIElements.SearchBars
         protected override void OnPropertyChanged(string propertyName = null)
         {
             Boolean match;
-            if ((propertyName != null) && (propertyName == SearchBar.TextProperty.PropertyName))
+            if((propertyName != null) && (propertyName == SearchBar.TextProperty.PropertyName))
             {
-                if (Text == null || Text == "")
+                if(Text == null || Text == "")
                 {
                     searchResultsList.hide();
                     searchResultsList.searchResults.Clear();
                 }
                 else
                 {
-                    foreach (T potentialResult in potentialResults)
+                    foreach(T potentialResult in potentialResults)
                     {
                         match = potentialResult.ToString().ToLower().Contains(Text.ToLower());
-                        if (match && !searchResultsList.searchResults.Contains(potentialResult))
+                        if(match && !searchResultsList.searchResults.Contains(potentialResult))
                         {
                             searchResultsList.searchResults.Add(potentialResult);
-                        }else if(!match){
+                        }
+                        else if(!match)
+                        {
                             searchResultsList.searchResults.Remove(potentialResult);
                         }
-					}
-					searchResultsList.show();
+                    }
+                    searchResultsList.show();
                 }
             }
             else

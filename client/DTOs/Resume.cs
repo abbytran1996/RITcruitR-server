@@ -11,7 +11,7 @@ namespace TMCS_Client.DTOs
         public Resume(String fileName)
         {
             file = File.ReadAllBytes(fileName);
-            this.fileName = fileName.TrimEnd('/').Split('/')[fileName.TrimEnd('/').Split('/').Length - 1] ;
+            this.fileName = fileName.TrimEnd('/').Split('/')[fileName.TrimEnd('/').Split('/').Length - 1];
         }
     }
 }

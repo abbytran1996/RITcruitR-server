@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="NativeUI\PdfViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\remove.png">
@@ -143,6 +144,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <LogicalName>TMCS_Client.iOS.Resources.folder.png</LogicalName>
     </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NativeUI\" />
   </ItemGroup>
   <Import Project="..\TMCS_Client.projitems" Label="Shared" Condition="Exists('..\TMCS_Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

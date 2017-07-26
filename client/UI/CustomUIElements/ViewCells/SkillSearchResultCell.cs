@@ -29,12 +29,9 @@ namespace TMCS_Client.CustomUIElements.ViewCells
 
 			lblSearchResult.SetBinding(Label.TextProperty, "name");
 
-			cellLayout.Children.Add(lblSearchResult,
-								   new Rectangle(0.5, 0.0, 0.9, 1.0),
-								   AbsoluteLayoutFlags.All);
+			cellLayout.Children.Add(lblSearchResult, new Rectangle(0.5, 0.0, 0.9, 1.0), AbsoluteLayoutFlags.All);
 
-			cellLayout.Children.Add(btnAddSearchResult, new Rectangle(1.0, 0.5, 40.0,
-						   40.0),
+			cellLayout.Children.Add(btnAddSearchResult, new Rectangle(1.0, 0.5, 40.0, 40.0),
 								   AbsoluteLayoutFlags.PositionProportional);
 
 			View = cellLayout;

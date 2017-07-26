@@ -18,13 +18,14 @@ public class UsersController {
 
     private UserDAO userDAO;
 
-    private UserService userService;
-
     @Autowired
+<<<<<<< HEAD:server/src/main/java/com/avalanche/tmcs/auth/UsersController.java
     public UsersController(SecurityService securityService, UserDAO userDAO, UserService userService) {
+=======
+    public LoginController(SecurityService securityService, UserDAO userDAO) {
+>>>>>>> 10a5dca3c5e4d7abe9538abfa32126572a6be29c:server/src/main/java/com/avalanche/tmcs/auth/LoginController.java
         this.securityService = securityService;
         this.userDAO = userDAO;
-        this.userService = userService;
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
@@ -36,12 +37,5 @@ public class UsersController {
         }
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<User> createNewUser(@RequestBody User user, @RequestParam String roleName) {
-        User savedUser = userService.save(user, Role.RoleName.valueOf(roleName));
-
-        return ResponseEntity.ok(savedUser);
     }
 }

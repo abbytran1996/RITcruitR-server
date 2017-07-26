@@ -10,38 +10,40 @@ namespace TMCS_Client.Controllers
 {
     public class MatchController : ServerCommsBase
     {
-		private static MatchController matchController = null;
+        private static MatchController matchController = null;
 
-		private MatchController() { }
+        private MatchController() { }
 
-		public static MatchController getMatchController()
-		{
-			if (matchController == null)
-			{
-				matchController = new MatchController();
-			}
-			return matchController;
-		}
-
-        public List<Match> getMatchesWithProblemResponsePending(long jobPostingID){
-            var request = new RestRequest(Constants.Matches.GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING, Method.GET);
-			request.AddUrlSegment("jobPostingID", jobPostingID.ToString());
-			request.RequestFormat = DataFormat.Json;
-
-			var response = client.Execute<List<Match>>(request);
-
-			return response.Data;
+        public static MatchController getMatchController()
+        {
+            if(matchController == null)
+            {
+                matchController = new MatchController();
+            }
+            return matchController;
         }
 
-        public void updateMatch(Match match){
+        public List<Match> getMatchesWithProblemResponsePending(long jobPostingID)
+        {
+            var request = new RestRequest(Constants.Matches.GET_MATCHES_WITH_PROBLEM_RESPONSE_PENDING, Method.GET);
+            request.AddUrlSegment("jobPostingID", jobPostingID.ToString());
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute<List<Match>>(request);
+
+            return response.Data;
+        }
+
+        public void updateMatch(Match match)
+        {
             var request = new RestRequest(Constants.Matches.UPDATE_MATCH, Method.PATCH);
             request.RequestFormat = DataFormat.Json;
-            request.AddUrlSegment("id",match.id.ToString());
+            request.AddUrlSegment("id", match.id.ToString());
             request.AddBody(match);
 
             var response = client.Execute<Boolean>(request);
             Console.WriteLine(response.Data);
-		}
+        }
 
         public void acceptMatch(Match match, bool acceptthis)
         {
@@ -83,24 +85,20 @@ namespace TMCS_Client.Controllers
             return;
         }
 
-		/// <summary>
-		/// Gets all the Match objects associated with the given student
-		/// </summary>
-		/// <param name="student">The student to get all the matches of</param>
-		/// <returns>All the matches associated with the given student</returns>
-		public List<Match> getMatchesForStudent(Student student)
-		{
-			var request = new RestRequest(Constants.Matches.GET_MATCHES_RESORUCE, Method.GET);
-			request.AddUrlSegment("id", student.id.ToString());
-			request.RequestFormat = DataFormat.Json;
+        public List<Match> getMatchesForStudent(Student student)
+        {
+            var request = new RestRequest(Constants.Matches.GET_MATCHES_RESORUCE, Method.GET);
+            request.AddUrlSegment("id", student.id.ToString());
+            request.RequestFormat = DataFormat.Json;
 
-			var response = client.Execute<List<Match>>(request);
-			ensureStatusCode(response, HttpStatusCode.OK);
+            var response = client.Execute<List<Match>>(request);
+            ensureStatusCode(response, HttpStatusCode.OK);
 
-			return response.Data;
-		}
+            return response.Data;
+        }
 
-        internal List<Match> getMatchesInPresentationPhase(JobPosting job) {
+        internal List<Match> getMatchesInPresentationPhase(JobPosting job)
+        {
             var request = new RestRequest(Constants.Matches.GET_PRESENTATION_PHASE_MATCHES, Method.GET);
             request.AddUrlSegment("id", job.id.ToString());
             request.RequestFormat = DataFormat.Json;
@@ -110,10 +108,11 @@ namespace TMCS_Client.Controllers
             return response.Data;
         }
 
-        public long getInterviewPhaseMatchesCount(JobPosting job){
+        public long getInterviewPhaseMatchesCount(JobPosting job)
+        {
             var request = new RestRequest(Constants.Matches.GET_INTERVIEW_PHASE_MATCHES_COUNT, Method.GET);
-			request.AddUrlSegment("jobPostingID", job.id.ToString());
-			request.RequestFormat = DataFormat.Json;
+            request.AddUrlSegment("jobPostingID", job.id.ToString());
+            request.RequestFormat = DataFormat.Json;
 
             var response = client.Execute<long>(request);
             return response.Data;
@@ -121,51 +120,52 @@ namespace TMCS_Client.Controllers
 
         public long getUnviewedInterviewPhaseMatchesCount(JobPosting job)
         {
-			var request = new RestRequest(Constants.Matches.GET_UNVIEWED_INTERVIEW_PHASE_MATCHES_COUNT, Method.GET);
-			request.AddUrlSegment("jobPostingID", job.id.ToString());
-			request.RequestFormat = DataFormat.Json;
-
-			var response = client.Execute<long>(request);
-			return response.Data;
-        }
-
-		public long getPresentationPhaseMatchesCount(JobPosting job)
-		{
-			var request = new RestRequest(Constants.Matches.GET_PRESENTATION_PHASE_MATCHES_COUNT, Method.GET);
-			request.AddUrlSegment("jobPostingID", job.id.ToString());
-			request.RequestFormat = DataFormat.Json;
-
-			var response = client.Execute<long>(request);
-			return response.Data;
-		}
-
-		public long getUnviewedPresentationPhaseMatchesCount(JobPosting job)
-		{
-			var request = new RestRequest(Constants.Matches.GET_UNVIEWED_PRESENTATION_PHASE_MATCHES_COUNT, Method.GET);
-			request.AddUrlSegment("jobPostingID", job.id.ToString());
-			request.RequestFormat = DataFormat.Json;
-
-			var response = client.Execute<long>(request);
-			return response.Data;
-		}
-
-        public long getUnviewedProbPhaseMatches(JobPosting job){
-            var request = new RestRequest(Constants.Matches.GET_UNVIEWED_PROBLEM_PHASE_MATCHES, Method.GET);
-            request.AddUrlSegment("id",job.id.ToString());
+            var request = new RestRequest(Constants.Matches.GET_UNVIEWED_INTERVIEW_PHASE_MATCHES_COUNT, Method.GET);
+            request.AddUrlSegment("jobPostingID", job.id.ToString());
             request.RequestFormat = DataFormat.Json;
 
             var response = client.Execute<long>(request);
             return response.Data;
         }
 
-		public List<Match> getInterviewPhaseMatches(JobPosting job)
-		{
-			var request = new RestRequest(Constants.Matches.GET_INTERVIEW_PHASE_MATCHES, Method.GET);
-			request.AddUrlSegment("jobPostingID", job.id.ToString());
-			request.RequestFormat = DataFormat.Json;
+        public long getPresentationPhaseMatchesCount(JobPosting job)
+        {
+            var request = new RestRequest(Constants.Matches.GET_PRESENTATION_PHASE_MATCHES_COUNT, Method.GET);
+            request.AddUrlSegment("jobPostingID", job.id.ToString());
+            request.RequestFormat = DataFormat.Json;
 
-			var response = client.Execute<List<Match>>(request);
-			return response.Data;
-		}
+            var response = client.Execute<long>(request);
+            return response.Data;
+        }
+
+        public long getUnviewedPresentationPhaseMatchesCount(JobPosting job)
+        {
+            var request = new RestRequest(Constants.Matches.GET_UNVIEWED_PRESENTATION_PHASE_MATCHES_COUNT, Method.GET);
+            request.AddUrlSegment("jobPostingID", job.id.ToString());
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute<long>(request);
+            return response.Data;
+        }
+
+        public long getUnviewedProbPhaseMatches(JobPosting job)
+        {
+            var request = new RestRequest(Constants.Matches.GET_UNVIEWED_PROBLEM_PHASE_MATCHES, Method.GET);
+            request.AddUrlSegment("id", job.id.ToString());
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute<long>(request);
+            return response.Data;
+        }
+
+        public List<Match> getInterviewPhaseMatches(JobPosting job)
+        {
+            var request = new RestRequest(Constants.Matches.GET_INTERVIEW_PHASE_MATCHES, Method.GET);
+            request.AddUrlSegment("jobPostingID", job.id.ToString());
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute<List<Match>>(request);
+            return response.Data;
+        }
     }
 }

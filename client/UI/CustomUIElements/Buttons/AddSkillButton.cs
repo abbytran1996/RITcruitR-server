@@ -9,10 +9,10 @@ namespace TMCS_Client.CustomUIElements.Buttons
     public class AddSkillButton : Button
     {
         public static readonly BindableProperty SkillIDProperty =
-            BindableProperty.Create("skillID",typeof(long),typeof(AddSkillButton),0L);
+            BindableProperty.Create("skillID", typeof(long), typeof(AddSkillButton), 0L);
 
         public static readonly BindableProperty NameProperty =
-            BindableProperty.Create("name", typeof(String),typeof(AddSkillButton), "No skills selected");
+            BindableProperty.Create("name", typeof(String), typeof(AddSkillButton), "No skills selected");
 
         public long skillID
         {
@@ -42,7 +42,7 @@ namespace TMCS_Client.CustomUIElements.Buttons
 
         private void addButtonClicked(object sender, EventArgs e)
         {
-            FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> ancestor = 
+            FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> ancestor =
                 ((FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>)
                  ((SkillSearchResultCell)((AbsoluteLayout)((AddSkillButton)sender).Parent)
                   .Parent).Parent);

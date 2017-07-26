@@ -9,7 +9,7 @@ namespace TMCS_Client.CustomUIElements.Entries
         {
             Placeholder = placeholder;
             Keyboard = keyboard;
-			IsPassword = isPassword;
+            IsPassword = isPassword;
             FontSize = 16.0;
         }
     }

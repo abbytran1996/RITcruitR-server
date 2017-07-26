@@ -11,7 +11,6 @@ namespace TMCS_Client.CustomUIElements.Editors
         {
             base.BackgroundColor = Constants.Forms.Colors.EDITOR_BACKGROUND;
             base.FontSize = 16.0;
-
         }
     }
 }

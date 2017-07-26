@@ -18,10 +18,10 @@ namespace TMCS_Client.UI {
 		private Label lblStudentpresentation;
 
 		//Submit Response
-		private Button btnSubmit;
+		private AcceptButton acceptButton;
 
 		//Not Interested
-		private Button btnNotInterested;
+		private DeclineButton declineButton;
 
 
 		public RecruiterPresentationResponseModal(Match match) {
@@ -38,9 +38,7 @@ namespace TMCS_Client.UI {
 				HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 7.0),
 			};
 
-			AbsoluteLayout studentPresentation = new AbsoluteLayout()
-			{
-			};
+			AbsoluteLayout studentPresentation = new AbsoluteLayout() { };
 
 			string link = match.studentPresentationLink.ToString();
 			link = link.Replace("|", "/");
@@ -48,51 +46,38 @@ namespace TMCS_Client.UI {
 			{
 				Source = link,
 			};
-            presentationPage.Children.Add(lblStudentpresentation =
-										new FormFieldLabel("Student's Presentation:"),
-										new Rectangle(0.5, 0, 0.9, 0.25),
-										AbsoluteLayoutFlags.All);
+            presentationPage.Children.Add(lblStudentpresentation = new FormFieldLabel("Student's Presentation:"),
+										  new Rectangle(0.5, 0, 0.9, 0.25),
+										  AbsoluteLayoutFlags.All);
 
-            presentationPage.Children.Add(studentPres,
-									 new Rectangle(0, 0, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT),
-									AbsoluteLayoutFlags.WidthProportional);
+            presentationPage.Children.Add(studentPres, 
+                                          new Rectangle(0, 0, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT), 
+                                          AbsoluteLayoutFlags.WidthProportional);
+            
+			AbsoluteLayout buttons = new AbsoluteLayout() { };
 
-
-			AbsoluteLayout buttons = new AbsoluteLayout()
-			{
-			};
-
-			var declineButton = new DeclineButton();
+			declineButton = new DeclineButton();
 			declineButton.Clicked += (object sender, EventArgs e) =>
 			{
 				match.applicationStatus = Match.ApplicationStatus.REJECTED;
-                match.currentPhase = Match.CurrentPhase.NONE;
 				updateMatch();
 			};
-            buttons.Children.Add(declineButton,
-                                            new Rectangle(0.1, 1.0, 0.4, 0.9),
-                                 AbsoluteLayoutFlags.All);
+            buttons.Children.Add(declineButton, new Rectangle(0.1, 1.0, 0.4, 0.9), AbsoluteLayoutFlags.All);
 
-
-			var acceptButton = new AcceptButton();
+			acceptButton = new AcceptButton();
 			acceptButton.Clicked += (object sender, EventArgs e) =>
 			{
 				match.currentPhase = Match.CurrentPhase.INTERVIEW;
                 match.applicationStatus = Match.ApplicationStatus.ACCEPTED;
 				updateMatch();
 			};
+            buttons.Children.Add(acceptButton, new Rectangle(0.9, 1.0, 0.4, 0.9), AbsoluteLayoutFlags.All);
 
-            buttons.Children.Add(acceptButton,
-			new Rectangle(0.9, 1.0, 0.4, 0.9),
-                                 AbsoluteLayoutFlags.All);
-
-		
-			
-
-			presentationPage.Children.Add(buttons,
-								new Rectangle(0.5, 8.5 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, Constants.Forms.Sizes.ROW_HEIGHT),
-								AbsoluteLayoutFlags.WidthProportional |
-								AbsoluteLayoutFlags.XProportional);
+			presentationPage.Children.Add(buttons, 
+                                          new Rectangle(0.5, 8.5 * Constants.Forms.Sizes.ROW_HEIGHT, 
+                                                        1.0, Constants.Forms.Sizes.ROW_HEIGHT), 
+                                          AbsoluteLayoutFlags.WidthProportional | 
+                                            AbsoluteLayoutFlags.XProportional);
 
             pageContent.Content = presentationPage;
 

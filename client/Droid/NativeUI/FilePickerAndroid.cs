@@ -7,9 +7,6 @@ namespace TMCS_Client.UI
 {
     public class FilePickerAndroid : ContentPage
     {
-
-		private ListView commonLocationsView;
-
         private ListView directoryListingView;
         private ObservableCollection<String> directoryListing;
 
@@ -52,6 +49,7 @@ namespace TMCS_Client.UI
 
         private void refreshDirectory(string newDir){
             if(directoryListing != null){
+                //Get the new directory
                 if (newDir == "..")
                 {
                     newDir =
@@ -64,6 +62,7 @@ namespace TMCS_Client.UI
                     newDir = directoryListingView.Header + newDir;
                 }
 
+                //Attempt access to the new directories
                 try{
                     Directory.GetDirectories(newDir);
                 }catch(UnauthorizedAccessException uae){
@@ -71,16 +70,21 @@ namespace TMCS_Client.UI
                     directoryListingView.SelectedItem = null;
                     return;
                 }
+
+                //If access is granted continue with updating the listing
                 directoryListingView.Header = newDir;
                 directoryListing.Clear();
+                //Add the back director
                 if (newDir != "/")
                 {
                     directoryListing.Add("..");
                 }
+                //Add directories
                 foreach (string dir in Directory.GetDirectories(newDir))
 				{
                     directoryListing.Add(dir.Remove(0,newDir.Length) + "/");
 				}
+                //Add visible pdf files
 				foreach (string file in Directory.GetFiles(newDir))
 				{
 					if (file.EndsWith(".pdf", StringComparison.CurrentCultureIgnoreCase))

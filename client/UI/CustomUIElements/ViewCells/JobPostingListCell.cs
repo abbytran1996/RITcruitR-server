@@ -6,7 +6,7 @@ using Xamarin.Forms;
 namespace TMCS_Client.CustomUIElements.ViewCells
 {
     public class JobPostingListCell : ViewCell
-	{
+    {
         Label lblJobPostingPositionTitle;
         Label lblJobPostingLocation;
         Label lblJobPostingNewApplicants;
@@ -42,17 +42,12 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                 Text = ""
             };
 
-            cellLayout.Children.Add(lblJobPostingPositionTitle,
-                                   new Rectangle(16.0, 0.0, 0.7, 0.5),
-                                    AbsoluteLayoutFlags.SizeProportional |
-                                   AbsoluteLayoutFlags.YProportional);
-            cellLayout.Children.Add(lblJobPostingLocation,
-                                    new Rectangle(16.0,1.0,0.7,0.5),
-								   AbsoluteLayoutFlags.SizeProportional |
-								   AbsoluteLayoutFlags.YProportional);
-            cellLayout.Children.Add(lblJobPostingNewApplicants,
-                                   new Rectangle(0.9,0.0,0.2,1.0),
-                                   AbsoluteLayoutFlags.All);
+            cellLayout.Children.Add(lblJobPostingPositionTitle, new Rectangle(16.0, 0.0, 0.7, 0.5),
+                                    AbsoluteLayoutFlags.SizeProportional | AbsoluteLayoutFlags.YProportional);
+            cellLayout.Children.Add(lblJobPostingLocation, new Rectangle(16.0, 1.0, 0.7, 0.5),
+                                   AbsoluteLayoutFlags.SizeProportional | AbsoluteLayoutFlags.YProportional);
+            cellLayout.Children.Add(lblJobPostingNewApplicants, new Rectangle(0.9, 0.0, 0.2, 1.0), 
+                                    AbsoluteLayoutFlags.All);
 
             View = cellLayout;
         }
@@ -60,7 +55,7 @@ namespace TMCS_Client.CustomUIElements.ViewCells
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            if ((BindingContext != null) && (((JobPosting)BindingContext) == JobPosting.NullJobPosting))
+            if((BindingContext != null) && (((JobPosting)BindingContext) == JobPosting.NullJobPosting))
             {
                 this.View = new AbsoluteLayout()
                 {
@@ -72,15 +67,18 @@ namespace TMCS_Client.CustomUIElements.ViewCells
                     VerticalTextAlignment = TextAlignment.Center,
                     HorizontalTextAlignment = TextAlignment.Center,
                     FontSize = 22.0,
-                }, new Rectangle(0.0, 0.0, 1.0, 1.0),
-                                                         AbsoluteLayoutFlags.All);
-            }else if(BindingContext != null){
+                }, new Rectangle(0.0, 0.0, 1.0, 1.0), AbsoluteLayoutFlags.All);
+            }
+            else if(BindingContext != null)
+            {
                 lblJobPostingLocation.Text = ((JobPosting)BindingContext).location;
                 lblJobPostingPositionTitle.Text = ((JobPosting)BindingContext).positionTitle;
-                lblJobPostingNewApplicants.Text = 
+                lblJobPostingNewApplicants.Text =
                     MatchController.getMatchController().getUnviewedProbPhaseMatches(((JobPosting)BindingContext)) +
-                    MatchController.getMatchController().getUnviewedPresentationPhaseMatchesCount(((JobPosting)BindingContext)) +
-                    MatchController.getMatchController().getUnviewedInterviewPhaseMatchesCount(((JobPosting)BindingContext)) > 0 ?"NEW":"";
+                    MatchController.getMatchController().getUnviewedPresentationPhaseMatchesCount(
+                                                  ((JobPosting)BindingContext)) +
+                    MatchController.getMatchController().getUnviewedInterviewPhaseMatchesCount(
+                                                  ((JobPosting)BindingContext)) > 0 ? "NEW" : "";
             }
         }
     }
