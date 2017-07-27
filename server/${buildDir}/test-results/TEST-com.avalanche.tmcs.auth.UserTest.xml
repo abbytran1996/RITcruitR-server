@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.avalanche.tmcs.auth.UserTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2017-07-27T20:51:37" hostname="shodan-linux" time="0.005">
+  <properties/>
+  <testcase name="testValidateNewUser_passwordEmpty" classname="com.avalanche.tmcs.auth.UserTest" time="0.001"/>
+  <testcase name="testValidateNewUser_usernameEmpty" classname="com.avalanche.tmcs.auth.UserTest" time="0.0"/>
+  <testcase name="testValidateNewUser_passwordTooShort" classname="com.avalanche.tmcs.auth.UserTest" time="0.0"/>
+  <testcase name="testValidateNewUser_passwordsDontMatch" classname="com.avalanche.tmcs.auth.UserTest" time="0.0"/>
+  <testcase name="testValidateNewUser_passwordNull" classname="com.avalanche.tmcs.auth.UserTest" time="0.0"/>
+  <testcase name="testValidateNewUser_usernameNull" classname="com.avalanche.tmcs.auth.UserTest" time="0.0"/>
+  <testcase name="testValidateNewUser_passwordConfirmEmpty" classname="com.avalanche.tmcs.auth.UserTest" time="0.0"/>
+  <testcase name="testValidateNewUser_allGood" classname="com.avalanche.tmcs.auth.UserTest" time="0.001"/>
+  <testcase name="testValidateNewUser_passwordConfirmNull" classname="com.avalanche.tmcs.auth.UserTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
