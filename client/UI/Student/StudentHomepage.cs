@@ -4,15 +4,19 @@ using Xamarin.Forms;
 using System;
 using System.Diagnostics;
 
-namespace TMCS_Client.UI {
-    public class StudentHomepage : StudentListPage {
-        private AbsoluteLayout bottomItems = new AbsoluteLayout() {
+namespace TMCS_Client.UI
+{
+    public class StudentHomepage : StudentListPage
+    {
+        private AbsoluteLayout bottomItems = new AbsoluteLayout()
+        {
             HorizontalOptions = LayoutOptions.CenterAndExpand
         };
-        
+
         private StudentController studentController = StudentController.getStudentController();
-        
-        public StudentHomepage() : base("You have been matched with the following jobs:", Match.CurrentPhase.NONE) {
+
+        public StudentHomepage() : base("You have been matched with the following jobs:", Match.CurrentPhase.NONE)
+        {
             bottomItems.Children.Add(new Label() { Text = "Select a position you may be interested in" },
                 new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
 
@@ -21,7 +25,8 @@ namespace TMCS_Client.UI {
             Content = pageContent;
         }
 
-        protected override void onItemTapped(object sender, ItemTappedEventArgs e) {
+        protected override void onItemTapped(object sender, ItemTappedEventArgs e)
+        {
             Debug.WriteLine("Tapped an item");
             var selectedMatch = ((CellData)e.Item).Match;
 
@@ -35,8 +40,8 @@ namespace TMCS_Client.UI {
             declineButton.Clicked += (object sender2, EventArgs e2) =>
             {
                 acceptPosting(selectedMatch, false);
-				bottomItems.Children.Clear();
-			};
+                bottomItems.Children.Clear();
+            };
             bottomItems.Children.Add(declineButton,
             new Rectangle(0, 0, 0.5, 1), AbsoluteLayoutFlags.All);
             Button acceptButton = new Button()
@@ -49,8 +54,8 @@ namespace TMCS_Client.UI {
             {
                 acceptPosting(selectedMatch, true);
                 selectedMatch.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
-				bottomItems.Children.Clear();
-			};
+                bottomItems.Children.Clear();
+            };
             bottomItems.Children.Add(acceptButton,
             new Rectangle(1, 0, 0.5, 1), AbsoluteLayoutFlags.All);
         }

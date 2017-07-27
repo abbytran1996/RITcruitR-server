@@ -21,8 +21,6 @@ namespace TMCS_Client.UI
             var presentationPage = new StudentPresentationList();
             var interviewPage = new StudentInterviewList();
 
-
-
             var editProfileButton = new ToolbarItem()
             {
                 Text = "Edit profile",

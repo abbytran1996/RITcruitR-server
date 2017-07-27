@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TMCS_Client.Controllers;
@@ -21,17 +21,6 @@ namespace TMCS_Client.UI
         private ScrollView pageContent;
         private AbsoluteLayout creationForm;
 
-        //Title
-        PageTitleLabel lblTitle;
-
-        //Position Name
-        FormFieldLabel lblPositionTitle;
-        FormEntry entPositionTitle;
-
-        //Description
-        FormFieldLabel lblDescription;
-        FormEditor editorDescription;
-
         //All Skills: Get the list of skills from skills controller call
         List<Skill> allSkills;
 
@@ -42,9 +31,6 @@ namespace TMCS_Client.UI
         FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell> requiredSkillsSearchResults;
         FormFieldLabel lblChosenRequiredSkills;
         FormListView<Skill, SkillListCell> requiredSkills;
-        FormFieldLabel lblMinMatchedRequiredSkills;
-        FormEntry entMinMatchedRequiredSkills;
-
 
         //Recruiter
         private DTOs.Student associatedStudent = null;
@@ -61,90 +47,88 @@ namespace TMCS_Client.UI
             allSkills = SkillController.getSkillController().getAllSkills();
 
             //Whole Page
-            pageContent = new ScrollView()
-            {
+            pageContent = new ScrollView() { };
 
+            creationForm = new AbsoluteLayout()
+            {
+                HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 7,
             };
 
-			creationForm = new AbsoluteLayout()
-			{
-				HeightRequest = Constants.Forms.Sizes.ROW_HEIGHT * 7,
-			};
-
-            
             //Required Skills
             requiredSkillsSection = new AbsoluteLayout();
 
             lblRequiredSkills = new SubSectionTitleLabel("Skills Selection");
-            
-            requiredSkills = new FormListView<Skill, SkillListCell>(Skill.NullSkill,
-                                                                   new ObservableCollection<Skill>(associatedStudent.skills));
 
-			requiredSkillsSearchResults = new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(requiredSkills);
+            requiredSkills = 
+                new FormListView<Skill, SkillListCell>(Skill.NullSkill, 
+                                                       new ObservableCollection<Skill>(associatedStudent.skills));
 
-            requiredSkillsSearchBar = new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for required skills",
-                                                      allSkills, requiredSkillsSearchResults);
+            requiredSkillsSearchResults = 
+                new FormSearchResultsListView<Skill, SkillSearchResultCell, SkillListCell>(requiredSkills);
+
+            requiredSkillsSearchBar = 
+                new FormSearchBar<Skill, SkillSearchResultCell, SkillListCell>("Search for required skills", 
+                                                                               allSkills, requiredSkillsSearchResults);
 
             lblChosenRequiredSkills = new FormFieldLabel("Your Skills");
 
-            requiredSkillsSection.Children.Add(lblRequiredSkills,
-                                              new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1),
+            requiredSkillsSection.Children.Add(lblRequiredSkills, 
+                                               new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 1), 
                                                AbsoluteLayoutFlags.XProportional | 
-                                               AbsoluteLayoutFlags.WidthProportional);
+                                                AbsoluteLayoutFlags.WidthProportional);
 
-            requiredSkillsSection.Children.Add(requiredSkillsSearchBar,
-                                     new Rectangle(0,Constants.Forms.Sizes.ROW_HEIGHT,
-                                                   1.0,Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-									 AbsoluteLayoutFlags.XProportional |
-									AbsoluteLayoutFlags.WidthProportional);
+            requiredSkillsSection.Children.Add(requiredSkillsSearchBar, 
+                                               new Rectangle(0, Constants.Forms.Sizes.ROW_HEIGHT, 
+                                                             1.0, Constants.Forms.Sizes.ROW_HEIGHT * 0.5), 
+                                               AbsoluteLayoutFlags.XProportional | 
+                                                AbsoluteLayoutFlags.WidthProportional);
 
-			requiredSkillsSection.Children.Add(lblChosenRequiredSkills,
-									 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5),
-									  AbsoluteLayoutFlags.XProportional |
-									  AbsoluteLayoutFlags.WidthProportional);
+            requiredSkillsSection.Children.Add(lblChosenRequiredSkills, 
+                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5, 
+                                                             0.9, Constants.Forms.Sizes.ROW_HEIGHT * 0.5), 
+                                               AbsoluteLayoutFlags.XProportional | 
+                                                AbsoluteLayoutFlags.WidthProportional);
 
-            requiredSkillsSection.Children.Add(requiredSkills,
-                                              new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2,
-                                                           0.9,Constants.Forms.Sizes.ROW_HEIGHT * 3),
-                                              AbsoluteLayoutFlags.XProportional | 
-                                               AbsoluteLayoutFlags.WidthProportional);
-            
-			requiredSkillsSection.Children.Add(requiredSkillsSearchResults,
-									 new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5,
-												  0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3),
-									  AbsoluteLayoutFlags.XProportional |
-									  AbsoluteLayoutFlags.WidthProportional);
+            requiredSkillsSection.Children.Add(requiredSkills, 
+                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 2, 
+                                                             0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3), 
+                                               AbsoluteLayoutFlags.XProportional | 
+                                                AbsoluteLayoutFlags.WidthProportional);
 
-            
-            creationForm.Children.Add(requiredSkillsSection,
-                                     new Rectangle(0.0, 0.0,
-                                                   1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6),
-                                     AbsoluteLayoutFlags.XProportional |
-                                      AbsoluteLayoutFlags.WidthProportional);
+            requiredSkillsSection.Children.Add(requiredSkillsSearchResults, 
+                                               new Rectangle(0.5, Constants.Forms.Sizes.ROW_HEIGHT * 1.5, 
+                                                             0.9, Constants.Forms.Sizes.ROW_HEIGHT * 3), 
+                                               AbsoluteLayoutFlags.XProportional | 
+                                                AbsoluteLayoutFlags.WidthProportional);
 
-			
+
+            creationForm.Children.Add(requiredSkillsSection, 
+                                      new Rectangle(0.0, 0.0, 1.0, Constants.Forms.Sizes.ROW_HEIGHT * 6), 
+                                      AbsoluteLayoutFlags.XProportional | 
+                                        AbsoluteLayoutFlags.WidthProportional);
+
+
             //Create
             btnSave = new FormSubmitButton("Save skills");
             btnSave.Command = new Command((object obj) => saveSkills());
 
-			creationForm.Children.Add(btnSave,
-										  new Rectangle(0.5, ((Constants.Forms.Sizes.ROW_HEIGHT * 6) + 10.0), 0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0),
-										  AbsoluteLayoutFlags.WidthProportional |
-										 AbsoluteLayoutFlags.XProportional);
+            creationForm.Children.Add(btnSave, 
+                                      new Rectangle(0.5, ((Constants.Forms.Sizes.ROW_HEIGHT * 6) + 10.0), 
+                                                    0.8, Constants.Forms.Sizes.ROW_HEIGHT - 20.0), 
+                                      AbsoluteLayoutFlags.WidthProportional | 
+                                        AbsoluteLayoutFlags.XProportional);
 
             pageContent.Content = creationForm;
             Content = pageContent;
         }
 
-        private void saveSkills(){
+        private void saveSkills()
+        {
             List<Skill> skillslist = new List<Skill>(requiredSkills.items);
             associatedStudent.skills = skillslist;
             StudentController.getStudentController().updateSkillsForStudent(associatedStudent);
             Navigation.PopAsync(true);
         }
-
-        
     }
 }
 

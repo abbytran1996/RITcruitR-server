@@ -20,22 +20,24 @@ namespace TMCS_Client.UI.Student
             //Populate field with student data
             entFirstName.Text = student.firstName;
             entFirstName.IsEnabled = false;
-			entLastName.Text = student.lastName;
-			entLastName.IsEnabled = false;
-			entEmail.Text = student.email;
-			entEmail.IsEnabled = false;
+            entLastName.Text = student.lastName;
+            entLastName.IsEnabled = false;
+            entEmail.Text = student.email;
+            entEmail.IsEnabled = false;
             entPassword.Placeholder = "New Password";
             entRetypePassword.Placeholder = "Retype New Password";
             entSchoolName.Text = student.school;
             entGraduationDate.Text = student.graduationDate.ToString("MM/yy");
-            entPhoneNumber.Text = student.phoneNumber != null ? student.phoneNumber:null;
-			if (student.preferredStates.Count > 0)
-			{
+            entPhoneNumber.Text = student.phoneNumber != null ? student.phoneNumber : null;
+            if(student.preferredStates.Count > 0)
+            {
                 entPreferredLocation.Text = "";
-	            foreach(String location in student.preferredStates){
-	                entPreferredLocation.Text += location + ", ";
-	            }
-                entPreferredLocation.Text = entPreferredLocation.Text.Substring(0, entPreferredLocation.Text.Length - 2);
+                foreach(String location in student.preferredStates)
+                {
+                    entPreferredLocation.Text += location + ", ";
+                }
+                entPreferredLocation.Text = entPreferredLocation.Text.Substring(0, 
+                                                                                entPreferredLocation.Text.Length - 2);
             }
             pickPreferredCompanySize.SelectedItem = student.preferredCompanySize;
             entResumeFileLocation.Text = student.resumeLocation;
@@ -55,42 +57,43 @@ namespace TMCS_Client.UI.Student
 
             buttons = new AbsoluteLayout();
 
-            buttons.Children.Add(btnCancel,
-                                new Rectangle(0.0,0.5,0.45,0.8),
-                                AbsoluteLayoutFlags.All);
+            buttons.Children.Add(btnCancel, new Rectangle(0.0, 0.5, 0.45, 0.8), AbsoluteLayoutFlags.All);
 
-			buttons.Children.Add(btnRegister,
-								new Rectangle(1.0, 0.5, 0.45, 0.8),
-								AbsoluteLayoutFlags.All);
-            
-			registrationForm.Children.Add(buttons,
-										  new Rectangle(0.5, (12.0 * Constants.Forms.Sizes.ROW_HEIGHT), 0.9, Constants.Forms.Sizes.ROW_HEIGHT),
-										  AbsoluteLayoutFlags.WidthProportional |
-										 AbsoluteLayoutFlags.XProportional);
+            buttons.Children.Add(btnRegister, new Rectangle(1.0, 0.5, 0.45, 0.8), AbsoluteLayoutFlags.All);
+
+            registrationForm.Children.Add(buttons, 
+                                          new Rectangle(0.5, (12.0 * Constants.Forms.Sizes.ROW_HEIGHT), 
+                                                        0.9, Constants.Forms.Sizes.ROW_HEIGHT), 
+                                          AbsoluteLayoutFlags.WidthProportional | 
+                                            AbsoluteLayoutFlags.XProportional);
         }
 
-        private void update(){
+        private void update()
+        {
             String invalidDataMessage = formValidation(false);
 
-            if (invalidDataMessage != "")
+            if(invalidDataMessage != "")
             {
                 this.DisplayAlert("Invalid Data:", invalidDataMessage, "OK");
             }
             else
             {
                 //TODO implement password updating
-
                 student.school = entSchoolName.Text;
-                student.graduationDate = DateTime.ParseExact(entGraduationDate.Text.Length < 5 ? "0" + entGraduationDate.Text :
-                    entGraduationDate.Text, "MM/yy", null);
-                student.phoneNumber = entPhoneNumber.Text != null ? entPhoneNumber.Text.Replace("(", "").Replace(")", "")
-                    .Replace(" ", "").Replace("-", "") : "";
-                student.preferredStates = String.IsNullOrEmpty(entPreferredLocation.Text)?new List<String>():
-                    new List<String>(entPreferredLocation.Text.Trim(new char[] {' ', ','}).Replace(", ", ",").Split(','));
+                student.graduationDate = 
+                    DateTime.ParseExact(entGraduationDate.Text.Length < 5 ? "0" + entGraduationDate.Text : 
+                                        entGraduationDate.Text, "MM/yy", null);
+                student.phoneNumber = 
+                    entPhoneNumber.Text != null ? 
+                        entPhoneNumber.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "") : "";
+                student.preferredStates = String.IsNullOrEmpty(entPreferredLocation.Text) ? new List<String>() :
+                    new List<String>(entPreferredLocation.Text.Trim(new char[] { ' ', ',' }).
+                                     Replace(", ", ",").Split(','));
                 student.preferredCompanySize = pickPreferredCompanySize.getPreferredSize();
                 StudentController.getStudentController().updateStudent(student);
 
-                if(entResumeFileLocation.Text != student.resumeLocation){
+                if(entResumeFileLocation.Text != student.resumeLocation)
+                {
                     Resume newResume = new Resume(entResumeFileLocation.Text);
                     StudentController.getStudentController().uploadResume(student.id, newResume);
                     student.resumeLocation = newResume.fileName;

@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TMCS_Client.Controllers;
 using TMCS_Client.CustomUIElements.Labels;
@@ -8,14 +8,17 @@ using TMCS_Client.DTOs;
 using Xamarin.Forms;
 using System;
 
-namespace TMCS_Client.UI {
-    public class StudentProblemList : ContentPage {
+namespace TMCS_Client.UI
+{
+    public class StudentProblemList : ContentPage
+    {
 
         private AbsoluteLayout menu;
         private StackLayout pageContent = new StackLayout();
         private ScrollView matchesListContainer = new ScrollView();
         private ListView matchesList = new ListView();
-        private AbsoluteLayout bottomItems = new AbsoluteLayout() {
+        private AbsoluteLayout bottomItems = new AbsoluteLayout()
+        {
             HorizontalOptions = LayoutOptions.CenterAndExpand
         };
 
@@ -24,32 +27,31 @@ namespace TMCS_Client.UI {
 
         private List<Match> matches;
 
-        public StudentProblemList() {
+        public StudentProblemList()
+        {
 
             matchesList.IsPullToRefreshEnabled = true;
-            matchesList.RefreshCommand = new Command(() => {
+            matchesList.RefreshCommand = new Command(() =>
+            {
                 matchesList.IsRefreshing = true;
-
                 setupMatchedList();
-
                 matchesList.IsRefreshing = false;
             });
 
             setupMatchedList();
             menu = new AbsoluteLayout();
 
-            pageContent.Children.Add(new SubSectionTitleLabel("You have are in the problem phase with the following jobs:"));
+            pageContent.Children.Add(
+                new SubSectionTitleLabel("You have are in the problem phase with the following jobs:"));
 
             matchesListContainer.Content = matchesList;
             matchesListContainer.Margin = new Thickness(22, 0);
 
             pageContent.Children.Add(matchesListContainer);
 
-            
             Content = pageContent;
 
             matchesList.ItemTapped += onItemTapped;
-
         }
 
         private void setupMatchedList()
@@ -71,13 +73,12 @@ namespace TMCS_Client.UI {
 
             matchesList.ItemsSource = postings;
             matchesList.RowHeight = 130;
-
         }
 
-		private void onItemTapped(object sender, ItemTappedEventArgs e)
+        private void onItemTapped(object sender, ItemTappedEventArgs e)
         {
-			var selectedMatch = ((CellData)e.Item).Match;
-			Navigation.PushAsync(new StudentProblemPhase(selectedMatch));
+            var selectedMatch = ((CellData)e.Item).Match;
+            Navigation.PushAsync(new StudentProblemPhase(selectedMatch));
         }
 
         class CellData
@@ -118,10 +119,10 @@ namespace TMCS_Client.UI {
                 View = cellWrapper;
             }
         }
-		protected override void OnAppearing()
-		{
-			setupMatchedList();
-			base.OnAppearing();
-		}
+        protected override void OnAppearing()
+        {
+            setupMatchedList();
+            base.OnAppearing();
+        }
     }
 }

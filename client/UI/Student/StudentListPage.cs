@@ -7,15 +7,18 @@ using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
-namespace TMCS_Client.UI {
-    public abstract class StudentListPage : ContentPage {
+namespace TMCS_Client.UI
+{
+    public abstract class StudentListPage : ContentPage
+    {
         private AbsoluteLayout menu;
         private StackLayout pageContent = new StackLayout();
         private ScrollView matchesListContainer = new ScrollView();
-        private AbsoluteLayout bottomItems = new AbsoluteLayout() {
+        private AbsoluteLayout bottomItems = new AbsoluteLayout()
+        {
             HorizontalOptions = LayoutOptions.CenterAndExpand
         };
-        
+
         private StudentController studentController = StudentController.getStudentController();
 
         protected Match.CurrentPhase phase;
@@ -24,11 +27,13 @@ namespace TMCS_Client.UI {
         protected List<Match> matches;
         protected ListView matchesList = new ListView();
 
-        public StudentListPage(String sectionLabel, Match.CurrentPhase currentPhase) {
+        public StudentListPage(String sectionLabel, Match.CurrentPhase currentPhase)
+        {
             phase = currentPhase;
 
             matchesList.IsPullToRefreshEnabled = true;
-            matchesList.RefreshCommand = new Command(() => {
+            matchesList.RefreshCommand = new Command(() =>
+            {
                 matchesList.IsRefreshing = true;
 
                 setupMatchedList();
@@ -45,13 +50,14 @@ namespace TMCS_Client.UI {
             matchesListContainer.Margin = new Thickness(22, 0);
 
             pageContent.Children.Add(matchesListContainer);
-            
+
             Content = pageContent;
 
             matchesList.ItemTapped += onItemTapped;
         }
 
-        protected virtual void setupMatchedList() {
+        protected virtual void setupMatchedList()
+        {
             var student = app.CurrentStudent;
             matches = MatchController.getMatchController().getMatchesForStudent(student);
             matchesList.ItemTemplate = new DataTemplate(typeof(MatchCell));
@@ -69,14 +75,16 @@ namespace TMCS_Client.UI {
 
         protected abstract void onItemTapped(object sender, ItemTappedEventArgs e);
 
-        protected class CellData {
+        protected class CellData
+        {
             public string PositionTitle { get; private set; }
             public string CompanyName { get; private set; }
             public string Location { get; private set; }
             public string Website { get; private set; }
             public Match Match { get; private set; }
 
-            public CellData(Match match) {
+            public CellData(Match match)
+            {
                 PositionTitle = match.job.positionTitle;
                 CompanyName = match.job.recruiter.company.companyName;
                 Location = match.job.location;
@@ -85,12 +93,15 @@ namespace TMCS_Client.UI {
             }
         }
 
-        protected class MatchCell : ViewCell {
-            public MatchCell() {
+        protected class MatchCell : ViewCell
+        {
+            public MatchCell()
+            {
                 StackLayout cellWrapper = new StackLayout();
                 StackLayout layout = new StackLayout();
 
-                Label title = new Label() {
+                Label title = new Label()
+                {
                     FontSize = 18
                 };
                 Label company = new Label();
@@ -112,7 +123,8 @@ namespace TMCS_Client.UI {
             }
         }
 
-        protected override void OnAppearing() {
+        protected override void OnAppearing()
+        {
             setupMatchedList();
             base.OnAppearing();
         }

@@ -4,18 +4,22 @@ using TMCS_Client.CustomUIElements.Labels;
 using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
-namespace TMCS_Client.UI {
-    public class StudentInterviewPhase : ContentPage {
+namespace TMCS_Client.UI
+{
+    public class StudentInterviewPhase : ContentPage
+    {
         private Match match;
 
-        public StudentInterviewPhase(Match match) {
+        public StudentInterviewPhase(Match match)
+        {
             this.match = match;
             var job = match.job;
 
             var declineButton = new DeclineButton();
             declineButton.Clicked += onDeclineButtonClicked;
 
-            Content = new StackLayout {
+            Content = new StackLayout
+            {
                 Children = {
                     new PageTitleLabel(job.positionTitle),
                     new SubSectionTitleLabel("Position Description"),
@@ -30,7 +34,8 @@ namespace TMCS_Client.UI {
             };
         }
 
-        private void onDeclineButtonClicked(object sender, System.EventArgs e) {
+        private void onDeclineButtonClicked(object sender, System.EventArgs e)
+        {
             match.applicationStatus = Match.ApplicationStatus.REJECTED;
             MatchController.getMatchController().updateMatch(match);
             Navigation.PopAsync(true);
