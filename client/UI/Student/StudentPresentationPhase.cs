@@ -122,7 +122,8 @@ namespace TMCS_Client.UI
                selectedMatch.currentPhase = Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER;
 			   selectedMatch.applicationStatus = Match.ApplicationStatus.IN_PROGRESS;
 			   updateMatch();
-			   saveResponse(selectedMatch);
+                saveResponse(selectedMatch);
+                Navigation.PopAsync(true);
 			};
 
             buttons.Children.Add(btnNotInterested =
@@ -133,8 +134,6 @@ namespace TMCS_Client.UI
                    FontSize = 22,
                    TextColor = Color.White,
                    BackgroundColor = Color.Red,
-                   Command = new Command((object obj) => Navigation.PushAsync(new StudentHomepage())),
-
                },
 					new Rectangle(0.1, 1.0, 0.4, 0.9),
 					AbsoluteLayoutFlags.All
@@ -143,7 +142,8 @@ namespace TMCS_Client.UI
 			{
 				selectedMatch.applicationStatus = Match.ApplicationStatus.REJECTED;
 				selectedMatch.currentPhase = Match.CurrentPhase.NONE;
-				updateMatch();
+                updateMatch();
+                Navigation.PopAsync(true);
 			};
 
 			presentationPage.Children.Add(buttons,
@@ -186,7 +186,6 @@ namespace TMCS_Client.UI
 		void updateMatch()
 		{
 			MatchController.getMatchController().updateMatch(selectedMatch);
-			Navigation.PopAsync(true);
 		}
 
 

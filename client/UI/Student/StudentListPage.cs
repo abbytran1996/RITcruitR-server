@@ -8,9 +8,6 @@ using TMCS_Client.DTOs;
 using Xamarin.Forms;
 
 namespace TMCS_Client.UI {
-    /// <summary>
-    /// Useful superclass for lists of matches in one of the phases
-    /// </summary>
     public abstract class StudentListPage : ContentPage {
         private AbsoluteLayout menu;
         private StackLayout pageContent = new StackLayout();
@@ -50,7 +47,6 @@ namespace TMCS_Client.UI {
             pageContent.Children.Add(matchesListContainer);
             
             Content = pageContent;
-
 
             matchesList.ItemTapped += onItemTapped;
         }

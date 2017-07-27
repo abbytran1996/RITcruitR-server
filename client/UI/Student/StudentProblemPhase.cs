@@ -103,8 +103,6 @@ namespace TMCS_Client.UI
                                       new Rectangle(0.5, 1.0, 0.9, 0.85),
                                       AbsoluteLayoutFlags.All);
 
-            //txtStudentResponse.Completed += (object sender, EventArgs e) => checkResponse();
-
             txtStudentResponse.TextChanged += (object sender, TextChangedEventArgs e) => checkResponse();
 
             problemPage.Children.Add(responseEntry,
@@ -123,8 +121,6 @@ namespace TMCS_Client.UI
                 TextColor = Color.White,
                 BackgroundColor = Color.MediumSeaGreen,
                 IsEnabled = false,
-
-                //Command = new Command((object obj) => Navigation.PopAsync(true)),
             },
 
 
@@ -137,10 +133,9 @@ namespace TMCS_Client.UI
 				selectedMatch.currentPhase = Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER;
                 selectedMatch.applicationStatus = Match.ApplicationStatus.IN_PROGRESS;
 				updateMatch();
-				saveResponse(selectedMatch);
-						//acceptPosting(selectedMatch, true);
+                saveResponse(selectedMatch);
+                Navigation.PopAsync(true);
 			};
-            //btnSubmit.IsEnabled = false;
 
             buttons.Children.Add(btnNotInterested =
                new Button()
@@ -149,7 +144,6 @@ namespace TMCS_Client.UI
                    FontSize = 22,
                    TextColor = Color.White,
                    BackgroundColor = Color.Red,
-				   //Command = new Command((object obj) => Navigation.PopAsync(true)),
 			   },
                     new Rectangle(0.1, 1.0, 0.4, 0.9),
                     AbsoluteLayoutFlags.All
@@ -159,6 +153,7 @@ namespace TMCS_Client.UI
                 selectedMatch.applicationStatus = Match.ApplicationStatus.REJECTED;
                 selectedMatch.currentPhase = Match.CurrentPhase.NONE;
                 updateMatch();
+                Navigation.PopAsync(true);
             };
 
             problemPage.Children.Add(buttons,
@@ -203,7 +198,6 @@ namespace TMCS_Client.UI
 		void updateMatch()
 		{
             MatchController.getMatchController().updateMatch(selectedMatch);
-            Navigation.PopAsync(true);
 		}
 
     }
