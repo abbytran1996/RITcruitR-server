@@ -77,6 +77,14 @@ namespace TMCS_Client.UI
             };
             ToolbarItems.Add(editProfileButton);
 
+
+            var logOutButton = new ToolbarItem()
+            {
+                Text = "Log Out",
+                Command = new Command(logOut),
+                Order = ToolbarItemOrder.Secondary
+            };
+            ToolbarItems.Add(logOutButton);
             Content = pageContent;
         }
         
@@ -95,6 +103,14 @@ namespace TMCS_Client.UI
         private void goToProfile()
         {
             Navigation.PushAsync(new RecruiterProfileManagement(loggedInRecruiter));
+        }
+
+        private void logOut()
+        {
+            var serverController = ServerController.getServerController();
+            serverController.logOut();
+            Navigation.InsertPageBefore(Login.getLoginPage(), this);
+            Navigation.PopToRootAsync();
         }
     }
 }
