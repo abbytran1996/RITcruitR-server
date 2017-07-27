@@ -140,19 +140,19 @@ namespace TMCS_Client.UI
                     {
                         var student = StudentController.getStudentController().getStudent(email);
                         (App.Current as App).CurrentStudent = student;
-                        //Console.WriteLine("Student login detected");
                         Navigation.InsertPageBefore(new StudentTab(), Login.getLoginPage());
                         break;
                     }
                     else if(role.name == Role.Name.Recruiter.ToString().ToLower())
                     {
                         var recruiter = RecruiterController.getRecruiterController().getRecruiter(email);
-                        //Console.WriteLine("Recruiter login detected");
                         Navigation.InsertPageBefore(new RecruiterHomepage(recruiter), Login.getLoginPage());
                         break;
                     }
                 }
                 Navigation.PopToRootAsync(false);
+                emailEntry.Text = "";
+                passwordEntry.Text = "";
             }
             loginBusyIndicator.IsVisible = false;
         }
