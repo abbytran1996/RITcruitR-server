@@ -37,8 +37,16 @@ namespace TMCS_Client.UI
                 Order = ToolbarItemOrder.Secondary
 			};
 
+            var logoutButton = new ToolbarItem()
+            {
+                Text = "Log out",
+                Command = new Command(logOut),
+                Order = ToolbarItemOrder.Secondary
+            };
+
             ToolbarItems.Add(editProfileButton);
             ToolbarItems.Add(manageSkillsButton);
+            ToolbarItems.Add(logoutButton);
             matchesPage.Title = "Matches";
 			Children.Add(matchesPage);
             probPage.Title = "Problem Phase";
@@ -57,6 +65,14 @@ namespace TMCS_Client.UI
         private void goToManageSkills()
         {
             Navigation.PushAsync(new SkillsEditing(((App)App.Current).CurrentStudent));
+        }
+
+        private void logOut()
+        {
+            var serverController = ServerController.getServerController();
+            serverController.logOut();
+            Navigation.InsertPageBefore(Login.getLoginPage(), this);
+            Navigation.PopToRootAsync();
         }
     }
 }

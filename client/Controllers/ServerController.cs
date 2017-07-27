@@ -55,5 +55,11 @@ namespace TMCS_Client.Controllers
 
             return response.Data;
         }
+
+        public Boolean logOut()
+        {
+            client.CookieContainer = new CookieContainer();
+            return true;
+        }
     }
 }
