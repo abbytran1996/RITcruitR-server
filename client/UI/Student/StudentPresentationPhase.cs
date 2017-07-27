@@ -60,7 +60,7 @@ namespace TMCS_Client.UI
             AbsoluteLayout postingPresentation = new AbsoluteLayout() { };
 
             postingPresentation.Children.Add(lblPostingpresentation = new FormFieldLabel("Recruiter's Presentation:"),
-                                             new Rectangle(0.5, 0, 0.9, 0.25), AbsoluteLayoutFlags.All);
+                                             new Rectangle(0.5, 0.5, 0.9, 0), AbsoluteLayoutFlags.All);
 
             presentationPage.Children.Add(companyPresentation,
                                           new Rectangle(0, 0, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT),

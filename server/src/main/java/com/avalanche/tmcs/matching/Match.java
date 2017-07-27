@@ -63,7 +63,6 @@ public class Match {
     // Tag created by the recruiter to help organize students
     private String tag;
 
-    @Column(length = 1000)
     private String studentProblemResponse;
 
     private String studentPresentationLink;
@@ -132,6 +131,7 @@ public class Match {
         }
     }
 
+    @Column(length = 1000)
     public String getStudentProblemResponse() {
         return studentProblemResponse;
     }
