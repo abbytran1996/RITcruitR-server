@@ -8,7 +8,7 @@ namespace TMCS_Client.UI
     internal class RecruiterCompanyEditPage : CompanyRegistration
     {
         private Company company;
-
+        
         public RecruiterCompanyEditPage(Company company) : base("Company Editing")
         {
             this.company = company;
@@ -17,7 +17,7 @@ namespace TMCS_Client.UI
             txtCompanyEmailSuffix.Text = company.emailSuffix;
             txtCompanyName.Text = company.companyName;
             txtCompanyLocation.Text = company.location;
-            //txtCompanySize. = company.size;
+            companySizePicker.SelectedIndex = companySizePicker.Items.IndexOf(company.size );
             txtPresentationLink.Text = company.presentation;
             txtWebsiteURL.Text = company.websiteURL;
 
@@ -30,7 +30,7 @@ namespace TMCS_Client.UI
             company.companyName = txtCompanyName.Text;
             company.emailSuffix = txtCompanyEmailSuffix.Text;
             company.companyDescription = txtCompanyDescription.Text;
-            company.size = txtCompanySize.SelectedItem.ToString();
+            company.size = companySizePicker.SelectedItem.ToString();
             company.location = txtCompanyLocation.Text;
             company.presentation = presentation;
             company.websiteURL = txtWebsiteURL.Text;

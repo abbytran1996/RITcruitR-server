@@ -292,7 +292,6 @@ namespace TMCS_Client.UI
             {
                 return true;
             }
-
         }
 
         private bool emailCheck()
@@ -340,8 +339,7 @@ namespace TMCS_Client.UI
 
             txtPhoneNumber.Text = formattedPhoneNumber;
         }
-
-
+        
         private bool passwordCheck()
         {
             if(txtPassword.Text == null)

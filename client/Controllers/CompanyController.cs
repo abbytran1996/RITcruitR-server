@@ -34,14 +34,7 @@ namespace TMCS_Client.Controllers
             request.AddBody(company);
 
             var response = client.Execute(request);
-            if(response.StatusCode != System.Net.HttpStatusCode.Created)
-            {
-                if(response.ErrorException != null)
-                {
-                    throw response.ErrorException;
-                }
-                throw new RestException(response.StatusCode);
-            }
+            ensureStatusCode(response, HttpStatusCode.OK);
         }
 
         public Company getCompanyById(long id)

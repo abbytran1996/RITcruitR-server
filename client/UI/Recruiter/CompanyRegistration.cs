@@ -38,7 +38,7 @@ namespace TMCS_Client.UI
 
         //Company Size
         private FormFieldLabel lblCompanySize;
-        protected Picker txtCompanySize;
+        protected Picker companySizePicker;
 
         //Company Presentation
         private FormFieldLabel lblPresentationLink;
@@ -114,8 +114,8 @@ namespace TMCS_Client.UI
 
             LocationInput.Children.Add(txtCompanyLocation = new FormEntry("State, State, ...", Keyboard.Text),
                                        new Rectangle(0.5, 1.0, 0.9, 0.5), AbsoluteLayoutFlags.All);
-
-            txtCompanyLocation.Completed += (object sender, EventArgs e) => txtCompanySize.Focus();
+            
+            txtCompanyLocation.Completed += (object sender, EventArgs e) => companySizePicker.Focus();
 
             registrationForm.Children.Add(LocationInput, 
                                           new Rectangle(0, 3.0 * Constants.Forms.Sizes.ROW_HEIGHT, 1.0, 
@@ -127,8 +127,8 @@ namespace TMCS_Client.UI
 
             SizeInput.Children.Add(lblCompanySize = new FormFieldLabel("Company Size"), new Rectangle(0.5, 0, 0.9, 0.5), 
                                    AbsoluteLayoutFlags.All);
-
-            SizeInput.Children.Add(txtCompanySize = new CompanySizePicker(), new Rectangle(0.5, 1.0, 0.9, 0.5), 
+            
+            SizeInput.Children.Add(companySizePicker = new CompanySizePicker(), new Rectangle(0.5, 1.0, 0.9, 0.5), 
                                    AbsoluteLayoutFlags.All);
 
             registrationForm.Children.Add(SizeInput, 
@@ -211,7 +211,7 @@ namespace TMCS_Client.UI
         virtual protected void onRegisterButtonClick()
         {
             String invalidDataMessage = "";
-
+            
             if(!suffixCheck())
             {
                 invalidDataMessage += 
@@ -224,7 +224,7 @@ namespace TMCS_Client.UI
                     txtCompanyName.Text,
                     txtCompanyEmailSuffix.Text,
                     txtCompanyDescription.Text,
-                    txtCompanySize.SelectedItem.ToString(),
+                    companySizePicker.SelectedItem.ToString(),
                     txtCompanyLocation.Text,
                     presentation,
                     txtWebsiteURL.Text

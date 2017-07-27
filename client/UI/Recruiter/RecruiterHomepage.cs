@@ -79,7 +79,7 @@ namespace TMCS_Client.UI
 
             Content = pageContent;
         }
-
+        
         private void editCompanyButton_clicked()
         {
             Navigation.PushAsync(new RecruiterCompanyEditPage(loggedInRecruiter.company));

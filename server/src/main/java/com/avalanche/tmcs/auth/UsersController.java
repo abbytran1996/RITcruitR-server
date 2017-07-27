@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user")
-public class LoginController {
+public class UsersController {
     private SecurityService securityService;
 
     private UserDAO userDAO;
 
+    private UserService userService;
+
     @Autowired
-    public LoginController(SecurityService securityService, UserDAO userDAO) {
+    public UsersController(SecurityService securityService, UserDAO userDAO, UserService userService) {
         this.securityService = securityService;
         this.userDAO = userDAO;
+        this.userService = userService;
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
@@ -33,5 +36,12 @@ public class LoginController {
         }
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<User> createNewUser(@RequestBody User user, @RequestParam String roleName) {
+        User savedUser = userService.save(user, Role.RoleName.valueOf(roleName));
+
+        return ResponseEntity.ok(savedUser);
     }
 }
