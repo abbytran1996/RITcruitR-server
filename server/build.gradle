@@ -12,15 +12,25 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+war {
+    baseName = 'recruitr'
+    version =  '0.8.0'
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    compile("org.thymeleaf:thymeleaf-spring4")
+    compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+
     // tag::jetty[]
     compile 'org.springframework.boot:spring-boot-starter-web'
     // end::jetty[]
@@ -43,6 +53,6 @@ dependencies {
 test {
     reports {
         junitXml.enabled = true
-        junitXml.destination = '$buildDir/test-results'
+        junitXml.destination = '${buildDir}/test-results'
     }
 }
