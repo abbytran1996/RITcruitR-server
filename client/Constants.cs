@@ -4,12 +4,14 @@ namespace TMCS_Client
 {
     public static class Constants
     {
-#if __ANDROID__
+        //USE for local testing
+/*#if __ANDROID__
         public static string SERVER_URL { get { return "http://10.0.2.2:8080"; } }  // 10.0.2.2 is the IP address of the device the emulator is running on
-#endif
-#if __IOS__
+#elif __IOS__
         public static string SERVER_URL { get { return "http://127.0.0.1:8080"; } }
-#endif
+#endif*/
+        public static string SERVER_URL { get { return "http://avalanche.se.rit.edu:8080"; } }
+
         public static class Login
         {
             public static string LOGIN_RESOURCE { get { return "/user/login"; } }

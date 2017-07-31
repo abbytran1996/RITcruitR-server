@@ -37,7 +37,7 @@ namespace TMCS_Client.UI
             {
                 if((Match)presentationResponsesList.SelectedItem != Match.EmptyMatch)
                 {
-                    Navigation.PushModalAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
+                    Navigation.PushAsync(new RecruiterPresentationResponseModal(presentationResponsesList.SelectedItem as Match));
                 }
             };
             pageContent.Children.Add(presentationResponsesList,

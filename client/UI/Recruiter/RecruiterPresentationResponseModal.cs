@@ -26,7 +26,14 @@ namespace TMCS_Client.UI {
 
 		public RecruiterPresentationResponseModal(Match match) {
             this.match = match;
-            Title = "Presentation Response Review";
+
+            string link = match.studentPresentationLink.ToString();
+            link = link.Replace("|", "/");
+            var studentPres = new WebView()
+            {
+                Source = link,
+            };
+            this.Title = "Presentation Response Review";
 
             pageContent = new ScrollView()
             {
@@ -38,23 +45,25 @@ namespace TMCS_Client.UI {
 				HeightRequest = (Constants.Forms.Sizes.ROW_HEIGHT * 7.0),
 			};
 
-			AbsoluteLayout studentPresentation = new AbsoluteLayout() { };
+            AbsoluteLayout studentPresentation = new AbsoluteLayout() { };
 
-			string link = match.studentPresentationLink.ToString();
-			link = link.Replace("|", "/");
-			var studentPres = new WebView()
-			{
-				Source = link,
-			};
-            presentationPage.Children.Add(lblStudentpresentation = new FormFieldLabel("Student's Presentation:"),
-										  new Rectangle(0.5, 0, 0.9, 0.25),
+			
+			
+			
+
+            studentPresentation.Children.Add(lblStudentpresentation = new FormFieldLabel("Student's Presentation:"),
+										  new Rectangle(0.5, 0.5, 0.9, 0),
 										  AbsoluteLayoutFlags.All);
 
-            presentationPage.Children.Add(studentPres, 
-                                          new Rectangle(0, 0, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT), 
+            studentPresentation.Children.Add(studentPres, 
+                                          new Rectangle(0, 1, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT), 
                                           AbsoluteLayoutFlags.WidthProportional);
-            
-			AbsoluteLayout buttons = new AbsoluteLayout() { };
+
+            presentationPage.Children.Add(studentPresentation,
+                                          new Rectangle(0, 1, 1.0, 6 * Constants.Forms.Sizes.ROW_HEIGHT),
+                                          AbsoluteLayoutFlags.WidthProportional);
+
+            AbsoluteLayout buttons = new AbsoluteLayout() { };
 
 			declineButton = new DeclineButton();
 			declineButton.Clicked += (object sender, EventArgs e) =>
