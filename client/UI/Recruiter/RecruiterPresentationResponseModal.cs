@@ -95,7 +95,7 @@ namespace TMCS_Client.UI {
 
         void updateMatch() {
             MatchController.getMatchController().updateMatch(match);
-            Navigation.PopModalAsync();
+            Navigation.PopAsync();
         }
     }
 }
