@@ -1,7 +1,7 @@
 package com.avalanche.tmcs;
 
-import com.avalanche.tmcs.Recruiter.Recruiter;
-import com.avalanche.tmcs.Recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.Recruiter;
+import com.avalanche.tmcs.recruiter.RecruiterRepository;
 import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;

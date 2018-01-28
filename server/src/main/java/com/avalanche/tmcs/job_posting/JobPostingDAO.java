@@ -1,12 +1,10 @@
 package com.avalanche.tmcs.job_posting;
 
-import com.avalanche.tmcs.Recruiter.Recruiter;
+import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
-import jdk.nashorn.internal.scripts.JO;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Maxwell Hadley

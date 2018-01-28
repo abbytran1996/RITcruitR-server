@@ -1,4 +1,4 @@
-package com.avalanche.tmcs.Recruiter;
+package com.avalanche.tmcs.recruiter;
 
 /**
  * @author Zane Grasso

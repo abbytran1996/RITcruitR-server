@@ -1,6 +1,5 @@
-package com.avalanche.tmcs.Recruiter;
+package com.avalanche.tmcs.recruiter;
 
-import com.avalanche.tmcs.company.Company;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;

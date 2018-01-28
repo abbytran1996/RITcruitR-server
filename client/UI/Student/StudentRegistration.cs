@@ -537,7 +537,7 @@ namespace TMCS_Client.UI
                         result = false;
                     }
                 }
-                catch(FormatException fe)
+                catch(FormatException)
                 {
                     entGraduationDate.BackgroundColor = Constants.Forms.Colors.FAILURE;
                     result = false;

@@ -1,11 +1,10 @@
-package com.avalanche.tmcs.Recruiter;
+package com.avalanche.tmcs.recruiter;
 
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
 /**
