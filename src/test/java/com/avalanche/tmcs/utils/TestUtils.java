@@ -23,7 +23,7 @@ import java.util.HashSet;
  */
 public class TestUtils {
     private static final Logger LOG = LoggerFactory.getLogger(TestUtils.class);
-    private static final String LOGIN_EMAIL           = "student@rit.edu";
+    private static final String LOGIN_EMAIL           = "student21@rit.edu";
     private static final String LOGIN_PASSWORD        = "Password1!";
 
     private static final String LOGIN_URL             = "/user/login";
