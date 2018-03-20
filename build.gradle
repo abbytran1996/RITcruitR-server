@@ -53,6 +53,6 @@ dependencies {
 test {
     reports {
         junitXml.enabled = true
-        junitXml.destination = '${buildDir}/test-results'
+        junitXml.destination = 'build/test-results'
     }
 }
