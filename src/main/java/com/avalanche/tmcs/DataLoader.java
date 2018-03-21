@@ -186,6 +186,8 @@ public class DataLoader implements ApplicationRunner {
         }
         student1.setSkills(skillSet);
         student1.setSchool("Rochester Institute of Technology");
+        student1.setMajor("Software Engineering");
+        student1.setGpa(4.00);
         student1 = studentDAO.save(student1);
 
         Student student2 = new Student();
@@ -201,6 +203,8 @@ public class DataLoader implements ApplicationRunner {
         }
         student2.setSkills(skillSet);
         student2.setSchool("Rochester Institute of Technology");
+        student2.setMajor("Computer Science");
+        student2.setGpa(2.00);
         student2 = studentDAO.save(student2);
 
         Student student3 = new Student();
@@ -216,6 +220,8 @@ public class DataLoader implements ApplicationRunner {
         }
         student3.setSkills(skillSet);
         student3.setSchool("Rochester Institute of Technology");
+        student3.setMajor("Photography");
+        student3.setGpa(3.10);
         student3 = studentDAO.save(student3);
 
         Company intuit = new Company();
@@ -571,6 +577,8 @@ public class DataLoader implements ApplicationRunner {
             skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
         stud.setSkills(skills);
         stud.setSchool("RIT");
+        stud.setMajor("Software Engineering");
+        stud.setGpa(3.00);
 
         return stud;
     }

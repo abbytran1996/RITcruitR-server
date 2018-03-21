@@ -50,6 +50,8 @@ public class NewStudent extends Student {
         student.setPreferredStates(getPreferredStates());
         student.setPreferredCompanySize(getPreferredCompanySize());
         student.setSchool(getSchool());
+        student.setMajor(getMajor());
+        student.setGpa(getGpa());
         student.setSkills(getSkills());
         student.setUser(getUser());
 
