@@ -77,7 +77,7 @@ public class RecruiterController {
     /**
      * TODO: Authorization
      * @param id: id of recruiter to find
-     * @return Recruiter object for the found recruiter
+     * @return recruiter object for the found recruiter
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET )
     public Recruiter getEmployer(@PathVariable long id) {

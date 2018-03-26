@@ -117,6 +117,8 @@ public class StudentsController {
         Student student = studentDAO.findOne(id);
         student.setSchool(updatedStudent.getSchool());
         student.setGraduationDate(updatedStudent.getGraduationDate());
+        student.setMajor(updatedStudent.getMajor());
+        student.setGpa(updatedStudent.getGpa());
         student.setPhoneNumber(updatedStudent.getPhoneNumber());
         student.setPreferredStates(updatedStudent.getPreferredStates());
         student.setPreferredCompanySize(updatedStudent.getPreferredCompanySize());

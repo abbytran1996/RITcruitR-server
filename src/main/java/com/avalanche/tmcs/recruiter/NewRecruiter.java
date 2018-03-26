@@ -18,10 +18,10 @@ public class NewRecruiter extends Recruiter {
     }
 
     /**
-     * Creates a new Recruiter with the information from this NewRecruiter
+     * Creates a new recruiter with the information from this NewRecruiter
      * <p>This method is provided so Hibernate won't explode</p>
      *
-     * @return The new Recruiter object
+     * @return The new recruiter object
      */
     public Recruiter toRecruiter() {
         Recruiter recruiter = new Recruiter();

@@ -35,6 +35,10 @@ public class Student {
 
     private String school;
 
+    private String major;
+
+    private double gpa;
+
     private User user;
 
     private String phoneNumber;
@@ -110,6 +114,14 @@ public class Student {
     public void setSchool(String school) {
         this.school = school;
     }
+
+    public String getMajor() { return major; }
+
+    public void setMajor(String major) { this.major = major; }
+
+    public double getGpa() { return gpa; }
+
+    public void setGpa(double gpa) { this.gpa = gpa; }
 
     public String getPhoneNumber() {
         return phoneNumber;
