@@ -1,0 +1,35 @@
+[
+  {
+    "name":"Intuit",
+    "website":"https://intuit.com",
+    "emailSuffix":"intuit.com",
+    "locations":["United States","Canada"],
+    "size":"HUGE",
+    "primaryRecruiter":"brad_smith@intuit.com",
+    "videos":[
+      "https://www.youtube.com/embed/TXODDVWAPjE"
+    ],
+    "approvalStatus":true,
+    "description": {
+      "tagline": "Innovating. Empowering. Delighting.",
+      "lines": [
+        "Intuit believes in the power of the individual. The power to do more. To make more. To be more.",
+        "We believe in the people who do things – the hat jugglers, the to-do list junkies, the masters of getting it done faster, better and more efficiently than ever before. Whether that's balancing the household budget, running a business or paying taxes.",
+        "We believe in these people because we are these people. We thrive on action – and results. And by making things simpler, we all get more out of doing what we love. We're innovators, and have been at it for more than three decades. And we don't stand still.",
+        "As the world evolves, so do we – inventing new solutions to solve important problems, perfecting those solutions and delighting our customers. In short: We’re on a mission to power prosperity around the world.",
+        "We started small in 1983 with Quicken personal finance software, simplifying a common household dilemma: balancing the family check book. Today, we serve 42 million customers in North America, Europe, Australia and Brazil, with products available from the desktop to the cloud.",
+        "We're publicly traded with the symbol INTU on the Nasdaq Stock Market, and regularly recognized as one of the best places to work in locations around the world.",
+        "Our Products\n\nOur flagship products – QuickBooks, TurboTax and Mint – support our mission to power prosperity around the world for small businesses, the self-employed and consumers through an ecosystem of innovative financial management solutions.",
+        "QuickBooks® and TurboTax® make it easier to manage small businesses and tax preparation and filing. QuickBooks Self-Employed provides freelancers and independent contractors with an easy and affordable way to manage their finances and save money at tax time. And Mint delivers financial tools and insights to help people make smart choices about their money.",
+        "Intuit’s ProConnect brand portfolio includes ProConnect Tax Online, ProSeries® and Lacerte®, our leading tax preparation offerings for professional accountants.",
+        "Today’s expanding portfolio serves customers in North America, Europe, Australia and Brazil, with products available from the desktop to the cloud.",
+        "Our Strategy\n\nSupporting our mission, our strategy is to apply a laser-like focus to help our customers prosper through One Intuit Ecosystem that:",
+        "\tPuts more money in their pockets through data-driven services,",
+        "\tEliminates work through innovative technology, and",
+        "\tProvides complete confidence that they can do it right – by themselves – with complete confidence",
+        "Just as we transformed before, from DOS to the web, and to the cloud and mobile, we are evolving again to deliver personalized experiences on a trusted, open platform and help create indispensable connections.",
+        "Our Future\n\nAs the way we live and work evolves, we adapt our strategy to meet and lead these changes. No matter where you find us – and whether you use our products on your PC, mobile phone or tablet – we remain committed to creating new and easier ways for consumers and businesses to tackle life's financial chores, giving them more time to live their lives and run their businesses. As our business and product lines grow beyond accounting and into new areas, we will build on our heritage of innovation. That's not just our history. It's our future."
+      ]
+    }
+  }
+]

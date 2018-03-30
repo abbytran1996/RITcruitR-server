@@ -1,0 +1,119 @@
+[
+  {
+    "positionTitle": "Interaction Design Strategist, Intuit Design Systems",
+    "status": "OPEN",
+    "industry": "User Experience Design",
+    "locations": ["Mountain View, CA"],
+    "skills": {
+      "required": [],
+      "preferred": [],
+      "preferredWeight": 0.2
+    },
+    "matchThreshold": 0.5,
+    "phaseTimeout": 7,
+    "problemStatement": "Tell us about a time you created deep design solutions for high complexity high-visibility projects",
+    "url": "http://careers.intuit.com/job-category/2/design-and-user-experience/job/00127433/interaction-design-strategist-intuit-design-systems",
+    "description":{
+      "short":"Come join our team as a Design Leader within the CTO Dev Design team. This role reports to the Chief Designer.",
+      "responsibilities": [
+        "Manage, inspire, mentor, lead, and scale a talented group of entry level to mid-level designers and researchers.",
+        "Conduct design reviews and help team align on common patterns and best outcomes for the customer and business",
+        "Partner closely with engineering, product management, and design strategist stakeholders within the CTO organization and across the company to align on priorities and outcomes",
+        "Review design asks, and assign best talent for role at hand",
+        "Assess new talent, for full time or contract positions",
+        "Lead cross-company initiatives",
+        "Apply strategic thinking to design and deliver innovative end-to-end user experiences that optimize among user needs, business goals, and technological realities across web & mobile platforms",
+        "Help the team take ideas and concepts, and visualize them in such that they are communicated effectively and compellingly for internal leaders, partners and customers",
+        "Turn visions into concepts and translate those concepts into designs that illustrate simplicity, despite complexity of the system",
+        "Directly responsible for delivering User Experience visions, and working through others to deliver UI specifications, wireframes and prototypes",
+        "Collaborate effectively with researchers, product management, development, marketing, and other team members",
+        "Use facilitative leadership skills to drive to the best outcome for stakeholders, resulting in others learning from you, and inspiring others to want to work with you",
+        "Participate in and foster the Intuit Experience Design Community"
+      ]
+    }
+  },
+  {
+    "positionTitle":"Web Architect",
+    "status":"OPEN",
+    "industry":"Software Engineering",
+    "locations":["San Diego, CA"],
+    "skills":{
+      "required":[],
+      "preferred":[],
+      "preferredWeight":0.3
+    },
+    "matchThreshold":0.8,
+    "phaseTimeout":10,
+    "problemStatement":"Compare Nginx and NodeJS, listing the pros and cons of each",
+    "url":"http://careers.intuit.com/job-category/1/software-engineering/job/00126881/web-architect",
+    "description": {
+      "short": "Come join our team as a Design Leader within the CTO Dev Design team. This role reports to the Chief Designer.",
+      "responsibilities": [
+        "Define strategy and architecture for our next generation mobile and web UI",
+        "Coordinate technology adoption and feature designs across product lines",
+        "Provide leadership in all areas of the development process, including development standards and practices, system architecture and design, functional and technical design and implementation, and unit and regression test design",
+        "Formulate and drive best practices around Javascript, HTML, and CSS",
+        "Build prototypes to rapidly iterate on the problem and zero in on the optimal customer experience.",
+        "Participate in cross-company technology initiatives"
+      ]
+    }
+  },
+  {
+    "positionTitle":"Senior Software Engineer",
+    "status":"OPEN",
+    "industry":"Software Engineering",
+    "locations":["Hod Hasharon, Israel"],
+    "skills":{
+      "required":[],
+      "preferred":[],
+      "preferredWeight":0.15
+    },
+    "matchThreshold":0.7,
+    "phaseTimeout":15,
+    "problemStatement":"Tell us about your experience with big data processing",
+    "url":"http://careers.intuit.com/job-category/1/software-engineering/job/00127273/senior-software-engineer",
+    "description": {
+      "short": "Intuit is seeking a Senior Software Engineer to join our Artificial Intelligence & Machine Learning group in Hod Hasharon, Israel.",
+      "lines":[
+        "The AI & ML team develops data-driven product features for financial management products like TurboTax, Mint and QuickBooks, as well as algorithms and analyses to drive business decisions.",
+        "You’ll have the opportunity to work alongside world-class data scientists, gain insight into cutting edge data-mining and machine learning techniques and implement complex distributed algorithms to create insight and value from Intuit’s large-scale data assets.",
+        "You thrive on ambiguity and enjoy the frequent pivoting that comes with agile development. Your team will be very small – no bigger than two pizzas can feed – and team members frequently wear multiple hats. If you are passionate about designing and managing world-class web products that leverage data to delight customers, this is a unique opportunity to apply your creativity."
+      ],
+      "responsibilities": [
+        "Partner and collaborate with business and product management to plan, design, build, test, and launch data-driven products",
+        "Architect & design whole systems or significant portions of complex systems",
+        "Drive the design and implementation of highly scalable products and platforms that require advanced data techniques",
+        "Work cross-functionally with various Intuit teams: product management, QA/QE, various product lines, or business units to drive forward results",
+        "Deliver frequent product deployments in a fast paced Agile environment",
+        "Assist in planning near term product deliverables, longer term vision, and scaling out of our current architecture"
+      ]
+    }
+  },
+  {
+    "positionTitle":"Software Engineer 2",
+    "status":"OPEN",
+    "industry":"Software Engineering",
+    "locations":["Palo Alto, CA"],
+    "skills":{
+      "required":[],
+      "preferred":[],
+      "preferredWeight":0.5
+    },
+    "matchThreshold":0.3,
+    "phaseTimeout":5,
+    "problemStatement":"Compare and contrast React and AngularJS",
+    "url":"http://careers.intuit.com/job-category/1/software-engineering/job/00126569/software-engineer-2",
+    "description": {
+      "short": "QuickBooks Financing is a nimble and high-priority fin-tech start-up within Intuit that is looking to reinvent small business lending. We are leveraging the unique relationships we have with small businesses to solve one of the biggest challenges they face:  getting access to capital.  We are looking for team members that love new challenges, cracking tough problems and working cross-functionally.  If you are looking to join a fast-paced, innovative and incredibly fun team, then we encourage you to apply. Come join the Quick Books Financing team as a Software Engineer 2. You will be developing a Single Page Application using the latest JavaScript, CSS, and HTML technologies.",
+      "responsibilities": [
+        "Successful delivery of high quality web application code (requirements, design, code, documentation, etc.)",
+        "Roughly 80-95% hands-on coding",
+        "Contribute to overall site stability, including code reviews, writing unit and integration tests",
+        "Resolve defects/bugs during testing, pre-production, production, and post-release patches",
+        "Work effectively within your team and cross-functionally with various Intuit teams: product management, QE, various product lines, or business units to drive forward results",
+        "Commitment to team success and positive team dynamics",
+        "Passion for growing and applying technical skills in service to customers"
+      ]
+    }
+  }
+]

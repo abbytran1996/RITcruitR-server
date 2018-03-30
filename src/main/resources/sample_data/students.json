@@ -1,0 +1,85 @@
+[
+  {
+    "accountDetails":{
+      "username":"perfect_student@rit.edu",
+      "password":"Student1!",
+      "firstName":"Perfect",
+      "lastName":"Student"
+    },
+    "contactInfo":{
+      "phone_number":"111.111.1111",
+      "email_address":"perfect_student@rit.edu",
+      "website":"https://perfect_student.com"
+    },
+    "education":{
+      "schoolName":"Rochester Institute of Technology",
+      "major":"Software Engineering",
+      "gpa":4.0,
+      "expectedGraduationDate":"2018-05-01"
+    },
+    "workExperience":[
+      {
+        "companyName":"Amazon",
+        "jobTitle":"Software Engineering Intern",
+        "startDate":"2017-01-28",
+        "endDate":"2017-08-22",
+        "jobDescription":"Worked on AWS Simple Queue Service"
+      },
+      {
+        "companyName":"Microsoft",
+        "jobTitle":"Software Engineering Intern",
+        "startDate":"2017-08-28",
+        "endDate":"2017-12-22",
+        "jobDescription":"Worked on Azure Queue Service"
+      }
+    ]
+  },
+  {
+    "accountDetails":{
+      "username":"middle_student@rit.edu",
+      "password":"Student1!",
+      "firstName":"Middle",
+      "lastName":"Student",
+      "roleName":"Student"
+    },
+    "contactInfo":{
+      "phone_number":"222.222.2222",
+      "email_address":"middle_student@rit.edu",
+      "website":"http://middle_student.com"
+    },
+    "education":{
+      "schoolName":"Rochester Institute of Technology",
+      "major":"Photography",
+      "gpa":3.1,
+      "expectedGraduationDate":"2019-05-01"
+    },
+    "workExperience":[
+      {
+        "companyName":"Nexstar Broadcasting",
+        "jobTitle":"News Photographer",
+        "startDate":"2017-08-01",
+        "endDate":"2017-12-10",
+        "jobDescription":"Shot and edited video for television and digital platforms"
+      }
+    ]
+  },
+  {
+    "accountDetails":{
+      "username":"bad_student@rit.edu",
+      "password":"Student1!",
+      "firstName":"Slacker",
+      "lastName":"Student"
+    },
+    "contactInfo":{
+      "phone_number":"333.333.3333",
+      "email_address":"bad_student@rit.edu"
+    },
+    "education":{
+      "schoolName":"Rochester Institute of Technology",
+      "major":"Computer Science",
+      "gpa":2.0,
+      "expectedGraduationDate":"2020-05-14"
+    },
+    "workExperience":[]
+  }
+]

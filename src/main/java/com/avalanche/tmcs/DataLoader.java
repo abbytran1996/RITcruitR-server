@@ -295,12 +295,12 @@ public class DataLoader implements ApplicationRunner {
         rectuiter.setPhoneNumber("555-555-5555");
         recruiterDAO.save(rectuiter);
 
-        JobPosting interactionDesignStrategest = new JobPosting();
-        interactionDesignStrategest.setUrl("http://careers.intuit.com/job-category/2/design-and-user-experience/job/00127433/interaction-design-strategist-intuit-design-systems");
-        interactionDesignStrategest.setProblemStatement("Tell us about a time you created deep design solutions for high complexity high-visibility projects");
-        interactionDesignStrategest.setStatus(JobPosting.Status.OPEN.ordinal());
-        interactionDesignStrategest.setPositionTitle("Interaction Design Strategist, Intuit Design Systems");
-        interactionDesignStrategest.setDescription("Come join the CTO Dev Design Team as a Design Strategist. We are working across the ecosystem to define the future design systems and patterns for the company.     Responsibilities:  \n" +
+        JobPosting interactionDesignStrategist = new JobPosting();
+        interactionDesignStrategist.setUrl("http://careers.intuit.com/job-category/2/design-and-user-experience/job/00127433/interaction-design-strategist-intuit-design-systems");
+        interactionDesignStrategist.setProblemStatement("Tell us about a time you created deep design solutions for high complexity high-visibility projects");
+        interactionDesignStrategist.setStatus(JobPosting.Status.OPEN.ordinal());
+        interactionDesignStrategist.setPositionTitle("Interaction Design Strategist, Intuit Design Systems");
+        interactionDesignStrategist.setDescription("Come join the CTO Dev Design Team as a Design Strategist. We are working across the ecosystem to define the future design systems and patterns for the company.     Responsibilities:  \n" +
                 "\n" +
                 "    Uses deep professional expertise in specific technical or domain areas to contribute to development of company priorities and achieves goals in creative and effective ways\n" +
                 "    Works on the most complex and unique issues\n" +
@@ -312,16 +312,16 @@ public class DataLoader implements ApplicationRunner {
                 "    Leads through influence to promote changes in skills, approach and mindset needed for where the organization is going within their areas of technical expertise");
         Set<Skill> importantSkills = new HashSet<>();
         importantSkills.add(skills.get(0));
-        interactionDesignStrategest.setImportantSkills(importantSkills);
+        interactionDesignStrategist.setImportantSkills(importantSkills);
         Set<Skill> niceToHaveSkills = new HashSet<>();
         niceToHaveSkills.add(skills.get(1));
-        interactionDesignStrategest.setNicetohaveSkills(niceToHaveSkills);
-        interactionDesignStrategest.setNicetohaveSkillsWeight(0.2);
-        interactionDesignStrategest.setMatchThreshold(0.5);
-        interactionDesignStrategest.setRecruiter(rectuiter);
-        interactionDesignStrategest.setLocation("Mountain View, California");
-        interactionDesignStrategest.setPhaseTimeout(7);
-        jobPostingDAO.save(interactionDesignStrategest);
+        interactionDesignStrategist.setNicetohaveSkills(niceToHaveSkills);
+        interactionDesignStrategist.setNicetohaveSkillsWeight(0.2);
+        interactionDesignStrategist.setMatchThreshold(0.5);
+        interactionDesignStrategist.setRecruiter(rectuiter);
+        interactionDesignStrategist.setLocation("Mountain View, California");
+        interactionDesignStrategist.setPhaseTimeout(7);
+        jobPostingDAO.save(interactionDesignStrategist);
 
         JobPosting designManager = new JobPosting();
         designManager.setStatus(JobPosting.Status.OPEN.ordinal());

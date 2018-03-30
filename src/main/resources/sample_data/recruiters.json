@@ -1,0 +1,14 @@
+[
+  {
+    "accountDetails": {
+      "firstName": "Brad",
+      "lastName": "Smith",
+      "username": "brad_smith@intuit.com",
+      "password": "TurboTax12"
+    },
+    "contactInfo":{
+      "phone_number":"555.555.5555",
+      "email_address":"brad_smith@intuit.com"
+    }
+  }
+]
