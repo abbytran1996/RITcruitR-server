@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
-import java.util.HashSet;
+import java.util.*;
 
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.tomcat.jni.Directory;
@@ -28,8 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Defines and implements the API for interacting with Students
@@ -72,6 +70,46 @@ public class StudentsController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
+    }
+
+    @RequestMapping(value = "/{id}/education", method = RequestMethod.POST)
+    public ResponseEntity<?> addEducation(@PathVariable long id, @RequestBody NewStudent studentEducation) {
+        validateStudentId(id);
+        Student student = studentDAO.findOne(id);
+        student.setSchool(studentEducation.getSchool());
+        student.setMajor(studentEducation.getMajor());
+        student.setGpa(studentEducation.getGpa());
+        student.setGraduationDate(studentEducation.getGraduationDate());
+        studentDAO.save(student);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{id}/work-experience", method = RequestMethod.POST)
+    public ResponseEntity<?> addWorkExperience(@PathVariable long id, @RequestBody NewStudent studentWorkExperience) {
+        validateStudentId(id);
+        Student student = studentDAO.findOne(id);
+        //TODO: set work experience after methods have been added
+        //set company
+        //set jobTitle
+        //set startDate
+        //set endDate
+        //set description
+        studentDAO.save(student);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{id}/work-experience", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteWorkExperience(@PathVariable long id, @RequestBody NewStudent studentWorkExperience) {
+        validateStudentId(id);
+        Student student = studentDAO.findOne(id);
+        //TODO: delete work experience after methods have been added
+        //delete company
+        //delete jobTitle
+        //delete startDate
+        //delete endDate
+        //delete description
+        studentDAO.save(student);
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)

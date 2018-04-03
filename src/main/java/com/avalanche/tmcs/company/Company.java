@@ -14,6 +14,7 @@ import java.util.List;
  * @since 4/18/17
  */
 @Entity
+@Table(name="company")
 public class Company {
     public enum Size {
         DONT_CARE,
@@ -29,7 +30,7 @@ public class Company {
     private User user;
 
     private String companyName;
-
+    //TODO: make locations and presentations a list
     private String location;
 
     private Size size;

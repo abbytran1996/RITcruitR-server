@@ -31,6 +31,20 @@ public class JobPostingController {
         return ResponseEntity.ok(jobPostingDAO.findOne(id));
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> editJobPosting(@PathVariable long id, @RequestBody JobPosting updatedJobPosting) {
+        JobPosting jobPosting = jobPostingDAO.findOne(id);
+        jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
+        jobPosting.setLocation(updatedJobPosting.getLocation());
+        jobPosting.setDescription(updatedJobPosting.getDescription());
+        //TODO add minGPA, hasWorkExperience?
+        jobPosting.setPhaseTimeout(updatedJobPosting.getPhaseTimeout());
+        jobPosting.setProblemStatement(updatedJobPosting.getProblemStatement());
+        jobPosting.setUrl(updatedJobPosting.getUrl());
+        jobPostingDAO.save(jobPosting);
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/fulfilled/{id}", method = RequestMethod.POST)
     public void fulfillJobPosting(@PathVariable long id){
         JobPosting toFulfill = jobPostingDAO.findOne(id);

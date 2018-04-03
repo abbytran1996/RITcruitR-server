@@ -1,6 +1,8 @@
 package com.avalanche.tmcs.company;
 
 import com.avalanche.tmcs.auth.*;
+import com.avalanche.tmcs.recruiter.NewRecruiter;
+import com.avalanche.tmcs.recruiter.RecruiterController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +45,46 @@ public class CompanyController {
         updateCompany.setId(id);
         companyDAO.save(updateCompany);
 
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCompanyDetails(@PathVariable long id, @RequestBody Company updateCompany){
+        Company company = companyDAO.findOne(id);
+        company.setCompanyName(updateCompany.getCompanyName());
+        //TODO: Add industry to Company and update here
+        company.setSize(updateCompany.getSize());
+        company.setWebsiteURL(updateCompany.getWebsiteURL());
+        companyDAO.save(company);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @RequestMapping(value = "/{id}/videos", method = RequestMethod.POST)
+    public ResponseEntity<?> addCompanyVideo(@PathVariable long id, @RequestBody Company updateCompany){
+        Company company = companyDAO.findOne(id);
+        company.setPresentation(updateCompany.getPresentation());
+        companyDAO.save(company);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{id}/videos/{videoid}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompanyVideo(@PathVariable long id, @PathVariable long videoid) {
+            //TODO: implement deletes
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{id}/locations", method = RequestMethod.POST)
+    public ResponseEntity<?> addCompanyLocations(@PathVariable long id, @RequestBody Company updateCompany) {
+            Company company = companyDAO.findOne(id);
+            company.setLocation(updateCompany.getLocation());
+            companyDAO.save(company);
+            return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{id}/locations/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompanyLocation(@PathVariable long id, @PathVariable long locationid) {
+        //TODO: implement deletes
         return ResponseEntity.ok().build();
     }
 

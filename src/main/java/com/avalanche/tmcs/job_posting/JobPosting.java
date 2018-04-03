@@ -13,6 +13,7 @@ import java.util.Set;
  * @since 4/17/17.
  */
 @Entity
+@Table(name="job_posting")
 public class JobPosting {
     public enum Status{
         OPEN(0),
