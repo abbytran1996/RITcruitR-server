@@ -27,23 +27,26 @@ public class Company {
 
     private long id;
 
-    private User user;
-
     private String companyName;
+
     //TODO: make locations and presentations a list
     private String location;
+
+    private String industry;
 
     private Size size;
 
     private Boolean approvalStatus;
-
-    private String emailSuffix;
 
     private String presentation;
 
     private String companyDescription;
 
     private String websiteURL;
+
+    private String emailSuffix;
+
+    private int userId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -72,19 +75,22 @@ public class Company {
     public void setLocation(String location) {this.location = location;}
 
     @NotNull
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
+    @NotNull
     public Size getSize(){return size;}
 
     public void setSize(Size size) {this.size = size;}
 
-    @NotNull
     public Boolean getApprovalStatus(){return approvalStatus;}
 
     public void setApprovalStatus(Boolean approvalStatus) {this.approvalStatus = approvalStatus;}
-
-    @NotNull
-    public String getEmailSuffix(){return emailSuffix;}
-
-    public void setEmailSuffix(String emailSuffix) {this.emailSuffix = emailSuffix;}
 
     @NotNull
     public String getPresentation(){return presentation;}
@@ -101,7 +107,6 @@ public class Company {
     }
 
     @NotNull
-    @Lob
     public String getCompanyDescription(){
         return companyDescription;
     }
@@ -110,17 +115,21 @@ public class Company {
         this.companyDescription = companyDescription;
     }
 
-    @OneToOne
     @NotNull
-    public User getUser() {
-        return user;
+    public String getEmailSuffix() {
+        return emailSuffix;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmailSuffix(String emailSuffix) {
+        this.emailSuffix = emailSuffix;
     }
 
+    public int getUserId() {
+        return userId;
+    }
 
-
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }
 

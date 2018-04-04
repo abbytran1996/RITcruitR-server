@@ -6,7 +6,6 @@ package com.avalanche.tmcs.recruiter;
  */
 public class NewRecruiter extends Recruiter {
     private String password;
-
     private String passwordConfirm;
 
     public String getPassword() {
@@ -29,10 +28,9 @@ public class NewRecruiter extends Recruiter {
         recruiter.setEmail(getEmail());
         recruiter.setFirstName(getFirstName());
         recruiter.setLastName(getLastName());
-        recruiter.setPhoneNumber(getPhoneNumber());
+        recruiter.setPhoneNumber("");
         recruiter.setUser(getUser());
         recruiter.setCompany(getCompany());
-
 
         return recruiter;
     }

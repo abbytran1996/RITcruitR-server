@@ -72,8 +72,8 @@ public class StudentsController {
         return ResponseEntity.ok(student);
     }
 
-    @RequestMapping(value = "/{id}/education", method = RequestMethod.POST)
-    public ResponseEntity<?> addEducation(@PathVariable long id, @RequestBody NewStudent studentEducation) {
+    @RequestMapping(value = "/{id}/education", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateEducation(@PathVariable long id, @RequestBody StudentEducation studentEducation) {
         validateStudentId(id);
         Student student = studentDAO.findOne(id);
         student.setSchool(studentEducation.getSchool());
@@ -129,11 +129,7 @@ public class StudentsController {
         newUser = userService.save(newUser, Role.RoleName.Student);
         if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
             newStudent.setUser(newUser);
-            newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
-            if(newStudent.getResume() != null) {
-                uploadResume(savedStudent.getId(), newStudent.getResume());
-            }
 
             matchingService.registerStudent(savedStudent);
 
@@ -149,16 +145,22 @@ public class StudentsController {
         }
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
         Student student = studentDAO.findOne(id);
-        student.setSchool(updatedStudent.getSchool());
+        student.setFirstName(updatedStudent.getFirstName());
+        student.setLastName(updatedStudent.getLastName());
+        student.setEmail(updatedStudent.getEmail());
         student.setGraduationDate(updatedStudent.getGraduationDate());
+        student.setSchool(updatedStudent.getSchool());
         student.setMajor(updatedStudent.getMajor());
         student.setGpa(updatedStudent.getGpa());
         student.setPhoneNumber(updatedStudent.getPhoneNumber());
+        student.setContactEmail(updatedStudent.getContactEmail());
+        student.setWebsite(updatedStudent.getPhoneNumber());
         student.setPreferredStates(updatedStudent.getPreferredStates());
+        student.setPreferredIndustries(updatedStudent.getPreferredIndustries());
         student.setPreferredCompanySize(updatedStudent.getPreferredCompanySize());
         studentDAO.save(student);
         return ResponseEntity.ok().build();

@@ -5,10 +5,8 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.net.URI;
 import java.sql.Date;
 import java.util.Set;
 
@@ -43,7 +41,13 @@ public class Student {
 
     private String phoneNumber;
 
+    private String contactEmail;
+
+    private String website;
+
     private Set<String> preferredStates;
+
+    private Set<String> preferredIndustries;
 
     private Company.Size preferredCompanySize;
 
@@ -96,7 +100,6 @@ public class Student {
 
     // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
     // so their graduation dates are in the future implicitly.
-    @Future
     @NotNull
     public Date getGraduationDate() {
         return graduationDate;
@@ -131,6 +134,22 @@ public class Student {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     @OneToOne
     @NotNull
     public User getUser() {
@@ -158,6 +177,15 @@ public class Student {
 
     public void setPreferredStates(Set<String> preferredStates) {
         this.preferredStates = preferredStates;
+    }
+
+    @ElementCollection
+    public Set<String> getPreferredIndustries() {
+        return preferredIndustries;
+    }
+
+    public void setPreferredIndustries(Set<String> preferredIndustries) {
+        this.preferredIndustries = preferredIndustries;
     }
 
     @NotNull

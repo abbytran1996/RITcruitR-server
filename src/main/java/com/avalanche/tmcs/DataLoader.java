@@ -282,7 +282,7 @@ public class DataLoader implements ApplicationRunner {
                 "As the way we live and work evolves, we adapt our strategy to meet and lead these changes. No matter where you find us – and whether you use our products on your PC, mobile phone or tablet – we remain committed to creating new and easier ways for consumers and businesses to tackle life's financial chores, giving them more time to live their lives and run their businesses. As our business and product lines grow beyond accounting and into new areas, we will build on our heritage of innovation. That's not just our history. It's our future.s");
         intuit.setEmailSuffix("intuit.com");
         intuit.setPresentation("https://www.youtube.com/embed/TXODDVWAPjE");
-        intuit.setUser(recruiter1);
+        intuit.setUserId(-1);
         intuit.setWebsiteURL("intuit.com");
         intuit = companyDAO.save(intuit);
 
@@ -594,7 +594,7 @@ public class DataLoader implements ApplicationRunner {
         comp.setWebsiteURL(faker.company().url());
         comp.setEmailSuffix(comp.getWebsiteURL().replaceFirst("www\\.",""));
         comp.setPresentation("https://www.youtube.com/embed/fSQgCy_iIcc");
-        comp.setUser(user);
+        comp.setUserId(-1);
 
 
         return comp;

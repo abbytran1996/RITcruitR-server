@@ -1,5 +1,9 @@
 package com.avalanche.tmcs.students;
 
+import com.avalanche.tmcs.company.Company;
+
+import java.sql.Date;
+
 /**
  * @author David Dubois
  * @since 17-Apr-17.
@@ -45,14 +49,17 @@ public class NewStudent extends Student {
         student.setEmail(getEmail());
         student.setFirstName(getFirstName());
         student.setLastName(getLastName());
-        student.setGraduationDate(getGraduationDate());
-        student.setPhoneNumber(getPhoneNumber());
-        student.setPreferredStates(getPreferredStates());
-        student.setPreferredCompanySize(getPreferredCompanySize());
-        student.setSchool(getSchool());
-        student.setMajor(getMajor());
-        student.setGpa(getGpa());
-        student.setSkills(getSkills());
+        student.setGraduationDate(new Date(System.currentTimeMillis() + 900000));
+        student.setPhoneNumber(null);
+        student.setContactEmail(null);
+        student.setWebsite(null);
+        student.setPreferredStates(null);
+        student.setPreferredIndustries(null);
+        student.setPreferredCompanySize(Company.Size.DONT_CARE);
+        student.setSchool("");
+        student.setMajor(null);
+        student.setGpa(0.0);
+        student.setSkills(null);
         student.setUser(getUser());
 
         return student;
