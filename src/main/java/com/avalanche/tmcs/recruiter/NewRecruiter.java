@@ -28,7 +28,8 @@ public class NewRecruiter extends Recruiter {
         recruiter.setEmail(getEmail());
         recruiter.setFirstName(getFirstName());
         recruiter.setLastName(getLastName());
-        recruiter.setPhoneNumber("");
+        recruiter.setPhoneNumber(getPhoneNumber());
+        recruiter.setContactEmail(getContactEmail());
         recruiter.setUser(getUser());
         recruiter.setCompany(getCompany());
 
