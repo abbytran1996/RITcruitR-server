@@ -35,6 +35,8 @@ public class Company {
 
     private Size size;
 
+    private String industry;
+
     private Boolean approvalStatus;
 
     private String emailSuffix;
@@ -75,6 +77,11 @@ public class Company {
     public Size getSize(){return size;}
 
     public void setSize(Size size) {this.size = size;}
+
+    @NotNull
+    public String getIndustry() {return industry;}
+
+    public void setIndustry(String industry) {this.industry = industry;}
 
     @NotNull
     public Boolean getApprovalStatus(){return approvalStatus;}

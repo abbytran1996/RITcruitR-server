@@ -52,7 +52,7 @@ public class CompanyController {
     public ResponseEntity<?> updateCompanyDetails(@PathVariable long id, @RequestBody Company updateCompany){
         Company company = companyDAO.findOne(id);
         company.setCompanyName(updateCompany.getCompanyName());
-        //TODO: Add industry to Company and update here
+        company.setIndustry(updateCompany.getIndustry());
         company.setSize(updateCompany.getSize());
         company.setWebsiteURL(updateCompany.getWebsiteURL());
         companyDAO.save(company);
