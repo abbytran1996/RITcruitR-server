@@ -9,6 +9,7 @@ import java.io.File;
 public class NewCompany {
     public String companyName;
     public String companyLocations;
+    public String industry;
     public String companySuffix;
     public String companyDescription;
     public File companyPresentation;

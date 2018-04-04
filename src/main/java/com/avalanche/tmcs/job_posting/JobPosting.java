@@ -13,6 +13,7 @@ import java.util.Set;
  * @since 4/17/17.
  */
 @Entity
+@Table(name="job_posting")
 public class JobPosting {
     public enum Status{
         OPEN(0),
@@ -44,6 +45,8 @@ public class JobPosting {
     private Set<Skill> nicetohaveSkills;
 
     private double nicetohaveSkillsWeight;
+
+    private double minGPA;
 
     private double matchThreshold;
 
@@ -125,6 +128,10 @@ public class JobPosting {
     public void setNicetohaveSkillsWeight(double nicetohaveSkillsWeight) {
         this.nicetohaveSkillsWeight = nicetohaveSkillsWeight;
     }
+
+    public double getMinGPA() { return minGPA; }
+
+    public void setMinGPA(double gpa) { this.minGPA = gpa; }
 
     @NotNull
     public double getMatchThreshold() {

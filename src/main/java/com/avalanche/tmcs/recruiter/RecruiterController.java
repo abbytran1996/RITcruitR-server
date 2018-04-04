@@ -128,6 +128,13 @@ public class RecruiterController {
         return companyDAO.findOne(id);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteRecruiter(@PathVariable long id) {
+        Recruiter recruiter = recruiterRepo.findOne(id);
+        recruiterRepo.delete(recruiter);
+        return ResponseEntity.ok().build();
+    }
+
     /*
     @RequestMapping(value = "/company/company_name/{company_name}", method = RequestMethod.GET)
     public Company getCompanyByName(@PathVariable String companyName) {
