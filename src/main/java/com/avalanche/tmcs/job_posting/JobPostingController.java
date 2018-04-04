@@ -37,7 +37,8 @@ public class JobPostingController {
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setLocation(updatedJobPosting.getLocation());
         jobPosting.setDescription(updatedJobPosting.getDescription());
-        //TODO add minGPA, hasWorkExperience?
+        jobPosting.setMinGPA(updatedJobPosting.getMinGPA());
+        //TODO add hasWorkExperience?
         jobPosting.setPhaseTimeout(updatedJobPosting.getPhaseTimeout());
         jobPosting.setProblemStatement(updatedJobPosting.getProblemStatement());
         jobPosting.setUrl(updatedJobPosting.getUrl());

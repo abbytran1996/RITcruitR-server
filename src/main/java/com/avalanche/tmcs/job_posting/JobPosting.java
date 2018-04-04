@@ -46,6 +46,8 @@ public class JobPosting {
 
     private double nicetohaveSkillsWeight;
 
+    private double minGPA;
+
     private double matchThreshold;
 
     private Recruiter recruiter;
@@ -126,6 +128,10 @@ public class JobPosting {
     public void setNicetohaveSkillsWeight(double nicetohaveSkillsWeight) {
         this.nicetohaveSkillsWeight = nicetohaveSkillsWeight;
     }
+
+    public double getMinGPA() { return minGPA; }
+
+    public void setMinGPA(double gpa) { this.minGPA = gpa; }
 
     @NotNull
     public double getMatchThreshold() {
