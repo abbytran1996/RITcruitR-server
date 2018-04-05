@@ -36,6 +36,8 @@ public class Company {
 
     private Size size;
 
+    private String industry;
+
     private Boolean approvalStatus;
 
     private String presentation;
