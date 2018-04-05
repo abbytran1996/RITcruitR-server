@@ -179,7 +179,9 @@ public class DataLoader implements ApplicationRunner {
         student1.setEmail(student1User.getUsername());
         student1.setGraduationDate(new Date(2018, 5, 1));
         student1.setUser(student1User);
-        student1.setPreferredCompanySize(Company.Size.LARGE);
+        student1.setPreferredLocations(new HashSet<String>());
+        student1.setPreferredIndustries(new HashSet<String>());
+        student1.setPreferredCompanySizes(new HashSet<Integer>());
         Set<Skill> skillSet = new HashSet<>();
         for(int i = 1; i < skills.size(); i += 2) {
             skillSet.add(skills.get(i));
@@ -196,7 +198,7 @@ public class DataLoader implements ApplicationRunner {
         student2.setEmail(student2User.getUsername());
         student2.setGraduationDate(new Date(2018, 5, 1));
         student2.setUser(student2User);
-        student2.setPreferredCompanySize(Company.Size.LARGE);
+        student2.setPreferredCompanySizes(new HashSet<Integer>());
         skillSet.clear();
         for(int i = 1; i < skills.size(); i += 6) {
             skillSet.add(skills.get(i));
@@ -213,7 +215,7 @@ public class DataLoader implements ApplicationRunner {
         student3.setEmail(student3User.getUsername());
         student3.setGraduationDate(new Date(2018, 5, 1));
         student3.setUser(student3User);
-        student3.setPreferredCompanySize(Company.Size.LARGE);
+        student3.setPreferredCompanySizes(new HashSet<Integer>());
         skillSet.clear();
         for(int i = 1; i < skills.size(); i += 3) {
             skillSet.add(skills.get(i));
@@ -570,7 +572,7 @@ public class DataLoader implements ApplicationRunner {
 
         stud.setUser(user);
 
-        stud.setPreferredCompanySize(randomSize(faker));
+        stud.setPreferredCompanySizes(new HashSet<Integer>());
 
         HashSet<Skill> skills=new HashSet<Skill>();
         for(int i=0;i<15;i++)

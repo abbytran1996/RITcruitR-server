@@ -21,20 +21,39 @@ import java.net.URI;
     @RestController
     @RequestMapping("/company")
 public class CompanyController {
-        private CompanyDAO companyDAO;
-        private RecruiterRepository recruiterRepo;
-        private UserService userService;
-        private SecurityService securityService;
+    private CompanyDAO companyDAO;
+    private RecruiterRepository recruiterRepo;
+    private UserService userService;
+    private SecurityService securityService;
 
-        @Autowired
-        public CompanyController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, SecurityService securityService){
-            this.recruiterRepo = repo;
-            this.userService = userService;
-            this.companyDAO = companyDAO;
-            this.securityService = securityService;
-        }
+    @Autowired
+    public CompanyController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, SecurityService securityService){
+        this.recruiterRepo = repo;
+        this.userService = userService;
+        this.companyDAO = companyDAO;
+        this.securityService = securityService;
+    }
 
+    // ================================================================================================================
+    // * GET COMPANY BY ID [GET]                                                                                      *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Company getCompany(@PathVariable long id){
+        //validateCompanyId(id);
+        return companyDAO.findOne(id);
+    }
 
+    // ================================================================================================================
+    // * GET COMPANY BY NAME [GET]                                                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/company_name/{companyName}", method = RequestMethod.GET)
+    public Company getCompanyByName(@PathVariable String companyName) {
+        return companyDAO.findByCompanyName(companyName);
+    }
+
+    // ================================================================================================================
+    // * ADD NEW COMPANY [POST]                                                                                       *
+    // ================================================================================================================
     @RequestMapping(value = "", method=RequestMethod.POST)
     public ResponseEntity<Company> addCompany(@RequestBody NewCompany newCompany) {
         Company savedCompany = companyDAO.save(newCompany.toCompany());
@@ -48,12 +67,9 @@ public class CompanyController {
         return ResponseEntity.created(location).body(savedCompany);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Company getCompany(@PathVariable long id){
-        //validateCompanyId(id);
-        return companyDAO.findOne(id);
-    }
-
+    // ================================================================================================================
+    // * UPDATE COMPANY [PUT] - **NOT WORKING**                                                                       *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateCompany(@PathVariable long id, @RequestBody Company updateCompany){
         updateCompany.setId(id);
@@ -62,6 +78,9 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
 
+    // ================================================================================================================
+    // * UPDATE COMPANY DETAILS [PUT] - **NOT WORKING**                                                               *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}/details", method = RequestMethod.PUT)
     public ResponseEntity<?> updateCompanyDetails(@PathVariable long id, @RequestBody Company updateCompany){
         Company company = companyDAO.findOne(id);
@@ -73,7 +92,9 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
 
-
+    // ================================================================================================================
+    // * ADD COMPANY VIDEO [POST] - **NOT WORKING**                                                                   *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}/videos", method = RequestMethod.POST)
     public ResponseEntity<?> addCompanyVideo(@PathVariable long id, @RequestBody Company updateCompany){
         Company company = companyDAO.findOne(id);
@@ -82,12 +103,18 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
 
+    // ================================================================================================================
+    // * DELETE COMPANY VIDEO [DELETE] - **NOT WORKING**                                                              *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}/videos/{videoid}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteCompanyVideo(@PathVariable long id, @PathVariable long videoid) {
             //TODO: implement deletes
         return ResponseEntity.ok().build();
     }
 
+    // ================================================================================================================
+    // * ADD COMPANY LOCATION [POST] - **NOT WORKING**                                                                *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}/locations", method = RequestMethod.POST)
     public ResponseEntity<?> addCompanyLocations(@PathVariable long id, @RequestBody Company updateCompany) {
             Company company = companyDAO.findOne(id);
@@ -96,26 +123,26 @@ public class CompanyController {
             return ResponseEntity.ok().build();
     }
 
+    // ================================================================================================================
+    // * DELETE COMPANY LOCATION [DELETE] - **NOT WORKING**                                                           *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}/locations/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteCompanyLocation(@PathVariable long id, @PathVariable long locationid) {
         //TODO: implement deletes
         return ResponseEntity.ok().build();
     }
 
+    // ================================================================================================================
+    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
+    // ================================================================================================================
     @RequestMapping(value = "/email_suffix/{emailSuffix}", method = RequestMethod.GET)
     public Company getCompanyByEmailSuffix(@PathVariable String emailSuffix) {
         return companyDAO.findByEmailSuffix(emailSuffix);
     }
 
-    @RequestMapping(value = "/company_name/{companyName}", method = RequestMethod.GET)
-    public Company getCompanyByName(@PathVariable String companyName) {
-        return companyDAO.findByCompanyName(companyName);
-    }
-
-    /**
-     * @param newRecruiter: info for new recruiter
-     * @return TODO
-     */
+    // ================================================================================================================
+    // * ADD RECRUITER [POST]                                                                                         *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}/recruiter", method = RequestMethod.POST)
     public ResponseEntity<Recruiter> addRecruiter(@PathVariable long id, @RequestBody NewRecruiter newRecruiter) {
         User newUser = new User(newRecruiter.getEmail(), newRecruiter.getPassword(), newRecruiter.getPasswordConfirm());
@@ -138,5 +165,4 @@ public class CompanyController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
 }

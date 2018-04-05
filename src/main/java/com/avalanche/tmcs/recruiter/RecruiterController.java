@@ -36,10 +36,46 @@ public class RecruiterController {
         this.securityService = securityService;
     }
 
-    /**
-     * @param newRecruiter: info for new recruiter
-     * @return TODO
-     */
+    // ================================================================================================================
+    // * GET RECRUITER BY ID [GET]                                                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET )
+    public Recruiter getEmployer(@PathVariable long id) {
+        return recruiterRepo.findOne(id);
+    }
+
+    // ================================================================================================================
+    // * GET RECRUITER BY EMAIL [GET]                                                                                 *
+    // ================================================================================================================
+    @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
+    public Recruiter getRecruiterByEmail(@PathVariable String email) {
+        return recruiterRepo.findByEmail(email);
+    }
+
+    // ================================================================================================================
+    // * UPDATE RECRUITER [PUT] - **NOT WORKING**                                                                     *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateRecruiter(@PathVariable long id, @RequestBody Recruiter updateRecruiter){
+        updateRecruiter.setId(id);
+        recruiterRepo.save(updateRecruiter);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * DELETE RECRUITER [DELETE] - **NOT WORKING**                                                                  *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteRecruiter(@PathVariable long id) {
+        Recruiter recruiter = recruiterRepo.findOne(id);
+        recruiterRepo.delete(recruiter);
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING (MOVED TO COMPANY CONTROLLER)             *
+    // ================================================================================================================
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Recruiter> addRecruiter(@RequestBody NewRecruiter newRecruiter) {
         User newUser = new User(newRecruiter.getEmail(), newRecruiter.getPassword(), newRecruiter.getPasswordConfirm());
@@ -61,12 +97,10 @@ public class RecruiterController {
         }
     }
 
-    /**
-     * TODO: Authorization
-     * @param newInfo: new info for a recruiter, non-null values replace the old ones
-     * @return TODO
-     */
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    // ================================================================================================================
+    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.PUT)
     public ResponseEntity<String> editRecruiter(@RequestBody Recruiter newInfo){
         Recruiter oldGuy = recruiterRepo.findOne(newInfo.getId());
         oldGuy.editRecruiter(newInfo);
@@ -74,25 +108,9 @@ public class RecruiterController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    /**
-     * TODO: Authorization
-     * @param id: id of recruiter to find
-     * @return recruiter object for the found recruiter
-     */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET )
-    public Recruiter getEmployer(@PathVariable long id) {
-        return recruiterRepo.findOne(id);
-    }
-
-    @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
-    public Recruiter getRecruiterByEmail(@PathVariable String email) {
-        return recruiterRepo.findByEmail(email);
-    }
-
-    /**
-     * TODO: When companies are included, add the controller actions here
-     */
-
+    // ================================================================================================================
+    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
+    // ================================================================================================================
     @RequestMapping(value = "/company", method = RequestMethod.POST)
     public ResponseEntity<?> addCompany(@PathVariable long id, @RequestBody Company newCompany){
         Company savedCompany = companyDAO.save(newCompany);
@@ -105,7 +123,9 @@ public class RecruiterController {
         return ResponseEntity.created(location).build();
     }
 
-
+    // ================================================================================================================
+    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
+    // ================================================================================================================
     @RequestMapping(value = "/company/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> editCompany(@PathVariable long id, @RequestBody Company editCompany){
         editCompany.setId(id);
@@ -114,37 +134,12 @@ public class RecruiterController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateRecruiter(@PathVariable long id, @RequestBody Recruiter updateRecruiter){
-        updateRecruiter.setId(id);
-        recruiterRepo.save(updateRecruiter);
-
-        return ResponseEntity.ok().build();
-    }
-
+    // ================================================================================================================
+    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
+    // ================================================================================================================
     @RequestMapping(value = "/company/{id}", method = RequestMethod.GET)
     public Company getCompany(@PathVariable long id){
         //validateCompanyId(id);
         return companyDAO.findOne(id);
     }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteRecruiter(@PathVariable long id) {
-        Recruiter recruiter = recruiterRepo.findOne(id);
-        recruiterRepo.delete(recruiter);
-        return ResponseEntity.ok().build();
-    }
-
-    /*
-    @RequestMapping(value = "/company/company_name/{company_name}", method = RequestMethod.GET)
-    public Company getCompanyByName(@PathVariable String companyName) {
-        return companyDAO.findByEmailSuffix(companyName);
-
-    }
-    */
-
-    /**
-     * TODO: Approve/decline company
-     */
-
 }

@@ -45,11 +45,11 @@ public class Student {
 
     private String website;
 
-    private Set<String> preferredStates;
+    private Set<String> preferredLocations;
 
     private Set<String> preferredIndustries;
 
-    private Company.Size preferredCompanySize;
+    private Set<Integer> preferredCompanySizes;
 
     private String resumeLocation;
 
@@ -85,10 +85,6 @@ public class Student {
     }
 
     @NotNull
-    // Emails have something, then an @ sign, then something, then a period, then something
-    // This is possibly overly broad, but students have to validateNewUser their email addresses with a confirmation email so
-    // this is mostly a sanity check to ensure things aren't horrible
-    // Also I wanted to use JPA validation annotations
     @Pattern(regexp = "^.+@.+\\..+$")
     public String getEmail() {
         return email;
@@ -98,8 +94,6 @@ public class Student {
         this.email = email;
     }
 
-    // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
-    // so their graduation dates are in the future implicitly.
     @NotNull
     public Date getGraduationDate() {
         return graduationDate;
@@ -171,12 +165,12 @@ public class Student {
     }
 
     @ElementCollection
-    public Set<String> getPreferredStates() {
-        return preferredStates;
+    public Set<String> getPreferredLocations() {
+        return preferredLocations;
     }
 
-    public void setPreferredStates(Set<String> preferredStates) {
-        this.preferredStates = preferredStates;
+    public void setPreferredLocations(Set<String> preferredLocations) {
+        this.preferredLocations = preferredLocations;
     }
 
     @ElementCollection
@@ -188,13 +182,13 @@ public class Student {
         this.preferredIndustries = preferredIndustries;
     }
 
-    @NotNull
-    public Company.Size getPreferredCompanySize() {
-        return preferredCompanySize;
+    @ElementCollection
+    public Set<Integer> getPreferredCompanySizes() {
+        return preferredCompanySizes;
     }
 
-    public void setPreferredCompanySize(Company.Size preferredCompanySize) {
-        this.preferredCompanySize = preferredCompanySize;
+    public void setPreferredCompanySizes(Set<Integer> preferredCompanySizes) {
+        this.preferredCompanySizes = preferredCompanySizes;
     }
 
     public String getResumeLocation(){

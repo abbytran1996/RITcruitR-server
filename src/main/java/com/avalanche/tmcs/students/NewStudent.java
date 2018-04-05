@@ -53,9 +53,9 @@ public class NewStudent extends Student {
         student.setPhoneNumber(null);
         student.setContactEmail(null);
         student.setWebsite(null);
-        student.setPreferredStates(null);
+        student.setPreferredLocations(null);
         student.setPreferredIndustries(null);
-        student.setPreferredCompanySize(Company.Size.DONT_CARE);
+        student.setPreferredCompanySizes(null);
         student.setSchool("");
         student.setMajor(null);
         student.setGpa(0.0);
