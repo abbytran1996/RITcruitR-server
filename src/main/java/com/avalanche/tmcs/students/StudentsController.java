@@ -202,64 +202,6 @@ public class StudentsController {
         return ResponseEntity.ok(ourstudent);
     }
 
-    // ================================================================================================================
-    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
-    // ================================================================================================================
-    @RequestMapping(value = "/{id}/uploadResume", method = RequestMethod.PUT)
-    public ResponseEntity<Boolean> uploadResume(@PathVariable long id, @RequestBody Resume resume){
-        Student student = studentDAO.findOne(id);
-        boolean success = false;
-        try {
-            if(student.getResumeLocation() != null){
-                File oldResumeFile = new File("./resumes/" + Long.toString(id) + "/" +
-                                        student.getResumeLocation());
-                if(oldResumeFile.exists()){
-                    oldResumeFile.delete();
-                }
-            }
-
-            File resumeFile = new File("./resumes/" + Long.toString(id) + "/" +
-                    resume.getFileName());
-            File resumePath = new File("./resumes/" + Long.toString(id) + "/");
-            resumePath.mkdirs();
-            student.setResumeLocation(resume.getFileName());
-            Files.write(Paths.get(resumeFile.getCanonicalPath()), resume.getFile());
-            studentDAO.save(student);
-            success = true;
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-        return ResponseEntity.ok(success);
-    }
-
-    // ================================================================================================================
-    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
-    // ================================================================================================================
-    @RequestMapping(value = "/{id}/resume", method = RequestMethod.GET)
-    public ResponseEntity getResume(@PathVariable long id){
-        Student student = studentDAO.findOne(id);
-        byte[] contents = null;
-        try{
-            contents = Files.readAllBytes(new File("./resumes/" + Long.toString(student.getId())
-                    + "/" + student.getResumeLocation()).toPath());
-
-        }
-        catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //you don't have the pdf file
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output.pdf";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
-        return response;
-    }
-
     /*
         Validate that a student with the given id exists.
      */

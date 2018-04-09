@@ -231,6 +231,7 @@ public class DataLoader implements ApplicationRunner {
         Set set3 = new HashSet<String>();
         set3.add("Buffalo, New York");
         intuit.setLocations(set3);
+        intuit.setIndustries(new HashSet<String>());
         intuit.setSize(3);
         intuit.setApprovalStatus(true);
         intuit.setCompanyDescription("Innovating. Empowering. Delighting.\n" +
