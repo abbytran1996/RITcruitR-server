@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Zane Grasso
@@ -29,14 +30,11 @@ public class Company {
 
     private String companyName;
 
-    //TODO: make locations and presentations a list
-    private String location;
+    private Set<String> locations;
 
-    private String industry;
+    private int size;
 
-    private Size size;
-
-    private String industry;
+    private Set<String> industries;
 
     private Boolean approvalStatus;
 
@@ -72,23 +70,25 @@ public class Company {
     }
 
     @NotNull
-    public String getLocation(){return location;}
+    @ElementCollection
+    public Set<String> getLocations(){return locations;}
 
-    public void setLocation(String location) {this.location = location;}
-
-    @NotNull
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
+    public void setLocations(Set<String> locations) {this.locations = locations;}
 
     @NotNull
-    public Size getSize(){return size;}
+    @ElementCollection
+    public Set<String> getIndustries() {
+        return industries;
+    }
 
-    public void setSize(Size size) {this.size = size;}
+    public void setIndustries(Set<String> industries) {
+        this.industries = industries;
+    }
+
+    @NotNull
+    public int getSize(){return size;}
+
+    public void setSize(int size) {this.size = size;}
 
     public Boolean getApprovalStatus(){return approvalStatus;}
 

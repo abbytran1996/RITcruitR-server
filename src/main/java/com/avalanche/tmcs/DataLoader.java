@@ -228,8 +228,10 @@ public class DataLoader implements ApplicationRunner {
 
         Company intuit = new Company();
         intuit.setCompanyName("Intuit");
-        intuit.setLocation("United States and Canada");
-        intuit.setSize(Company.Size.HUGE);
+        Set set3 = new HashSet<String>();
+        set3.add("Buffalo, New York");
+        intuit.setLocations(set3);
+        intuit.setSize(3);
         intuit.setApprovalStatus(true);
         intuit.setCompanyDescription("Innovating. Empowering. Delighting.\n" +
                 "\n" +
@@ -589,8 +591,10 @@ public class DataLoader implements ApplicationRunner {
         Company comp = new Company();
 
         comp.setCompanyName(faker.company().name());
-        comp.setLocation(faker.address().fullAddress());
-        comp.setSize(randomSize(faker));
+        Set comp1 = new HashSet<String>();
+        comp1.add("San Jose, California");
+        comp.setLocations(comp1);
+        comp.setSize(1);
         comp.setApprovalStatus(true);
         comp.setCompanyDescription(faker.company().catchPhrase());
         comp.setWebsiteURL(faker.company().url());
@@ -626,7 +630,7 @@ public class DataLoader implements ApplicationRunner {
         job.setImportantSkills(skills);
         job.setMatchThreshold(0.8);
         job.setNicetohaveSkillsWeight(0.1);
-        job.setLocation(rec.getCompany().getLocation());
+        job.setLocation("Rochester, New York");
         job.setPhaseTimeout(30);
 
         //have to do a replace here since pi is an invalid character in sql

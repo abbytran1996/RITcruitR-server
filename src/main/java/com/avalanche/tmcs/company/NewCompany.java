@@ -1,6 +1,6 @@
 package com.avalanche.tmcs.company;
 
-import java.io.File;
+import java.util.Set;
 
 /**
  * @author Zane Grasso
@@ -8,9 +8,9 @@ import java.io.File;
  */
 public class NewCompany extends Company {
     public String companyName;
-    public String location;
-    public String industry;
-    public Size size;
+    public Set<String> locations;
+    public Set<String> industries;
+    public int size;
     public String websiteURL;
 
     public String getCompanyName() {
@@ -21,27 +21,27 @@ public class NewCompany extends Company {
         this.companyName = companyName;
     }
 
-    public String getLocation() {
-        return location;
+    public Set<String> getLocations() {
+        return locations;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocations(Set<String> locations) {
+        this.locations = locations;
     }
 
-    public String getIndustry() {
-        return industry;
+    public Set<String> getIndustries() {
+        return industries;
     }
 
-    public void setIndustry(String industry) {
-        this.industry = industry;
+    public void setIndustries(Set<String> industries) {
+        this.industries = industries;
     }
 
-    public Size getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(Size size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
@@ -57,8 +57,8 @@ public class NewCompany extends Company {
         Company company = new Company();
 
         company.setCompanyName(getCompanyName());
-        company.setLocation(getLocation());
-        company.setIndustry(getIndustry());
+        company.setLocations(getLocations());
+        company.setIndustries(getIndustries());
         company.setSize(getSize());
         company.setWebsiteURL(getWebsiteURL());
         company.setApprovalStatus(false);

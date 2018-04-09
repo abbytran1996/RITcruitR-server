@@ -85,7 +85,7 @@ public class CompanyController {
     public ResponseEntity<?> updateCompanyDetails(@PathVariable long id, @RequestBody Company updateCompany){
         Company company = companyDAO.findOne(id);
         company.setCompanyName(updateCompany.getCompanyName());
-        company.setIndustry(updateCompany.getIndustry());
+        company.setIndustries(updateCompany.getIndustries());
         company.setSize(updateCompany.getSize());
         company.setWebsiteURL(updateCompany.getWebsiteURL());
         companyDAO.save(company);
@@ -118,7 +118,7 @@ public class CompanyController {
     @RequestMapping(value = "/{id}/locations", method = RequestMethod.POST)
     public ResponseEntity<?> addCompanyLocations(@PathVariable long id, @RequestBody Company updateCompany) {
             Company company = companyDAO.findOne(id);
-            company.setLocation(updateCompany.getLocation());
+            company.setLocations(updateCompany.getLocations());
             companyDAO.save(company);
             return ResponseEntity.ok().build();
     }
