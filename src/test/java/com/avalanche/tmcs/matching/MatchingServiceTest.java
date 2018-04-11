@@ -46,7 +46,7 @@ public class MatchingServiceTest {
         Map<JobPosting, MatchingService.MatchedSkillsCount> postMap = new HashMap<>();
         JobPosting posting = new JobPosting();
         posting.setPositionTitle("Position C");
-        posting.setUrl("https://drive.google.com/drive/u/1/my-drive");
+        posting.setVideo("https://drive.google.com/drive/u/1/my-drive");
         posting.setImportantSkills(new HashSet<>());
 
         Skill skill = new Skill();
@@ -61,11 +61,11 @@ public class MatchingServiceTest {
         skill.setName("C");
         posting.getImportantSkills().add(skill);
 
-        posting.setNicetohaveSkills(new HashSet<>());
+        posting.setNiceToHaveSkills(new HashSet<>());
 
         skill = new Skill();
         skill.setName("Perl");
-        posting.getNicetohaveSkills().add(skill);
+        posting.getNiceToHaveSkills().add(skill);
 
         MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
         skillsCount.requiredSkillsCount = 3;
@@ -78,7 +78,7 @@ public class MatchingServiceTest {
         Assert.assertEquals(1, matches.size());
 
         Match match = matches.get(0);
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getImportantSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNicetohaveSkills().size();
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getImportantSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNiceToHaveSkills().size();
 
         Assert.assertEquals(chompsky, match.getStudent());
         Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
@@ -95,7 +95,7 @@ public class MatchingServiceTest {
 
         JobPosting posting = new JobPosting();
         posting.setPositionTitle("Position C");
-        posting.setUrl("https://drive.google.com/drive/u/1/my-drive");
+        posting.setVideo("https://drive.google.com/drive/u/1/my-drive");
         posting.setImportantSkills(new HashSet<>());
 
         Skill skill = new Skill();
@@ -112,11 +112,11 @@ public class MatchingServiceTest {
         skill.setName("C");
         posting.getImportantSkills().add(skill);
         chompsky.getSkills().add(skill);
-        posting.setNicetohaveSkills(new HashSet<>());
+        posting.setNiceToHaveSkills(new HashSet<>());
 
         skill = new Skill();
         skill.setName("Perl");
-        posting.getNicetohaveSkills().add(skill);
+        posting.getNiceToHaveSkills().add(skill);
 
         MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
         skillsCount.requiredSkillsCount = 3;
@@ -130,7 +130,7 @@ public class MatchingServiceTest {
 
         Match match = matches.get(0);
 
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getImportantSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNicetohaveSkills().size();
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getImportantSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNiceToHaveSkills().size();
 
         Assert.assertEquals(chompsky, match.getStudent());
         Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
@@ -293,18 +293,18 @@ public class MatchingServiceTest {
     private void setupJobPostings() {
         JobPosting post = new JobPosting();
         post.setPositionTitle("Post a");
-        post.setUrl("https://drive.google.com/drive/u/1/my-drive");
+        post.setVideo("https://drive.google.com/drive/u/1/my-drive");
         recommended.add(post);
 
         post = new JobPosting();
         post.setPositionTitle("Post B");
-        post.setUrl("https://drive.google.com/drive/u/1/my-drive");
+        post.setVideo("https://drive.google.com/drive/u/1/my-drive");
         recommended.add(post);
         required.add(post);
 
         post = new JobPosting();
         post.setPositionTitle("Post C");
-        post.setUrl("https://drive.google.com/drive/u/1/my-drive");
+        post.setVideo("https://drive.google.com/drive/u/1/my-drive");
         required.add(post);
     }
 }

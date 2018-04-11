@@ -300,202 +300,202 @@ public class DataLoader implements ApplicationRunner {
         rectuiter.setPhoneNumber("555-555-5555");
         recruiterDAO.save(rectuiter);
 
-        JobPosting interactionDesignStrategest = new JobPosting();
-        interactionDesignStrategest.setUrl("http://careers.intuit.com/job-category/2/design-and-user-experience/job/00127433/interaction-design-strategist-intuit-design-systems");
-        interactionDesignStrategest.setProblemStatement("Tell us about a time you created deep design solutions for high complexity high-visibility projects");
-        interactionDesignStrategest.setStatus(JobPosting.Status.OPEN.ordinal());
-        interactionDesignStrategest.setPositionTitle("Interaction Design Strategist, Intuit Design Systems");
-        interactionDesignStrategest.setDescription("Come join the CTO Dev Design Team as a Design Strategist. We are working across the ecosystem to define the future design systems and patterns for the company.     Responsibilities:  \n" +
-                "\n" +
-                "    Uses deep professional expertise in specific technical or domain areas to contribute to development of company priorities and achieves goals in creative and effective ways\n" +
-                "    Works on the most complex and unique issues\n" +
-                "    Acts independently to determine approach and process for new assignments. May manage the activities of other employees.\n" +
-                "    Work has a profound impact on crucial business objectives and resource decisions\n" +
-                "    Influence typically impacts multiple related projects within a business or functional group and will often affect other business and functional groups\n" +
-                "    Applies long term thinking with respect to major design and technology choices\n" +
-                "    While they do not own an architecture they typically contribute to the relevant architecture(s)\n" +
-                "    Leads through influence to promote changes in skills, approach and mindset needed for where the organization is going within their areas of technical expertise");
-        Set<Skill> importantSkills = new HashSet<>();
-        importantSkills.add(skills.get(0));
-        interactionDesignStrategest.setImportantSkills(importantSkills);
-        Set<Skill> niceToHaveSkills = new HashSet<>();
-        niceToHaveSkills.add(skills.get(1));
-        interactionDesignStrategest.setNicetohaveSkills(niceToHaveSkills);
-        interactionDesignStrategest.setNicetohaveSkillsWeight(0.2);
-        interactionDesignStrategest.setMatchThreshold(0.5);
-        interactionDesignStrategest.setRecruiter(rectuiter);
-        interactionDesignStrategest.setLocation("Mountain View, California");
-        interactionDesignStrategest.setPhaseTimeout(7);
-        jobPostingDAO.save(interactionDesignStrategest);
-
-        JobPosting designManager = new JobPosting();
-        designManager.setStatus(JobPosting.Status.OPEN.ordinal());
-        designManager.setPositionTitle("Design Manager, Intuit Design Systems");
-        designManager.setDescription("Come join our team as a Design Leader within the CTO Dev Design team. This role reports to the Chief Designer.\n" +
-                " \n" +
-                "\n" +
-                "    Manage, inspire, mentor, lead, and scale a talented group of entry level to mid-level designers and researchers.\n" +
-                "    Conduct design reviews and help team align on common patterns and best outcomes for the customer and business\n" +
-                "    Partner closely with engineering, product management, and design strategist stakeholders within the CTO organization and across the company to align on priorities and outcomes\n" +
-                "    Review design asks, and assign best talent for role at hand\n" +
-                "    Assess new talent, for full time or contract positions\n" +
-                "    Lead cross-company initiatives\n" +
-                "    Apply strategic thinking to design and deliver innovative end-to-end user experiences that optimize among user needs, business goals, and technological realities across web & mobile platforms\n" +
-                "    Help the team take ideas and concepts, and visualize them in such that they are communicated effectively and compellingly for internal leaders, partners and customers\n" +
-                "    Turn visions into concepts and translate those concepts into designs that illustrate simplicity, despite complexity of the system\n" +
-                "    Directly responsible for delivering User Experience visions, and working through others to deliver UI specifications, wireframes and prototypes\n" +
-                "    Collaborate effectively with researchers, product management, development, marketing, and other team members\n" +
-                "    Use facilitative leadership skills to drive to the best outcome for stakeholders, resulting in others learning from you, and inspiring others to want to work with you\n" +
-                "    Participate in and foster the Intuit Experience Design Community");
-        importantSkills.clear();
-        importantSkills.add(skills.get(11));
-        importantSkills.add(skills.get(10));
-        importantSkills.add(skills.get(9));
-        importantSkills.add(skills.get(8));
-        importantSkills.add(skills.get(7));
-        importantSkills.add(skills.get(6));
-        designManager.setImportantSkills(importantSkills);
-        niceToHaveSkills.clear();
-        niceToHaveSkills.add(skills.get(5));
-        niceToHaveSkills.add(skills.get(4));
-        niceToHaveSkills.add(skills.get(3));
-        niceToHaveSkills.add(skills.get(2));
-        niceToHaveSkills.add(skills.get(1));
-        designManager.setNicetohaveSkills(niceToHaveSkills);
-        designManager.setNicetohaveSkillsWeight(0.4);
-        designManager.setMatchThreshold(0.8);
-        designManager.setRecruiter(rectuiter);
-        designManager.setLocation("Mountain View, California");
-        designManager.setPhaseTimeout(7);
-        designManager.setProblemStatement("Tell us about your experience with web technologies");
-        designManager.setUrl("http://careers.intuit.com/job-category/2/design-and-user-experience/job/00127435/design-manager-intuit-design-systems");
-        jobPostingDAO.save(designManager);
-
-        JobPosting webArchitect = new JobPosting();
-        webArchitect.setPositionTitle("Web Architect");
-        webArchitect.setDescription("Come join the TurboTax Team as a Web Architect defining the technology strategy and architecture for our next generation of mobile and web UI's that will revolutionize millions of consumers financial lives so profoundly that they can't imagine going back to the old way.\n" +
-                "\n" +
-                "  RESPONSIBILITIES:\n" +
-                "\n" +
-                "    Define strategy and architecture for our next generation mobile and web UI\n" +
-                "    Coordinate technology adoption and feature designs across product lines\n" +
-                "    Provide leadership in all areas of the development process, including development standards and practices, system architecture and design, functional and technical design and implementation, and unit and regression test design\n" +
-                "    Formulate and drive best practices around Javascript, HTML, and CSS\n" +
-                "    Build prototypes to rapidly iterate on the problem and zero in on the optimal customer experience.\n" +
-                "    Participate in cross-company technology initiatives");
-        importantSkills.clear();
-        importantSkills.add(skills.get(11));
-        importantSkills.add(skills.get(12));
-        importantSkills.add(skills.get(13));
-        importantSkills.add(skills.get(14));
-        importantSkills.add(skills.get(15));
-        importantSkills.add(skills.get(16));
-        importantSkills.add(skills.get(17));
-        webArchitect.setImportantSkills(importantSkills);
-        niceToHaveSkills.clear();
-        niceToHaveSkills.add(skills.get(18));
-        niceToHaveSkills.add(skills.get(19));
-        niceToHaveSkills.add(skills.get(20));
-        niceToHaveSkills.add(skills.get(21));
-        niceToHaveSkills.add(skills.get(22));
-        webArchitect.setNicetohaveSkills(niceToHaveSkills);
-        webArchitect.setNicetohaveSkillsWeight(0.3);
-        webArchitect.setMatchThreshold(0.8);
-        webArchitect.setRecruiter(rectuiter);
-        webArchitect.setLocation("San Diego, California");
-        webArchitect.setPhaseTimeout(7);
-        webArchitect.setProblemStatement("Compare Nginx and NodeJS, listing the pros and cons of each");
-        webArchitect.setUrl("http://careers.intuit.com/job-category/1/software-engineering/job/00126881/web-architect");
-        jobPostingDAO.save(webArchitect);
-
-        JobPosting seniorSoftwareEngineer = new JobPosting();
-        seniorSoftwareEngineer.setPositionTitle("Senior Software Engineer");
-        seniorSoftwareEngineer.setDescription("Intuit is seeking a Senior Software Engineer to join our Artificial Intelligence & Machine Learning group in Hod Hasharon, Israel.\n" +
-                "\n" +
-                " \n" +
-                "\n" +
-                "The AI & ML team develops data-driven product features for financial management products like TurboTax, Mint and QuickBooks, as well as algorithms and analyses to drive business decisions.\n" +
-                "\n" +
-                " \n" +
-                "\n" +
-                "You’ll have the opportunity to work alongside world-class data scientists, gain insight into cutting edge data-mining and machine learning techniques and implement complex distributed algorithms to create insight and value from Intuit’s large-scale data assets.\n" +
-                "\n" +
-                " \n" +
-                "\n" +
-                "You thrive on ambiguity and enjoy the frequent pivoting that comes with agile development. Your team will be very small – no bigger than two pizzas can feed – and team members frequently wear multiple hats. If you are passionate about designing and managing world-class web products that leverage data to delight customers, this is a unique opportunity to apply your creativity.\n" +
-                "\n" +
-                "Responsibilities\n" +
-                "\n" +
-                "    Partner and collaborate with business and product management to plan, design, build, test, and launch data-driven products\n" +
-                "    Architect & design whole systems or significant portions of complex systems\n" +
-                "    Drive the design and implementation of highly scalable products and platforms that require advanced data techniques\n" +
-                "    Work cross-functionally with various Intuit teams: product management, QA/QE, various product lines, or business units to drive forward results\n" +
-                "    Deliver frequent product deployments in a fast paced Agile environment\n" +
-                "    Assist in planning near term product deliverables, longer term vision, and scaling out of our current architecture");
-        importantSkills.clear();
-        importantSkills.add(skills.get(23));
-        importantSkills.add(skills.get(25));
-        importantSkills.add(skills.get(26));
-        importantSkills.add(skills.get(27));
-        importantSkills.add(skills.get(28));
-        seniorSoftwareEngineer.setImportantSkills(importantSkills);
-        niceToHaveSkills.clear();
-        niceToHaveSkills.add(skills.get(24));
-        niceToHaveSkills.add(skills.get(29));
-        niceToHaveSkills.add(skills.get(30));
-        seniorSoftwareEngineer.setNicetohaveSkills(niceToHaveSkills);
-        seniorSoftwareEngineer.setNicetohaveSkillsWeight(0.2);
-        seniorSoftwareEngineer.setMatchThreshold(0.8);
-        seniorSoftwareEngineer.setRecruiter(rectuiter);
-        seniorSoftwareEngineer.setLocation("Hod HaSharon");
-        seniorSoftwareEngineer.setPhaseTimeout(7);
-        seniorSoftwareEngineer.setProblemStatement("Tell us about your experience with big data processing");
-        seniorSoftwareEngineer.setUrl("http://careers.intuit.com/job-category/1/software-engineering/job/00127273/senior-software-engineer");
-        jobPostingDAO.save(seniorSoftwareEngineer);
-
-        JobPosting softwareEngineer2 = new JobPosting();
-        softwareEngineer2.setPositionTitle("Software Engineer 2");
-        softwareEngineer2.setDescription("QuickBooks Financing is a nimble and high-priority fin-tech start-up within Intuit that is looking to reinvent small business lending. We are leveraging the unique relationships we have with small businesses to solve one of the biggest challenges they face:  getting access to capital.  We are looking for team members that love new challenges, cracking tough problems and working cross-functionally.  If you are looking to join a fast-paced, innovative and incredibly fun team, then we encourage you to apply. Come join the Quick Books Financing team as a Software Engineer 2. You will be developing a Single Page Application using the latest JavaScript, CSS, and HTML technologies.\n" +
-                "\n" +
-                "Responsibilities:   \n" +
-                "\n" +
-                "    Successful delivery of high quality web application code (requirements, design, code, documentation, etc.)\n" +
-                "    Roughly 80-95% hands-on coding\n" +
-                "    Contribute to overall site stability, including code reviews, writing unit and integration tests\n" +
-                "    Resolve defects/bugs during testing, pre-production, production, and post-release patches\n" +
-                "    Work effectively within your team and cross-functionally with various Intuit teams: product management, QE, various product lines, or business units to drive forward results\n" +
-                "    Commitment to team success and positive team dynamics\n" +
-                "    Passion for growing and applying technical skills in service to customers");
-        importantSkills.clear();
-        importantSkills.add(skills.get(14));
-        importantSkills.add(skills.get(31));
-        importantSkills.add(skills.get(13));
-        importantSkills.add(skills.get(36));
-        importantSkills.add(skills.get(40));
-        importantSkills.add(skills.get(41));
-        importantSkills.add(skills.get(42));
-        softwareEngineer2.setImportantSkills(importantSkills);
-        niceToHaveSkills.clear();
-        niceToHaveSkills.add(skills.get(15));
-        niceToHaveSkills.add(skills.get(32));
-        niceToHaveSkills.add(skills.get(33));
-        niceToHaveSkills.add(skills.get(34));
-        niceToHaveSkills.add(skills.get(35));
-        niceToHaveSkills.add(skills.get(37));
-        niceToHaveSkills.add(skills.get(38));
-        niceToHaveSkills.add(skills.get(39));
-        niceToHaveSkills.add(skills.get(43));
-        niceToHaveSkills.add(skills.get(23));
-        niceToHaveSkills.add(skills.get(4));
-        softwareEngineer2.setNicetohaveSkills(niceToHaveSkills);
-        softwareEngineer2.setNicetohaveSkillsWeight(0.3);
-        softwareEngineer2.setMatchThreshold(0.7);
-        softwareEngineer2.setRecruiter(rectuiter);
-        softwareEngineer2.setLocation("Mountain View, California");
-        softwareEngineer2.setPhaseTimeout(7);
-        softwareEngineer2.setProblemStatement("Compare and contrast React and AngularJS");
-        softwareEngineer2.setUrl("http://careers.intuit.com/job-category/1/software-engineering/job/00126569/software-engineer-2");
-        jobPostingDAO.save(softwareEngineer2);
+//        JobPosting interactionDesignStrategest = new JobPosting();
+//        interactionDesignStrategest.setVideo("http://careers.intuit.com/job-category/2/design-and-user-experience/job/00127433/interaction-design-strategist-intuit-design-systems");
+//        interactionDesignStrategest.setProblemStatement("Tell us about a time you created deep design solutions for high complexity high-visibility projects");
+//        interactionDesignStrategest.setStatus(JobPosting.Status.OPEN.ordinal());
+//        interactionDesignStrategest.setPositionTitle("Interaction Design Strategist, Intuit Design Systems");
+//        interactionDesignStrategest.setDescription("Come join the CTO Dev Design Team as a Design Strategist. We are working across the ecosystem to define the future design systems and patterns for the company.     Responsibilities:  \n" +
+//                "\n" +
+//                "    Uses deep professional expertise in specific technical or domain areas to contribute to development of company priorities and achieves goals in creative and effective ways\n" +
+//                "    Works on the most complex and unique issues\n" +
+//                "    Acts independently to determine approach and process for new assignments. May manage the activities of other employees.\n" +
+//                "    Work has a profound impact on crucial business objectives and resource decisions\n" +
+//                "    Influence typically impacts multiple related projects within a business or functional group and will often affect other business and functional groups\n" +
+//                "    Applies long term thinking with respect to major design and technology choices\n" +
+//                "    While they do not own an architecture they typically contribute to the relevant architecture(s)\n" +
+//                "    Leads through influence to promote changes in skills, approach and mindset needed for where the organization is going within their areas of technical expertise");
+//        Set<Skill> importantSkills = new HashSet<>();
+//        importantSkills.add(skills.get(0));
+//        interactionDesignStrategest.setImportantSkills(importantSkills);
+//        Set<Skill> niceToHaveSkills = new HashSet<>();
+//        niceToHaveSkills.add(skills.get(1));
+//        interactionDesignStrategest.setNiceToHaveSkills(niceToHaveSkills);
+//        interactionDesignStrategest.setNiceToHaveSkillsWeight(0.2);
+//        interactionDesignStrategest.setMatchThreshold(0.5);
+//        interactionDesignStrategest.setRecruiter(rectuiter);
+//        interactionDesignStrategest.setLocation("Mountain View, California");
+//        interactionDesignStrategest.setDuration(7);
+//        jobPostingDAO.save(interactionDesignStrategest);
+//
+//        JobPosting designManager = new JobPosting();
+//        designManager.setStatus(JobPosting.Status.OPEN.ordinal());
+//        designManager.setPositionTitle("Design Manager, Intuit Design Systems");
+//        designManager.setDescription("Come join our team as a Design Leader within the CTO Dev Design team. This role reports to the Chief Designer.\n" +
+//                " \n" +
+//                "\n" +
+//                "    Manage, inspire, mentor, lead, and scale a talented group of entry level to mid-level designers and researchers.\n" +
+//                "    Conduct design reviews and help team align on common patterns and best outcomes for the customer and business\n" +
+//                "    Partner closely with engineering, product management, and design strategist stakeholders within the CTO organization and across the company to align on priorities and outcomes\n" +
+//                "    Review design asks, and assign best talent for role at hand\n" +
+//                "    Assess new talent, for full time or contract positions\n" +
+//                "    Lead cross-company initiatives\n" +
+//                "    Apply strategic thinking to design and deliver innovative end-to-end user experiences that optimize among user needs, business goals, and technological realities across web & mobile platforms\n" +
+//                "    Help the team take ideas and concepts, and visualize them in such that they are communicated effectively and compellingly for internal leaders, partners and customers\n" +
+//                "    Turn visions into concepts and translate those concepts into designs that illustrate simplicity, despite complexity of the system\n" +
+//                "    Directly responsible for delivering User Experience visions, and working through others to deliver UI specifications, wireframes and prototypes\n" +
+//                "    Collaborate effectively with researchers, product management, development, marketing, and other team members\n" +
+//                "    Use facilitative leadership skills to drive to the best outcome for stakeholders, resulting in others learning from you, and inspiring others to want to work with you\n" +
+//                "    Participate in and foster the Intuit Experience Design Community");
+//        importantSkills.clear();
+//        importantSkills.add(skills.get(11));
+//        importantSkills.add(skills.get(10));
+//        importantSkills.add(skills.get(9));
+//        importantSkills.add(skills.get(8));
+//        importantSkills.add(skills.get(7));
+//        importantSkills.add(skills.get(6));
+//        designManager.setImportantSkills(importantSkills);
+//        niceToHaveSkills.clear();
+//        niceToHaveSkills.add(skills.get(5));
+//        niceToHaveSkills.add(skills.get(4));
+//        niceToHaveSkills.add(skills.get(3));
+//        niceToHaveSkills.add(skills.get(2));
+//        niceToHaveSkills.add(skills.get(1));
+//        designManager.setNiceToHaveSkills(niceToHaveSkills);
+//        designManager.setNiceToHaveSkillsWeight(0.4);
+//        designManager.setMatchThreshold(0.8);
+//        designManager.setRecruiter(rectuiter);
+//        designManager.setLocation("Mountain View, California");
+//        designManager.setDuration(7);
+//        designManager.setProblemStatement("Tell us about your experience with web technologies");
+//        designManager.setVideo("http://careers.intuit.com/job-category/2/design-and-user-experience/job/00127435/design-manager-intuit-design-systems");
+//        jobPostingDAO.save(designManager);
+//
+//        JobPosting webArchitect = new JobPosting();
+//        webArchitect.setPositionTitle("Web Architect");
+//        webArchitect.setDescription("Come join the TurboTax Team as a Web Architect defining the technology strategy and architecture for our next generation of mobile and web UI's that will revolutionize millions of consumers financial lives so profoundly that they can't imagine going back to the old way.\n" +
+//                "\n" +
+//                "  RESPONSIBILITIES:\n" +
+//                "\n" +
+//                "    Define strategy and architecture for our next generation mobile and web UI\n" +
+//                "    Coordinate technology adoption and feature designs across product lines\n" +
+//                "    Provide leadership in all areas of the development process, including development standards and practices, system architecture and design, functional and technical design and implementation, and unit and regression test design\n" +
+//                "    Formulate and drive best practices around Javascript, HTML, and CSS\n" +
+//                "    Build prototypes to rapidly iterate on the problem and zero in on the optimal customer experience.\n" +
+//                "    Participate in cross-company technology initiatives");
+//        importantSkills.clear();
+//        importantSkills.add(skills.get(11));
+//        importantSkills.add(skills.get(12));
+//        importantSkills.add(skills.get(13));
+//        importantSkills.add(skills.get(14));
+//        importantSkills.add(skills.get(15));
+//        importantSkills.add(skills.get(16));
+//        importantSkills.add(skills.get(17));
+//        webArchitect.setImportantSkills(importantSkills);
+//        niceToHaveSkills.clear();
+//        niceToHaveSkills.add(skills.get(18));
+//        niceToHaveSkills.add(skills.get(19));
+//        niceToHaveSkills.add(skills.get(20));
+//        niceToHaveSkills.add(skills.get(21));
+//        niceToHaveSkills.add(skills.get(22));
+//        webArchitect.setNiceToHaveSkills(niceToHaveSkills);
+//        webArchitect.setNiceToHaveSkillsWeight(0.3);
+//        webArchitect.setMatchThreshold(0.8);
+//        webArchitect.setRecruiter(rectuiter);
+//        webArchitect.setLocation("San Diego, California");
+//        webArchitect.setDuration(7);
+//        webArchitect.setProblemStatement("Compare Nginx and NodeJS, listing the pros and cons of each");
+//        webArchitect.setVideo("http://careers.intuit.com/job-category/1/software-engineering/job/00126881/web-architect");
+//        jobPostingDAO.save(webArchitect);
+//
+//        JobPosting seniorSoftwareEngineer = new JobPosting();
+//        seniorSoftwareEngineer.setPositionTitle("Senior Software Engineer");
+//        seniorSoftwareEngineer.setDescription("Intuit is seeking a Senior Software Engineer to join our Artificial Intelligence & Machine Learning group in Hod Hasharon, Israel.\n" +
+//                "\n" +
+//                " \n" +
+//                "\n" +
+//                "The AI & ML team develops data-driven product features for financial management products like TurboTax, Mint and QuickBooks, as well as algorithms and analyses to drive business decisions.\n" +
+//                "\n" +
+//                " \n" +
+//                "\n" +
+//                "You’ll have the opportunity to work alongside world-class data scientists, gain insight into cutting edge data-mining and machine learning techniques and implement complex distributed algorithms to create insight and value from Intuit’s large-scale data assets.\n" +
+//                "\n" +
+//                " \n" +
+//                "\n" +
+//                "You thrive on ambiguity and enjoy the frequent pivoting that comes with agile development. Your team will be very small – no bigger than two pizzas can feed – and team members frequently wear multiple hats. If you are passionate about designing and managing world-class web products that leverage data to delight customers, this is a unique opportunity to apply your creativity.\n" +
+//                "\n" +
+//                "Responsibilities\n" +
+//                "\n" +
+//                "    Partner and collaborate with business and product management to plan, design, build, test, and launch data-driven products\n" +
+//                "    Architect & design whole systems or significant portions of complex systems\n" +
+//                "    Drive the design and implementation of highly scalable products and platforms that require advanced data techniques\n" +
+//                "    Work cross-functionally with various Intuit teams: product management, QA/QE, various product lines, or business units to drive forward results\n" +
+//                "    Deliver frequent product deployments in a fast paced Agile environment\n" +
+//                "    Assist in planning near term product deliverables, longer term vision, and scaling out of our current architecture");
+//        importantSkills.clear();
+//        importantSkills.add(skills.get(23));
+//        importantSkills.add(skills.get(25));
+//        importantSkills.add(skills.get(26));
+//        importantSkills.add(skills.get(27));
+//        importantSkills.add(skills.get(28));
+//        seniorSoftwareEngineer.setImportantSkills(importantSkills);
+//        niceToHaveSkills.clear();
+//        niceToHaveSkills.add(skills.get(24));
+//        niceToHaveSkills.add(skills.get(29));
+//        niceToHaveSkills.add(skills.get(30));
+//        seniorSoftwareEngineer.setNiceToHaveSkills(niceToHaveSkills);
+//        seniorSoftwareEngineer.setNiceToHaveSkillsWeight(0.2);
+//        seniorSoftwareEngineer.setMatchThreshold(0.8);
+//        seniorSoftwareEngineer.setRecruiter(rectuiter);
+//        seniorSoftwareEngineer.setLocation("Hod HaSharon");
+//        seniorSoftwareEngineer.setDuration(7);
+//        seniorSoftwareEngineer.setProblemStatement("Tell us about your experience with big data processing");
+//        seniorSoftwareEngineer.setVideo("http://careers.intuit.com/job-category/1/software-engineering/job/00127273/senior-software-engineer");
+//        jobPostingDAO.save(seniorSoftwareEngineer);
+//
+//        JobPosting softwareEngineer2 = new JobPosting();
+//        softwareEngineer2.setPositionTitle("Software Engineer 2");
+//        softwareEngineer2.setDescription("QuickBooks Financing is a nimble and high-priority fin-tech start-up within Intuit that is looking to reinvent small business lending. We are leveraging the unique relationships we have with small businesses to solve one of the biggest challenges they face:  getting access to capital.  We are looking for team members that love new challenges, cracking tough problems and working cross-functionally.  If you are looking to join a fast-paced, innovative and incredibly fun team, then we encourage you to apply. Come join the Quick Books Financing team as a Software Engineer 2. You will be developing a Single Page Application using the latest JavaScript, CSS, and HTML technologies.\n" +
+//                "\n" +
+//                "Responsibilities:   \n" +
+//                "\n" +
+//                "    Successful delivery of high quality web application code (requirements, design, code, documentation, etc.)\n" +
+//                "    Roughly 80-95% hands-on coding\n" +
+//                "    Contribute to overall site stability, including code reviews, writing unit and integration tests\n" +
+//                "    Resolve defects/bugs during testing, pre-production, production, and post-release patches\n" +
+//                "    Work effectively within your team and cross-functionally with various Intuit teams: product management, QE, various product lines, or business units to drive forward results\n" +
+//                "    Commitment to team success and positive team dynamics\n" +
+//                "    Passion for growing and applying technical skills in service to customers");
+//        importantSkills.clear();
+//        importantSkills.add(skills.get(14));
+//        importantSkills.add(skills.get(31));
+//        importantSkills.add(skills.get(13));
+//        importantSkills.add(skills.get(36));
+//        importantSkills.add(skills.get(40));
+//        importantSkills.add(skills.get(41));
+//        importantSkills.add(skills.get(42));
+//        softwareEngineer2.setImportantSkills(importantSkills);
+//        niceToHaveSkills.clear();
+//        niceToHaveSkills.add(skills.get(15));
+//        niceToHaveSkills.add(skills.get(32));
+//        niceToHaveSkills.add(skills.get(33));
+//        niceToHaveSkills.add(skills.get(34));
+//        niceToHaveSkills.add(skills.get(35));
+//        niceToHaveSkills.add(skills.get(37));
+//        niceToHaveSkills.add(skills.get(38));
+//        niceToHaveSkills.add(skills.get(39));
+//        niceToHaveSkills.add(skills.get(43));
+//        niceToHaveSkills.add(skills.get(23));
+//        niceToHaveSkills.add(skills.get(4));
+//        softwareEngineer2.setNiceToHaveSkills(niceToHaveSkills);
+//        softwareEngineer2.setNiceToHaveSkillsWeight(0.3);
+//        softwareEngineer2.setMatchThreshold(0.7);
+//        softwareEngineer2.setRecruiter(rectuiter);
+//        softwareEngineer2.setLocation("Mountain View, California");
+//        softwareEngineer2.setDuration(7);
+//        softwareEngineer2.setProblemStatement("Compare and contrast React and AngularJS");
+//        softwareEngineer2.setVideo("http://careers.intuit.com/job-category/1/software-engineering/job/00126569/software-engineer-2");
+//        jobPostingDAO.save(softwareEngineer2);
 
         matchingService.registerStudent(student1);
         matchingService.registerStudent(student2);
@@ -532,7 +532,7 @@ public class DataLoader implements ApplicationRunner {
             testCompanies.add(pleasantCompany);
             Recruiter rec=newTestRecruiter(faker,refUser,pleasantCompany);
             testRecruiters.add(rec);
-            testJobs.add(newTestJobPosting(faker,rec,testSkills));
+//            testJobs.add(newTestJobPosting(faker,rec,testSkills));
         }
 
         //persist data
@@ -619,28 +619,28 @@ public class DataLoader implements ApplicationRunner {
         return rec;
     }
 
-    private JobPosting newTestJobPosting(Faker faker,Recruiter rec,ArrayList<Skill> possibleSkills){
-        JobPosting job = new JobPosting();
-        job.setPositionTitle(faker.company().profession());
-        job.setDescription(faker.company().bs());
-
-
-        HashSet<Skill> skills=new HashSet<Skill>();
-        for(int i=0;i<15;i++)
-            skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
-        job.setImportantSkills(skills);
-        job.setMatchThreshold(0.8);
-        job.setNicetohaveSkillsWeight(0.1);
-        job.setLocation("Rochester, New York");
-        job.setPhaseTimeout(30);
-
-        //have to do a replace here since pi is an invalid character in sql
-        job.setProblemStatement(faker.chuckNorris().fact().replaceAll("π","pi"));
-        job.setUrl("<insert job url here>");
-        job.setRecruiter(rec);
-
-        return job;
-    }
+//    private JobPosting newTestJobPosting(Faker faker,Recruiter rec,ArrayList<Skill> possibleSkills){
+//        JobPosting job = new JobPosting();
+//        job.setPositionTitle(faker.company().profession());
+//        job.setDescription(faker.company().bs());
+//
+//
+//        HashSet<Skill> skills=new HashSet<Skill>();
+//        for(int i=0;i<15;i++)
+//            skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
+//        job.setImportantSkills(skills);
+//        job.setMatchThreshold(0.8);
+//        job.setNiceToHaveSkillsWeight(0.1);
+//        job.setLocation("Rochester, New York");
+//        job.setDuration(30);
+//
+//        //have to do a replace here since pi is an invalid character in sql
+//        job.setProblemStatement(faker.chuckNorris().fact().replaceAll("π","pi"));
+//        job.setVideo("<insert job url here>");
+//        job.setRecruiter(rec);
+//
+//        return job;
+//    }
 
     private Company.Size randomSize(Faker faker){
         List<Company.Size> sizes= Arrays.asList(Company.Size.values());

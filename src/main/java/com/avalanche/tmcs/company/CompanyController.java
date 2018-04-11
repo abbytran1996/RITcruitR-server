@@ -68,27 +68,13 @@ public class CompanyController {
     }
 
     // ================================================================================================================
-    // * UPDATE COMPANY [PUT] - **NOT WORKING**                                                                       *
+    // * UPDATE COMPANY [PUT]                                                                                         *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateCompany(@PathVariable long id, @RequestBody Company updateCompany){
         updateCompany.setId(id);
         companyDAO.save(updateCompany);
 
-        return ResponseEntity.ok().build();
-    }
-
-    // ================================================================================================================
-    // * UPDATE COMPANY DETAILS [PUT] - **NOT WORKING**                                                               *
-    // ================================================================================================================
-    @RequestMapping(value = "/{id}/details", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateCompanyDetails(@PathVariable long id, @RequestBody Company updateCompany){
-        Company company = companyDAO.findOne(id);
-        company.setCompanyName(updateCompany.getCompanyName());
-        company.setIndustries(updateCompany.getIndustries());
-        company.setSize(updateCompany.getSize());
-        company.setWebsiteURL(updateCompany.getWebsiteURL());
-        companyDAO.save(company);
         return ResponseEntity.ok().build();
     }
 
@@ -130,14 +116,6 @@ public class CompanyController {
     public ResponseEntity<?> deleteCompanyLocation(@PathVariable long id, @PathVariable long locationid) {
         //TODO: implement deletes
         return ResponseEntity.ok().build();
-    }
-
-    // ================================================================================================================
-    // * TODO: REMOVE THIS FUNCTION ONCE DETERMINED IT WON'T BREAK ANYTHING                                           *
-    // ================================================================================================================
-    @RequestMapping(value = "/email_suffix/{emailSuffix}", method = RequestMethod.GET)
-    public Company getCompanyByEmailSuffix(@PathVariable String emailSuffix) {
-        return companyDAO.findByEmailSuffix(emailSuffix);
     }
 
     // ================================================================================================================
