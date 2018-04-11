@@ -73,8 +73,10 @@ public class MatchController {
         if(job ==null){
             return ResponseEntity.notFound().build();
         }
-        long matchesForJob = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
-                Match.ApplicationStatus.IN_PROGRESS);
+        long matchesForJob = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(
+                job,Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+                Match.ApplicationStatus.IN_PROGRESS
+        );
 
         return ResponseEntity.ok(matchesForJob);
     }

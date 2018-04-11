@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.net.URISyntaxException;
 import java.sql.Date;
@@ -638,5 +639,16 @@ public class DataLoader implements ApplicationRunner {
     private Company.Size randomSize(Faker faker){
         List<Company.Size> sizes= Arrays.asList(Company.Size.values());
         return sizes.get(faker.number().numberBetween(0,sizes.size()));
+    }
+
+
+    private static List<String> getMajors(){
+        return Arrays.asList("software-engineering", "photography");
+    }
+
+    private static List<Skill> getSkillsFromMajor(String major){
+        Skill skill1 = new Skill("Skill_one");
+        Skill skill2 = new Skill("Skill_two");
+        return Arrays.asList(skill1, skill2);
     }
 }
