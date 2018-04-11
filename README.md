@@ -25,7 +25,7 @@ This project is sponsored by [Jim Bondi](https://www.rit.edu/emcs/oce/staff#staf
 
 ### How to Run
 
-1. update the `spring.datasource.video` settings within the `resources/application.properties` to point at the hosted/desired database
+1. update the `spring.datasource.url` settings within the `resources/application.properties` to point at the hosted/desired database
 2. update the `spring.datasource.` `username` and `password` to match the determined credentials.
 3. run `gradlew build` to run the server against this database
 4. if desired, see the `client` repository for instructions on how to run that.
