@@ -54,7 +54,7 @@ public class MatchingService {
                 // This does one DB call for each skill in the student's profile
                 // Based on what I've seen on LinkedIn, I'd expect students to have maybe a hundred skill max? That's
                 // 100 calls. Would be better if we didn't need that many, but should be fine for a POC
-                List<JobPosting> postingsWithAtLeastOneRequiredSkill = jobPostingDAO.findAllByImportantSkillsContains(skill);
+                List<JobPosting> postingsWithAtLeastOneRequiredSkill = jobPostingDAO.findAllByRequiredSkillsContains(skill);
                 postingsWithAtLeastOneRequiredSkill.stream()
                         .filter(newJobFilter)
                         .forEach(posting -> {
@@ -64,7 +64,7 @@ public class MatchingService {
                             matchedSkillsCountMap.get(posting).requiredSkillsCount += 1;
                         });
 
-                List<JobPosting> postingsWithAtLeastOneRecommendedSkill = jobPostingDAO.findAllByNicetohaveSkillsContains(skill);
+                List<JobPosting> postingsWithAtLeastOneRecommendedSkill = jobPostingDAO.findAllByNiceToHaveSkillsContains(skill);
                 postingsWithAtLeastOneRecommendedSkill.stream()
                         .filter(newJobFilter)
                         .forEach(posting -> {
@@ -91,8 +91,8 @@ public class MatchingService {
      */
     public void registerJobPosting(final JobPosting posting) {
         executor.execute(() -> {
-            final Map<Student, Integer> numberOfMatchedRequiredSkills = countStudentsWithSkillInList(posting.getImportantSkills());
-            final Map<Student, Integer> numberOfMatchedRecommendedSkills = countStudentsWithSkillInList(posting.getNicetohaveSkills());
+            final Map<Student, Integer> numberOfMatchedRequiredSkills = countStudentsWithSkillInList(posting.getRequiredSkills());
+            final Map<Student, Integer> numberOfMatchedRecommendedSkills = countStudentsWithSkillInList(posting.getNiceToHaveSkills());
 
             final List<Match> matches = new ArrayList<>();
             for(Student student : numberOfMatchedRequiredSkills.keySet()) {
@@ -151,9 +151,9 @@ public class MatchingService {
         final List<Match> matches = new ArrayList<>();
         for(JobPosting posting : matchedSkillsCountMap.keySet()) {
             MatchedSkillsCount matchedSkillsCount = matchedSkillsCountMap.get(posting);
-            float numRequiredSkills = posting.getImportantSkills().size();
+            float numRequiredSkills = posting.getRequiredSkills().size();
             float weight = matchedSkillsCount.requiredSkillsCount * requiredSkillsWeight / numRequiredSkills;
-            float numRecommendedSkills = posting.getNicetohaveSkills().size();
+            float numRecommendedSkills = posting.getNiceToHaveSkills().size();
             if(numRecommendedSkills > 0) {
                 weight += matchedSkillsCount.recommendedSkillsCount * (1.0f - requiredSkillsWeight) / numRecommendedSkills;
             }

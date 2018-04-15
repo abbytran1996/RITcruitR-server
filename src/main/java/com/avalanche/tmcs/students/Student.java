@@ -5,10 +5,8 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.net.URI;
 import java.sql.Date;
 import java.util.Set;
 
@@ -43,11 +41,15 @@ public class Student {
 
     private String phoneNumber;
 
-    private Set<String> preferredStates;
+    private String contactEmail;
 
-    private Company.Size preferredCompanySize;
+    private String website;
 
-    private String resumeLocation;
+    private Set<String> preferredLocations;
+
+    private Set<String> preferredIndustries;
+
+    private Set<Integer> preferredCompanySizes;
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -81,10 +83,6 @@ public class Student {
     }
 
     @NotNull
-    // Emails have something, then an @ sign, then something, then a period, then something
-    // This is possibly overly broad, but students have to validateNewUser their email addresses with a confirmation email so
-    // this is mostly a sanity check to ensure things aren't horrible
-    // Also I wanted to use JPA validation annotations
     @Pattern(regexp = "^.+@.+\\..+$")
     public String getEmail() {
         return email;
@@ -94,9 +92,6 @@ public class Student {
         this.email = email;
     }
 
-    // This app is intended for a replacement for on-school career fairs. Students have not graduated yet by definition,
-    // so their graduation dates are in the future implicitly.
-    @Future
     @NotNull
     public Date getGraduationDate() {
         return graduationDate;
@@ -131,6 +126,22 @@ public class Student {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     @OneToOne
     @NotNull
     public User getUser() {
@@ -152,29 +163,30 @@ public class Student {
     }
 
     @ElementCollection
-    public Set<String> getPreferredStates() {
-        return preferredStates;
+    public Set<String> getPreferredLocations() {
+        return preferredLocations;
     }
 
-    public void setPreferredStates(Set<String> preferredStates) {
-        this.preferredStates = preferredStates;
+    public void setPreferredLocations(Set<String> preferredLocations) {
+        this.preferredLocations = preferredLocations;
     }
 
-    @NotNull
-    public Company.Size getPreferredCompanySize() {
-        return preferredCompanySize;
+    @ElementCollection
+    public Set<String> getPreferredIndustries() {
+        return preferredIndustries;
     }
 
-    public void setPreferredCompanySize(Company.Size preferredCompanySize) {
-        this.preferredCompanySize = preferredCompanySize;
+    public void setPreferredIndustries(Set<String> preferredIndustries) {
+        this.preferredIndustries = preferredIndustries;
     }
 
-    public String getResumeLocation(){
-        return resumeLocation;
+    @ElementCollection
+    public Set<Integer> getPreferredCompanySizes() {
+        return preferredCompanySizes;
     }
 
-    public void setResumeLocation(String newResume){
-        this.resumeLocation = newResume;
+    public void setPreferredCompanySizes(Set<Integer> preferredCompanySizes) {
+        this.preferredCompanySizes = preferredCompanySizes;
     }
 
     @Override

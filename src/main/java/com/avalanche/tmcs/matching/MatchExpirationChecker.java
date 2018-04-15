@@ -2,7 +2,6 @@ package com.avalanche.tmcs.matching;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -40,7 +39,7 @@ public class MatchExpirationChecker {
         allMatches.stream()
                 .filter(match -> {
                     // Assume the phase timeout is hours
-                    long matchUpdateTime = match.getJob().getPhaseTimeout() * 24 * HOURS_TO_MILLISECONDS;
+                    long matchUpdateTime = match.getJob().getDuration() * 24 * HOURS_TO_MILLISECONDS;
                     Date updateDate = new Date(new java.util.Date().getTime() + matchUpdateTime);
                     return match.getTimeLastUpdated().compareTo(updateDate) < 0;
                 })

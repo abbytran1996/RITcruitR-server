@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
-import java.util.HashSet;
+import java.util.*;
 
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.tomcat.jni.Directory;
@@ -28,8 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Defines and implements the API for interacting with Students
@@ -63,6 +61,9 @@ public class StudentsController {
         this.matchingService = matchingService;
     }
 
+    // ================================================================================================================
+    // * GET STUDENT BY ID [GET]                                                                                      *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Student> getStudent(@PathVariable long id) {
         LOG.debug("Getting student with id " + id);
@@ -74,6 +75,9 @@ public class StudentsController {
         return ResponseEntity.ok(student);
     }
 
+    // ================================================================================================================
+    // * GET STUDENT BY EMAIL [GET]                                                                                   *
+    // ================================================================================================================
     @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
     public ResponseEntity<Student> getStudentByEmail(@PathVariable String email) {
         LOG.debug("Getting student with email " + email);
@@ -84,6 +88,9 @@ public class StudentsController {
         return ResponseEntity.ok(student);
     }
 
+    // ================================================================================================================
+    // * ADD NEW STUDENT [POST]                                                                                       *
+    // ================================================================================================================
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Student> addStudent(@RequestBody NewStudent newStudent) {
         User newUser = new User(newStudent.getEmail(), newStudent.getPassword(), newStudent.getPasswordConfirm());
@@ -91,11 +98,7 @@ public class StudentsController {
         newUser = userService.save(newUser, Role.RoleName.Student);
         if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
             newStudent.setUser(newUser);
-            newStudent.getPreferredStates().removeIf(str -> str.isEmpty() || str.matches("\\s+"));
             Student savedStudent = studentDAO.save(newStudent.toStudent());
-            if(newStudent.getResume() != null) {
-                uploadResume(savedStudent.getId(), newStudent.getResume());
-            }
 
             matchingService.registerStudent(savedStudent);
 
@@ -111,21 +114,82 @@ public class StudentsController {
         }
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
+    // ================================================================================================================
+    // * UPDATE STUDENT [PUT]                                                                                         *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@PathVariable long id, @RequestBody Student updatedStudent) {
         validateStudentId(id);
         Student student = studentDAO.findOne(id);
-        student.setSchool(updatedStudent.getSchool());
+        student.setFirstName(updatedStudent.getFirstName());
+        student.setLastName(updatedStudent.getLastName());
+        student.setEmail(updatedStudent.getEmail());
         student.setGraduationDate(updatedStudent.getGraduationDate());
+        student.setSchool(updatedStudent.getSchool());
         student.setMajor(updatedStudent.getMajor());
         student.setGpa(updatedStudent.getGpa());
         student.setPhoneNumber(updatedStudent.getPhoneNumber());
-        student.setPreferredStates(updatedStudent.getPreferredStates());
-        student.setPreferredCompanySize(updatedStudent.getPreferredCompanySize());
+        student.setContactEmail(updatedStudent.getContactEmail());
+        student.setWebsite(updatedStudent.getWebsite());
+        student.setPreferredLocations(updatedStudent.getPreferredLocations());
+        student.setPreferredIndustries(updatedStudent.getPreferredIndustries());
+        student.setPreferredCompanySizes(updatedStudent.getPreferredCompanySizes());
         studentDAO.save(student);
         return ResponseEntity.ok().build();
     }
 
+    // ================================================================================================================
+    // * UPDATE STUDENT EDUCATION DETAILS [PUT] - **NOT WORKING**                                                     *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/education", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateEducation(@PathVariable long id, @RequestBody StudentEducation studentEducation) {
+        validateStudentId(id);
+        Student student = studentDAO.findOne(id);
+        student.setSchool(studentEducation.getSchool());
+        student.setMajor(studentEducation.getMajor());
+        student.setGpa(studentEducation.getGpa());
+        student.setGraduationDate(studentEducation.getGraduationDate());
+        studentDAO.save(student);
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * ADD STUDENT WORK EXPERIENCE [POST] - **NOT WORKING**                                                         *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/work-experience", method = RequestMethod.POST)
+    public ResponseEntity<?> addWorkExperience(@PathVariable long id, @RequestBody NewStudent studentWorkExperience) {
+        validateStudentId(id);
+        Student student = studentDAO.findOne(id);
+        //TODO: set work experience after methods have been added
+        //set company
+        //set jobTitle
+        //set startDate
+        //set endDate
+        //set description
+        studentDAO.save(student);
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * DELETE STUDENT WORK EXPERIENCE [DELETE] - **NOT WORKING**                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/work-experience", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteWorkExperience(@PathVariable long id, @RequestBody NewStudent studentWorkExperience) {
+        validateStudentId(id);
+        Student student = studentDAO.findOne(id);
+        //TODO: delete work experience after methods have been added
+        //delete company
+        //delete jobTitle
+        //delete startDate
+        //delete endDate
+        //delete description
+        studentDAO.save(student);
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * ADD STUDENT SKILLS [POST] - **NOT WORKING**                                                                  *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}/skills", method = RequestMethod.POST)
     public ResponseEntity<Student> updateSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
         Student ourstudent = studentDAO.findOne(id);
@@ -138,60 +202,9 @@ public class StudentsController {
         return ResponseEntity.ok(ourstudent);
     }
 
-    @RequestMapping(value = "/{id}/uploadResume", method = RequestMethod.PUT)
-    public ResponseEntity<Boolean> uploadResume(@PathVariable long id, @RequestBody Resume resume){
-        Student student = studentDAO.findOne(id);
-        boolean success = false;
-        try {
-            if(student.getResumeLocation() != null){
-                File oldResumeFile = new File("./resumes/" + Long.toString(id) + "/" +
-                                        student.getResumeLocation());
-                if(oldResumeFile.exists()){
-                    oldResumeFile.delete();
-                }
-            }
-
-            File resumeFile = new File("./resumes/" + Long.toString(id) + "/" +
-                    resume.getFileName());
-            File resumePath = new File("./resumes/" + Long.toString(id) + "/");
-            resumePath.mkdirs();
-            student.setResumeLocation(resume.getFileName());
-            Files.write(Paths.get(resumeFile.getCanonicalPath()), resume.getFile());
-            studentDAO.save(student);
-            success = true;
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-        return ResponseEntity.ok(success);
-    }
-
-
-    @RequestMapping(value = "/{id}/resume", method = RequestMethod.GET)
-    public ResponseEntity getResume(@PathVariable long id){
-        Student student = studentDAO.findOne(id);
-        byte[] contents = null;
-        try{
-            contents = Files.readAllBytes(new File("./resumes/" + Long.toString(student.getId())
-                    + "/" + student.getResumeLocation()).toPath());
-
-        }
-        catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //you don't have the pdf file
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output.pdf";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
-        return response;
-    }
-
-
+    /*
+        Validate that a student with the given id exists.
+     */
     private void validateStudentId(long id) {
         if(!studentDAO.exists(id)) {
             throw new ResourceNotFound("student " + id);

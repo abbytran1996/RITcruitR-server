@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.job_posting;
 
 
+import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
 
@@ -13,6 +14,7 @@ import java.util.Set;
  * @since 4/17/17.
  */
 @Entity
+@Table(name="job_posting")
 public class JobPosting {
     public enum Status{
         OPEN(0),
@@ -32,32 +34,38 @@ public class JobPosting {
 
     private long id;
 
-    //Status Enum Below
+    // Status Enum above
     private int status;
 
     private String positionTitle;
 
     private String description;
 
-    private Set<Skill> importantSkills;
+    private Set<String> locations;
 
-    private Set<Skill> nicetohaveSkills;
+    private Set<Skill> requiredSkills;
 
-    private double nicetohaveSkillsWeight;
+    private Set<Skill> niceToHaveSkills;
+
+    private double niceToHaveSkillsWeight;
+
+    private double minGPA;
+
+    private boolean hasWorkExperience;
 
     private double matchThreshold;
 
-    private Recruiter recruiter;
-
-    private String location;
-
-    private long phaseTimeout;
+    private long duration;
 
     @Embedded
     @AttributeOverrides({ @AttributeOverride (name = "problemStatement", column = @Column(length = 1000))})
     private String problemStatement;
 
-    private String url;
+    private String video;
+
+    private Company company;
+
+    private Recruiter recruiter;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -97,33 +105,55 @@ public class JobPosting {
         this.description = description;
     }
 
+    @NotNull
+    @ElementCollection
+    public Set<String> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Set<String> locations) {
+        this.locations = locations;
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
-    public Set<Skill> getImportantSkills() {
-        return importantSkills;
+    public Set<Skill> getRequiredSkills() {
+        return requiredSkills;
     }
 
-    public void setImportantSkills(Set<Skill> importantSkills) {
-        this.importantSkills = importantSkills;
+    public void setRequiredSkills(Set<Skill> requiredSkills) {
+        this.requiredSkills = requiredSkills;
     }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
-    public Set<Skill> getNicetohaveSkills() {
-        return nicetohaveSkills;
+    public Set<Skill> getNiceToHaveSkills() {
+        return niceToHaveSkills;
     }
 
-    public void setNicetohaveSkills(Set<Skill> nicetohaveSkills) {
-        this.nicetohaveSkills = nicetohaveSkills;
+    public void setNiceToHaveSkills(Set<Skill> niceToHaveSkills) {
+        this.niceToHaveSkills = niceToHaveSkills;
     }
 
     @NotNull
-    public double getNicetohaveSkillsWeight() {
-        return nicetohaveSkillsWeight;
+    public double getNiceToHaveSkillsWeight() {
+        return niceToHaveSkillsWeight;
     }
 
-    public void setNicetohaveSkillsWeight(double nicetohaveSkillsWeight) {
-        this.nicetohaveSkillsWeight = nicetohaveSkillsWeight;
+    public void setNiceToHaveSkillsWeight(double niceToHaveSkillsWeight) {
+        this.niceToHaveSkillsWeight = niceToHaveSkillsWeight;
+    }
+
+    public double getMinGPA() { return minGPA; }
+
+    public void setMinGPA(double gpa) { this.minGPA = gpa; }
+
+    public boolean getHasWorkExperience() {
+        return hasWorkExperience;
+    }
+
+    public void setHasWorkExperience(boolean hasWorkExperience) {
+        this.hasWorkExperience = hasWorkExperience;
     }
 
     @NotNull
@@ -136,27 +166,12 @@ public class JobPosting {
     }
 
     @NotNull
-    @ManyToOne
-    public Recruiter getRecruiter(){return recruiter;}
-
-    public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
-
-    @NotNull
-    public String getLocation() {
-        return location;
+    public long getDuration() {
+        return duration;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    @NotNull
-    public long getPhaseTimeout() {
-        return phaseTimeout;
-    }
-
-    public void setPhaseTimeout(long phaseTimeout) {
-        this.phaseTimeout = phaseTimeout;
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     @NotNull
@@ -169,13 +184,29 @@ public class JobPosting {
     }
 
     @NotNull
-    public String getUrl() {
-        return url;
+    public String getVideo() {
+        return video;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setVideo(String video) {
+        this.video = video;
     }
+
+    @NotNull
+    @ManyToOne
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @NotNull
+    @ManyToOne
+    public Recruiter getRecruiter(){return recruiter;}
+
+    public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
 
     @Override
     public boolean equals(Object o) {
@@ -186,14 +217,14 @@ public class JobPosting {
 
         if (getId() != that.getId()) return false;
         if (!getPositionTitle().equals(that.getPositionTitle())) return false;
-        return getUrl().equals(that.getUrl());
+        return getVideo().equals(that.getVideo());
     }
 
     @Override
     public int hashCode() {
         int result = (int) (getId() ^ (getId() >>> 32));
         result = 31 * result + getPositionTitle().hashCode();
-        result = 31 * result + getUrl().hashCode();
+        result = 31 * result + getVideo().hashCode();
         return result;
     }
 }

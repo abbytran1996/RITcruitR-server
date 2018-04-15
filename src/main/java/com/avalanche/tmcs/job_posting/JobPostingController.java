@@ -1,11 +1,16 @@
 package com.avalanche.tmcs.job_posting;
 
+import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
+import com.avalanche.tmcs.recruiter.RecruiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -17,40 +22,150 @@ import java.util.List;
 public class JobPostingController {
 
     private JobPostingDAO jobPostingDAO;
+    private RecruiterRepository recruiterRepo;
+    private CompanyDAO companyDAO;
 
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, MatchingService matchingService){
+    public JobPostingController(JobPostingDAO jobPostingDAO, MatchingService matchingService, RecruiterRepository repo, CompanyDAO companyDAO){
         this.jobPostingDAO = jobPostingDAO;
         this.matchingService = matchingService;
+        this.recruiterRepo = repo;
+        this.companyDAO = companyDAO;
     }
 
+    // ================================================================================================================
+    // * GET JOB BY ID [GET]                                                                                          *
+    // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<JobPosting> getJobPosting(@PathVariable long id){
         return ResponseEntity.ok(jobPostingDAO.findOne(id));
     }
 
-    @RequestMapping(value = "/fulfilled/{id}", method = RequestMethod.POST)
-    public void fulfillJobPosting(@PathVariable long id){
-        JobPosting toFulfill = jobPostingDAO.findOne(id);
-        toFulfill.setStatus(JobPosting.Status.FULFILLED.toInt());
-        jobPostingDAO.save(toFulfill);
+    // ================================================================================================================
+    // * ADD NEW JOB [POST]                                                                                           *
+    // ================================================================================================================
+    @RequestMapping(value = "/{company_id}", method=RequestMethod.POST)
+    public ResponseEntity<JobPosting> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting){
+        Company company = companyDAO.findOne(company_id);
+        Recruiter recruiter = recruiterRepo.findOne(newJobPosting.getRecruiterId());
+
+        // Company or recruiter couldn't be found
+        if (company == null || recruiter == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            newJobPosting.setCompany(company);
+            newJobPosting.setRecruiter(recruiter);
+            JobPosting savedJobPosting = jobPostingDAO.save(newJobPosting.toJobPosting());
+            matchingService.registerJobPosting(savedJobPosting);
+
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(savedJobPosting.getId())
+                    .toUri();
+
+            return ResponseEntity.created(location).body(savedJobPosting);
+        }
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    // ================================================================================================================
+    // * UPDATE JOB [PUT]                                                                                             *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateJobPosting(@PathVariable long id, @RequestBody JobPosting updatedJobPosting) {
+        JobPosting jobPosting = jobPostingDAO.findOne(id);
+        jobPosting.setStatus(updatedJobPosting.getStatus());
+        jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
+        jobPosting.setDescription(updatedJobPosting.getDescription());
+        jobPosting.setLocations(updatedJobPosting.getLocations());
+        jobPosting.setNiceToHaveSkillsWeight(updatedJobPosting.getNiceToHaveSkillsWeight());
+        jobPosting.setMinGPA(updatedJobPosting.getMinGPA());
+        jobPosting.setHasWorkExperience(updatedJobPosting.getHasWorkExperience());
+        jobPosting.setMatchThreshold(updatedJobPosting.getMatchThreshold());
+        jobPosting.setDuration(updatedJobPosting.getDuration());
+        jobPosting.setProblemStatement(updatedJobPosting.getProblemStatement());
+        jobPosting.setVideo(updatedJobPosting.getVideo());
+        jobPostingDAO.save(jobPosting);
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * DELETE JOB [DELETE]                                                                                          *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
         toDelete.setStatus(JobPosting.Status.DELETED.toInt());
         jobPostingDAO.save(toDelete);
     }
 
-    @RequestMapping(value = "/create", method=RequestMethod.POST)
-    public void createJobPosting(@RequestBody JobPosting newJobPosting){
-        JobPosting newPosting = jobPostingDAO.save(newJobPosting);
-        matchingService.registerJobPosting(newPosting);
+    // ================================================================================================================
+    // * GET JOBS BY COMPANY [GET]                                                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/company/{company_id}", method=RequestMethod.GET)
+    public ResponseEntity<List<JobPosting>> getJobPostingsByCompany(@PathVariable long company_id){
+        Company companyWithID = new Company();
+        companyWithID.setId(company_id);
+
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompany(companyWithID);
+
+        return ResponseEntity.ok(jobPostings);
     }
 
+    // ================================================================================================================
+    // * GET OPEN JOBS BY COMPANY [GET]                                                                               *
+    // ================================================================================================================
+    @RequestMapping(value = "/company/{company_id}/open", method=RequestMethod.GET)
+    public ResponseEntity<List<JobPosting>> getOpenJobPostingsByCompany(@PathVariable long company_id){
+        Company companyWithID = new Company();
+        companyWithID.setId(company_id);
+
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
+                companyWithID,
+                JobPosting.Status.OPEN.toInt()
+        );
+
+        return ResponseEntity.ok(jobPostings);
+    }
+
+    // ================================================================================================================
+    // * GET FULFILLED JOBS BY COMPANY [GET]                                                                          *
+    // ================================================================================================================
+    @RequestMapping(value = "/company/{company_id}/fulfilled", method=RequestMethod.GET)
+    public ResponseEntity<List<JobPosting>> getFulfilledJobPostingsByCompany(@PathVariable long company_id){
+        Company companyWithID = new Company();
+        companyWithID.setId(company_id);
+
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
+                companyWithID,
+                JobPosting.Status.FULFILLED.toInt()
+        );
+
+        return ResponseEntity.ok(jobPostings);
+    }
+
+    // ================================================================================================================
+    // * GET DELETED JOBS BY COMPANY [GET]                                                                            *
+    // ================================================================================================================
+    @RequestMapping(value = "/company/{company_id}/deleted", method=RequestMethod.GET)
+    public ResponseEntity<List<JobPosting>> getDeletedJobPostingsByCompany(@PathVariable long company_id){
+        Company companyWithID = new Company();
+        companyWithID.setId(company_id);
+
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
+                companyWithID,
+                JobPosting.Status.DELETED.toInt()
+        );
+
+        return ResponseEntity.ok(jobPostings);
+    }
+
+    // ================================================================================================================
+    // * GET JOBS BY RECRUITER [GET]                                                                                  *
+    // ================================================================================================================
     @RequestMapping(value = "/recruiter/{id}", method=RequestMethod.GET)
     public ResponseEntity<List<JobPosting>> getJobPostingsByRecruiter(@PathVariable long id){
         Recruiter recruiterWithID = new Recruiter();
@@ -61,4 +176,13 @@ public class JobPostingController {
         return ResponseEntity.ok(jobPostings);
     }
 
+    // ================================================================================================================
+    // * FULFILL JOB [POST]                                                                                           *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/fulfill", method = RequestMethod.POST)
+    public void fulfillJobPosting(@PathVariable long id){
+        JobPosting toFulfill = jobPostingDAO.findOne(id);
+        toFulfill.setStatus(JobPosting.Status.FULFILLED.toInt());
+        jobPostingDAO.save(toFulfill);
+    }
 }
