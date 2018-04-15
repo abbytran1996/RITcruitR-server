@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Zane Grasso
@@ -27,25 +28,25 @@ public class Company {
 
     private long id;
 
-    private User user;
-
     private String companyName;
-    //TODO: make locations and presentations a list
-    private String location;
 
-    private Size size;
+    private Set<String> locations;
 
-    private String industry;
+    private int size;
+
+    private Set<String> industries;
 
     private Boolean approvalStatus;
-
-    private String emailSuffix;
 
     private String presentation;
 
     private String companyDescription;
 
     private String websiteURL;
+
+    private String emailSuffix;
+
+    private int userId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,29 +70,29 @@ public class Company {
     }
 
     @NotNull
-    public String getLocation(){return location;}
+    @ElementCollection
+    public Set<String> getLocations(){return locations;}
 
-    public void setLocation(String location) {this.location = location;}
-
-    @NotNull
-    public Size getSize(){return size;}
-
-    public void setSize(Size size) {this.size = size;}
+    public void setLocations(Set<String> locations) {this.locations = locations;}
 
     @NotNull
-    public String getIndustry() {return industry;}
+    @ElementCollection
+    public Set<String> getIndustries() {
+        return industries;
+    }
 
-    public void setIndustry(String industry) {this.industry = industry;}
+    public void setIndustries(Set<String> industries) {
+        this.industries = industries;
+    }
 
     @NotNull
+    public int getSize(){return size;}
+
+    public void setSize(int size) {this.size = size;}
+
     public Boolean getApprovalStatus(){return approvalStatus;}
 
     public void setApprovalStatus(Boolean approvalStatus) {this.approvalStatus = approvalStatus;}
-
-    @NotNull
-    public String getEmailSuffix(){return emailSuffix;}
-
-    public void setEmailSuffix(String emailSuffix) {this.emailSuffix = emailSuffix;}
 
     @NotNull
     public String getPresentation(){return presentation;}
@@ -108,7 +109,6 @@ public class Company {
     }
 
     @NotNull
-    @Lob
     public String getCompanyDescription(){
         return companyDescription;
     }
@@ -117,17 +117,21 @@ public class Company {
         this.companyDescription = companyDescription;
     }
 
-    @OneToOne
     @NotNull
-    public User getUser() {
-        return user;
+    public String getEmailSuffix() {
+        return emailSuffix;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmailSuffix(String emailSuffix) {
+        this.emailSuffix = emailSuffix;
     }
 
+    public int getUserId() {
+        return userId;
+    }
 
-
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }
 

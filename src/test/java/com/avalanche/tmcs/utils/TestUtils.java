@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Defines utility methods to do things like ensure that there's data in the database and login users
@@ -40,8 +41,10 @@ public class TestUtils {
         newStudent.setLastName("Student");
         newStudent.setGraduationDate(new Date(2099, 1, 1));
         newStudent.setPhoneNumber("5555555555");
-        newStudent.setPreferredCompanySize(Company.Size.DONT_CARE);
-        newStudent.setPreferredStates(new HashSet<>());
+        Set<Integer> sizes = new HashSet<Integer>();
+        sizes.add(0);
+        newStudent.setPreferredCompanySizes(sizes);
+        newStudent.setPreferredLocations(new HashSet<String>());
         newStudent.setSchool("RIT");
         newStudent.setSkills(new HashSet<>());
 

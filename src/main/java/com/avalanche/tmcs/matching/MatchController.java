@@ -37,7 +37,7 @@ public class MatchController {
         this.studentDAO = studentDAO;
     }
 
-    @RequestMapping(value = "/studentMatches/{id}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/studentMatches/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id) {
         Student student = studentDAO.findOne(id);
         if(student == null) {
@@ -136,7 +136,7 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
-    @RequestMapping(value="/{jobPostingID}/interviewPhaseMatches/Count", method= RequestMethod.GET)
+    @RequestMapping(value="/{jobPostingID}s/interviewPhaseMatches/Count", method= RequestMethod.GET)
     public ResponseEntity<Long> getInterviewPhaseMatchesCount(@PathVariable long jobPostingID){
         JobPosting job = jobDAO.findOne(jobPostingID);
         long matches = matchDAO.countAllByJobAndCurrentPhaseAndApplicationStatus(job,

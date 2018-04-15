@@ -1,8 +1,10 @@
 package com.avalanche.tmcs.recruiter;
 
+import com.avalanche.tmcs.company.Company;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,4 +16,5 @@ public interface RecruiterRepository extends CrudRepository<Recruiter, Long> {
 
     Recruiter findByEmail(String email);
 
+    List<Recruiter> findAllByCompany(Company company);
 }

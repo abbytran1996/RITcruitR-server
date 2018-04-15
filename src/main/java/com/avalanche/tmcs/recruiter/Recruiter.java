@@ -36,6 +36,8 @@ public class Recruiter {
 
     private String phoneNumber;
 
+    private String contactEmail;
+
     private User user;
 
     public Recruiter(){}
@@ -126,4 +128,11 @@ public class Recruiter {
         this.user = user;
     }
 
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
 }

@@ -1,16 +1,72 @@
 package com.avalanche.tmcs.company;
 
-import java.io.File;
+import java.util.Set;
 
 /**
  * @author Zane Grasso
  * @since 4/18/17
  */
-public class NewCompany {
+public class NewCompany extends Company {
     public String companyName;
-    public String companyLocations;
-    public String industry;
-    public String companySuffix;
-    public String companyDescription;
-    public File companyPresentation;
+    public Set<String> locations;
+    public Set<String> industries;
+    public int size;
+    public String websiteURL;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public Set<String> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Set<String> locations) {
+        this.locations = locations;
+    }
+
+    public Set<String> getIndustries() {
+        return industries;
+    }
+
+    public void setIndustries(Set<String> industries) {
+        this.industries = industries;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public String getWebsiteURL() {
+        return websiteURL;
+    }
+
+    public void setWebsiteURL(String websiteURL) {
+        this.websiteURL = websiteURL;
+    }
+
+    public Company toCompany() {
+        Company company = new Company();
+
+        company.setCompanyName(getCompanyName());
+        company.setLocations(getLocations());
+        company.setIndustries(getIndustries());
+        company.setSize(getSize());
+        company.setWebsiteURL(getWebsiteURL());
+        company.setApprovalStatus(false);
+        company.setPresentation("");
+        company.setCompanyDescription("");
+        company.setEmailSuffix("");
+        company.setUserId(-1);
+
+        return company;
+    }
 }
