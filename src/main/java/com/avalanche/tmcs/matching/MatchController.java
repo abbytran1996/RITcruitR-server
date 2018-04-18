@@ -69,7 +69,8 @@ public class MatchController {
             matches.addAll(rejectedMatches);
             matches.addAll(timedOutMatches);
         } else { // TODO: generate matches
-
+            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.NEW);
         }
 
         return ResponseEntity.ok(matches);
