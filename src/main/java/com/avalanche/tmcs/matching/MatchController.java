@@ -58,16 +58,7 @@ public class MatchController {
             matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.INTERVIEW,
                     Match.ApplicationStatus.IN_PROGRESS);
         } else if (phase.equals("archived")) {
-            List<Match> acceptedMatches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.ACCEPTED);
-            List<Match> rejectedMatches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.REJECTED);
-            List<Match> timedOutMatches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.TIMED_OUT);
-
-            matches.addAll(acceptedMatches);
-            matches.addAll(rejectedMatches);
-            matches.addAll(timedOutMatches);
+            matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
         } else { // TODO: generate matches
             matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
                     Match.ApplicationStatus.NEW);
@@ -116,16 +107,7 @@ public class MatchController {
             matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.INTERVIEW,
                     Match.ApplicationStatus.ACCEPTED);
         } else if (phase.equals("archived")) {
-            List<Match> acceptedMatches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.ACCEPTED);
-            List<Match> rejectedMatches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.REJECTED);
-            List<Match> timedOutMatches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.TIMED_OUT);
-
-            matches.addAll(acceptedMatches);
-            matches.addAll(rejectedMatches);
-            matches.addAll(timedOutMatches);
+            matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
         } else { // show a list of "unmatched" matches
             matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
                     Match.ApplicationStatus.NEW);
