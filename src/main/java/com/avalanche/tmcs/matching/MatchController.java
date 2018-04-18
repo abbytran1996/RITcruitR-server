@@ -11,6 +11,7 @@ package com.avalanche.tmcs.matching;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
 
+        import java.util.ArrayList;
         import java.util.List;
 
 /**
@@ -38,12 +39,39 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/studentMatches/{id}", method = RequestMethod.GET)
-    public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id) {
+    public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
         Student student = studentDAO.findOne(id);
-        if(student == null) {
+
+        if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        List<Match> matches =  matchDAO.findAllByStudent(student);
+
+        List<Match> matches = new ArrayList<>();
+
+        if (phase.equals("problem")) {
+            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT,
+                    Match.ApplicationStatus.IN_PROGRESS);
+        } else if (phase.equals("presentation")) {
+            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
+                    Match.ApplicationStatus.IN_PROGRESS);
+        } else if (phase.equals("final")) {
+            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.INTERVIEW,
+                    Match.ApplicationStatus.IN_PROGRESS);
+        } else if (phase.equals("archived")) {
+            List<Match> acceptedMatches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.ACCEPTED);
+            List<Match> rejectedMatches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.REJECTED);
+            List<Match> timedOutMatches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.TIMED_OUT);
+
+            matches.addAll(acceptedMatches);
+            matches.addAll(rejectedMatches);
+            matches.addAll(timedOutMatches);
+        } else { // TODO: generate matches
+
+        }
+
         return ResponseEntity.ok(matches);
     }
 
@@ -65,6 +93,44 @@ public class MatchController {
         match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/posting/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Match>> getRecruiterMatches(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
+        JobPosting job = jobDAO.findOne(id);
+
+        if (job == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Match> matches = new ArrayList<>();
+
+        if (phase.equals("problem")) {
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+                    Match.ApplicationStatus.IN_PROGRESS);
+        } else if (phase.equals("presentation")) {
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
+                    Match.ApplicationStatus.IN_PROGRESS);
+        } else if (phase.equals("final")) {
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.INTERVIEW,
+                    Match.ApplicationStatus.ACCEPTED);
+        } else if (phase.equals("archived")) {
+            List<Match> acceptedMatches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.ACCEPTED);
+            List<Match> rejectedMatches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.REJECTED);
+            List<Match> timedOutMatches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.TIMED_OUT);
+
+            matches.addAll(acceptedMatches);
+            matches.addAll(rejectedMatches);
+            matches.addAll(timedOutMatches);
+        } else { // show a list of "unmatched" matches
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.NEW);
+        }
+
+        return ResponseEntity.ok(matches);
     }
 
     @RequestMapping(value = "/posting/{id}/probphase", method=RequestMethod.GET)
