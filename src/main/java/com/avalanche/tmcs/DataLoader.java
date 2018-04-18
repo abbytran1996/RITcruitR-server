@@ -16,6 +16,10 @@ import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
 import com.github.javafaker.Faker;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
 import java.net.URISyntaxException;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -31,7 +36,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Gives the database its initial data
@@ -83,10 +87,36 @@ public class DataLoader implements ApplicationRunner {
 
         if(addTestData) {
             try {
-                performAdditionOfTestData();
-            } catch (URISyntaxException e) {
+//                performAdditionOfTestData();
+                String skillFilePath = new File("skills.json").getAbsolutePath();
+                loadSkills(skillFilePath);
+            } catch (IOException e) {
                 LOG.warn("You're bad at typing", e);
             }
+        }
+    }
+
+    private void loadSkills (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            Iterable<Skill> iterableSkillsInDb = skillDAO.findAll();
+            List<Skill> skillsInDb = new ArrayList<>();
+            iterableSkillsInDb.forEach(skillsInDb::add);
+            List<Skill> skillsToAdd = new ArrayList<>();
+
+            for (Object skillObject : arr) {
+                JSONObject skill = (JSONObject) skillObject;
+                Skill newSkill = new Skill((String) skill.get("name"));
+                //do not add skill to the database if it is already there
+                if (!skillsInDb.contains(newSkill)) {
+                    skillsToAdd.add(newSkill);
+                }
+            }
+            Iterable<Skill> savedSkills = skillDAO.save(skillsToAdd);
+        } catch (ParseException e) {
+            LOG.warn(e.getMessage());
         }
     }
 
