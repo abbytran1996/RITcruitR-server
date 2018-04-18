@@ -28,16 +28,21 @@ public class MatchController {
     private StudentDAO studentDAO;
     private UserService userService;
     private SecurityService securityServices;
+    private MatchingService matchingService;
 
     @Autowired
-    public MatchController(MatchDAO matchDAO, JobPostingDAO jobDAO, StudentDAO studentDAO, UserService userService, SecurityService securityService) {
+    public MatchController(MatchDAO matchDAO, JobPostingDAO jobDAO, StudentDAO studentDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.matchDAO = matchDAO;
         this.userService = userService;
         this.securityServices = securityService;
         this.jobDAO = jobDAO;
         this.studentDAO = studentDAO;
+        this.matchingService = matchingService;
     }
 
+    // ================================================================================================================
+    // * GET STUDENT MATCHES [GET]                                                                                       *
+    // ================================================================================================================
     @RequestMapping(value = "/studentMatches/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
         Student student = studentDAO.findOne(id);
@@ -46,7 +51,7 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Match> matches = new ArrayList<>();
+        List<Match> matches;
 
         if (phase.equals("problem")) {
             matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT,
@@ -59,7 +64,9 @@ public class MatchController {
                     Match.ApplicationStatus.IN_PROGRESS);
         } else if (phase.equals("archived")) {
             matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
-        } else { // TODO: generate matches
+        } else {
+            matchingService.registerStudent(student);
+
             matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
                     Match.ApplicationStatus.NEW);
         }
@@ -87,6 +94,9 @@ public class MatchController {
         return ResponseEntity.ok().build();
     }
 
+    // ================================================================================================================
+    // * GET RECRUITER MATCHES [GET]                                                                                       *
+    // ================================================================================================================
     @RequestMapping(value = "/posting/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<Match>> getRecruiterMatches(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
         JobPosting job = jobDAO.findOne(id);
@@ -95,7 +105,7 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Match> matches = new ArrayList<>();
+        List<Match> matches;
 
         if (phase.equals("problem")) {
             matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
