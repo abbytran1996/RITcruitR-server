@@ -2,6 +2,7 @@ package com.avalanche.tmcs.job_posting;
 
 
 import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
 
@@ -66,6 +67,8 @@ public class JobPosting {
     private Company company;
 
     private Recruiter recruiter;
+
+    private Set<PresentationLink> presentationLinks;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -207,6 +210,15 @@ public class JobPosting {
     public Recruiter getRecruiter(){return recruiter;}
 
     public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
+
+    @ElementCollection
+    public Set<PresentationLink> getPresentationLinks() {
+        return presentationLinks;
+    }
+
+    public void setPresentationLinks(Set<PresentationLink> presentationLinks) {
+        this.presentationLinks = presentationLinks;
+    }
 
     @Override
     public boolean equals(Object o) {

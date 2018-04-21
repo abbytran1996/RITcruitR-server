@@ -43,6 +43,7 @@ public class NewJobPosting extends JobPosting {
         job.setVideo(getVideo());
         job.setCompany(getCompany());
         job.setRecruiter(getRecruiter());
+        job.setPresentationLinks(getPresentationLinks());
 
         return job;
     }

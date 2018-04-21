@@ -88,6 +88,7 @@ public class JobPostingController {
         jobPosting.setDuration(updatedJobPosting.getDuration());
         jobPosting.setProblemStatement(updatedJobPosting.getProblemStatement());
         jobPosting.setVideo(updatedJobPosting.getVideo());
+        jobPosting.setPresentationLinks(updatedJobPosting.getPresentationLinks());
         jobPostingDAO.save(jobPosting);
         return ResponseEntity.ok().build();
     }

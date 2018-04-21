@@ -1,12 +1,9 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.*;
+import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.exceptions.ResourceNotFound;
-import com.avalanche.tmcs.matching.Match;
-import com.avalanche.tmcs.matching.MatchDAO;
-import com.avalanche.tmcs.matching.MatchingService;
-import com.avalanche.tmcs.matching.SkillDAO;
-import com.avalanche.tmcs.matching.Skill;
+import com.avalanche.tmcs.matching.*;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -41,7 +38,7 @@ public class StudentsController {
     private static final Logger LOG = LoggerFactory.getLogger(StudentsController.class);
 
     private StudentDAO studentDAO;
-
+    private PresentationLinkDAO presentationLinkDAO;
     private SkillDAO skillDAO;
     private MatchDAO matchDAO;
 
@@ -52,8 +49,9 @@ public class StudentsController {
     private MatchingService matchingService;
 
     @Autowired
-    public StudentsController(StudentDAO studentDAO, SkillDAO skillDAO, MatchDAO matchDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
+    public StudentsController(StudentDAO studentDAO, PresentationLinkDAO presentationLinkDAO, SkillDAO skillDAO, MatchDAO matchDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.studentDAO = studentDAO;
+        this.presentationLinkDAO = presentationLinkDAO;
         this.skillDAO = skillDAO;
         this.matchDAO = matchDAO;
         this.userService = userService;
@@ -135,55 +133,64 @@ public class StudentsController {
         student.setPreferredIndustries(updatedStudent.getPreferredIndustries());
         student.setPreferredCompanySizes(updatedStudent.getPreferredCompanySizes());
         studentDAO.save(student);
+
         return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
-    // * UPDATE STUDENT EDUCATION DETAILS [PUT] - **NOT WORKING**                                                     *
+    // * GET STUDENT PRESENTATION LINKS [GET]                                                                         *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/education", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateEducation(@PathVariable long id, @RequestBody StudentEducation studentEducation) {
-        validateStudentId(id);
+    @RequestMapping(value = "/{id}/links", method = RequestMethod.GET)
+    public Set<PresentationLink> getStudentPresentationLinks(@PathVariable long id){
+        return studentDAO.findOne(id).getPresentationLinks();
+    }
+
+    // ================================================================================================================
+    // * ADD STUDENT PRESENTATION LINK [POST]                                                                         *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/links", method = RequestMethod.POST)
+    public ResponseEntity<PresentationLink> addStudentPresentationLink(@PathVariable long id, @RequestBody PresentationLink presentationLink) {
+        PresentationLink newLink = presentationLinkDAO.save(presentationLink);
         Student student = studentDAO.findOne(id);
-        student.setSchool(studentEducation.getSchool());
-        student.setMajor(studentEducation.getMajor());
-        student.setGpa(studentEducation.getGpa());
-        student.setGraduationDate(studentEducation.getGraduationDate());
+
+        Set<PresentationLink> studentLinks = student.getPresentationLinks();
+        studentLinks.add(newLink);
+        student.setPresentationLinks(studentLinks);
         studentDAO.save(student);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newLink.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(newLink);
+    }
+
+    // ================================================================================================================
+    // * UPDATE STUDENT PRESENTATION LINK [PUT]                                                                       *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateStudentPresentationLink(@PathVariable long id, @PathVariable long linkId, @RequestBody PresentationLink presentationLink) {
+        presentationLink.setId(linkId);
+        presentationLinkDAO.save(presentationLink);
+
         return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
-    // * ADD STUDENT WORK EXPERIENCE [POST] - **NOT WORKING**                                                         *
+    // * DELETE STUDENT PRESENTATION LINK [DELETE]                                                                    *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/work-experience", method = RequestMethod.POST)
-    public ResponseEntity<?> addWorkExperience(@PathVariable long id, @RequestBody NewStudent studentWorkExperience) {
-        validateStudentId(id);
+    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteStudentPresentationLink(@PathVariable long id, @PathVariable long linkId) {
+        PresentationLink findLink = presentationLinkDAO.findOne(linkId);
         Student student = studentDAO.findOne(id);
-        //TODO: set work experience after methods have been added
-        //set company
-        //set jobTitle
-        //set startDate
-        //set endDate
-        //set description
-        studentDAO.save(student);
-        return ResponseEntity.ok().build();
-    }
 
-    // ================================================================================================================
-    // * DELETE STUDENT WORK EXPERIENCE [DELETE] - **NOT WORKING**                                                    *
-    // ================================================================================================================
-    @RequestMapping(value = "/{id}/work-experience", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteWorkExperience(@PathVariable long id, @RequestBody NewStudent studentWorkExperience) {
-        validateStudentId(id);
-        Student student = studentDAO.findOne(id);
-        //TODO: delete work experience after methods have been added
-        //delete company
-        //delete jobTitle
-        //delete startDate
-        //delete endDate
-        //delete description
+        Set<PresentationLink> links = student.getPresentationLinks();
+        links.remove(findLink);
         studentDAO.save(student);
+        presentationLinkDAO.delete(linkId);
+
         return ResponseEntity.ok().build();
     }
 

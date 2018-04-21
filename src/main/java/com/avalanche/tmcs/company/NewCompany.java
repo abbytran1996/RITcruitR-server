@@ -66,6 +66,7 @@ public class NewCompany extends Company {
         company.setCompanyDescription("");
         company.setEmailSuffix("");
         company.setUserId(-1);
+        company.setPresentationLinks(getPresentationLinks());
 
         return company;
     }
