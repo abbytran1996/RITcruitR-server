@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URL;
 import java.sql.Date;
+import java.util.Set;
 
 /**
  * Represents a match between a student and a job posting
@@ -66,6 +67,8 @@ public class Match {
     private String studentProblemResponse;
 
     private String studentPresentationLink;
+
+    private Set<PresentationLink> studentPresentationLinks;
 
     private boolean viewedSinceLastUpdate = false;
 
@@ -146,6 +149,15 @@ public class Match {
 
     public void setStudentPresentationLink(final String studentPresentationLink) {
         this.studentPresentationLink = studentPresentationLink;
+    }
+
+    @ElementCollection
+    public Set<PresentationLink> getStudentPresentationLinks() {
+        return studentPresentationLinks;
+    }
+
+    public void setStudentPresentationLinks(Set<PresentationLink> studentPresentationLinks) {
+        this.studentPresentationLinks = studentPresentationLinks;
     }
 
     public boolean getViewedSinceLastUpdate(){

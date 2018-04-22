@@ -12,6 +12,7 @@ package com.avalanche.tmcs.matching;
         import org.springframework.web.bind.annotation.*;
 
         import java.util.List;
+        import java.util.Set;
 
 /**
  * Allows you to easily interact with matches
@@ -226,6 +227,25 @@ public class MatchController {
         }
 
         match.setStudentPresentationLink(link);
+        match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+        match.setViewedSinceLastUpdate(false);
+        match.setLastUpdatedTimeToNow();
+        matchDAO.save(match);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * SET STUDENT PRESENTATION PHASE [POST]                                                                        *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/presentation", method = RequestMethod.POST)
+    public ResponseEntity<?> setStudentPresentationPhase(@PathVariable long id, @RequestBody Set<PresentationLink> presentationLinks) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        match.setStudentPresentationLinks(presentationLinks);
         match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
         match.setViewedSinceLastUpdate(false);
         match.setLastUpdatedTimeToNow();
