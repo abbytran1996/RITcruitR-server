@@ -46,31 +46,32 @@ public class MatchController {
     @RequestMapping(value = "/studentMatches/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
         Student student = studentDAO.findOne(id);
-
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
 
         List<Match> matches;
-
-        if (phase.equals("problem")) {
-            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT,
-                    Match.ApplicationStatus.IN_PROGRESS);
-        } else if (phase.equals("presentation")) {
-            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
-                    Match.ApplicationStatus.IN_PROGRESS);
-        } else if (phase.equals("final")) {
-            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.INTERVIEW,
-                    Match.ApplicationStatus.IN_PROGRESS);
-        } else if (phase.equals("archived")) {
-            matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
-        } else {
-            matchingService.registerStudent(student);
-
-            matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(student, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.NEW);
+        switch(phase) {
+            case "problem":
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT, Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "presentation":
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER, Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "final":
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.INTERVIEW, Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "archived":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
+                break;
+            default:
+                matchingService.registerStudent(student);
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.NONE, Match.ApplicationStatus.NEW);
         }
-
         return ResponseEntity.ok(matches);
     }
 
