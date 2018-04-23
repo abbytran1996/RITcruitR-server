@@ -89,7 +89,7 @@ public class MatchController {
         // TODO: increment stage to next
         // increment NONE to PROBLEM
         if (match.getCurrentPhase() == Match.CurrentPhase.NONE) {
-            
+
         } else {
 
         }
@@ -112,6 +112,7 @@ public class MatchController {
         }
 
         match.setCurrentPhase(Match.CurrentPhase.NONE);
+        match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
 
         match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
