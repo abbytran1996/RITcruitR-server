@@ -11,6 +11,7 @@ package com.avalanche.tmcs.matching;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
 
+        import java.util.ArrayList;
         import java.util.List;
 
 /**
@@ -27,23 +28,50 @@ public class MatchController {
     private StudentDAO studentDAO;
     private UserService userService;
     private SecurityService securityServices;
+    private MatchingService matchingService;
 
     @Autowired
-    public MatchController(MatchDAO matchDAO, JobPostingDAO jobDAO, StudentDAO studentDAO, UserService userService, SecurityService securityService) {
+    public MatchController(MatchDAO matchDAO, JobPostingDAO jobDAO, StudentDAO studentDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.matchDAO = matchDAO;
         this.userService = userService;
         this.securityServices = securityService;
         this.jobDAO = jobDAO;
         this.studentDAO = studentDAO;
+        this.matchingService = matchingService;
     }
 
+    // ================================================================================================================
+    // * GET STUDENT MATCHES [GET]                                                                                       *
+    // ================================================================================================================
     @RequestMapping(value = "/studentMatches/{id}", method = RequestMethod.GET)
-    public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id) {
+    public ResponseEntity<List<Match>> getMatchesForStudent(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
         Student student = studentDAO.findOne(id);
-        if(student == null) {
+        if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        List<Match> matches =  matchDAO.findAllByStudent(student);
+
+        List<Match> matches;
+        switch(phase) {
+            case "problem":
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT, Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "presentation":
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER, Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "final":
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.INTERVIEW, Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "archived":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
+                break;
+            default:
+                matchingService.registerStudent(student);
+                matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
+                        student, Match.CurrentPhase.NONE, Match.ApplicationStatus.NEW);
+        }
         return ResponseEntity.ok(matches);
     }
 
@@ -65,6 +93,38 @@ public class MatchController {
         match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
         return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * GET RECRUITER MATCHES [GET]                                                                                       *
+    // ================================================================================================================
+    @RequestMapping(value = "/posting/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Match>> getRecruiterMatches(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
+        JobPosting job = jobDAO.findOne(id);
+
+        if (job == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Match> matches;
+
+        if (phase.equals("problem")) {
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+                    Match.ApplicationStatus.IN_PROGRESS);
+        } else if (phase.equals("presentation")) {
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
+                    Match.ApplicationStatus.IN_PROGRESS);
+        } else if (phase.equals("final")) {
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.INTERVIEW,
+                    Match.ApplicationStatus.ACCEPTED);
+        } else if (phase.equals("archived")) {
+            matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
+        } else { // show a list of "unmatched" matches
+            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
+                    Match.ApplicationStatus.NEW);
+        }
+
+        return ResponseEntity.ok(matches);
     }
 
     @RequestMapping(value = "/posting/{id}/probphase", method=RequestMethod.GET)
