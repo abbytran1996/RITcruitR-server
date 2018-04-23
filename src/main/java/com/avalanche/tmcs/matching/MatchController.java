@@ -89,7 +89,7 @@ public class MatchController {
         // TODO: increment stage to next
         // increment NONE to PROBLEM
         if (match.getCurrentPhase() == Match.CurrentPhase.NONE) {
-
+            
         } else {
 
         }
@@ -132,7 +132,7 @@ public class MatchController {
 
         // checks if the match isn't in the final stage
         if (match.getCurrentPhase() == Match.CurrentPhase.INTERVIEW) {
-            // TODO: return 300
+            return ResponseEntity.status(300).build();
         }
 
         match.setCurrentPhase(Match.CurrentPhase.ARCHIVED);
@@ -156,10 +156,10 @@ public class MatchController {
 
         // checks if the match isn't archived
         if (match.getCurrentPhase() == Match.CurrentPhase.ARCHIVED) {
-
+            return ResponseEntity.status(300).build();
         }
 
-        // TODO: delete the match
+        matchDAO.delete(id);
 
         return ResponseEntity.ok().build();
     }
