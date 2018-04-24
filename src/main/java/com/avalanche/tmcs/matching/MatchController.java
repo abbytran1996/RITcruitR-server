@@ -150,7 +150,7 @@ public class MatchController {
         }
 
         // checks if the match isn't in the final stage
-        if (match.getCurrentPhase() == Match.CurrentPhase.FINAL) {
+        if (match.getCurrentPhase() != Match.CurrentPhase.FINAL) {
             return ResponseEntity.status(300).build();
         }
 
@@ -174,7 +174,7 @@ public class MatchController {
         }
 
         // checks if the match isn't archived
-        if (match.getCurrentPhase() == Match.CurrentPhase.ARCHIVED) {
+        if (match.getCurrentPhase() != Match.CurrentPhase.ARCHIVED) {
             return ResponseEntity.status(300).build();
         }
 
