@@ -60,9 +60,13 @@ public class MatchController {
                 matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
                         student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER, Match.ApplicationStatus.IN_PROGRESS);
                 break;
-            case "final":
+            case "interview":
                 matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
                         student, Match.CurrentPhase.INTERVIEW, Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "final":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(
+                        student, Match.CurrentPhase.FINAL);
                 break;
             case "archived":
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
@@ -72,11 +76,12 @@ public class MatchController {
                 matches = matchDAO.findAllByStudentAndCurrentPhaseAndApplicationStatus(
                         student, Match.CurrentPhase.NONE, Match.ApplicationStatus.NEW);
         }
+
         return ResponseEntity.ok(matches);
     }
 
     // ================================================================================================================
-    // * APPROVAL FOR STUDENTS [PATCH]                                                                                *
+    // * MATCH APPROVAL [PATCH]                                                                                *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/approve", method = RequestMethod.PATCH)
     public ResponseEntity<?> approveMatch(@PathVariable long id) {
@@ -86,12 +91,31 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        // TODO: increment stage to next
-        // increment NONE to PROBLEM
-        if (match.getCurrentPhase() == Match.CurrentPhase.NONE) {
-
-        } else {
-
+        switch (match.getCurrentPhase()) {
+            case NONE:
+                match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+                match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case PROBLEM_WAITING_FOR_STUDENT:
+                match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+                break;
+            case PROBLEM_WAITING_FOR_RECRUITER:
+                match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
+                break;
+            case PRESENTATION_WAITING_FOR_STUDENT:
+                match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+                break;
+            case PRESENTATION_WAITING_FOR_RECRUITER:
+                match.setCurrentPhase(Match.CurrentPhase.INTERVIEW);
+                break;
+            case INTERVIEW:
+                match.setCurrentPhase(Match.CurrentPhase.FINAL);
+                match.setApplicationStatus(Match.ApplicationStatus.ACCEPTED);
+                break;
+            case FINAL:
+                break;
+            default:
+                break;
         }
 
         match.setLastUpdatedTimeToNow();
@@ -101,7 +125,7 @@ public class MatchController {
     }
 
     // ================================================================================================================
-    // * DECLINE FOR STUDENTS [PATCH]                                                                                 *
+    // * MATCH DECLINATION [PATCH]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/decline", method = RequestMethod.PATCH)
     public ResponseEntity<?> declineMatch(@PathVariable long id) {
@@ -121,7 +145,7 @@ public class MatchController {
     }
 
     // ================================================================================================================
-    // * ARCHIVE FOR STUDENTS [PATCH]                                                                                 *
+    // * MATCH ARCHIVAL [PATCH]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/archive", method = RequestMethod.PATCH)
     public ResponseEntity<?> archiveMatch(@PathVariable long id) {
@@ -132,7 +156,7 @@ public class MatchController {
         }
 
         // checks if the match isn't in the final stage
-        if (match.getCurrentPhase() == Match.CurrentPhase.INTERVIEW) {
+        if (match.getCurrentPhase() == Match.CurrentPhase.FINAL) {
             return ResponseEntity.status(300).build();
         }
 
@@ -145,7 +169,7 @@ public class MatchController {
     }
 
     // ================================================================================================================
-    // * DELETE FOR STUDENTS [PATCH]                                                                                  *
+    // * MATCH DELETION [PATCH]                                                                                  *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.PATCH)
     public ResponseEntity<?> deleteMatch(@PathVariable long id) {
@@ -177,21 +201,28 @@ public class MatchController {
         }
 
         List<Match> matches;
-
-        if (phase.equals("problem")) {
-            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
-                    Match.ApplicationStatus.IN_PROGRESS);
-        } else if (phase.equals("presentation")) {
-            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
-                    Match.ApplicationStatus.IN_PROGRESS);
-        } else if (phase.equals("final")) {
-            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.INTERVIEW,
-                    Match.ApplicationStatus.ACCEPTED);
-        } else if (phase.equals("archived")) {
-            matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
-        } else { // show a list of "unmatched" matches
-            matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
-                    Match.ApplicationStatus.NEW);
+        switch(phase) {
+            case "problem":
+                matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER,
+                        Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "presentation":
+                matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER,
+                        Match.ApplicationStatus.IN_PROGRESS);
+                break;
+            case "interview":
+                matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.INTERVIEW,
+                        Match.ApplicationStatus.ACCEPTED);
+                break;
+            case "final":
+                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
+                break;
+            case "archived":
+                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
+                break;
+            default:
+                matches = matchDAO.findAllByJobAndCurrentPhaseAndApplicationStatus(job, Match.CurrentPhase.NONE,
+                        Match.ApplicationStatus.NEW);
         }
 
         return ResponseEntity.ok(matches);

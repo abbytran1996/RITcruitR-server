@@ -46,7 +46,8 @@ public class Match {
         PRESENTATION_WAITING_FOR_STUDENT,
         PRESENTATION_WAITING_FOR_RECRUITER,
         INTERVIEW,
-        ARCHIVED
+        ARCHIVED,
+        FINAL
     }
 
     private long id;
