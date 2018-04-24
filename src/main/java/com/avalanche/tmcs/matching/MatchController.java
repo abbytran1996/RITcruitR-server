@@ -108,9 +108,8 @@ public class MatchController {
                 match.setApplicationStatus(Match.ApplicationStatus.ACCEPTED);
                 break;
             case FINAL:
-                break;
             default:
-                break;
+                return ResponseEntity.status(300).build();
         }
 
         match.setLastUpdatedTimeToNow();
