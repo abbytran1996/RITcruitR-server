@@ -2,6 +2,7 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
+import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterRepository;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Maxwell Hadley
@@ -185,5 +187,35 @@ public class JobPostingController {
         JobPosting toFulfill = jobPostingDAO.findOne(id);
         toFulfill.setStatus(JobPosting.Status.FULFILLED.toInt());
         jobPostingDAO.save(toFulfill);
+    }
+
+    // ================================================================================================================
+    // * ADD REQUIRED SKILLS TO JOB [POST]                                                                            *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/requiredskills", method = RequestMethod.POST)
+    public ResponseEntity<JobPosting> updateRequiredSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
+        JobPosting posting = jobPostingDAO.findOne(id);
+        if(posting == null) {
+            return ResponseEntity.notFound().build();
+        }
+        posting.setRequiredSkills(skills);
+        jobPostingDAO.save(posting);
+        matchingService.registerJobPosting(posting);
+        return ResponseEntity.ok(posting);
+    }
+
+    // ================================================================================================================
+    // * ADD NICE TO HAVE SKILLS TO JOB [POST]                                                                        *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/nicetohaveskills", method = RequestMethod.POST)
+    public ResponseEntity<JobPosting> updateNiceToHaveSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
+        JobPosting posting = jobPostingDAO.findOne(id);
+        if(posting == null) {
+            return ResponseEntity.notFound().build();
+        }
+        posting.setNiceToHaveSkills(skills);
+        jobPostingDAO.save(posting);
+        matchingService.registerJobPosting(posting);
+        return ResponseEntity.ok(posting);
     }
 }

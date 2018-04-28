@@ -203,7 +203,7 @@ public class StudentsController {
     }
 
     // ================================================================================================================
-    // * ADD STUDENT SKILLS [POST] - **NOT WORKING**                                                                  *
+    // * ADD STUDENT SKILLS [POST]                                                               *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/skills", method = RequestMethod.POST)
     public ResponseEntity<Student> updateSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
