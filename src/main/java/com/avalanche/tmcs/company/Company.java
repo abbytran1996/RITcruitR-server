@@ -1,13 +1,9 @@
 package com.avalanche.tmcs.company;
 
-import com.avalanche.tmcs.auth.User;
-import com.avalanche.tmcs.job_posting.JobPosting;
+import com.avalanche.tmcs.matching.PresentationLink;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,6 +43,8 @@ public class Company {
     private String emailSuffix;
 
     private int userId;
+
+    private Set<PresentationLink> presentationLinks;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -132,6 +130,15 @@ public class Company {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @ElementCollection
+    public Set<PresentationLink> getPresentationLinks() {
+        return presentationLinks;
+    }
+
+    public void setPresentationLinks(Set<PresentationLink> presentationLinks) {
+        this.presentationLinks = presentationLinks;
     }
 }
 

@@ -1,6 +1,8 @@
 package com.avalanche.tmcs.company;
 
 import com.avalanche.tmcs.auth.*;
+import com.avalanche.tmcs.matching.PresentationLink;
+import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.NewRecruiter;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.recruiter.RecruiterController;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Set;
+
 /**
  * @author Zane Grasso
  * @since 4/18/17
@@ -22,15 +26,17 @@ import java.net.URI;
     @RequestMapping("/company")
 public class CompanyController {
     private CompanyDAO companyDAO;
+    private PresentationLinkDAO presentationLinkDAO;
     private RecruiterRepository recruiterRepo;
     private UserService userService;
     private SecurityService securityService;
 
     @Autowired
-    public CompanyController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, SecurityService securityService){
+    public CompanyController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO, SecurityService securityService){
         this.recruiterRepo = repo;
         this.userService = userService;
         this.companyDAO = companyDAO;
+        this.presentationLinkDAO = presentationLinkDAO;
         this.securityService = securityService;
     }
 
@@ -72,49 +78,73 @@ public class CompanyController {
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateCompany(@PathVariable long id, @RequestBody Company updateCompany){
-        updateCompany.setId(id);
-        companyDAO.save(updateCompany);
-
-        return ResponseEntity.ok().build();
-    }
-
-    // ================================================================================================================
-    // * ADD COMPANY VIDEO [POST] - **NOT WORKING**                                                                   *
-    // ================================================================================================================
-    @RequestMapping(value = "/{id}/videos", method = RequestMethod.POST)
-    public ResponseEntity<?> addCompanyVideo(@PathVariable long id, @RequestBody Company updateCompany){
         Company company = companyDAO.findOne(id);
-        company.setPresentation(updateCompany.getPresentation());
+        company.setCompanyName(updateCompany.getCompanyName());
+        company.setLocations(updateCompany.getLocations());
+        company.setSize(updateCompany.getSize());
+        company.setIndustries(updateCompany.getIndustries());
+        company.setApprovalStatus(updateCompany.getApprovalStatus());
+        company.setCompanyDescription(updateCompany.getCompanyDescription());
+        company.setWebsiteURL(updateCompany.getWebsiteURL());
         companyDAO.save(company);
+
         return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
-    // * DELETE COMPANY VIDEO [DELETE] - **NOT WORKING**                                                              *
+    // * GET COMPANY PRESENTATION LINKS [GET]                                                                         *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/videos/{videoid}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCompanyVideo(@PathVariable long id, @PathVariable long videoid) {
-            //TODO: implement deletes
+    @RequestMapping(value = "/{id}/links", method = RequestMethod.GET)
+    public Set<PresentationLink> getCompanyPresentationLinks(@PathVariable long id){
+        return companyDAO.findOne(id).getPresentationLinks();
+    }
+
+    // ================================================================================================================
+    // * ADD COMPANY PRESENTATION LINK [POST]                                                                         *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/links", method = RequestMethod.POST)
+    public ResponseEntity<PresentationLink> addCompanyPresentationLink(@PathVariable long id, @RequestBody PresentationLink presentationLink) {
+        PresentationLink newLink = presentationLinkDAO.save(presentationLink);
+        Company company = companyDAO.findOne(id);
+
+        Set<PresentationLink> companyLinks = company.getPresentationLinks();
+        companyLinks.add(newLink);
+        company.setPresentationLinks(companyLinks);
+        companyDAO.save(company);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newLink.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(newLink);
+    }
+
+    // ================================================================================================================
+    // * UPDATE COMPANY PRESENTATION LINK [PUT]                                                                       *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCompanyPresentationLink(@PathVariable long id, @PathVariable long linkId, @RequestBody PresentationLink presentationLink) {
+        presentationLink.setId(linkId);
+        presentationLinkDAO.save(presentationLink);
+
         return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
-    // * ADD COMPANY LOCATION [POST] - **NOT WORKING**                                                                *
+    // * DELETE COMPANY PRESENTATION LINK [DELETE]                                                                    *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/locations", method = RequestMethod.POST)
-    public ResponseEntity<?> addCompanyLocations(@PathVariable long id, @RequestBody Company updateCompany) {
-            Company company = companyDAO.findOne(id);
-            company.setLocations(updateCompany.getLocations());
-            companyDAO.save(company);
-            return ResponseEntity.ok().build();
-    }
+    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompanyPresentationLink(@PathVariable long id, @PathVariable long linkId) {
+        PresentationLink findLink = presentationLinkDAO.findOne(linkId);
+        Company company = companyDAO.findOne(id);
 
-    // ================================================================================================================
-    // * DELETE COMPANY LOCATION [DELETE] - **NOT WORKING**                                                           *
-    // ================================================================================================================
-    @RequestMapping(value = "/{id}/locations/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCompanyLocation(@PathVariable long id, @PathVariable long locationid) {
-        //TODO: implement deletes
+        Set<PresentationLink> links = company.getPresentationLinks();
+        links.remove(findLink);
+        companyDAO.save(company);
+        presentationLinkDAO.delete(linkId);
+
         return ResponseEntity.ok().build();
     }
 
