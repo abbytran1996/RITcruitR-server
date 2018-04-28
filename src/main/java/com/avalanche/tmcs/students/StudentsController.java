@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import com.sun.org.apache.regexp.internal.RE;
+import org.apache.catalina.connector.Response;
 import org.apache.tomcat.jni.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,8 +142,15 @@ public class StudentsController {
     // * GET STUDENT PRESENTATION LINKS [GET]                                                                         *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/links", method = RequestMethod.GET)
-    public Set<PresentationLink> getStudentPresentationLinks(@PathVariable long id){
-        return studentDAO.findOne(id).getPresentationLinks();
+    public ResponseEntity<?> getStudentPresentationLinks(@PathVariable long id){
+        Student student = studentDAO.findOne(id);
+
+        if (student != null) {
+            return ResponseEntity.ok(student.getPresentationLinks());
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // ================================================================================================================
