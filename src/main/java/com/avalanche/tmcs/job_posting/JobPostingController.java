@@ -61,6 +61,14 @@ public class JobPostingController {
             newJobPosting.setCompany(company);
             newJobPosting.setRecruiter(recruiter);
             JobPosting savedJobPosting = jobPostingDAO.save(newJobPosting.toJobPosting());
+
+            // Create presentation links
+            for (JobPresentationLink link : newJobPosting.getPresentationLinks()) {
+                link.setJob(savedJobPosting);
+            }
+            savedJobPosting.setPresentationLinks(newJobPosting.getPresentationLinks());
+            jobPostingDAO.save(savedJobPosting);
+
             matchingService.registerJobPosting(savedJobPosting);
 
             URI location = ServletUriComponentsBuilder

@@ -223,12 +223,15 @@ public class MatchController {
     // * SET STUDENT PRESENTATION PHASE [POST]                                                                        *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/presentation", method = RequestMethod.POST)
-    public ResponseEntity<?> setStudentPresentationPhase(@PathVariable long id, @RequestBody Set<PresentationLink> presentationLinks) {
+    public ResponseEntity<?> setStudentPresentationPhase(@PathVariable long id, @RequestBody Set<MatchPresentationLink> presentationLinks) {
         Match match = matchDAO.findOne(id);
         if(match == null) {
             return ResponseEntity.notFound().build();
         }
 
+        for (MatchPresentationLink link : presentationLinks) {
+            link.setMatch(match);
+        }
         match.setStudentPresentationLinks(presentationLinks);
         match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
         match.setViewedSinceLastUpdate(false);

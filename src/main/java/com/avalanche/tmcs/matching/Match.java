@@ -70,7 +70,7 @@ public class Match {
 
     private String studentPresentationLink;
 
-    private Set<PresentationLink> studentPresentationLinks;
+    private Set<MatchPresentationLink> studentPresentationLinks;
 
     private boolean viewedSinceLastUpdate = false;
 
@@ -153,12 +153,12 @@ public class Match {
         this.studentPresentationLink = studentPresentationLink;
     }
 
-    @ElementCollection
-    public Set<PresentationLink> getStudentPresentationLinks() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
+    public Set<MatchPresentationLink> getStudentPresentationLinks() {
         return studentPresentationLinks;
     }
 
-    public void setStudentPresentationLinks(Set<PresentationLink> studentPresentationLinks) {
+    public void setStudentPresentationLinks(Set<MatchPresentationLink> studentPresentationLinks) {
         this.studentPresentationLinks = studentPresentationLinks;
     }
 
