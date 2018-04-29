@@ -94,6 +94,7 @@ public class MatchController {
                 break;
             case PROBLEM_WAITING_FOR_STUDENT:
                 match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+                match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
                 break;
             case PROBLEM_WAITING_FOR_RECRUITER:
                 match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
@@ -130,7 +131,7 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        match.setCurrentPhase(Match.CurrentPhase.NONE);
+        match.setCurrentPhase(Match.CurrentPhase.ARCHIVED);
         match.setApplicationStatus(Match.ApplicationStatus.REJECTED);
 
         match.setLastUpdatedTimeToNow();
@@ -220,6 +221,26 @@ public class MatchController {
     }
 
     // ================================================================================================================
+    // * SET STUDENT PROBLEM PHASE [POST]                                                                             *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/problem", method = RequestMethod.POST)
+    public ResponseEntity<?> setStudentProblemPhase(@PathVariable long id, @RequestBody String problemStatement) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        match.setStudentProblemResponse(problemStatement);
+        match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+        match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
+        match.setViewedSinceLastUpdate(false);
+        match.setLastUpdatedTimeToNow();
+        matchDAO.save(match);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
     // * SET STUDENT PRESENTATION PHASE [POST]                                                                        *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/presentation", method = RequestMethod.POST)
@@ -234,6 +255,7 @@ public class MatchController {
         }
         match.setStudentPresentationLinks(presentationLinks);
         match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+        match.setApplicationStatus(Match.ApplicationStatus.IN_PROGRESS);
         match.setViewedSinceLastUpdate(false);
         match.setLastUpdatedTimeToNow();
         matchDAO.save(match);
