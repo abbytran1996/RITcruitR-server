@@ -78,7 +78,7 @@ public class Match {
 
     private ApplicationStatus applicationStatus = ApplicationStatus.NEW;
 
-    private CurrentPhase currentPhase = CurrentPhase.NONE;
+    private CurrentPhase currentPhase = CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
 
     public Match() {
         setLastUpdatedTimeToNow();
@@ -136,7 +136,8 @@ public class Match {
         }
     }
 
-    @Column(length = 1000)
+    @Lob
+    @Column(length = 100000)
     public String getStudentProblemResponse() {
         return studentProblemResponse;
     }

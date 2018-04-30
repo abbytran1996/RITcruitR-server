@@ -58,8 +58,6 @@ public class JobPosting {
 
     private long duration;
 
-    @Embedded
-    @AttributeOverrides({ @AttributeOverride (name = "problemStatement", column = @Column(length = 1000))})
     private String problemStatement;
 
     private String video;
@@ -178,6 +176,8 @@ public class JobPosting {
     }
 
     @NotNull
+    @Lob
+    @Column( length = 100000 )
     public String getProblemStatement() {
         return problemStatement;
     }
