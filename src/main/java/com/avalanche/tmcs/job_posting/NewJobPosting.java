@@ -1,5 +1,7 @@
 package com.avalanche.tmcs.job_posting;
 
+import java.util.Set;
+
 /**
  * Created by Ryan Hochmuth on 4/10/2018.
  * <p>
@@ -7,7 +9,7 @@ package com.avalanche.tmcs.job_posting;
 public class NewJobPosting extends JobPosting {
     private long recruiterId;
 
-    private String newVideo;
+    private Set<JobPresentationLink> presentationLinks;
 
     public long getRecruiterId() {
         return recruiterId;
@@ -17,12 +19,12 @@ public class NewJobPosting extends JobPosting {
         this.recruiterId = recruiterId;
     }
 
-    public String getNewVideo() {
-        return newVideo;
+    public Set<JobPresentationLink> getPresentationLinks() {
+        return presentationLinks;
     }
 
-    public void setNewVideo(String newVideo) {
-        this.newVideo = newVideo;
+    public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
+        this.presentationLinks = presentationLinks;
     }
 
     public JobPosting toJobPosting() {
@@ -40,10 +42,9 @@ public class NewJobPosting extends JobPosting {
         job.setMatchThreshold(getMatchThreshold());
         job.setDuration(getDuration());
         job.setProblemStatement(getProblemStatement());
-        job.setVideo(getVideo());
+        job.setVideo("");
         job.setCompany(getCompany());
         job.setRecruiter(getRecruiter());
-        job.setPresentationLinks(getPresentationLinks());
 
         return job;
     }
