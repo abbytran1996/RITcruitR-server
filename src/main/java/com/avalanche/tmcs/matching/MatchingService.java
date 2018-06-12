@@ -163,7 +163,7 @@ public class MatchingService {
             match.setJob(posting);
             match.setStudent(student);
             match.setApplicationStatus(Match.ApplicationStatus.NEW);
-            match.setCurrentPhase(Match.CurrentPhase.NONE);
+            match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
             matches.add(match);
         }
         return matches;
