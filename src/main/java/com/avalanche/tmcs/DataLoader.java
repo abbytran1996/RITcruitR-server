@@ -10,9 +10,11 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
+import com.avalanche.tmcs.job_posting.NewJobPosting;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
+import com.avalanche.tmcs.students.NewStudent;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
 import com.github.javafaker.Faker;
@@ -31,11 +33,13 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Gives the database its initial data
@@ -88,10 +92,172 @@ public class DataLoader implements ApplicationRunner {
         if(addTestData) {
             try {
                 String skillFilePath = new File("skills.json").getAbsolutePath();
+                String jobFilePath = new File("jobs.json").getAbsolutePath();
+                String studentsFilePath = new File("students.json").getAbsolutePath();
                 loadSkills(skillFilePath);
+                loadJobs(jobFilePath);
+//                loadStudents(studentsFilePath);
             } catch (IOException e) {
                 LOG.warn("You're bad at typing", e);
             }
+        }
+    }
+    
+    private void loadStudents(String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            for (Object studentObject : arr) {
+                JSONObject student = (JSONObject) studentObject;
+                NewStudent newStudent = new NewStudent();
+                newStudent.setContactEmail((String) student.get("contactEmail"));
+                newStudent.setEmail((String) student.get("email"));
+                newStudent.setFirstName((String) student.get("firstName"));
+                newStudent.setGpa((long) student.get("gpa"));
+                Date graduationDate = Date.valueOf((String) student.get("graduationDate"));
+                newStudent.setGraduationDate(graduationDate);
+                newStudent.setLastName((String) student.get("lastName"));
+                newStudent.setMajor((String) student.get("major"));
+                newStudent.setPhoneNumber((String) student.get("phoneNumber"));
+                ArrayList<Integer> companySizesList = (ArrayList<Integer>) student.get("preferredCompanySizes");
+                Set<Integer> preferredCompanySizes = new HashSet<Integer>();
+                for (Integer size : companySizesList) {
+                	preferredCompanySizes.add(size);
+                }
+                newStudent.setPreferredCompanySizes(preferredCompanySizes);
+                ArrayList<String> industriesList = (ArrayList<String>) student.get("preferredIndustries");
+                Set<String> preferredIndustries = new HashSet<String>();
+                for (String industry : industriesList) {
+                	preferredIndustries.add(industry);
+                }
+                newStudent.setPreferredIndustries(preferredIndustries);
+                ArrayList<String> locationsList = (ArrayList<String>) student.get("preferredLocations");
+                Set<String> preferredLocations = new HashSet<String>();
+                for (String location : locationsList) {
+                	preferredLocations.add(location);
+                }
+                newStudent.setPreferredLocations(preferredLocations);
+                newStudent.setSchool((String) student.get("school"));
+                Set<Skill> studentSkills = new HashSet<Skill>();
+                JSONArray skillsList = (JSONArray) student.get("skills");
+                for (Object skillObject : skillsList) {
+                	JSONObject skill = (JSONObject) skillObject;
+                	String skillName = (String) skill.get("name");
+                	Skill newSkill = new Skill(skillName);
+                	studentSkills.add(newSkill);
+                }
+                newStudent.setSkills(studentSkills);
+                newStudent.setWebsite((String) student.get("website"));
+                //a new student needs to be linked to a user object which needs an email and password to be in the system
+//                User newUser = new User(email, password);
+//                newStudent.setUser(newUser);
+                Student savedStudent = studentDAO.save(newStudent.toStudent());
+                matchingService.registerStudent(savedStudent);
+            }
+        } catch (ParseException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+    
+    private void loadJobs(String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            for (Object jobObject : arr) {
+                JSONObject job = (JSONObject) jobObject;
+                String jobTitle = (String) job.get("positionTitle");
+                String description = (String) job.get("description");
+                //locations
+                ArrayList<String> locationsList = (ArrayList<String>) job.get("locations");
+                Set<String> locations = new HashSet<String>();
+                for (String loc : locationsList) {
+                	locations.add(loc);
+                }
+                
+                //required skills
+                Set<Skill> requiredSkills = new HashSet<Skill>();
+                JSONArray requiredSkillsList = (JSONArray) job.get("requiredSkills");
+                for (Object requiredSkillObject : requiredSkillsList) {
+                	JSONObject requiredSkill = (JSONObject) requiredSkillObject;
+                	String skillName = (String) requiredSkill.get("name");
+                	Skill newSkill = new Skill(skillName);
+                	requiredSkills.add(newSkill);
+                }
+                
+                //nice to have skills
+                Set<Skill> niceToHaveSkills = new HashSet<Skill>();
+                JSONArray niceToHaveSkillsList = (JSONArray) job.get("niceToHaveSkills");
+                for (Object niceToHaveSkillObject : niceToHaveSkillsList) {
+                	JSONObject niceToHaveSkill = (JSONObject) niceToHaveSkillObject;
+                	String skillName = (String) niceToHaveSkill.get("name");
+                	Skill newSkill = new Skill(skillName);
+                	niceToHaveSkills.add(newSkill);
+                }
+                
+                //nice to have skills weight ?
+                long minGPA = (long) job.get("minGPA");
+                //has work experience
+                //match threshold
+                long duration = (long) job.get("duration");
+                String problemStatement = (String) job.get("problemStatement");
+                String video = (String) job.get("video");
+                
+                //company
+                JSONObject companyObject = (JSONObject) job.get("company");
+                String companyName = (String) companyObject.get("companyName");
+                Company company = companyDAO.findByCompanyName(companyName);
+                
+                //recruiter
+                JSONObject recruiterObject = (JSONObject) job.get("recruiter");
+                Recruiter recruiter = recruiterDAO.findByEmail((String) recruiterObject.get("email"));
+                
+                NewJobPosting newJob = new NewJobPosting();
+                newJob.setCompany(company);
+                newJob.setRecruiter(recruiter);
+                newJob.setDescription(description);
+                newJob.setDuration(duration);
+//                newJob.setHasWorkExperience(hasWorkExperience);
+                newJob.setLocations(locations);
+//                newJob.setMatchThreshold(matchThreshold);
+                newJob.setMinGPA(minGPA);
+//                newJob.setNewVideo(newVideo);
+                newJob.setNiceToHaveSkills(niceToHaveSkills);
+//                newJob.setNiceToHaveSkillsWeight(niceToHaveSkillsWeight);
+                newJob.setPositionTitle(jobTitle);
+                newJob.setProblemStatement(problemStatement);
+                newJob.setRecruiter(recruiter);
+                newJob.setRequiredSkills(requiredSkills);
+                newJob.setStatus(0);
+                newJob.setVideo(video);
+                System.out.println(newJob.toString());
+//                JobPosting savedJobPosting = jobPostingDAO.save(newJob.toJobPosting());
+//                matchingService.registerJobPosting(savedJobPosting);
+            }
+//            Iterable<JobPosting> savedJobs = jobPostingDAO.save(jobsToAdd);
+        } catch (ParseException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+    
+    private void loadLocations (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+//            Iterable<String> iterableLocationsInDb = locationDAO.findAll();
+//            List<String> locationsInDb = new ArrayList<>();
+//            iterableLocationsInDb.forEach(locationsInDb::add);
+//            List<String> locationsToAdd = new ArrayList<>();
+
+            for (Object locationObject : arr) {
+                JSONObject location = (JSONObject) locationObject;
+                String newLocation = (String) location.get("name");
+                //save newLocation to db
+            }
+        } catch (ParseException e) {
+            LOG.warn(e.getMessage());
         }
     }
 

@@ -1,0 +1,93 @@
+[
+{
+    "id": 1,
+    "status": 0,
+    "positionTitle": "Front End Developer",
+    "description": "Work in an innovative and challenging agile environment at the enterprise level. Use the latest Javascript frameworks to help people stalk their \"friends\" by looking at pictures of them on their profile.",
+    "locations": [
+        "New York City, NY",
+        "San Francisco, CA"
+    ],
+    "requiredSkills": [
+        {
+            "id": 73,
+            "name": "Javascript"
+        },
+        {
+            "id": 72,
+            "name": "CSS3"
+        },
+        {
+            "id": 71,
+            "name": "HTML5"
+        }
+    ],
+    "niceToHaveSkills": [
+        {
+            "id": 74,
+            "name": "React"
+        }
+    ],
+    "niceToHaveSkillsWeight": 0.003,
+    "minGPA": 0,
+    "hasWorkExperience": false,
+    "matchThreshold": 0.005,
+    "duration": 4,
+    "problemStatement": "We work on a lot of web-based applications, and our front end developers often make decisions on which Javascript frameworks to use. We typically use ReactJS alongside many others. We also have well organized style guides and design templates for our front end developers to follow and have good visibility into what they're making.  Attention to detail and an emphasis on UX is important with the front end work that we do so the many people that use our products are happy to do so.",
+    "video": "",
+    "company": {
+        "id": 6,
+        "companyName": "Facebook",
+        "locations": [
+            "New York City, NY",
+            "San Francisco, CA"
+        ],
+        "size": 5,
+        "industries": [
+            "Social Network"
+        ],
+        "approvalStatus": false,
+        "presentation": "",
+        "companyDescription": "",
+        "websiteURL": "www.facebook.com",
+        "emailSuffix": "",
+        "userId": -1
+    },
+    "recruiter": {
+        "id": 6,
+        "firstName": "Person",
+        "lastName": "McPersonson",
+        "email": "recruiter@facebook.com",
+        "company": {
+            "id": 6,
+            "companyName": "Facebook",
+            "locations": [
+                "New York City, NY",
+                "San Francisco, CA"
+            ],
+            "size": 5,
+            "industries": [
+                "Social Network"
+            ],
+            "approvalStatus": false,
+            "presentation": "",
+            "companyDescription": "",
+            "websiteURL": "www.facebook.com",
+            "emailSuffix": "",
+            "userId": -1
+        },
+        "phoneNumber": "1234567890",
+        "contactEmail": "contact@facebook.com",
+        "user": {
+            "id": 9,
+            "username": "recruiter@facebook.com",
+            "roles": [
+                {
+                    "id": 2,
+                    "name": "recruiter"
+                }
+            ]
+        }
+    }
+}
+]
