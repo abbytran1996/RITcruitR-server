@@ -11,6 +11,8 @@ import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.job_posting.NewJobPosting;
+import com.avalanche.tmcs.matching.Location;
+import com.avalanche.tmcs.matching.LocationDAO;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
@@ -56,12 +58,13 @@ public class DataLoader implements ApplicationRunner {
     private JobPostingDAO jobPostingDAO;
     private StudentDAO studentDAO;
     private SkillDAO skillDAO;
+    private LocationDAO locationDAO;
     private UserService userService;
     private MatchingService matchingService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterRepository recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
-                      UserService userService, SkillDAO skillDAO, MatchingService matchingService,
+                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MatchingService matchingService,
                       @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
         this.recruiterDAO = recruiterDAO;
@@ -71,6 +74,7 @@ public class DataLoader implements ApplicationRunner {
         this.addTestData = addTestData;
         this.userService = userService;
         this.skillDAO = skillDAO;
+        this.locationDAO = locationDAO;
         this.matchingService = matchingService;
     }
 
@@ -94,9 +98,12 @@ public class DataLoader implements ApplicationRunner {
                 String skillFilePath = new File("skills.json").getAbsolutePath();
                 String jobFilePath = new File("jobs.json").getAbsolutePath();
                 String studentsFilePath = new File("students.json").getAbsolutePath();
-                loadSkills(skillFilePath);
-                loadJobs(jobFilePath);
+                String locationsFilePath = new File("locations.json").getAbsolutePath();
+//                loadSkills(skillFilePath);
+//                loadJobs(jobFilePath);
 //                loadStudents(studentsFilePath);
+                loadLocations(locationsFilePath);
+                
             } catch (IOException e) {
                 LOG.warn("You're bad at typing", e);
             }
@@ -246,16 +253,28 @@ public class DataLoader implements ApplicationRunner {
             JSONParser jsonParser = new JSONParser();
             JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
 
-//            Iterable<String> iterableLocationsInDb = locationDAO.findAll();
-//            List<String> locationsInDb = new ArrayList<>();
-//            iterableLocationsInDb.forEach(locationsInDb::add);
-//            List<String> locationsToAdd = new ArrayList<>();
+            Iterable<Location> iterableLocationsInDb = locationDAO.findAll();
+            List<Location> locationsInDb = new ArrayList<>();
+            iterableLocationsInDb.forEach(locationsInDb::add);
+            List<Location> locationsToAdd = new ArrayList<>();
 
             for (Object locationObject : arr) {
                 JSONObject location = (JSONObject) locationObject;
-                String newLocation = (String) location.get("name");
+                String newLocationName = (String) location.get("name");
+                Location newLocation = new Location(newLocationName);
+                boolean isLocationInDb = false;
+                for (Location lid : locationsInDb) {
+                	if (lid.getName().equals(newLocation)) {
+                		isLocationInDb = true;
+                		break;
+                	}
+                }
                 //save newLocation to db
+                if (!isLocationInDb) {
+                    locationsToAdd.add(newLocation);
+                }
             }
+            Iterable<Location> savedLocations = locationDAO.save(locationsToAdd);
         } catch (ParseException e) {
             LOG.warn(e.getMessage());
         }
