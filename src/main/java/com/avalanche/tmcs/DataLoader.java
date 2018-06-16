@@ -8,7 +8,6 @@ import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
-import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
@@ -28,8 +27,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
-import java.net.URISyntaxException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +71,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
+        LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
             roleDAO.save(new Role("student"));
         }
@@ -83,47 +84,40 @@ public class DataLoader implements ApplicationRunner {
             roleDAO.save(new Role("admin"));
         }
 
-        LOG.info("Added Role definitions");
-
         if(addTestData) {
             try {
+                LOG.info("Adding test data...");
                 String skillFilePath = new File("skills.json").getAbsolutePath();
                 loadSkills(skillFilePath);
             } catch (IOException e) {
-                LOG.warn("You're bad at typing", e);
+                LOG.warn("IOException reached while trying to load the test data. Please check the filename for any typos.", e);
             }
         }
     }
 
     private void loadSkills (String fileName) throws IOException {
         try {
+            // populate list of skills to save with those already in the database
+            List<Skill> skillsToSave = new ArrayList<>();
+            skillDAO.findAll().forEach(skillsToSave::add);
+
+            // add in new skills from the json
             JSONParser jsonParser = new JSONParser();
             JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
-
-            Iterable<Skill> iterableSkillsInDb = skillDAO.findAll();
-            List<Skill> skillsInDb = new ArrayList<>();
-            iterableSkillsInDb.forEach(skillsInDb::add);
-            List<Skill> skillsToAdd = new ArrayList<>();
-
             for (Object skillObject : arr) {
                 JSONObject skill = (JSONObject) skillObject;
                 String newSkillName = (String) skill.get("name");
                 Skill newSkill = new Skill(newSkillName);
-                //do not add skill to the database if it is already there
-                boolean isSkillInDb = false;
-                for (Skill sid : skillsInDb) {
-                    if (sid.getName().equals(newSkillName)) {
-                        isSkillInDb = true;
-                        break;
-                    }
-                }
-                if (!isSkillInDb) {
-                    skillsToAdd.add(newSkill);
-                }
+
+                // ensure there aren't any duplicates
+                if(!skillsToSave.contains(newSkill))
+                    skillsToSave.add(newSkill);
             }
-            Iterable<Skill> savedSkills = skillDAO.save(skillsToAdd);
+
+            // update the existing skill list with the new master set
+            skillDAO.save(skillsToSave);
         } catch (ParseException e) {
-            LOG.warn(e.getMessage());
+            LOG.warn("Unable to loadSkills from fileName: " + fileName, e);
         }
     }
 
