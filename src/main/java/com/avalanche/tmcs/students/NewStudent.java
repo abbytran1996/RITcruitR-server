@@ -53,6 +53,7 @@ public class NewStudent extends Student {
         student.setGpa(0.0);
         student.setSkills(null);
         student.setUser(getUser());
+        student.setPresentationLinks(getPresentationLinks());
 
         return student;
     }

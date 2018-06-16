@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URL;
 import java.sql.Date;
+import java.util.Set;
 
 /**
  * Represents a match between a student and a job posting
@@ -45,7 +46,9 @@ public class Match {
         PROBLEM_WAITING_FOR_RECRUITER,
         PRESENTATION_WAITING_FOR_STUDENT,
         PRESENTATION_WAITING_FOR_RECRUITER,
-        INTERVIEW
+        INTERVIEW,
+        ARCHIVED,
+        FINAL
     }
 
     private long id;
@@ -67,13 +70,15 @@ public class Match {
 
     private String studentPresentationLink;
 
+    private Set<MatchPresentationLink> studentPresentationLinks;
+
     private boolean viewedSinceLastUpdate = false;
 
     private Date timeLastUpdated;
 
     private ApplicationStatus applicationStatus = ApplicationStatus.NEW;
 
-    private CurrentPhase currentPhase = CurrentPhase.NONE;
+    private CurrentPhase currentPhase = CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
 
     public Match() {
         setLastUpdatedTimeToNow();
@@ -131,7 +136,8 @@ public class Match {
         }
     }
 
-    @Column(length = 1000)
+    @Lob
+    @Column(length = 100000)
     public String getStudentProblemResponse() {
         return studentProblemResponse;
     }
@@ -146,6 +152,15 @@ public class Match {
 
     public void setStudentPresentationLink(final String studentPresentationLink) {
         this.studentPresentationLink = studentPresentationLink;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
+    public Set<MatchPresentationLink> getStudentPresentationLinks() {
+        return studentPresentationLinks;
+    }
+
+    public void setStudentPresentationLinks(Set<MatchPresentationLink> studentPresentationLinks) {
+        this.studentPresentationLinks = studentPresentationLinks;
     }
 
     public boolean getViewedSinceLastUpdate(){

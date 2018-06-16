@@ -46,8 +46,6 @@ public class Skill {
         if (!(o instanceof Skill)) return false;
 
         Skill skill = (Skill) o;
-
-        if (id != skill.id) return false;
         return name.equals(skill.name);
     }
 

@@ -4,6 +4,7 @@ package com.avalanche.tmcs.job_posting;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -57,8 +58,6 @@ public class JobPosting {
 
     private long duration;
 
-    @Embedded
-    @AttributeOverrides({ @AttributeOverride (name = "problemStatement", column = @Column(length = 1000))})
     private String problemStatement;
 
     private String video;
@@ -66,6 +65,8 @@ public class JobPosting {
     private Company company;
 
     private Recruiter recruiter;
+
+    private Set<JobPresentationLink> presentationLinks;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -175,6 +176,8 @@ public class JobPosting {
     }
 
     @NotNull
+    @Lob
+    @Column( length = 100000 )
     public String getProblemStatement() {
         return problemStatement;
     }
@@ -207,6 +210,15 @@ public class JobPosting {
     public Recruiter getRecruiter(){return recruiter;}
 
     public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "job")
+    public Set<JobPresentationLink> getPresentationLinks() {
+        return presentationLinks;
+    }
+
+    public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
+        this.presentationLinks = presentationLinks;
+    }
 
     @Override
     public boolean equals(Object o) {

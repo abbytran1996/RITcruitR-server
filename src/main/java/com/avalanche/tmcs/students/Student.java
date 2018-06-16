@@ -1,7 +1,7 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.User;
-import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
@@ -50,6 +50,8 @@ public class Student {
     private Set<String> preferredIndustries;
 
     private Set<Integer> preferredCompanySizes;
+
+    private Set<PresentationLink> presentationLinks;
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -187,6 +189,15 @@ public class Student {
 
     public void setPreferredCompanySizes(Set<Integer> preferredCompanySizes) {
         this.preferredCompanySizes = preferredCompanySizes;
+    }
+
+    @ElementCollection
+    public Set<PresentationLink> getPresentationLinks() {
+        return presentationLinks;
+    }
+
+    public void setPresentationLinks(Set<PresentationLink> presentationLinks) {
+        this.presentationLinks = presentationLinks;
     }
 
     @Override

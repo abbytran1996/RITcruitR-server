@@ -8,7 +8,6 @@ import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
-import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
@@ -16,6 +15,10 @@ import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
 import com.github.javafaker.Faker;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +27,15 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.net.URISyntaxException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Gives the database its initial data
@@ -67,6 +71,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
+        LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
             roleDAO.save(new Role("student"));
         }
@@ -79,89 +84,41 @@ public class DataLoader implements ApplicationRunner {
             roleDAO.save(new Role("admin"));
         }
 
-        LOG.info("Added Role definitions");
-
         if(addTestData) {
             try {
-                performAdditionOfTestData();
-            } catch (URISyntaxException e) {
-                LOG.warn("You're bad at typing", e);
+                LOG.info("Adding test data...");
+                String skillFilePath = new File("skills.json").getAbsolutePath();
+                loadSkills(skillFilePath);
+            } catch (IOException e) {
+                LOG.warn("IOException reached while trying to load the test data. Please check the filename for any typos.", e);
             }
         }
     }
 
-    private void performAdditionOfTestData() throws URISyntaxException {
-        Skill xd = skillDAO.findByName("Experience Design");
-        if(xd != null) {
-            LOG.warn("Already added test data, not adding it again");
-            return;
+    private void loadSkills (String fileName) throws IOException {
+        try {
+            // populate list of skills to save with those already in the database
+            List<Skill> skillsToSave = new ArrayList<>();
+            skillDAO.findAll().forEach(skillsToSave::add);
+
+            // add in new skills from the json
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+            for (Object skillObject : arr) {
+                JSONObject skill = (JSONObject) skillObject;
+                String newSkillName = (String) skill.get("name");
+                Skill newSkill = new Skill(newSkillName);
+
+                // ensure there aren't any duplicates
+                if(!skillsToSave.contains(newSkill))
+                    skillsToSave.add(newSkill);
+            }
+
+            // update the existing skill list with the new master set
+            skillDAO.save(skillsToSave);
+        } catch (ParseException e) {
+            LOG.warn("Unable to loadSkills from fileName: " + fileName, e);
         }
-
-        List<Skill> skills = new ArrayList<>();
-        // 0
-        skills.add(new Skill("Experience Design"));
-        skills.add(new Skill("Agile Development"));
-        skills.add(new Skill("Vision"));
-        skills.add(new Skill("Organization"));
-        skills.add(new Skill("Communication"));
-
-        // 5
-        skills.add(new Skill("Presentation Skills"));
-        skills.add(new Skill("Negotiation"));
-        skills.add(new Skill("Photoshop"));
-        skills.add(new Skill("Illustrator"));
-        skills.add(new Skill("Dreamweaver"));
-
-        // 10
-        skills.add(new Skill("Prototyping"));
-        skills.add(new Skill("Web technologies"));
-        skills.add(new Skill("HTML5"));
-        skills.add(new Skill("CSS3"));
-        skills.add(new Skill("Javascript"));
-
-        // 15
-        skills.add(new Skill("React"));
-        skills.add(new Skill("Human Computer Interaction"));
-        skills.add(new Skill("Web Frameworks"));
-        skills.add(new Skill("Responsive Design"));
-        skills.add(new Skill("CMS Solutions"));
-
-        // 20
-        skills.add(new Skill("Asynchronous processing"));
-        skills.add(new Skill("SCRUM"));
-        skills.add(new Skill("Single-Page Applications"));
-        skills.add(new Skill("Java"));
-        skills.add(new Skill("J2EE"));
-
-        // 25
-        skills.add(new Skill("Unix"));
-        skills.add(new Skill("Software Architexture"));
-        skills.add(new Skill("Big Data"));
-        skills.add(new Skill("SQL"));
-        skills.add(new Skill("NoSQL"));
-
-        // 30
-        skills.add(new Skill("JSON"));
-        skills.add(new Skill("Backbone.js"));
-        skills.add(new Skill("AngularJS"));
-        skills.add(new Skill("Ember.js"));
-        skills.add(new Skill("LESS"));
-
-        // 35
-        skills.add(new Skill("Sass"));
-        skills.add(new Skill("NodeJS"));
-        skills.add(new Skill("Express"));
-        skills.add(new Skill("Express"));
-        skills.add(new Skill("Handlebars"));
-
-        // 40
-        skills.add(new Skill("REST"));
-        skills.add(new Skill("Object Oriented Programming"));
-        skills.add(new Skill("Test-Driven Development"));
-        skills.add(new Skill("Selenium"));
-        Iterable<Skill> savedSkills = skillDAO.save(skills);
-        skills.clear();
-        savedSkills.forEach(skills::add);
     }
 
     private User newTestUser(Faker faker){
