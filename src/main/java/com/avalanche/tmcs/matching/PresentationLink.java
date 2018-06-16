@@ -45,4 +45,12 @@ public class PresentationLink {
     public void setLink(String link) {
         this.link = link;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (!(o instanceof PresentationLink)) return false;
+        PresentationLink pLink = (PresentationLink) o;
+        return this.link.equals(pLink.link) && this.title.equals(pLink.title);
+    }
 }
