@@ -18,9 +18,10 @@ import java.util.Set;
 @Table(name="job_posting")
 public class JobPosting {
     public enum Status{
-        OPEN(0),
-        FULFILLED(1),
-        DELETED(2);
+        ACTIVE(0),
+        INACTIVE(1),
+        ARCHIVED(2),
+        NEEDS_DETAILING(3);
 
         private int status;
 
