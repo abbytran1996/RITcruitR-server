@@ -5,16 +5,15 @@ import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.NewRecruiter;
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.recruiter.RecruiterController;
 import com.avalanche.tmcs.recruiter.RecruiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,8 +21,8 @@ import java.util.Set;
  * @since 4/18/17
  */
 
-    @RestController
-    @RequestMapping("/company")
+@RestController
+@RequestMapping("/company")
 public class CompanyController {
     private CompanyDAO companyDAO;
     private PresentationLinkDAO presentationLinkDAO;
@@ -55,6 +54,14 @@ public class CompanyController {
     @RequestMapping(value = "/company_name/{companyName}", method = RequestMethod.GET)
     public Company getCompanyByName(@PathVariable String companyName) {
         return companyDAO.findByCompanyName(companyName);
+    }
+
+    // ================================================================================================================
+    // * GET COMPANY BY APPROVAL STATUS [GET]                                                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/status/{status}", method = RequestMethod.GET)
+    public List<Company> getCompanyByStatus(@PathVariable boolean status) {
+        return companyDAO.findByApprovalStatus(status);
     }
 
     // ================================================================================================================
