@@ -51,7 +51,7 @@ public class CompanyController {
     // ================================================================================================================
     // * GET COMPANY BY NAME [GET]                                                                                    *
     // ================================================================================================================
-    @RequestMapping(value = "/company_name/{companyName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/byName/{companyName}", method = RequestMethod.GET)
     public Company getCompanyByName(@PathVariable String companyName) {
         return companyDAO.findByCompanyName(companyName);
     }
@@ -59,7 +59,7 @@ public class CompanyController {
     // ================================================================================================================
     // * GET COMPANY BY APPROVAL STATUS [GET]                                                                                    *
     // ================================================================================================================
-    @RequestMapping(value = "/status/{status}", method = RequestMethod.GET)
+    @RequestMapping(value = "/byStatus/{status}", method = RequestMethod.GET)
     public List<Company> getCompanyByStatus(@PathVariable boolean status) {
         return companyDAO.findByApprovalStatus(status);
     }
