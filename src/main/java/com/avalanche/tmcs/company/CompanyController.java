@@ -99,6 +99,17 @@ public class CompanyController {
     }
 
     // ================================================================================================================
+    // * APPROVE COMPANY [PATCH]                                                                                         *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/approve", method = RequestMethod.PATCH)
+    public ResponseEntity<?> approveCompany(@PathVariable long id){
+        Company company = companyDAO.findOne(id);
+        company.setApprovalStatus(true);
+        companyDAO.save(company);
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
     // * GET COMPANY PRESENTATION LINKS [GET]                                                                         *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/links", method = RequestMethod.GET)
