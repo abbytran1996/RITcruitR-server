@@ -264,7 +264,7 @@ public class DataLoader implements ApplicationRunner {
                 Location newLocation = new Location(newLocationName);
                 boolean isLocationInDb = false;
                 for (Location lid : locationsInDb) {
-                	if (lid.getName().equals(newLocation)) {
+                	if (lid.getName().equals(newLocation.getName())) {
                 		isLocationInDb = true;
                 		break;
                 	}
