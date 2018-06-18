@@ -99,8 +99,8 @@ public class DataLoader implements ApplicationRunner {
                 String jobFilePath = new File("jobs.json").getAbsolutePath();
                 String studentsFilePath = new File("students.json").getAbsolutePath();
                 String locationsFilePath = new File("locations.json").getAbsolutePath();
-//                loadSkills(skillFilePath);
-//                loadJobs(jobFilePath);
+                loadSkills(skillFilePath);
+                loadJobs(jobFilePath);
 //                loadStudents(studentsFilePath);
                 loadLocations(locationsFilePath);
                 
