@@ -13,7 +13,8 @@ public class Role {
     public enum RoleName {
         Student,
         Recruiter,
-        Administrator
+        Administrator,
+        PrimaryRecruiter
     }
 
     private Long id;

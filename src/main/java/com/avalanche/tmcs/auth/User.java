@@ -133,4 +133,8 @@ public class User {
         }
         roles.add(role);
     }
+    
+    public boolean removeRole(Role role) {
+    	return roles.remove(role);
+    }
 }
