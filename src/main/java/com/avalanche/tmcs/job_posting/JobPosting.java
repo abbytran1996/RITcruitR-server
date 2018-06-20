@@ -67,6 +67,8 @@ public class JobPosting {
     private Recruiter recruiter;
 
     private Set<JobPresentationLink> presentationLinks;
+    
+    private int portfolium_id = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -218,6 +220,18 @@ public class JobPosting {
 
     public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
         this.presentationLinks = presentationLinks;
+    }
+    
+    public int getPortfoliumId() {
+    	return this.portfolium_id;
+    }
+    
+    public void setPortfoliumId(int id) {
+    	this.portfolium_id = id;
+    }
+    
+    public boolean isPortfoliumJob() {
+    	return (this.portfolium_id != 0);
     }
 
     @Override

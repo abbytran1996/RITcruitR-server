@@ -45,6 +45,8 @@ public class Company {
     private int userId;
 
     private Set<PresentationLink> presentationLinks;
+    
+    private int portfolium_id;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -139,6 +141,18 @@ public class Company {
 
     public void setPresentationLinks(Set<PresentationLink> presentationLinks) {
         this.presentationLinks = presentationLinks;
+    }
+    
+    public int getPortfoliumId() {
+    	return this.portfolium_id;
+    }
+    
+    public void setPortfoliumId(int id) {
+    	this.portfolium_id = id;
+    }
+    
+    public boolean hasPortfoliumId() {
+    	return this.portfolium_id != 0;
     }
 }
 
