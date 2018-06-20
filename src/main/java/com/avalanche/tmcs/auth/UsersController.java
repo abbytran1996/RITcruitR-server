@@ -40,6 +40,12 @@ public class UsersController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<User> createNewUser(@RequestBody User user, @RequestParam String roleName) {
+    	if (Role.RoleName.valueOf(roleName) == Role.RoleName.Administrator) {
+    		String email = user.getUsername();
+    		if (!email.endsWith(".edu")) {
+    			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    		}
+    	}
         User savedUser = userService.save(user, Role.RoleName.valueOf(roleName));
 
         return ResponseEntity.ok(savedUser);
