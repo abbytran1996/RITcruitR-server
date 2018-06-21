@@ -20,7 +20,8 @@ public class JobPosting {
     public enum Status{
         OPEN(0),
         FULFILLED(1),
-        DELETED(2);
+        DELETED(2),
+        NEEDS_DETAILING(3);
 
         private int status;
 

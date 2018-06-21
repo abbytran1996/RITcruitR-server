@@ -80,6 +80,19 @@ public class JobPostingController {
             return ResponseEntity.created(location).body(savedJobPosting);
         }
     }
+    
+    public boolean addPortfoliumJob(long company_id, JobPosting jobPosting, int portfolium_id) {
+    	Company company = companyDAO.findOne(company_id);
+        if (company == null) {
+            return false;
+        } else {
+	    	jobPosting.setPortfoliumId(portfolium_id);
+	    	jobPosting.setStatus(JobPosting.Status.NEEDS_DETAILING.toInt());
+	    	jobPostingDAO.save(jobPosting);
+	    	matchingService.registerJobPosting(jobPosting);
+	    	return true;
+        }
+    }
 
     // ================================================================================================================
     // * UPDATE JOB [PUT]                                                                                             *
