@@ -4,7 +4,6 @@ package com.avalanche.tmcs.job_posting;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name="job_posting")
 public class JobPosting {
-    public enum Status{
+    public enum Status {
         ACTIVE(0),
         INACTIVE(1),
         ARCHIVED(2),

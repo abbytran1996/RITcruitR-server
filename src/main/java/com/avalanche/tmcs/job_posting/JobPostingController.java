@@ -109,7 +109,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
-        toDelete.setStatus(JobPosting.Status.DELETED.toInt());
+        toDelete.setStatus(JobPosting.Status.ARCHIVED.toInt());
         jobPostingDAO.save(toDelete);
     }
 
@@ -136,7 +136,7 @@ public class JobPostingController {
 
         List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
                 companyWithID,
-                JobPosting.Status.OPEN.toInt()
+                JobPosting.Status.ACTIVE.toInt()
         );
 
         return ResponseEntity.ok(jobPostings);
@@ -152,7 +152,7 @@ public class JobPostingController {
 
         List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
                 companyWithID,
-                JobPosting.Status.FULFILLED.toInt()
+                JobPosting.Status.INACTIVE.toInt()
         );
 
         return ResponseEntity.ok(jobPostings);
@@ -168,7 +168,7 @@ public class JobPostingController {
 
         List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
                 companyWithID,
-                JobPosting.Status.DELETED.toInt()
+                JobPosting.Status.ARCHIVED.toInt()
         );
 
         return ResponseEntity.ok(jobPostings);
@@ -193,7 +193,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}/fulfill", method = RequestMethod.POST)
     public void fulfillJobPosting(@PathVariable long id){
         JobPosting toFulfill = jobPostingDAO.findOne(id);
-        toFulfill.setStatus(JobPosting.Status.FULFILLED.toInt());
+        toFulfill.setStatus(JobPosting.Status.INACTIVE.toInt());
         jobPostingDAO.save(toFulfill);
     }
 
