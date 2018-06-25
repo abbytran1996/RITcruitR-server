@@ -43,7 +43,7 @@ public class Student {
 
     private String contactEmail;
 
-    private String website;
+    private String website; // TODO: Remove field
 
     private Set<String> preferredLocations;
 
@@ -52,6 +52,8 @@ public class Student {
     private Set<Integer> preferredCompanySizes;
 
     private Set<PresentationLink> presentationLinks;
+
+    private Set<ProblemStatement> problemStatements;
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -198,6 +200,15 @@ public class Student {
 
     public void setPresentationLinks(Set<PresentationLink> presentationLinks) {
         this.presentationLinks = presentationLinks;
+    }
+
+    @ElementCollection
+    public Set<ProblemStatement> getProblemStatements() {
+        return problemStatements;
+    }
+
+    public void setProblemStatements(Set<ProblemStatement> problemStatements) {
+        this.problemStatements = problemStatements;
     }
 
     @Override

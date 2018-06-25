@@ -40,6 +40,7 @@ public class StudentsController {
 
     private StudentDAO studentDAO;
     private PresentationLinkDAO presentationLinkDAO;
+    private ProblemStatementDAO problemStatementDAO;
     private SkillDAO skillDAO;
     private MatchDAO matchDAO;
 
@@ -50,9 +51,10 @@ public class StudentsController {
     private MatchingService matchingService;
 
     @Autowired
-    public StudentsController(StudentDAO studentDAO, PresentationLinkDAO presentationLinkDAO, SkillDAO skillDAO, MatchDAO matchDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
+    public StudentsController(StudentDAO studentDAO, PresentationLinkDAO presentationLinkDAO, ProblemStatementDAO problemStatementDAO, SkillDAO skillDAO, MatchDAO matchDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.studentDAO = studentDAO;
         this.presentationLinkDAO = presentationLinkDAO;
+        this.problemStatementDAO = problemStatementDAO;
         this.skillDAO = skillDAO;
         this.matchDAO = matchDAO;
         this.userService = userService;
@@ -156,7 +158,7 @@ public class StudentsController {
     // ================================================================================================================
     // * ADD STUDENT PRESENTATION LINK [POST]                                                                         *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/links", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/link", method = RequestMethod.POST)
     public ResponseEntity<PresentationLink> addStudentPresentationLink(@PathVariable long id, @RequestBody PresentationLink presentationLink) {
         PresentationLink newLink = presentationLinkDAO.save(presentationLink);
         Student student = studentDAO.findOne(id);
@@ -178,7 +180,7 @@ public class StudentsController {
     // ================================================================================================================
     // * UPDATE STUDENT PRESENTATION LINK [PUT]                                                                       *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/link/{linkId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudentPresentationLink(@PathVariable long id, @PathVariable long linkId, @RequestBody PresentationLink presentationLink) {
         presentationLink.setId(linkId);
         presentationLinkDAO.save(presentationLink);
@@ -189,7 +191,7 @@ public class StudentsController {
     // ================================================================================================================
     // * DELETE STUDENT PRESENTATION LINK [DELETE]                                                                    *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/link/{linkId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteStudentPresentationLink(@PathVariable long id, @PathVariable long linkId) {
         PresentationLink findLink = presentationLinkDAO.findOne(linkId);
         Student student = studentDAO.findOne(id);
@@ -203,7 +205,71 @@ public class StudentsController {
     }
 
     // ================================================================================================================
-    // * ADD STUDENT SKILLS [POST]                                                               *
+    // * GET STUDENT PROBLEM STATEMENTS [GET]                                                                         *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/problemstatements", method = RequestMethod.GET)
+    public ResponseEntity<?> getStudentProblemStatements(@PathVariable long id){
+        Student student = studentDAO.findOne(id);
+
+        if (student != null) {
+            return ResponseEntity.ok(student.getProblemStatements());
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // ================================================================================================================
+    // * ADD STUDENT PROBLEM STATEMENT [POST]                                                                         *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/problemstatement", method = RequestMethod.POST)
+    public ResponseEntity<ProblemStatement> addStudentProblemStatement(@PathVariable long id, @RequestBody ProblemStatement problemStatement) {
+        ProblemStatement newStatement = problemStatementDAO.save(problemStatement);
+        Student student = studentDAO.findOne(id);
+
+        Set<ProblemStatement> studentStatements = student.getProblemStatements();
+        studentStatements.add(newStatement);
+        student.setProblemStatements(studentStatements);
+        studentDAO.save(student);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newStatement.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(newStatement);
+    }
+
+    // ================================================================================================================
+    // * UPDATE STUDENT PROBLEM STATEMENT [PUT]                                                                       *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/problemstatement/{statementId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateStudentProblemStatement(@PathVariable long id, @PathVariable long statementId, @RequestBody ProblemStatement problemStatement) {
+        problemStatement.setId(statementId);
+        problemStatementDAO.save(problemStatement);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * DELETE STUDENT PROBLEM STATEMENT [DELETE]                                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/problemstatement/{statementId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteStudentProblemStatement(@PathVariable long id, @PathVariable long statementId) {
+        ProblemStatement findStatement = problemStatementDAO.findOne(statementId);
+        Student student = studentDAO.findOne(id);
+
+        Set<ProblemStatement> statements = student.getProblemStatements();
+        statements.remove(findStatement);
+        studentDAO.save(student);
+        problemStatementDAO.delete(statementId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // ================================================================================================================
+    // * ADD STUDENT SKILLS [POST]                                                                                    *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/skills", method = RequestMethod.POST)
     public ResponseEntity<Student> updateSkills(@PathVariable long id, @RequestBody Set<Skill> skills){

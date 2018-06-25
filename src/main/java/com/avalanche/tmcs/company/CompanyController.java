@@ -120,7 +120,7 @@ public class CompanyController {
     // ================================================================================================================
     // * ADD COMPANY PRESENTATION LINK [POST]                                                                         *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/links", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/link", method = RequestMethod.POST)
     public ResponseEntity<PresentationLink> addCompanyPresentationLink(@PathVariable long id, @RequestBody PresentationLink presentationLink) {
         PresentationLink newLink = presentationLinkDAO.save(presentationLink);
         Company company = companyDAO.findOne(id);
@@ -142,7 +142,7 @@ public class CompanyController {
     // ================================================================================================================
     // * UPDATE COMPANY PRESENTATION LINK [PUT]                                                                       *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/link/{linkId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateCompanyPresentationLink(@PathVariable long id, @PathVariable long linkId, @RequestBody PresentationLink presentationLink) {
         presentationLink.setId(linkId);
         presentationLinkDAO.save(presentationLink);
@@ -153,7 +153,7 @@ public class CompanyController {
     // ================================================================================================================
     // * DELETE COMPANY PRESENTATION LINK [DELETE]                                                                    *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/links/{linkId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/link/{linkId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteCompanyPresentationLink(@PathVariable long id, @PathVariable long linkId) {
         PresentationLink findLink = presentationLinkDAO.findOne(linkId);
         Company company = companyDAO.findOne(id);
