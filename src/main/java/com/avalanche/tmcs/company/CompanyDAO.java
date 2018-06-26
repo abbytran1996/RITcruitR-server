@@ -15,5 +15,5 @@ public interface CompanyDAO extends CrudRepository<Company, Long>{
 
     Company findByEmailSuffix (String emailSuffix);
     Company findByCompanyName(String companyName);
-    List<Company> findByApprovalStatus(boolean approvalStatus);
+    List<Company> findByStatus(int companyStatus);
 }

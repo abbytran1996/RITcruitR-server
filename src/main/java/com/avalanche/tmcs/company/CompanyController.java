@@ -6,6 +6,7 @@ import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.NewRecruiter;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.recruiter.RecruiterRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,11 +58,12 @@ public class CompanyController {
     }
 
     // ================================================================================================================
-    // * GET COMPANY BY APPROVAL STATUS [GET]                                                                                    *
+    // * GET COMPANY BY STATUS [GET]                                                                                    *
     // ================================================================================================================
     @RequestMapping(value = "/byStatus/{status}", method = RequestMethod.GET)
-    public List<Company> getCompanyByStatus(@PathVariable boolean status) {
-        return companyDAO.findByApprovalStatus(status);
+    public ResponseEntity<List<Company>> getCompanyByStatus(@PathVariable String status) {
+        int companyStatus = Company.getIntStatusFromString(status);
+        return ResponseEntity.ok(companyDAO.findByStatus(companyStatus));
     }
 
     // ================================================================================================================
@@ -90,7 +92,7 @@ public class CompanyController {
         company.setLocations(updateCompany.getLocations());
         company.setSize(updateCompany.getSize());
         company.setIndustries(updateCompany.getIndustries());
-        company.setApprovalStatus(updateCompany.getApprovalStatus());
+        company.setStatus(updateCompany.getStatus());
         company.setCompanyDescription(updateCompany.getCompanyDescription());
         company.setWebsiteURL(updateCompany.getWebsiteURL());
         companyDAO.save(company);
@@ -99,12 +101,13 @@ public class CompanyController {
     }
 
     // ================================================================================================================
-    // * APPROVE COMPANY [PATCH]                                                                                         *
+    // * UPDATE COMPANY STATUS [PATCH]                                                                                         *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/approve", method = RequestMethod.PATCH)
-    public ResponseEntity<?> approveCompany(@PathVariable long id){
+    @RequestMapping(value = "/{id}/status/{status}", method = RequestMethod.PATCH)
+    public ResponseEntity<?> approveCompany(@PathVariable long id, @PathVariable String status){
         Company company = companyDAO.findOne(id);
-        company.setApprovalStatus(true);
+        int companyStatus = Company.getIntStatusFromString(status);
+        company.setStatus(companyStatus);
         companyDAO.save(company);
         return ResponseEntity.ok().build();
     }
