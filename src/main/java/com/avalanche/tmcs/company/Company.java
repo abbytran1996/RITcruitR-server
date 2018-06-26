@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.company;
 
 import com.avalanche.tmcs.matching.PresentationLink;
+import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,23 @@ import java.util.Set;
 @Entity
 @Table(name="company")
 public class Company {
+    public enum Status {
+        AWAITING_APPROVAL(0),
+        APPROVED(1),
+        DENIED(2),
+        ARCHIVED(3);
+
+        private int status;
+
+        Status(int status) {
+            this.status = status;
+        }
+
+        public int toInt(){
+            return status;
+        }
+    }
+
     public enum Size {
         DONT_CARE,
         STARTUP,
@@ -22,7 +40,24 @@ public class Company {
         HUGE,
     }
 
+    public static int getIntStatusFromString(String statusString){
+        Status companyStatus;
+        if(StringUtils.equalsIgnoreCase("archived", statusString))
+            companyStatus = Status.ARCHIVED;
+        else if(StringUtils.equalsIgnoreCase("approved", statusString))
+            companyStatus = Status.APPROVED;
+        else if(StringUtils.equalsIgnoreCase("denied", statusString))
+            companyStatus = Status.DENIED;
+        else
+            companyStatus = Status.AWAITING_APPROVAL;
+
+        return companyStatus.toInt();
+
+    }
+
     private long id;
+
+    private int status = Status.AWAITING_APPROVAL.toInt();
 
     private String companyName;
 
@@ -31,8 +66,6 @@ public class Company {
     private int size;
 
     private Set<String> industries;
-
-    private Boolean approvalStatus;
 
     private String presentation;
 
@@ -88,9 +121,16 @@ public class Company {
 
     public void setSize(int size) {this.size = size;}
 
-    public Boolean getApprovalStatus(){return approvalStatus;}
+    @NotNull
+    public int getStatus() {
+        return this.status;
+    }
 
-    public void setApprovalStatus(Boolean approvalStatus) {this.approvalStatus = approvalStatus;}
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+
 
     @NotNull
     public String getPresentation(){return presentation;}

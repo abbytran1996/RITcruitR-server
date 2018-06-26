@@ -61,7 +61,7 @@ public class NewCompany extends Company {
         company.setIndustries(getIndustries());
         company.setSize(getSize());
         company.setWebsiteURL(getWebsiteURL());
-        company.setApprovalStatus(false);
+        company.setStatus(Status.AWAITING_APPROVAL.toInt());
         company.setPresentation("");
         company.setCompanyDescription("");
         company.setEmailSuffix("");
