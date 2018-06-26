@@ -2,8 +2,6 @@ package com.avalanche.tmcs.company;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import javax.persistence.Id;
 
 /**
  * Provides an interface to manipulate the Company database table

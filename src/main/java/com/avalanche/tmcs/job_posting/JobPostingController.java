@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class JobPostingController {
     // * ADD NEW JOB [POST]                                                                                           *
     // ================================================================================================================
     @RequestMapping(value = "/{company_id}", method=RequestMethod.POST)
-    public ResponseEntity<JobPosting> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting){
+    public ResponseEntity<?> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting){
         Company company = companyDAO.findOne(company_id);
         Recruiter recruiter = recruiterRepo.findOne(newJobPosting.getRecruiterId());
 
@@ -57,6 +58,16 @@ public class JobPostingController {
         if (company == null || recruiter == null) {
             return ResponseEntity.notFound().build();
         }
+
+        // Company is not approved and can't post jobs
+        else if (!company.getApprovalStatus()){
+            return new ResponseEntity<String>(
+                    "Company '" + company.getCompanyName() + "' is awaiting approval and is not authorized to post jobs",
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        // Company exists and is authorized
         else {
             newJobPosting.setCompany(company);
             newJobPosting.setRecruiter(recruiter);
