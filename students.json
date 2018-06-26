@@ -1,0 +1,42 @@
+[
+{
+    "id": 1,
+    "firstName": "Person",
+    "lastName": "McPersonson",
+    "skills": [
+        {
+            "id": 60,
+            "name": "Agile Development"
+        },
+        {
+            "id": 72,
+            "name": "CSS3"
+        },
+        {
+            "id": 71,
+            "name": "HTML5"
+        }
+    ],
+    "email": "student@example.com",
+    "graduationDate": "2018-04-12",
+    "school": "",
+    "major": null,
+    "gpa": 0,
+    "user": {
+        "id": 1,
+        "username": "student@example.com",
+        "roles": [
+            {
+                "id": 1,
+                "name": "student"
+            }
+        ]
+    },
+    "phoneNumber": null,
+    "contactEmail": null,
+    "website": null,
+    "preferredLocations": [],
+    "preferredIndustries": [],
+    "preferredCompanySizes": []
+}
+]

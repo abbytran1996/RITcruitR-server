@@ -2,6 +2,7 @@ package com.avalanche.tmcs.company;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 /**
  * Provides an interface to manipulate the Company database table
@@ -14,4 +15,5 @@ public interface CompanyDAO extends CrudRepository<Company, Long>{
 
     Company findByEmailSuffix (String emailSuffix);
     Company findByCompanyName(String companyName);
+    List<Company> findByApprovalStatus(boolean approvalStatus);
 }
