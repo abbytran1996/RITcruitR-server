@@ -5,6 +5,7 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -76,6 +77,8 @@ public class Company {
     private String emailSuffix;
 
     private int userId;
+
+    private Date time_registered;
 
     private Set<PresentationLink> presentationLinks;
 
@@ -170,6 +173,14 @@ public class Company {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public Date getTimeRegistered() {
+        return time_registered;
+    }
+
+    public void setTimeRegistered(Date time_registered) {
+        this.time_registered = time_registered;
     }
 
     @ElementCollection
