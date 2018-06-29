@@ -29,25 +29,23 @@ public class JobPostingExpirationChecker {
     /**
      * This will occur at 8pm every night.
      */
-    @Scheduled(cron = "0 * 17 * * *")
+    @Scheduled(cron = "0 0 20 * * *")
     public void automateJobExpiration() {
         LOGGER.info("Checking whether if jobs have expired or not...");
 
         List<JobPosting> allActiveJobPostings = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE.toInt());
         allActiveJobPostings.stream()
-                .filter(jobPosting -> {
-                    LocalDate currentDate = LocalDate.now();
-                    Date jobPostingDate = new Date();
-                    LocalDate jobPostingDate2 = jobPostingDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    long jobPostingDuration = jobPosting.getDuration();
-
-                    Duration duration = Duration.between(currentDate, jobPostingDate2);
-                    long difference = Math.abs(duration.toDays());
-
-                    return difference >= jobPostingDuration;
-                })
                 .forEach(jobPosting -> {
-                    System.out.println(jobPosting.getId());
+                    long duration = jobPosting.getDuration();
+
+                    // If the duration equals 0, set the status to inactive. Otherwise, decrement by one.
+                    if (duration == 0) {
+                        jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
+                    } else {
+                        jobPosting.setDuration(duration - 1);
+                    }
+
+                    jobPostingDAO.save(jobPosting);
                 });
     }
 }
