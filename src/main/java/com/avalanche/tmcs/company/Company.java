@@ -78,7 +78,7 @@ public class Company {
 
     private int userId;
 
-    private Date time_registered;
+    private Date timeRegistered;
 
     private Set<PresentationLink> presentationLinks;
 
@@ -176,11 +176,11 @@ public class Company {
     }
 
     public Date getTimeRegistered() {
-        return time_registered;
+        return timeRegistered;
     }
 
-    public void setTimeRegistered(Date time_registered) {
-        this.time_registered = time_registered;
+    public void setTimeRegistered(Date timeRegistered) {
+        this.timeRegistered = timeRegistered;
     }
 
     @ElementCollection
