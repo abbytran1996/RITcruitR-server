@@ -107,6 +107,7 @@ public class MatchingService {
                     match.setStudent(student);
                     match.setJob(posting);
                     match.setMatchStrength(weight);
+                    match = storeMatchCriteria(match);
 
                     matches.add(match);
                 }
@@ -164,9 +165,31 @@ public class MatchingService {
             match.setStudent(student);
             match.setApplicationStatus(Match.ApplicationStatus.NEW);
             match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+            match = storeMatchCriteria(match);
             matches.add(match);
         }
         return matches;
+    }
+    
+    Match storeMatchCriteria(Match match) {
+    	Student student = match.getStudent();
+    	JobPosting job = match.getJob();
+    	Set<Skill> requiredSkills = job.getRequiredSkills();
+    	Set<Skill> nthSkills = job.getNiceToHaveSkills();
+    	Set<Skill> studentSkills = student.getSkills();
+    	requiredSkills.retainAll(studentSkills);
+    	match.setMatchedRequiredSkills(requiredSkills);
+    	nthSkills.retainAll(studentSkills);
+    	match.setMatchedNiceToHaveSkills(nthSkills);
+    	Set<String> locations = job.getLocations();
+    	Set<String> studentPreferredLocations = student.getPreferredLocations();
+    	locations.retainAll(studentPreferredLocations);
+    	match.setMatchedLocations(locations);
+    	Set<String> industries = job.getCompany().getIndustries();
+    	Set<String> studentPreferredIndustries = student.getPreferredIndustries();
+    	industries.retainAll(studentPreferredIndustries);
+    	match.setMatchedIndustries(industries);
+    	return match;
     }
 
     static class MatchedSkillsCount {
