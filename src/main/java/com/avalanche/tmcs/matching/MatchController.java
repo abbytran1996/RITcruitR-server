@@ -75,6 +75,40 @@ public class MatchController {
 
         return ResponseEntity.ok(matches);
     }
+    
+    // ================================================================================================================
+    // * GET STUDENT MATCH COUNT [GET]                                                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/studentMatches/{id}/count", method = RequestMethod.GET)
+    public ResponseEntity<?> getMatchCountForStudent(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
+        Student student = studentDAO.findOne(id);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Match> matches;
+        switch (phase) {
+            case "problem":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+                break;
+            case "presentation":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
+                break;
+            case "interview":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
+                break;
+            case "final":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
+                break;
+            case "archived":
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
+                break;
+            default:
+                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.NONE);
+        }
+
+        return ResponseEntity.ok(matches.size());
+    }
 
     // ================================================================================================================
     // * MATCH APPROVAL [PATCH]                                                                                       *
