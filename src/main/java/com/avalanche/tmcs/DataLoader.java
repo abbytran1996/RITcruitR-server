@@ -1,14 +1,13 @@
 package com.avalanche.tmcs;
 
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
-import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.job_posting.NewJobPosting;
 import com.avalanche.tmcs.matching.Location;
@@ -53,7 +52,7 @@ public class DataLoader implements ApplicationRunner {
 
     private RoleDAO roleDAO;
 
-    private RecruiterRepository recruiterDAO;
+    private RecruiterDAO recruiterDAO;
     private CompanyDAO companyDAO;
     private JobPostingDAO jobPostingDAO;
     private StudentDAO studentDAO;
@@ -63,7 +62,7 @@ public class DataLoader implements ApplicationRunner {
     private MatchingService matchingService;
 
     @Autowired
-    public DataLoader(RoleDAO roleDAO, RecruiterRepository recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
+    public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
                       UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MatchingService matchingService,
                       @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;

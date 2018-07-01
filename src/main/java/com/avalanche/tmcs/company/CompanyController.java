@@ -5,7 +5,7 @@ import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.NewRecruiter;
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.RecruiterDAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,12 +27,12 @@ import java.util.Set;
 public class CompanyController {
     private CompanyDAO companyDAO;
     private PresentationLinkDAO presentationLinkDAO;
-    private RecruiterRepository recruiterRepo;
+    private RecruiterDAO recruiterRepo;
     private UserService userService;
     private SecurityService securityService;
 
     @Autowired
-    public CompanyController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO, SecurityService securityService){
+    public CompanyController(RecruiterDAO repo, UserService userService, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO, SecurityService securityService){
         this.recruiterRepo = repo;
         this.userService = userService;
         this.companyDAO = companyDAO;

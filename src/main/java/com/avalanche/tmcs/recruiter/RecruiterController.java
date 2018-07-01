@@ -1,18 +1,13 @@
 package com.avalanche.tmcs.recruiter;
 
-import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.SecurityService;
-import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -23,14 +18,14 @@ import java.util.List;
 @RequestMapping("/recruiters")
 public class RecruiterController {
 
-    private RecruiterRepository recruiterRepo;
+    private RecruiterDAO recruiterRepo;
     private UserService userService;
     private CompanyDAO companyDAO;
     private SecurityService securityService;
 
 
     @Autowired
-    public RecruiterController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, SecurityService securityService){
+    public RecruiterController(RecruiterDAO repo, UserService userService, CompanyDAO companyDAO, SecurityService securityService){
         this.recruiterRepo = repo;
         this.userService = userService;
         this.companyDAO = companyDAO;

@@ -5,7 +5,7 @@ import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
-import com.avalanche.tmcs.recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -26,13 +25,13 @@ import java.util.Set;
 public class JobPostingController {
 
     private JobPostingDAO jobPostingDAO;
-    private RecruiterRepository recruiterRepo;
+    private RecruiterDAO recruiterRepo;
     private CompanyDAO companyDAO;
 
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, MatchingService matchingService, RecruiterRepository repo, CompanyDAO companyDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, MatchingService matchingService, RecruiterDAO repo, CompanyDAO companyDAO){
         this.jobPostingDAO = jobPostingDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = repo;
