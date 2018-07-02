@@ -104,7 +104,7 @@ public class MatchController {
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
                 break;
             default:
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.NONE);
+                matches = matchDAO.findAllByStudent(student);
         }
 
         return ResponseEntity.ok(matches.size());
@@ -252,6 +252,41 @@ public class MatchController {
         }
 
         return ResponseEntity.ok(matches);
+    }
+    
+    // ================================================================================================================
+    // * GET RECRUITER MATCH COUNT [GET]                                                                                  *
+    // ================================================================================================================
+    @RequestMapping(value = "/posting/{id}/count", method = RequestMethod.GET)
+    public ResponseEntity<?> getRecruiterMatchCount(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
+        JobPosting job = jobDAO.findOne(id);
+
+        if (job == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Match> matches;
+        switch(phase) {
+            case "problem":
+                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+                break;
+            case "presentation":
+                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+                break;
+            case "interview":
+                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
+                break;
+            case "final":
+                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
+                break;
+            case "archived":
+                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
+                break;
+            default:
+                matches = matchDAO.findAllByJob(job);
+        }
+
+        return ResponseEntity.ok(matches.size());
     }
 
     // ================================================================================================================
