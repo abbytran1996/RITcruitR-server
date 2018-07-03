@@ -86,28 +86,28 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Match> matches;
+        long count;
         switch (phase) {
             case "problem":
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
                 break;
             case "presentation":
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
                 break;
             case "interview":
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
                 break;
             case "final":
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
                 break;
             case "archived":
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
                 break;
             default:
-                matches = matchDAO.findAllByStudent(student);
+            	count = matchDAO.countAllByStudent(student);
         }
 
-        return ResponseEntity.ok(matches.size());
+        return ResponseEntity.ok(count);
     }
 
     // ================================================================================================================
@@ -265,28 +265,28 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Match> matches;
+        long count;
         switch(phase) {
             case "problem":
-                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
                 break;
             case "presentation":
-                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
                 break;
             case "interview":
-                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
                 break;
             case "final":
-                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
                 break;
             case "archived":
-                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
                 break;
             default:
-                matches = matchDAO.findAllByJob(job);
+            	count = matchDAO.countAllByJob(job);
         }
 
-        return ResponseEntity.ok(matches.size());
+        return ResponseEntity.ok(count);
     }
 
     // ================================================================================================================
