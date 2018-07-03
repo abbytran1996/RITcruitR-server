@@ -124,7 +124,9 @@ public class JobPostingController {
         JobPosting jobPosting = jobPostingDAO.findOne(id);
         switch (status) {
         case "active":
+        	int duration = jobPosting.getDuration();
         	jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
+        	jobPosting.setNumDaysRemaining(duration);
             break;
         case "inactive":
         	jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
