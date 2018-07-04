@@ -205,7 +205,7 @@ public class DataLoader implements ApplicationRunner {
                 long minGPA = (long) job.get("minGPA");
                 //has work experience
                 //match threshold
-                int duration = (int) job.get("duration");
+                int duration = ((Long) job.get("duration")).intValue();
                 String problemStatement = (String) job.get("problemStatement");
                 String video = (String) job.get("video");
                 
