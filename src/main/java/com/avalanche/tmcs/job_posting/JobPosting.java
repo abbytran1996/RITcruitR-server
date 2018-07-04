@@ -46,9 +46,9 @@ public class JobPosting {
 
     private Set<Skill> requiredSkills;
 
-    private Set<Skill> niceToHaveSkills;
+    private Set<Skill> recommendedSkills;
 
-    private double niceToHaveSkillsWeight;
+    private double recommendedSkillsWeight;
 
     private double minGPA;
 
@@ -128,21 +128,21 @@ public class JobPosting {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
-    public Set<Skill> getNiceToHaveSkills() {
-        return niceToHaveSkills;
+    public Set<Skill> getRecommendedSkills() {
+        return recommendedSkills;
     }
 
-    public void setNiceToHaveSkills(Set<Skill> niceToHaveSkills) {
-        this.niceToHaveSkills = niceToHaveSkills;
+    public void setRecommendedSkills(Set<Skill> recommendedSkills) {
+        this.recommendedSkills = recommendedSkills;
     }
 
     @NotNull
-    public double getNiceToHaveSkillsWeight() {
-        return niceToHaveSkillsWeight;
+    public double getRecommendedSkillsWeight() {
+        return recommendedSkillsWeight;
     }
 
-    public void setNiceToHaveSkillsWeight(double niceToHaveSkillsWeight) {
-        this.niceToHaveSkillsWeight = niceToHaveSkillsWeight;
+    public void setRecommendedSkillsWeight(double recommendedSkillsWeight) {
+        this.recommendedSkillsWeight = recommendedSkillsWeight;
     }
 
     public double getMinGPA() { return minGPA; }

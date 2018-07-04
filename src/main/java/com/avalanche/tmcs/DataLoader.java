@@ -227,8 +227,8 @@ public class DataLoader implements ApplicationRunner {
 //                newJob.setMatchThreshold(matchThreshold);
                 newJob.setMinGPA(minGPA);
 //                newJob.setNewVideo(newVideo);
-                newJob.setNiceToHaveSkills(niceToHaveSkills);
-//                newJob.setNiceToHaveSkillsWeight(niceToHaveSkillsWeight);
+                newJob.setRecommendedSkills(niceToHaveSkills);
+//                newJob.setRecommendedSkillsWeight(niceToHaveSkillsWeight);
                 newJob.setPositionTitle(jobTitle);
                 newJob.setProblemStatement(problemStatement);
                 newJob.setRecruiter(recruiter);

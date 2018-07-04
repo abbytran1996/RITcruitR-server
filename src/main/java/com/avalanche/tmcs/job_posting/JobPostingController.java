@@ -102,7 +102,7 @@ public class JobPostingController {
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());
         jobPosting.setLocations(updatedJobPosting.getLocations());
-        jobPosting.setNiceToHaveSkillsWeight(updatedJobPosting.getNiceToHaveSkillsWeight());
+        jobPosting.setRecommendedSkillsWeight(updatedJobPosting.getRecommendedSkillsWeight());
         jobPosting.setMinGPA(updatedJobPosting.getMinGPA());
         jobPosting.setHasWorkExperience(updatedJobPosting.getHasWorkExperience());
         jobPosting.setMatchThreshold(updatedJobPosting.getMatchThreshold());
@@ -232,7 +232,7 @@ public class JobPostingController {
         if(posting == null) {
             return ResponseEntity.notFound().build();
         }
-        posting.setNiceToHaveSkills(skills);
+        posting.setRecommendedSkills(skills);
         jobPostingDAO.save(posting);
         matchingService.registerJobPosting(posting);
         return ResponseEntity.ok(posting);

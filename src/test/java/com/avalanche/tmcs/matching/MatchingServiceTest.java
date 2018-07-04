@@ -61,11 +61,11 @@ public class MatchingServiceTest {
         skill.setName("C");
         posting.getRequiredSkills().add(skill);
 
-        posting.setNiceToHaveSkills(new HashSet<>());
+        posting.setRecommendedSkills(new HashSet<>());
 
         skill = new Skill();
         skill.setName("Perl");
-        posting.getNiceToHaveSkills().add(skill);
+        posting.getRecommendedSkills().add(skill);
 
         MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
         skillsCount.requiredSkillsCount = 3;
@@ -78,7 +78,7 @@ public class MatchingServiceTest {
         Assert.assertEquals(1, matches.size());
 
         Match match = matches.get(0);
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNiceToHaveSkills().size();
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getRecommendedSkills().size();
 
         Assert.assertEquals(chompsky, match.getStudent());
         Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
@@ -112,11 +112,11 @@ public class MatchingServiceTest {
         skill.setName("C");
         posting.getRequiredSkills().add(skill);
         chompsky.getSkills().add(skill);
-        posting.setNiceToHaveSkills(new HashSet<>());
+        posting.setRecommendedSkills(new HashSet<>());
 
         skill = new Skill();
         skill.setName("Perl");
-        posting.getNiceToHaveSkills().add(skill);
+        posting.getRecommendedSkills().add(skill);
 
         MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
         skillsCount.requiredSkillsCount = 3;
@@ -130,7 +130,7 @@ public class MatchingServiceTest {
 
         Match match = matches.get(0);
 
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNiceToHaveSkills().size();
+        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getRecommendedSkills().size();
 
         Assert.assertEquals(chompsky, match.getStudent());
         Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
