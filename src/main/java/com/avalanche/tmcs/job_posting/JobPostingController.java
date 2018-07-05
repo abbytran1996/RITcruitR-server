@@ -4,6 +4,7 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
+import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,6 +115,34 @@ public class JobPostingController {
         jobPostingDAO.save(jobPosting);
         return ResponseEntity.ok().build();
     }
+    
+    // ================================================================================================================
+    // * UPDATE JOB STATUS [PATCH]                                                                                             *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/status/{status}", method = RequestMethod.PATCH)
+    public ResponseEntity<?> updateJobPostingStatus(@PathVariable long id, @PathVariable String status) {
+        JobPosting jobPosting = jobPostingDAO.findOne(id);
+        switch (status) {
+        case "active":
+        	int duration = jobPosting.getDuration();
+        	jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
+        	jobPosting.setNumDaysRemaining(duration);
+            break;
+        case "inactive":
+        	jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
+            break;
+        case "archived":
+        	jobPosting.setStatus(JobPosting.Status.ARCHIVED.toInt());
+            break;
+        case "needs_detailing":
+        	jobPosting.setStatus(JobPosting.Status.NEEDS_DETAILING.toInt());
+            break;
+        default:
+        	return ResponseEntity.badRequest().build();
+        }
+        jobPostingDAO.save(jobPosting);
+        return ResponseEntity.ok().build();
+    }
 
     // ================================================================================================================
     // * DELETE JOB [DELETE]                                                                                          *
@@ -135,6 +164,34 @@ public class JobPostingController {
 
         List<JobPosting> jobPostings = jobPostingDAO.findAllByCompany(companyWithID);
 
+        return ResponseEntity.ok(jobPostings);
+    }
+    
+    // ================================================================================================================
+    // * GET JOBS BY COMPANY AND STATUS [GET]                                                                               *
+    // ================================================================================================================
+    @RequestMapping(value = "/company/{company_id}/status/{status}", method=RequestMethod.GET)
+    public ResponseEntity<List<JobPosting>> getJobPostingsByCompanyAndStatus(@PathVariable long company_id, @PathVariable String status){
+        Company companyWithID = new Company();
+        companyWithID.setId(company_id);
+        
+        List<JobPosting> jobPostings;
+        switch (status) {
+        case "active":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE.toInt());
+            break;
+        case "inactive":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE.toInt());
+            break;
+        case "archived":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED.toInt());
+            break;
+        case "needs_detailing":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.NEEDS_DETAILING.toInt());
+            break;
+        default:
+            jobPostings = jobPostingDAO.findAllByCompany(companyWithID);
+        }
         return ResponseEntity.ok(jobPostings);
     }
 
