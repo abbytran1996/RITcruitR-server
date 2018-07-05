@@ -4,6 +4,7 @@ import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static com.avalanche.tmcs.utils.SetUtilities.*;
 
 /**
  * Matches students and job postings
@@ -20,21 +24,72 @@ import java.util.function.Predicate;
  */
 @Service
 public class MatchingService {
+
     private MatchDAO matchDAO;
-
     private StudentDAO studentDAO;
-
     private JobPostingDAO jobPostingDAO;
 
-    private Executor executor = Executors.newFixedThreadPool(10);
+    private Executor executor = Executors.newFixedThreadPool(10); //TODO replace with parallelStream
 
-    private final float requiredSkillsWeight = 0.8f;
+    private final static float REQUIRED_SKILL_WEIGHT = 0.8f;
+    private final static float DEFAULT_OPTIONAL_SKILL_WEIGHT = 0.4f;
+    private final static float RECRUITER_PREFERENCE_WEIGHT = 0.5f;
+    private final static float STUDENT_PREFERENCE_WEIGHT = 0.4f;
 
     @Autowired
     public MatchingService(MatchDAO matchDAO, StudentDAO studentDAO, JobPostingDAO jobPostingDAO) {
         this.matchDAO = matchDAO;
         this.studentDAO = studentDAO;
         this.jobPostingDAO = jobPostingDAO;
+    }
+
+    public List<Match> generateMatchesForStudent(final Student student) {
+        // create new matches for a student from all currently active jobs
+        final Set<JobPosting> jobsStudentAlreadyMatchedWith = matchDAO.findAllByStudent(student).parallelStream()
+                .map(Match::getJob)
+                .collect(Collectors.toSet());
+        List<JobPosting> currentlyActiveJobs = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE.toInt());
+        Set<Skill> studentSkills = student.getSkills();
+
+        List<Match> newMatches = new ArrayList<Match>();
+        double matchScore = 0;
+        for(JobPosting job : currentlyActiveJobs){
+            // do not recalculate the matchScore for jobs the student is already matched to
+            if(jobsStudentAlreadyMatchedWith.contains(job))
+                continue;
+
+            double requiredSkillsScore = weightedPercentageSetIntersection(
+                    job.getRequiredSkills(),
+                    studentSkills,
+                    REQUIRED_SKILL_WEIGHT
+            );
+
+            double recommendedSkillsWeight = job.getRecommendedSkillsWeight();
+            double recommendedSkillsScore = weightedPercentageSetIntersection(
+                    job.getRecommendedSkills(),
+                    studentSkills,
+                    (float) recommendedSkillsWeight
+            );
+
+            double jobFilterWeight = job.getJobFiltersWeight();
+            double jobFilterScore = job.calculateJobFiltersScore(student);
+
+            double studentPreferencesWeight = student.getStudentPreferencesWeight();
+            double studentPreferencesScore = student.calculateStudentPreferencesScore(job);
+
+
+            double normalizedWeightDenominator = REQUIRED_SKILL_WEIGHT+recommendedSkillsWeight+jobFilterWeight+studentPreferencesWeight;
+            matchScore = (requiredSkillsScore+recommendedSkillsScore+jobFilterScore+studentPreferencesScore) / normalizedWeightDenominator;
+
+            if(matchScore >= job.getMatchThreshold()){
+                Match newMatch = new Match()
+                    .setJob(job)
+                    .setStudent(student)
+                    .setMatchStrength((float) matchScore);
+                newMatches.add(newMatch);
+            }
+        }
+        return newMatches;
     }
 
     /**
@@ -92,21 +147,21 @@ public class MatchingService {
     public void registerJobPosting(final JobPosting posting) {
         executor.execute(() -> {
             final Map<Student, Integer> numberOfMatchedRequiredSkills = countStudentsWithSkillInList(posting.getRequiredSkills());
-            final Map<Student, Integer> numberOfMatchedRecommendedSkills = countStudentsWithSkillInList(posting.getNiceToHaveSkills());
+            final Map<Student, Integer> numberOfMatchedRecommendedSkills = countStudentsWithSkillInList(posting.getRecommendedSkills());
 
             final List<Match> matches = new ArrayList<>();
             for(Student student : numberOfMatchedRequiredSkills.keySet()) {
-                float weight = numberOfMatchedRequiredSkills.get(student) * requiredSkillsWeight;
+                double weight = numberOfMatchedRequiredSkills.get(student) * REQUIRED_SKILL_WEIGHT;
 
                 if(numberOfMatchedRecommendedSkills.containsKey(student)) {
-                    weight += numberOfMatchedRecommendedSkills.get(student) * (1.0f - requiredSkillsWeight);
+                    weight += numberOfMatchedRecommendedSkills.get(student) * (1.0f - REQUIRED_SKILL_WEIGHT);
                 }
 
-                if(weight >= requiredSkillsWeight) {
+                if(weight >= REQUIRED_SKILL_WEIGHT) {
                     Match match = new Match();
                     match.setStudent(student);
                     match.setJob(posting);
-                    match.setMatchStrength(weight);
+                    match.setMatchStrength((float) weight);
 
                     matches.add(match);
                 }
@@ -151,15 +206,15 @@ public class MatchingService {
         final List<Match> matches = new ArrayList<>();
         for(JobPosting posting : matchedSkillsCountMap.keySet()) {
             MatchedSkillsCount matchedSkillsCount = matchedSkillsCountMap.get(posting);
-            float numRequiredSkills = posting.getRequiredSkills().size();
-            float weight = matchedSkillsCount.requiredSkillsCount * requiredSkillsWeight / numRequiredSkills;
-            float numRecommendedSkills = posting.getNiceToHaveSkills().size();
+            double numRequiredSkills = posting.getRequiredSkills().size();
+            double weight = matchedSkillsCount.requiredSkillsCount * REQUIRED_SKILL_WEIGHT / numRequiredSkills;
+            int numRecommendedSkills = posting.getRecommendedSkills().size();
             if(numRecommendedSkills > 0) {
-                weight += matchedSkillsCount.recommendedSkillsCount * (1.0f - requiredSkillsWeight) / numRecommendedSkills;
+                weight += matchedSkillsCount.recommendedSkillsCount * (1.0f - REQUIRED_SKILL_WEIGHT) / numRecommendedSkills;
             }
 
             Match match = new Match();
-            match.setMatchStrength(weight);
+            match.setMatchStrength((float) weight);
             match.setJob(posting);
             match.setStudent(student);
             match.setApplicationStatus(Match.ApplicationStatus.NEW);

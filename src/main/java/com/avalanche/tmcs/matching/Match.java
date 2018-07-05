@@ -101,18 +101,20 @@ public class Match {
     public float getMatchStrength() {
         return matchStrength;
     }
+    public Match setMatchStrength(float matchStrength) {
+        this.matchStrength = matchStrength;
+        return this;
+    }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setStudent(Student student) {
+    public Match setStudent(Student student) {
         this.student = student;
+        return this;
     }
 
-    public void setMatchStrength(float matchStrength) {
-        this.matchStrength = matchStrength;
-    }
 
     @NotNull
     @ManyToOne
@@ -120,15 +122,14 @@ public class Match {
     public JobPosting getJob() {
         return job;
     }
-
-    public void setJob(JobPosting job) {
+    public Match setJob(JobPosting job) {
         this.job = job;
+        return this;
     }
 
     public String getTag() {
         return tag;
     }
-
     public void setTag(final String tag) {
         this.tag = tag;
         if(tag != null) {

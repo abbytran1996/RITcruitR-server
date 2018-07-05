@@ -4,6 +4,7 @@ package com.avalanche.tmcs.job_posting;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
+import com.avalanche.tmcs.students.Student;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,7 +29,7 @@ public class JobPosting {
             this.status = status;
         }
 
-        int toInt(){
+        public int toInt(){
             return status;
         }
     }
@@ -47,10 +48,10 @@ public class JobPosting {
     private Set<Skill> requiredSkills;
 
     private Set<Skill> recommendedSkills;
-
     private double recommendedSkillsWeight;
 
     private double minGPA;
+    private double minGPAWeight = 0.3f;
 
     private boolean hasWorkExperience;
 
@@ -218,6 +219,15 @@ public class JobPosting {
 
     public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
         this.presentationLinks = presentationLinks;
+    }
+
+    public double getJobFiltersWeight(){
+        return minGPAWeight;
+    }
+
+    public double calculateJobFiltersScore(Student student){
+        boolean gpaMatch = student.getGpa() >= minGPA;
+        return minGPAWeight * 1.0;
     }
 
     @Override

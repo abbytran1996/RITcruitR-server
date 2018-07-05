@@ -1,6 +1,8 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.Skill;
 
@@ -9,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
 import java.util.Set;
+
+import static com.avalanche.tmcs.utils.SetUtilities.getSetIntersection;
 
 /**
  * Class to represent a student in the database
@@ -46,10 +50,13 @@ public class Student {
     private String website; // TODO: Remove field
 
     private Set<String> preferredLocations;
+    private double preferredLocationsWeight = 0.4f;
 
     private Set<String> preferredIndustries;
+    private double preferredIndustriesWeight = 0.3f;
 
     private Set<Integer> preferredCompanySizes;
+    private double preferredCompanySizeWeight = 0.2f;
 
     private Set<PresentationLink> presentationLinks;
 
@@ -209,6 +216,29 @@ public class Student {
 
     public void setProblemStatements(Set<ProblemStatement> problemStatements) {
         this.problemStatements = problemStatements;
+    }
+
+    public double getStudentPreferencesWeight(){
+        return preferredCompanySizeWeight + preferredIndustriesWeight + preferredLocationsWeight;
+    }
+
+    public double calculateStudentPreferencesScore(JobPosting job){
+        double sumScores = 0;
+        double normalizedWeightDenominator = getStudentPreferencesWeight();
+
+        boolean locationMatch = preferredLocations.isEmpty() ||
+                !getSetIntersection(preferredLocations, job.getLocations()).isEmpty();
+        if(locationMatch){ sumScores += preferredLocationsWeight; }
+
+        boolean sizeMatch = !preferredCompanySizes.contains(Company.Size.DONT_CARE.toInt()) ||
+                preferredCompanySizes.contains(job.getCompany().getSize());
+        if(sizeMatch){ sumScores += preferredCompanySizeWeight; }
+
+        boolean industryMatch = preferredIndustries.isEmpty() ||
+                !getSetIntersection(preferredIndustries, job.getCompany().getIndustries()).isEmpty();
+        if(industryMatch){ sumScores += preferredIndustriesWeight; }
+
+        return (sumScores * 1.0f)/normalizedWeightDenominator;
     }
 
     @Override

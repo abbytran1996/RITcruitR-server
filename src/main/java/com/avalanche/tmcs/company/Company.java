@@ -32,12 +32,22 @@ public class Company {
     }
 
     public enum Size {
-        DONT_CARE,
-        STARTUP,
-        SMALL,
-        MEDIUM,
-        LARGE,
-        HUGE,
+        DONT_CARE(0),
+        STARTUP(1),
+        SMALL(2),
+        MEDIUM(3),
+        LARGE(4),
+        HUGE(5);
+
+        private int companySize;
+
+        Size(int status){
+            this.companySize = status;
+        }
+
+        public int toInt(){
+            return companySize;
+        }
     }
 
     public static int getIntStatusFromString(String statusString){

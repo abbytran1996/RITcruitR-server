@@ -14,6 +14,8 @@ import java.util.List;
 public interface JobPostingDAO extends CrudRepository<JobPosting, Long> {
     List<JobPosting> findAllByCompany(Company company);
 
+    List<JobPosting> findAllByStatus(int status);
+
     List<JobPosting> findAllByCompanyAndStatus(Company company, int status);
 
     List<JobPosting> findAllByRecruiter(Recruiter recruiter);
