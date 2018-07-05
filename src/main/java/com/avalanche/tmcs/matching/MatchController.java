@@ -75,6 +75,40 @@ public class MatchController {
 
         return ResponseEntity.ok(matches);
     }
+    
+    // ================================================================================================================
+    // * GET STUDENT MATCH COUNT [GET]                                                                                    *
+    // ================================================================================================================
+    @RequestMapping(value = "/studentMatches/{id}/count", method = RequestMethod.GET)
+    public ResponseEntity<?> getMatchCountForStudent(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
+        Student student = studentDAO.findOne(id);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        long count;
+        switch (phase) {
+            case "problem":
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+                break;
+            case "presentation":
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
+                break;
+            case "interview":
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
+                break;
+            case "final":
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
+                break;
+            case "archived":
+            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
+                break;
+            default:
+            	count = matchDAO.countAllByStudent(student);
+        }
+
+        return ResponseEntity.ok(count);
+    }
 
     // ================================================================================================================
     // * MATCH APPROVAL [PATCH]                                                                                       *
@@ -218,6 +252,41 @@ public class MatchController {
         }
 
         return ResponseEntity.ok(matches);
+    }
+    
+    // ================================================================================================================
+    // * GET RECRUITER MATCH COUNT [GET]                                                                                  *
+    // ================================================================================================================
+    @RequestMapping(value = "/posting/{id}/count", method = RequestMethod.GET)
+    public ResponseEntity<?> getRecruiterMatchCount(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
+        JobPosting job = jobDAO.findOne(id);
+
+        if (job == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        long count;
+        switch(phase) {
+            case "problem":
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+                break;
+            case "presentation":
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+                break;
+            case "interview":
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
+                break;
+            case "final":
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
+                break;
+            case "archived":
+            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
+                break;
+            default:
+            	count = matchDAO.countAllByJob(job);
+        }
+
+        return ResponseEntity.ok(count);
     }
 
     // ================================================================================================================

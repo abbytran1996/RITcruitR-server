@@ -4,14 +4,17 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
+import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -24,14 +27,16 @@ import java.util.Set;
 public class JobPostingController {
 
     private JobPostingDAO jobPostingDAO;
+    private JobPresentationLinkDAO presentationLinkDAO;
     private RecruiterRepository recruiterRepo;
     private CompanyDAO companyDAO;
 
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, MatchingService matchingService, RecruiterRepository repo, CompanyDAO companyDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, MatchingService matchingService, RecruiterRepository repo, CompanyDAO companyDAO){
         this.jobPostingDAO = jobPostingDAO;
+        this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = repo;
         this.companyDAO = companyDAO;
@@ -49,7 +54,7 @@ public class JobPostingController {
     // * ADD NEW JOB [POST]                                                                                           *
     // ================================================================================================================
     @RequestMapping(value = "/{company_id}", method=RequestMethod.POST)
-    public ResponseEntity<JobPosting> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting){
+    public ResponseEntity<?> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting){
         Company company = companyDAO.findOne(company_id);
         Recruiter recruiter = recruiterRepo.findOne(newJobPosting.getRecruiterId());
 
@@ -57,6 +62,16 @@ public class JobPostingController {
         if (company == null || recruiter == null) {
             return ResponseEntity.notFound().build();
         }
+
+        // Company is not approved and can't post jobs
+        else if (company.getStatus() != Company.Status.APPROVED.toInt()){
+            return new ResponseEntity<String>(
+                    "Company '" + company.getCompanyName() + "' is not authorized to post jobs",
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        // Company exists and is authorized
         else {
             newJobPosting.setCompany(company);
             newJobPosting.setRecruiter(recruiter);
@@ -98,7 +113,51 @@ public class JobPostingController {
         jobPosting.setDuration(updatedJobPosting.getDuration());
         jobPosting.setProblemStatement(updatedJobPosting.getProblemStatement());
         jobPosting.setVideo(updatedJobPosting.getVideo());
-        jobPosting.setPresentationLinks(updatedJobPosting.getPresentationLinks());
+
+        // Remove existing removed presentation links
+        for (JobPresentationLink link : jobPosting.getPresentationLinks()) {
+            if (!link.isInSet(updatedJobPosting.getPresentationLinks())) {
+                jobPosting.getPresentationLinks().remove(link);
+                presentationLinkDAO.delete(link);
+            }
+        }
+
+        // Add new presentation links
+        for (JobPresentationLink link : updatedJobPosting.getPresentationLinks()) {
+            if (!link.isInSet(jobPosting.getPresentationLinks())) {
+                link.setJob(jobPosting);
+                jobPosting.getPresentationLinks().add(link);
+            }
+        }
+
+        jobPostingDAO.save(jobPosting);
+        return ResponseEntity.ok().build();
+    }
+    
+    // ================================================================================================================
+    // * UPDATE JOB STATUS [PATCH]                                                                                             *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/status/{status}", method = RequestMethod.PATCH)
+    public ResponseEntity<?> updateJobPostingStatus(@PathVariable long id, @PathVariable String status) {
+        JobPosting jobPosting = jobPostingDAO.findOne(id);
+        switch (status) {
+        case "active":
+        	int duration = jobPosting.getDuration();
+        	jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
+        	jobPosting.setNumDaysRemaining(duration);
+            break;
+        case "inactive":
+        	jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
+            break;
+        case "archived":
+        	jobPosting.setStatus(JobPosting.Status.ARCHIVED.toInt());
+            break;
+        case "needs_detailing":
+        	jobPosting.setStatus(JobPosting.Status.NEEDS_DETAILING.toInt());
+            break;
+        default:
+        	return ResponseEntity.badRequest().build();
+        }
         jobPostingDAO.save(jobPosting);
         return ResponseEntity.ok().build();
     }
@@ -109,7 +168,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
-        toDelete.setStatus(JobPosting.Status.DELETED.toInt());
+        toDelete.setStatus(JobPosting.Status.ARCHIVED.toInt());
         jobPostingDAO.save(toDelete);
     }
 
@@ -125,6 +184,34 @@ public class JobPostingController {
 
         return ResponseEntity.ok(jobPostings);
     }
+    
+    // ================================================================================================================
+    // * GET JOBS BY COMPANY AND STATUS [GET]                                                                               *
+    // ================================================================================================================
+    @RequestMapping(value = "/company/{company_id}/status/{status}", method=RequestMethod.GET)
+    public ResponseEntity<List<JobPosting>> getJobPostingsByCompanyAndStatus(@PathVariable long company_id, @PathVariable String status){
+        Company companyWithID = new Company();
+        companyWithID.setId(company_id);
+        
+        List<JobPosting> jobPostings;
+        switch (status) {
+        case "active":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE.toInt());
+            break;
+        case "inactive":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE.toInt());
+            break;
+        case "archived":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED.toInt());
+            break;
+        case "needs_detailing":
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.NEEDS_DETAILING.toInt());
+            break;
+        default:
+            jobPostings = jobPostingDAO.findAllByCompany(companyWithID);
+        }
+        return ResponseEntity.ok(jobPostings);
+    }
 
     // ================================================================================================================
     // * GET OPEN JOBS BY COMPANY [GET]                                                                               *
@@ -136,7 +223,7 @@ public class JobPostingController {
 
         List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
                 companyWithID,
-                JobPosting.Status.OPEN.toInt()
+                JobPosting.Status.ACTIVE.toInt()
         );
 
         return ResponseEntity.ok(jobPostings);
@@ -152,7 +239,7 @@ public class JobPostingController {
 
         List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
                 companyWithID,
-                JobPosting.Status.FULFILLED.toInt()
+                JobPosting.Status.INACTIVE.toInt()
         );
 
         return ResponseEntity.ok(jobPostings);
@@ -168,7 +255,7 @@ public class JobPostingController {
 
         List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
                 companyWithID,
-                JobPosting.Status.DELETED.toInt()
+                JobPosting.Status.ARCHIVED.toInt()
         );
 
         return ResponseEntity.ok(jobPostings);
@@ -193,7 +280,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}/fulfill", method = RequestMethod.POST)
     public void fulfillJobPosting(@PathVariable long id){
         JobPosting toFulfill = jobPostingDAO.findOne(id);
-        toFulfill.setStatus(JobPosting.Status.FULFILLED.toInt());
+        toFulfill.setStatus(JobPosting.Status.INACTIVE.toInt());
         jobPostingDAO.save(toFulfill);
     }
 

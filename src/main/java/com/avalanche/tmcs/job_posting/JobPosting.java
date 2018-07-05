@@ -4,7 +4,6 @@ package com.avalanche.tmcs.job_posting;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,10 +16,11 @@ import java.util.Set;
 @Entity
 @Table(name="job_posting")
 public class JobPosting {
-    public enum Status{
-        OPEN(0),
-        FULFILLED(1),
-        DELETED(2);
+    public enum Status {
+        ACTIVE(0),
+        INACTIVE(1),
+        ARCHIVED(2),
+        NEEDS_DETAILING(3);
 
         private int status;
 
@@ -56,7 +56,9 @@ public class JobPosting {
 
     private double matchThreshold;
 
-    private long duration;
+    private int duration;
+    
+    private int numDaysRemaining;
 
     private String problemStatement;
 
@@ -167,12 +169,20 @@ public class JobPosting {
     }
 
     @NotNull
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
+    }
+    
+    public int getNumDaysRemaining() {
+    	return this.numDaysRemaining;
+    }
+    
+    public void setNumDaysRemaining(int numDays) {
+    	this.numDaysRemaining = numDays;
     }
 
     @NotNull

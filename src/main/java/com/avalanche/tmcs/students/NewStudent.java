@@ -54,6 +54,7 @@ public class NewStudent extends Student {
         student.setSkills(null);
         student.setUser(getUser());
         student.setPresentationLinks(getPresentationLinks());
+        student.setProblemStatements(getProblemStatements());
 
         return student;
     }
