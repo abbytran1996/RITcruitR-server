@@ -33,6 +33,18 @@ public class UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userDAO.save(user);
     }
+    
+    public User addRole(User user, Role.RoleName roleName) {
+    	Role newRole = (roleDAO.findByName(roleName.name().toLowerCase()));
+    	user.addRole(newRole);
+    	return userDAO.save(user);
+    }
+    
+    public User removeRole(User user, Role.RoleName roleName) {
+    	Role roleToRemove = (roleDAO.findByName(roleName.name().toLowerCase()));
+    	user.removeRole(roleToRemove);
+    	return userDAO.save(user);
+    }
 
     public User findByUsername(String username) {
         return userDAO.findByUsername(username);

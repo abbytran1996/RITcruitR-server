@@ -92,6 +92,10 @@ public class DataLoader implements ApplicationRunner {
             roleDAO.save(new Role("admin"));
         }
 
+        if(roleDAO.findByName("primaryrecruiter") == null) {
+            roleDAO.save(new Role("primaryrecruiter"));
+        }
+
         if(addTestData) {
             try {
                 LOG.info("Adding test data...");
