@@ -27,14 +27,16 @@ import java.util.Set;
 public class JobPostingController {
 
     private JobPostingDAO jobPostingDAO;
+    private JobPresentationLinkDAO presentationLinkDAO;
     private RecruiterRepository recruiterRepo;
     private CompanyDAO companyDAO;
 
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, MatchingService matchingService, RecruiterRepository repo, CompanyDAO companyDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, MatchingService matchingService, RecruiterRepository repo, CompanyDAO companyDAO){
         this.jobPostingDAO = jobPostingDAO;
+        this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = repo;
         this.companyDAO = companyDAO;
@@ -111,7 +113,23 @@ public class JobPostingController {
         jobPosting.setDuration(updatedJobPosting.getDuration());
         jobPosting.setProblemStatement(updatedJobPosting.getProblemStatement());
         jobPosting.setVideo(updatedJobPosting.getVideo());
-        jobPosting.setPresentationLinks(updatedJobPosting.getPresentationLinks());
+
+        // Remove existing removed presentation links
+        for (JobPresentationLink link : jobPosting.getPresentationLinks()) {
+            if (!link.isInSet(updatedJobPosting.getPresentationLinks())) {
+                jobPosting.getPresentationLinks().remove(link);
+                presentationLinkDAO.delete(link);
+            }
+        }
+
+        // Add new presentation links
+        for (JobPresentationLink link : updatedJobPosting.getPresentationLinks()) {
+            if (!link.isInSet(jobPosting.getPresentationLinks())) {
+                link.setJob(jobPosting);
+                jobPosting.getPresentationLinks().add(link);
+            }
+        }
+
         jobPostingDAO.save(jobPosting);
         return ResponseEntity.ok().build();
     }

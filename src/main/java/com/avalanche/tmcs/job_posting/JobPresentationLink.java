@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * Created by Ryan Hochmuth on 4/21/2018.
@@ -57,5 +58,18 @@ public class JobPresentationLink {
 
     public void setJob(JobPosting job) {
         this.job = job;
+    }
+
+    /*
+        Returns true if this element is in the given set of JobPresentationLinks.
+     */
+    public boolean isInSet(Set<JobPresentationLink> linkSet) {
+        for (JobPresentationLink inLink : linkSet) {
+            if (inLink.id == this.id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
