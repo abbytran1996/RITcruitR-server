@@ -55,9 +55,9 @@ public class JobPosting {
 
     private boolean hasWorkExperience;
 
-    private double matchThreshold;
+    private double matchThreshold = 0.6;
 
-    private long duration;
+    private long duration = 10;
 
     private String problemStatement;
 

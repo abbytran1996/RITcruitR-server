@@ -94,7 +94,7 @@ public class MatchingService {
     }
 
 
-    private static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
+    public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
         Set<Skill> studentSkills = student.getSkills();
         double matchScore = 0;
         double requiredSkillsScore = weightedPercentageSetIntersection(

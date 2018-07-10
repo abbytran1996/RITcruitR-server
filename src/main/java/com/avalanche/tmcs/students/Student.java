@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.avalanche.tmcs.utils.SetUtilities.getSetIntersection;
@@ -49,13 +50,13 @@ public class Student {
 
     private String website; // TODO: Remove field
 
-    private Set<String> preferredLocations;
+    private Set<String> preferredLocations = new HashSet<>();
     private double preferredLocationsWeight = 0.4f;
 
-    private Set<String> preferredIndustries;
+    private Set<String> preferredIndustries = new HashSet<>();
     private double preferredIndustriesWeight = 0.3f;
 
-    private Set<Integer> preferredCompanySizes;
+    private Set<Integer> preferredCompanySizes = new HashSet<>(Company.Size.DONT_CARE.toInt());
     private double preferredCompanySizeWeight = 0.2f;
 
     private Set<PresentationLink> presentationLinks;
