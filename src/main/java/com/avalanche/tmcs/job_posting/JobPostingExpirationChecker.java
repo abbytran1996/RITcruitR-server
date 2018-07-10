@@ -34,13 +34,13 @@ public class JobPostingExpirationChecker {
     public void automateJobExpiration() {
         LOGGER.info("Checking whether if jobs have expired or not...");
 
-        List<JobPosting> allActiveJobPostings = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE.toInt());
+        List<JobPosting> allActiveJobPostings = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE);
         allActiveJobPostings.stream()
                 .forEach(jobPosting -> {
                     int numDaysRemaining = jobPosting.getNumDaysRemaining();
 
                     if (numDaysRemaining == 0) {
-                        jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
+                        jobPosting.setStatus(JobPosting.Status.INACTIVE);
 
                         List<Match> newlyExpiredMatches = matchDAO.findAllByJobAndApplicationStatus(jobPosting, Match.ApplicationStatus.IN_PROGRESS);
                         newlyExpiredMatches.stream()
@@ -65,7 +65,7 @@ public class JobPostingExpirationChecker {
         JobPosting jobPosting = jobPostingDAO.findOne(jobPostingId);
 
         if (jobPosting != null) {
-            jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
+            jobPosting.setStatus(JobPosting.Status.ACTIVE);
             jobPosting.setNumDaysRemaining(jobPosting.getDuration());
 
             jobPostingDAO.save(jobPosting);
