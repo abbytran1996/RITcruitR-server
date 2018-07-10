@@ -166,10 +166,12 @@ public class JobPostingController {
     // * DELETE JOB [DELETE]                                                                                          *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteJobPosting(@PathVariable long id){
+    public ResponseEntity<?> deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
         toDelete.setStatus(JobPosting.Status.ARCHIVED.toInt());
         jobPostingDAO.save(toDelete);
+
+        return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
@@ -278,10 +280,12 @@ public class JobPostingController {
     // * FULFILL JOB [POST]                                                                                           *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/fulfill", method = RequestMethod.POST)
-    public void fulfillJobPosting(@PathVariable long id){
+    public ResponseEntity<?> fulfillJobPosting(@PathVariable long id){
         JobPosting toFulfill = jobPostingDAO.findOne(id);
         toFulfill.setStatus(JobPosting.Status.INACTIVE.toInt());
         jobPostingDAO.save(toFulfill);
+
+        return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
