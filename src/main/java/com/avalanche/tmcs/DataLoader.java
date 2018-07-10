@@ -8,6 +8,7 @@ import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
+import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.job_posting.NewJobPosting;
 import com.avalanche.tmcs.matching.Location;
@@ -89,6 +90,10 @@ public class DataLoader implements ApplicationRunner {
 
         if(roleDAO.findByName("admin") == null) {
             roleDAO.save(new Role("admin"));
+        }
+
+        if(roleDAO.findByName("primaryrecruiter") == null) {
+            roleDAO.save(new Role("primaryrecruiter"));
         }
 
         if(addTestData) {
@@ -204,7 +209,7 @@ public class DataLoader implements ApplicationRunner {
                 long minGPA = (long) job.get("minGPA");
                 //has work experience
                 //match threshold
-                long duration = (long) job.get("duration");
+                int duration = ((Long) job.get("duration")).intValue();
                 String problemStatement = (String) job.get("problemStatement");
                 String video = (String) job.get("video");
                 

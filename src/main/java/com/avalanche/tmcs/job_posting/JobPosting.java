@@ -57,7 +57,8 @@ public class JobPosting {
 
     private double matchThreshold = 0.6;
 
-    private long duration = 10;
+    private int duration = 10;
+    private int numDaysRemaining;
 
     private String problemStatement;
 
@@ -168,12 +169,20 @@ public class JobPosting {
     }
 
     @NotNull
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public int getNumDaysRemaining() {
+    	return this.numDaysRemaining;
+    }
+
+    public void setNumDaysRemaining(int numDays) {
+    	this.numDaysRemaining = numDays;
     }
 
     @NotNull
