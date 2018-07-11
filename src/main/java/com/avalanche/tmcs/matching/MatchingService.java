@@ -29,7 +29,6 @@ public class MatchingService {
     private StudentDAO studentDAO;
     private JobPostingDAO jobPostingDAO;
 
-    private Executor executor = Executors.newFixedThreadPool(10); //TODO replace with parallelStream
     private final static float REQUIRED_SKILL_WEIGHT = 0.8f;
 
     @Autowired
@@ -130,64 +129,5 @@ public class MatchingService {
             return Optional.empty();
         }
     }
-
-
-    /**
-     * Builds the list of matches between students and potential jobs for that student
-     *
-     * @param student The student to generate matches for
-     * @param matchedSkillsCountMap A count of how many skills the student has in common with each job posting
-     * @return A list of all the Match objects that could be generated
-     */
-    List<Match> buildMatchesList(final Student student, final Map<JobPosting, MatchedSkillsCount> matchedSkillsCountMap) {
-        final List<Match> matches = new ArrayList<>();
-        for (JobPosting posting : matchedSkillsCountMap.keySet()) {
-            MatchedSkillsCount matchedSkillsCount = matchedSkillsCountMap.get(posting);
-            double numRequiredSkills = posting.getRequiredSkills().size();
-            double weight = matchedSkillsCount.requiredSkillsCount * REQUIRED_SKILL_WEIGHT / numRequiredSkills;
-            int numRecommendedSkills = posting.getRecommendedSkills().size();
-            if (numRecommendedSkills > 0) {
-                weight += matchedSkillsCount.recommendedSkillsCount * (1.0f - REQUIRED_SKILL_WEIGHT) / numRecommendedSkills;
-            }
-
-            Match match = new Match();
-            match.setMatchStrength((float) weight);
-            match.setJob(posting);
-            match.setStudent(student);
-            match.setApplicationStatus(Match.ApplicationStatus.NEW);
-            match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
-            matches.add(match);
-        }
-        return matches;
-    }
-
-    /**
-     * Gets all the students with at least one skill on the list of skills and counts how many skills that student has
-     *
-     * @param skills The list of skills to look for students with
-     * @return A map from students who have at least one skill on the list to the number of skills on the list they have
-     */
-    Map<Student, Integer> countStudentsWithSkillInList(final Iterable<Skill> skills) {
-        final Map<Student, Integer> skillsCount = new HashMap<>();
-        for (Skill skill : skills) {
-            Set<Student> studentsWithSkill = studentDAO.findAllBySkillsContains(skill);
-
-            for (Student s : studentsWithSkill) {
-                Integer val = 0;
-                if (skillsCount.containsKey(s)) {
-                    val = skillsCount.get(s);
-                }
-
-                skillsCount.put(s, val + 1);
-            }
-        }
-        return skillsCount;
-    }
-
-    static class MatchedSkillsCount {
-        int requiredSkillsCount = 0;
-        int recommendedSkillsCount = 0;
-    }
-
 }
 
