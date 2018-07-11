@@ -48,10 +48,10 @@ public class JobPosting {
     private Set<Skill> requiredSkills;
 
     private Set<Skill> recommendedSkills;
-    private double recommendedSkillsWeight;
+    private double recommendedSkillsWeight = 0.2;
 
     private double minGPA;
-    private double minGPAWeight = 0.3f;
+    private double minGPAWeight = 0.3;
 
     private boolean hasWorkExperience;
 
@@ -236,7 +236,7 @@ public class JobPosting {
 
     public double calculateJobFiltersScore(Student student){
         boolean gpaMatch = student.getGpa() >= minGPA;
-        return minGPAWeight * 1.0;
+        return gpaMatch? minGPAWeight * 1.0 : 0;
     }
 
     @Override

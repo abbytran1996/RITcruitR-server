@@ -178,27 +178,33 @@ public class Student {
     public Set<String> getPreferredLocations() {
         return preferredLocations;
     }
-
     public void setPreferredLocations(Set<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
+    }
+    public void setPreferredLocationsWeight(double preferredLocationsWeight) {
+        this.preferredLocationsWeight = preferredLocationsWeight;
     }
 
     @ElementCollection
     public Set<String> getPreferredIndustries() {
         return preferredIndustries;
     }
-
     public void setPreferredIndustries(Set<String> preferredIndustries) {
         this.preferredIndustries = preferredIndustries;
+    }
+    public void setPreferredIndustriesWeight(double preferredIndustriesWeight) {
+        this.preferredIndustriesWeight = preferredIndustriesWeight;
     }
 
     @ElementCollection
     public Set<Integer> getPreferredCompanySizes() {
         return preferredCompanySizes;
     }
-
     public void setPreferredCompanySizes(Set<Integer> preferredCompanySizes) {
         this.preferredCompanySizes = preferredCompanySizes;
+    }
+    public void setPreferredCompanySizeWeight(double preferredCompanySizeWeight) {
+        this.preferredCompanySizeWeight = preferredCompanySizeWeight;
     }
 
     @ElementCollection
@@ -231,7 +237,8 @@ public class Student {
                 !getSetIntersection(preferredLocations, job.getLocations()).isEmpty();
         if(locationMatch){ sumScores += preferredLocationsWeight; }
 
-        boolean sizeMatch = !preferredCompanySizes.contains(Company.Size.DONT_CARE.toInt()) ||
+        boolean sizeMatch = preferredCompanySizes.isEmpty() ||
+                preferredCompanySizes.contains(Company.Size.DONT_CARE.toInt()) ||
                 preferredCompanySizes.contains(job.getCompany().getSize());
         if(sizeMatch){ sumScores += preferredCompanySizeWeight; }
 

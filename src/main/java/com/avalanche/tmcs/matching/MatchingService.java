@@ -96,7 +96,6 @@ public class MatchingService {
 
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
         Set<Skill> studentSkills = student.getSkills();
-        double matchScore = 0;
         double requiredSkillsScore = weightedPercentageSetIntersection(
                 job.getRequiredSkills(),
                 studentSkills,
@@ -118,7 +117,8 @@ public class MatchingService {
 
 
         double normalizedWeightDenominator = REQUIRED_SKILL_WEIGHT+recommendedSkillsWeight+jobFilterWeight+studentPreferencesWeight;
-        matchScore = (requiredSkillsScore+recommendedSkillsScore+jobFilterScore+studentPreferencesScore) / normalizedWeightDenominator;
+        double matchScore = (requiredSkillsScore+recommendedSkillsScore+jobFilterScore+studentPreferencesScore) /
+                normalizedWeightDenominator;
 
         if(matchScore >= job.getMatchThreshold()){
             Match newMatch = new Match()
