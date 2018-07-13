@@ -44,17 +44,29 @@ public class CompanyController {
     // * GET COMPANY BY ID [GET]                                                                                      *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Company getCompany(@PathVariable long id){
+    public ResponseEntity<Company> getCompany(@PathVariable long id){
         //validateCompanyId(id);
-        return companyDAO.findOne(id);
+        Company company = companyDAO.findOne(id);
+
+        if (company == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(company);
     }
 
     // ================================================================================================================
     // * GET COMPANY BY NAME [GET]                                                                                    *
     // ================================================================================================================
     @RequestMapping(value = "/byName/{companyName}", method = RequestMethod.GET)
-    public Company getCompanyByName(@PathVariable String companyName) {
-        return companyDAO.findByCompanyName(companyName);
+    public ResponseEntity<Company> getCompanyByName(@PathVariable String companyName) {
+        Company company = companyDAO.findByCompanyName(companyName);
+
+        if (company == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(company);
     }
 
     // ================================================================================================================
@@ -116,8 +128,10 @@ public class CompanyController {
     // * GET COMPANY PRESENTATION LINKS [GET]                                                                         *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/links", method = RequestMethod.GET)
-    public Set<PresentationLink> getCompanyPresentationLinks(@PathVariable long id){
-        return companyDAO.findOne(id).getPresentationLinks();
+    public ResponseEntity<Set<PresentationLink>> getCompanyPresentationLinks(@PathVariable long id){
+        Set<PresentationLink> presentationLinks = companyDAO.findOne(id).getPresentationLinks();
+
+        return ResponseEntity.ok(presentationLinks);
     }
 
     // ================================================================================================================
