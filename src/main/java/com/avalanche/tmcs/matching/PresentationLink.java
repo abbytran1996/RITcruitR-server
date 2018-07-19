@@ -17,6 +17,8 @@ public class PresentationLink {
     private String title;
 
     private String link;
+    
+    private String description = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,6 +46,15 @@ public class PresentationLink {
 
     public void setLink(String link) {
         this.link = link;
+    }
+    
+    @NotNull
+    public String getDescription() {
+    	return description;
+    }
+    
+    public void setDescription(String description) {
+    	this.description = description;
     }
 
     @Override
