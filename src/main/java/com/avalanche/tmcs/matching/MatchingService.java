@@ -177,18 +177,31 @@ public class MatchingService {
     	Set<Skill> requiredSkills = job.getRequiredSkills();
     	Set<Skill> nthSkills = job.getNiceToHaveSkills();
     	Set<Skill> studentSkills = student.getSkills();
-    	requiredSkills.retainAll(studentSkills);
-    	match.setMatchedRequiredSkills(requiredSkills);
-    	nthSkills.retainAll(studentSkills);
-    	match.setMatchedNiceToHaveSkills(nthSkills);
+    	if (studentSkills != null && studentSkills.size() > 0) {
+        	requiredSkills.retainAll(studentSkills);
+        	match.setMatchedRequiredSkills(requiredSkills);
+        	nthSkills.retainAll(studentSkills);
+        	match.setMatchedNiceToHaveSkills(nthSkills);
+    	} else {
+    		match.setMatchedRequiredSkills(new HashSet<Skill>());
+    		match.setMatchedNiceToHaveSkills(new HashSet<Skill>());
+    	}
     	Set<String> locations = job.getLocations();
     	Set<String> studentPreferredLocations = student.getPreferredLocations();
-    	locations.retainAll(studentPreferredLocations);
-    	match.setMatchedLocations(locations);
+    	if (studentPreferredLocations != null && studentPreferredLocations.size() > 0) {
+        	locations.retainAll(studentPreferredLocations);
+        	match.setMatchedLocations(locations);
+    	} else {
+    		match.setMatchedLocations(new HashSet<String>());
+    	}
     	Set<String> industries = job.getCompany().getIndustries();
     	Set<String> studentPreferredIndustries = student.getPreferredIndustries();
-    	industries.retainAll(studentPreferredIndustries);
-    	match.setMatchedIndustries(industries);
+    	if (studentPreferredIndustries != null && studentPreferredIndustries.size() > 0) {
+        	industries.retainAll(studentPreferredIndustries);
+        	match.setMatchedIndustries(industries);
+    	} else {
+    		match.setMatchedIndustries(new HashSet<String>());
+    	}
     	return match;
     }
 
