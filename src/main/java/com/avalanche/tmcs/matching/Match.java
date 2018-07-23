@@ -207,4 +207,15 @@ public class Match {
         setTimeLastUpdated(new Date(new java.util.Date().getTime()));
     }
 
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (!(o instanceof Match)) return false;
+
+        Match otherMatch = (Match) o;
+        if (this.getJob() != otherMatch.getJob()){ return false; }
+        if (this.getStudent() != otherMatch.getStudent()){ return false; }
+        return this.applicationStatus == otherMatch.applicationStatus;
+    }
+
 }
