@@ -6,6 +6,7 @@ import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -56,8 +57,9 @@ public class JobPosting {
 
     private double matchThreshold;
 
+    @Max(10)
     private int duration;
-    
+
     private int numDaysRemaining;
 
     private String problemStatement;
