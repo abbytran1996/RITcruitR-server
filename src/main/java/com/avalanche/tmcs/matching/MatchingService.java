@@ -44,8 +44,9 @@ public class MatchingService {
      * @param student The student to register
      */
     public void registerStudent(final Student student) {
-        final List<Match> matches = generateMatchesForStudent(student);
-        matchDAO.save(matches);
+        final List<Match> oldMatches = matchDAO.findAllByStudent(student);
+        final List<Match> newMatches = generateMatchesForStudent(student);
+        matchDAO.save(dedupeMatchListPreservingMatchStatus(newMatches, oldMatches));
     }
 
     /**
@@ -54,8 +55,9 @@ public class MatchingService {
      * @param posting The job posting to register
      */
     public void registerJobPosting(final JobPosting posting) {
-        final List<Match> matches = generateMatchesForJob(posting);
-        matchDAO.save(matches);
+        final List<Match> oldMatches = matchDAO.findAllByJob(posting);
+        final List<Match> newMatches = generateMatchesForJob(posting);
+        matchDAO.save(dedupeMatchListPreservingMatchStatus(newMatches, oldMatches));
     }
 
     public List<Match> generateMatchesForStudent(final Student student) {
@@ -66,8 +68,9 @@ public class MatchingService {
                 .map(Optional::get)
                 .collect(Collectors.toList());
 
-        // re-add matches that are already in or past the FINAL stage
+        // re-add matches that are already in or past the FINAL stage (even though they weren't re-matched)
         final Set<Match> preexistingFinalMatches = matchDAO.findAllByStudent(student).parallelStream()
+                .filter(match -> !matchesToReturn.contains(match)) // don't re-add duplicate matches
                 .filter(match -> match.getCurrentPhase() == Match.CurrentPhase.FINAL ||
                         match.getCurrentPhase() == Match.CurrentPhase.ARCHIVED)
                 .collect(Collectors.toSet());
@@ -83,8 +86,9 @@ public class MatchingService {
                 .map(Optional::get)
                 .collect(Collectors.toList());
 
-        // re-add matches that are already in or past the FINAL stage
+        // re-add matches that are already in or past the FINAL stage (even though they weren't re-matched)
         Set<Match> preexistingFinalMatches = matchDAO.findAllByJob(job).parallelStream()
+                .filter(match -> !matchesToReturn.contains(match)) // don't re-add duplicate matches
                 .filter(match -> match.getCurrentPhase() == Match.CurrentPhase.FINAL ||
                         match.getCurrentPhase() == Match.CurrentPhase.ARCHIVED)
                 .collect(Collectors.toSet());
@@ -128,6 +132,23 @@ public class MatchingService {
         } else {
             return Optional.empty();
         }
+    }
+
+    private static List<Match> dedupeMatchListPreservingMatchStatus(List<Match> newMatches, List<Match> oldMatches){
+        // get list of duplicate matches
+        List<Match> duplicateMatches = oldMatches.parallelStream()
+                .filter(newMatches::contains)
+                .collect(Collectors.toList());
+
+        // replace the duplicated match in the new list to the old one
+        int dupedNewMatchLocation;
+        for(Match duplicate: duplicateMatches){
+            dupedNewMatchLocation = newMatches.indexOf(duplicate);
+            if(dupedNewMatchLocation != -1){
+                newMatches.set(dupedNewMatchLocation, duplicate);
+            }
+        }
+        return newMatches;
     }
 }
 
