@@ -77,10 +77,7 @@ public class MatchingServiceTest {
 
     @Test
     public void testBuildMatch_badStudent() {
-        JobPosting sampleJobPosting = allJobPostings.get(0);
-        sampleJobPosting.setRequiredSkills(requiredSkills);
-        sampleJobPosting.setRecommendedSkills(recommendedSkills);
-        sampleJobPosting.setMatchThreshold(0.8);
+        JobPosting sampleJobPosting = allJobPostings.get(1);
         Student sampleStudent = allStudents.iterator().next();
         sampleStudent.setGpa(1.5);
 
@@ -97,7 +94,7 @@ public class MatchingServiceTest {
 
     @Test
     public void testBuildMatches_buildMatchesForJob() {
-        JobPosting post = allJobPostings.get(0);
+        JobPosting post = allJobPostings.get(2);
         List<Match> matches = matchingService.generateMatchesForJob(post);
         Assert.assertFalse(matches.isEmpty());
     }
@@ -108,7 +105,7 @@ public class MatchingServiceTest {
 
     private StudentDAO makeMockStudentDAO() {
         StudentDAO studentDAO = mock(StudentDAO.class);
-        when(studentDAO.findAll(any())).thenReturn(makeStudents());
+        when(studentDAO.findAll()).thenReturn(makeStudents());
         return studentDAO;
     }
 
@@ -182,6 +179,15 @@ public class MatchingServiceTest {
         company.setCompanyName("Company C");
         post.setCompany(company);
         post.setMatchThreshold(0.3);
+        post.setRecommendedSkills(requiredSkills);
+        post.setCompany(company);
+        allJobPostings.add(post);
+
+        post = new JobPosting();
+        post.setPositionTitle("Post D");
+        company.setCompanyName("Company D");
+        post.setCompany(company);
+        post.setMatchThreshold(0.1);
         post.setRecommendedSkills(requiredSkills);
         post.setCompany(company);
         allJobPostings.add(post);
