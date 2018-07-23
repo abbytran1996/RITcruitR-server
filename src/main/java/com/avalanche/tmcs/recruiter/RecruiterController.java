@@ -44,16 +44,28 @@ public class RecruiterController {
     // * GET RECRUITER BY ID [GET]                                                                                    *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.GET )
-    public Recruiter getEmployer(@PathVariable long id) {
-        return recruiterRepo.findOne(id);
+    public ResponseEntity<Recruiter> getEmployer(@PathVariable long id) {
+        Recruiter recruiter = recruiterRepo.findOne(id);
+
+        if (recruiter == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(recruiter);
     }
 
     // ================================================================================================================
     // * GET RECRUITER BY EMAIL [GET]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
-    public Recruiter getRecruiterByEmail(@PathVariable String email) {
-        return recruiterRepo.findByEmail(email);
+    public ResponseEntity<Recruiter> getRecruiterByEmail(@PathVariable String email) {
+        Recruiter recruiter = recruiterRepo.findByEmail(email);
+
+        if (recruiter == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(recruiter);
     }
 
     // ================================================================================================================
