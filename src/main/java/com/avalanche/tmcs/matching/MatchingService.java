@@ -165,7 +165,7 @@ public class MatchingService {
             match.setStudent(student);
             match.setApplicationStatus(Match.ApplicationStatus.NEW);
             match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
-            match = storeMatchCriteria(match);
+//            match = storeMatchCriteria(match);
             matches.add(match);
         }
         return matches;
