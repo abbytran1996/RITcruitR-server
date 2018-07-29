@@ -111,6 +111,22 @@ public class DataLoader implements ApplicationRunner {
             }
         }
     }
+    
+    private void updateMajorsFromPortfolium() {
+    	//Need to get response from portfolium API first
+    	String portfoliumMajors = "";
+    	JSONParser jsonParser = new JSONParser();
+    	try {
+			JSONArray arr = (JSONArray) jsonParser.parse(portfoliumMajors);
+	    	for (Object majorObject : arr) {
+	    		JSONObject major = (JSONObject) majorObject;
+	    		
+	    	}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 
     private void loadStudents(String fileName) throws IOException {
         try {
