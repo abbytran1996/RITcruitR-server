@@ -171,6 +171,8 @@ public class Match {
         this.studentPresentationLinks = studentPresentationLinks;
     }
     
+    @NotNull
+    @ElementCollection
     public Set<Skill> getMatchedRequiredSkills() {
     	return this.matchedRequiredSkills;
     }
@@ -179,6 +181,8 @@ public class Match {
     	this.matchedRequiredSkills = matchedSkills;
     }
     
+    @NotNull
+    @ElementCollection
     public Set<Skill> getMatchedNiceToHaveSkills() {
     	return this.matchedNiceToHaveSkills;
     }
@@ -187,6 +191,8 @@ public class Match {
     	this.matchedNiceToHaveSkills = matchedSkills;
     }
     
+    @NotNull
+    @ElementCollection
     public Set<String> getMatchedLocations() {
     	return this.matchedLocations;
     }
@@ -195,6 +201,8 @@ public class Match {
     	this.matchedLocations = matchedLocations;
     }
     
+    @NotNull
+    @ElementCollection
     public Set<String> getMatchedIndustries() {
     	return this.matchedIndustries;
     }
