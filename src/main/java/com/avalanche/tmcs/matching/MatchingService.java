@@ -156,7 +156,10 @@ public class MatchingService {
         JobPosting job = match.getJob();
         Set<Skill> requiredSkills = job.getRequiredSkills();
         Set<Skill> nthSkills = job.getRecommendedSkills();
-        Set<Skill> studentSkills = student.getSkills();
+        Set<Skill> studentSkills= new HashSet<Skill>();
+    	for (Skill studentSkill : student.getSkills()) {
+    		studentSkills.add(studentSkill);
+    	}
         if (studentSkills != null && requiredSkills != null && nthSkills != null) {
             Set<Skill> requiredSkillsCopy = new HashSet<Skill>(requiredSkills);
             Set<Skill> nthSkillsCopy = new HashSet<Skill>(nthSkills);
