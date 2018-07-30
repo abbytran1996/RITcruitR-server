@@ -147,9 +147,11 @@ public class JobPostingController {
         	int duration = jobPosting.getDuration();
         	jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
         	jobPosting.setNumDaysRemaining(duration);
+            matchingService.reactivateExpiredMatchesForJob(jobPosting);
             break;
         case "inactive":
         	jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
+        	matchingService.expireNonFinalMatchesForJob(jobPosting);
             break;
         case "archived":
         	jobPosting.setStatus(JobPosting.Status.ARCHIVED.toInt());

@@ -37,7 +37,7 @@ public class Match {
         // Either the student or the recruiter has rejected this application
         REJECTED,
 
-        // One of the parties took too long to respond
+        // One of the parties took too long to respond, or the job in question was deactivated
         TIMED_OUT
     }
 
@@ -234,6 +234,29 @@ public class Match {
     @Enumerated(EnumType.STRING)
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
+    }
+
+    public Match expireIfNotFinal(){
+        // don't reset applicants who have already been accepted
+        if(this.applicationStatus != ApplicationStatus.ACCEPTED){
+            this.applicationStatus = ApplicationStatus.TIMED_OUT;
+        }
+
+        // don't make users who have already reached the final phase start over
+        if(this.currentPhase != CurrentPhase.FINAL){
+            this.currentPhase = CurrentPhase.NONE;
+        }
+        return this;
+    }
+
+    public Match unexpireIfNotFinal(){
+        if(this.applicationStatus != ApplicationStatus.ACCEPTED){
+            this.applicationStatus = ApplicationStatus.IN_PROGRESS;
+        }
+        if(this.currentPhase != CurrentPhase.FINAL){
+            this.currentPhase = CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
+        }
+        return this;
     }
 
     public void setApplicationStatus(final ApplicationStatus applicationStatus) {
