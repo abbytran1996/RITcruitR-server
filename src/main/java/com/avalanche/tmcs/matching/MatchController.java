@@ -1,17 +1,16 @@
 package com.avalanche.tmcs.matching;
 
-        import com.avalanche.tmcs.job_posting.JobPosting;
-        import com.avalanche.tmcs.job_posting.JobPostingDAO;
-        import com.avalanche.tmcs.students.Student;
-        import com.avalanche.tmcs.students.StudentDAO;
-        import org.springframework.web.bind.annotation.RequestMapping;
-        import org.springframework.web.bind.annotation.RestController;
-        import com.avalanche.tmcs.auth.*;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.http.ResponseEntity;
-        import org.springframework.web.bind.annotation.*;
+import com.avalanche.tmcs.job_posting.JobPosting;
+import com.avalanche.tmcs.job_posting.JobPostingDAO;
+import com.avalanche.tmcs.students.Student;
+import com.avalanche.tmcs.students.StudentDAO;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.avalanche.tmcs.auth.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-        import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
         import java.util.Set;
@@ -73,7 +72,6 @@ public class MatchController {
                 matchingService.registerStudent(student);
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.NONE);
         }
-
         return ResponseEntity.ok(matches);
     }
     

@@ -54,7 +54,6 @@ public class MatchingService {
         final List<Match> oldMatches = matchDAO.findAllByJob(posting);
         List<Match> newMatches = generateMatchesForJob(posting);
         newMatches = deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches);
-        resetAllMatchesForJob(posting, newMatches)
         resetAllMatchesForJob(posting, newMatches);
     }
 
