@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URL;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -72,13 +73,13 @@ public class Match {
 
     private Set<MatchPresentationLink> studentPresentationLinks;
     
-    private Set<Skill> matchedRequiredSkills;
+    private Set<Skill> matchedRequiredSkills = new HashSet<Skill>();
     
-    private Set<Skill> matchedNiceToHaveSkills;
+    private Set<Skill> matchedNiceToHaveSkills = new HashSet<Skill>();
     
-    private Set<String> matchedIndustries;
+    private Set<String> matchedIndustries = new HashSet<String>();
     
-    private Set<String> matchedLocations;
+    private Set<String> matchedLocations = new HashSet<String>();
 
     private boolean viewedSinceLastUpdate = false;
 
