@@ -48,6 +48,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimerTask;
 
 /**
  * Gives the database its initial data
@@ -114,9 +115,15 @@ public class DataLoader implements ApplicationRunner {
                 String skillFilePath = new File("skills.json").getAbsolutePath();
                 String jobFilePath = new File("jobs.json").getAbsolutePath();
                 String locationsFilePath = new File("locations.json").getAbsolutePath();
+                String majorsFilePath = new File("majors.json").getAbsolutePath();
+                String universitiesFilePath = new File("universities.json").getAbsolutePath();
+                String industriesFilePath = new File("industries.json").getAbsolutePath();
                 loadSkills(skillFilePath);
                 loadJobs(jobFilePath);
                 loadLocations(locationsFilePath);
+                loadMajors(majorsFilePath);
+                loadUniversities(universitiesFilePath);
+                loadIndustries(industriesFilePath);
             } catch (IOException e) {
                 LOG.warn("IOException reached while trying to load the test data. Please check the filename for any typos.", e);
             }
@@ -268,12 +275,12 @@ public class DataLoader implements ApplicationRunner {
 //                matchingService.registerJobPosting(savedJobPosting);
             }
 //            Iterable<JobPosting> savedJobs = jobPostingDAO.save(jobsToAdd);
-        } catch (ParseException e) {
+        } catch (ParseException | IOException e) {
             LOG.warn(e.getMessage());
         }
     }
     
-    private void loadLocations (String fileName) throws IOException {
+    private void loadLocations (String fileName) {
         try {
             JSONParser jsonParser = new JSONParser();
             JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
@@ -289,17 +296,113 @@ public class DataLoader implements ApplicationRunner {
                 Location newLocation = new Location(newLocationName);
                 boolean isLocationInDb = false;
                 for (Location lid : locationsInDb) {
-                	if (lid.getName().equals(newLocation.getName())) {
+                	if (lid.getName().equalsIgnoreCase(newLocation.getName())) {
                 		isLocationInDb = true;
                 		break;
                 	}
                 }
-                //save newLocation to db
+                //save new location to db
                 if (!isLocationInDb) {
                     locationsToAdd.add(newLocation);
                 }
             }
             Iterable<Location> savedLocations = locationDAO.save(locationsToAdd);
+        } catch (ParseException | IOException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+    
+    private void loadMajors (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            Iterable<Major> iterableMajorsInDb = majorDAO.findAll();
+            List<Major> majorsInDb = new ArrayList<>();
+            iterableMajorsInDb.forEach(majorsInDb::add);
+            List<Major> majorsToAdd = new ArrayList<>();
+
+            for (Object majorObject : arr) {
+                JSONObject major = (JSONObject) majorObject;
+                String newMajorName = (String) major.get("name");
+                Major newMajor = new Major(newMajorName);
+                boolean isMajorInDb = false;
+                for (Major dbMajor : majorsInDb) {
+                	if (dbMajor.getName().equalsIgnoreCase(newMajor.getName())) {
+                		isMajorInDb = true;
+                		break;
+                	}
+                }
+                //save new major to db
+                if (!isMajorInDb) {
+                	majorsToAdd.add(newMajor);
+                }
+            }
+            Iterable<Major> savedMajors = majorDAO.save(majorsToAdd);
+        } catch (ParseException | IOException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+    
+    private void loadUniversities (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            Iterable<University> iterableUniversitiesInDb = universityDAO.findAll();
+            List<University> universitiesInDb = new ArrayList<>();
+            iterableUniversitiesInDb.forEach(universitiesInDb::add);
+            List<University> universitiesToAdd = new ArrayList<>();
+
+            for (Object universityObject : arr) {
+                JSONObject university = (JSONObject) universityObject;
+                String newUniversityName = (String) university.get("name");
+                University newUniversity = new University(newUniversityName);
+                boolean isUniversityInDb = false;
+                for (University dbUniversity : universitiesInDb) {
+                	if (dbUniversity.getName().equalsIgnoreCase(newUniversity.getName())) {
+                		isUniversityInDb = true;
+                		break;
+                	}
+                }
+                //save new university to db
+                if (!isUniversityInDb) {
+                	universitiesToAdd.add(newUniversity);
+                }
+            }
+            Iterable<University> savedUniversities = universityDAO.save(universitiesToAdd);
+        } catch (ParseException | IOException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+    
+    private void loadIndustries (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            Iterable<Industry> iterableIndustriesInDb = industryDAO.findAll();
+            List<Industry> industriesInDb = new ArrayList<>();
+            iterableIndustriesInDb.forEach(industriesInDb::add);
+            List<Industry> industriesToAdd = new ArrayList<>();
+
+            for (Object industryObject : arr) {
+                JSONObject industry = (JSONObject) industryObject;
+                String newIndustryName = (String) industry.get("name");
+                Industry newIndustry = new Industry(newIndustryName);
+                boolean isIndustryInDb = false;
+                for (Industry dbIndustry : industriesInDb) {
+                	if (dbIndustry.getName().equalsIgnoreCase(newIndustry.getName())) {
+                		isIndustryInDb = true;
+                		break;
+                	}
+                }
+                //save newLocation to db
+                if (!isIndustryInDb) {
+                	industriesToAdd.add(newIndustry);
+                }
+            }
+            Iterable<Industry> savedIndustries = industryDAO.save(industriesToAdd);
         } catch (ParseException e) {
             LOG.warn(e.getMessage());
         }
@@ -387,5 +490,43 @@ public class DataLoader implements ApplicationRunner {
     private Company.Size randomSize(Faker faker){
         List<Company.Size> sizes= Arrays.asList(Company.Size.values());
         return sizes.get(faker.number().numberBetween(0,sizes.size()));
+    }
+    
+    class PortfoliumSkillsUpdater extends TimerTask{
+
+		@Override
+		public void run() {
+	        try {
+	        	List<Skill> savedSkills = new ArrayList<>();
+	            List<Skill> skillsToSave = new ArrayList<>();
+	            skillDAO.findAll().forEach(savedSkills::add);
+
+	            String portfoliumSkillsResponse = "";
+	            JSONParser jsonParser = new JSONParser();
+	            JSONArray arr = (JSONArray) jsonParser.parse(portfoliumSkillsResponse);
+	            for (Object skillObject : arr) {
+	                JSONObject skill = (JSONObject) skillObject;
+	                String newSkillName = (String) skill.get("name");
+	                Skill newSkill = new Skill(newSkillName);
+
+	                // ensure there aren't any duplicates
+	                boolean dbContainsSkill = false;
+	                for (Skill savedSkill : savedSkills) {
+	                	if (savedSkill.getName().equalsIgnoreCase(newSkill.getName())) {
+	                		dbContainsSkill = true;
+	                		break;
+	                	}
+	                }
+	                if (!dbContainsSkill) {
+	                	skillsToSave.add(newSkill);
+	                }
+	            }
+	            
+	            skillDAO.save(skillsToSave);
+	        } catch (ParseException e) {
+	            LOG.warn("Unable to parse/retrieve trending skills from Portfolium", e);
+	        }
+		}
+    	
     }
 }
