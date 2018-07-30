@@ -283,6 +283,20 @@ public class StudentsController {
         return ResponseEntity.ok(ourstudent);
     }
 
+    // ================================================================================================================
+    // * COMPLETE STUDENT SETUP [GET]                                                                                 *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/completesetup", method = RequestMethod.GET)
+    public ResponseEntity<Student> completeStudentSetup(@PathVariable long id){
+        Student ourstudent = studentDAO.findOne(id);
+        if(ourstudent == null) {
+            return ResponseEntity.notFound().build();
+        }
+        ourstudent.setIsSetup(true);
+        studentDAO.save(ourstudent);
+        return ResponseEntity.ok(ourstudent);
+    }
+
     /*
         Validate that a student with the given id exists.
      */
