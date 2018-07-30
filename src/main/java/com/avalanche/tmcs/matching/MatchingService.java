@@ -52,7 +52,8 @@ public class MatchingService {
     public void registerJobPosting(final JobPosting posting) {
         final List<Match> oldMatches = matchDAO.findAllByJob(posting);
         final List<Match> newMatches = generateMatchesForJob(posting);
-        matchDAO.save(deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches));
+        deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches).parallelStream()
+                .forEach(match -> matchDAO.save(match));
     }
 
     public List<Match> generateMatchesForStudent(final Student student) {
