@@ -7,6 +7,7 @@ import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.students.Student;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class JobPosting {
             this.status = status;
         }
 
-        public int toInt(){
+        int toInt(){
             return status;
         }
     }
@@ -57,7 +58,9 @@ public class JobPosting {
 
     private double matchThreshold = 0.6;
 
+    @Max(10)
     private int duration = 10;
+
     private int numDaysRemaining;
 
     private String problemStatement;
@@ -176,11 +179,11 @@ public class JobPosting {
     public void setDuration(int duration) {
         this.duration = duration;
     }
-
+    
     public int getNumDaysRemaining() {
     	return this.numDaysRemaining;
     }
-
+    
     public void setNumDaysRemaining(int numDays) {
     	this.numDaysRemaining = numDays;
     }

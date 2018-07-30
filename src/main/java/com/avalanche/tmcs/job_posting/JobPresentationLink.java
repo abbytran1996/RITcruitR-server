@@ -20,6 +20,8 @@ public class JobPresentationLink {
     private String link;
 
     private JobPosting job;
+    
+    private String description = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,6 +60,15 @@ public class JobPresentationLink {
 
     public void setJob(JobPosting job) {
         this.job = job;
+    }
+    
+    @NotNull
+    public String getDescription() {
+    	return description;
+    }
+    
+    public void setDescription(String description) {
+    	this.description = description;
     }
 
     /*
