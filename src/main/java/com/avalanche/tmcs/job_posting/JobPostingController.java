@@ -81,6 +81,7 @@ public class JobPostingController {
                 link.setJob(savedJobPosting);
             }
             savedJobPosting.setPresentationLinks(newJobPosting.getPresentationLinks());
+            savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
             jobPostingDAO.save(savedJobPosting);
 
             matchingService.registerJobPosting(savedJobPosting);
@@ -115,18 +116,20 @@ public class JobPostingController {
 
         // Remove existing removed presentation links
         for (JobPresentationLink link : jobPosting.getPresentationLinks()) {
-            if (!link.isInSet(updatedJobPosting.getPresentationLinks())) {
+            if (updatedJobPosting.getPresentationLinks() != null && !link.isInSet(updatedJobPosting.getPresentationLinks())) {
                 jobPosting.getPresentationLinks().remove(link);
                 presentationLinkDAO.delete(link);
             }
         }
 
         // Add new presentation links
-        for (JobPresentationLink link : updatedJobPosting.getPresentationLinks()) {
-            if (!link.isInSet(jobPosting.getPresentationLinks())) {
-                link.setJob(jobPosting);
-                jobPosting.getPresentationLinks().add(link);
-            }
+        if (updatedJobPosting.getPresentationLinks() != null) {
+	        for (JobPresentationLink link : updatedJobPosting.getPresentationLinks()) {
+	            if (!link.isInSet(jobPosting.getPresentationLinks())) {
+	                link.setJob(jobPosting);
+	                jobPosting.getPresentationLinks().add(link);
+	            }
+	        }
         }
 
         jobPostingDAO.save(jobPosting);
