@@ -16,42 +16,14 @@ import java.util.Set;
 @Table(name="company")
 public class Company {
     public enum Status {
-        AWAITING_APPROVAL(0),
-        APPROVED(1),
-        DENIED(2),
-        ARCHIVED(3);
-
-        private int status;
-
-        Status(int status) {
-            this.status = status;
-        }
-
-        public int toInt(){
-            return status;
-        }
+        AWAITING_APPROVAL, APPROVED, DENIED, ARCHIVED
     }
 
     public enum Size {
-        DONT_CARE(0),
-        STARTUP(1),
-        SMALL(2),
-        MEDIUM(3),
-        LARGE(4),
-        HUGE(5);
-
-        private int companySize;
-
-        Size(int status){
-            this.companySize = status;
-        }
-
-        public int toInt(){
-            return companySize;
-        }
+        DONT_CARE, STARTUP, SMALL, MEDIUM, LARGE, HUGE
     }
 
-    public static int getIntStatusFromString(String statusString){
+    public static Status getStatusFromString(String statusString){
         Status companyStatus;
         if(StringUtils.equalsIgnoreCase("archived", statusString))
             companyStatus = Status.ARCHIVED;
@@ -62,19 +34,19 @@ public class Company {
         else
             companyStatus = Status.AWAITING_APPROVAL;
 
-        return companyStatus.toInt();
+        return companyStatus;
 
     }
 
     private long id;
 
-    private int status = Status.AWAITING_APPROVAL.toInt();
+    private Status status = Status.AWAITING_APPROVAL;
 
     private String companyName;
 
     private Set<String> locations;
 
-    private int size;
+    private Size size;
 
     private Set<String> industries;
 
@@ -130,16 +102,16 @@ public class Company {
     }
 
     @NotNull
-    public int getSize(){return size;}
+    public Size getSize(){return size;}
 
-    public void setSize(int size) {this.size = size;}
+    public void setSize(Size size) {this.size = size;}
 
     @NotNull
-    public int getStatus() {
+    public Status getStatus() {
         return this.status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

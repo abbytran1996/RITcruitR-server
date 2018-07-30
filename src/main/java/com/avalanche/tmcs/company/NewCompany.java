@@ -10,13 +10,12 @@ public class NewCompany extends Company {
     public String companyName;
     public Set<String> locations;
     public Set<String> industries;
-    public int size;
+    public Size size;
     public String websiteURL;
 
     public String getCompanyName() {
         return companyName;
     }
-
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
@@ -24,7 +23,6 @@ public class NewCompany extends Company {
     public Set<String> getLocations() {
         return locations;
     }
-
     public void setLocations(Set<String> locations) {
         this.locations = locations;
     }
@@ -32,23 +30,18 @@ public class NewCompany extends Company {
     public Set<String> getIndustries() {
         return industries;
     }
-
     public void setIndustries(Set<String> industries) {
         this.industries = industries;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
+    public Size getSize() { return size; }
+    public void setSize(Size size) {
         this.size = size;
     }
 
     public String getWebsiteURL() {
         return websiteURL;
     }
-
     public void setWebsiteURL(String websiteURL) {
         this.websiteURL = websiteURL;
     }
@@ -61,7 +54,7 @@ public class NewCompany extends Company {
         company.setIndustries(getIndustries());
         company.setSize(getSize());
         company.setWebsiteURL(getWebsiteURL());
-        company.setStatus(Status.AWAITING_APPROVAL.toInt());
+        company.setStatus(Status.AWAITING_APPROVAL);
         company.setPresentation("");
         company.setCompanyDescription("");
         company.setEmailSuffix("");

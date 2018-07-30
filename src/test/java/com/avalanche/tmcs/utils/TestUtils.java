@@ -41,10 +41,10 @@ public class TestUtils {
         newStudent.setLastName("Student");
         newStudent.setGraduationDate(new Date(2099, 1, 1));
         newStudent.setPhoneNumber("5555555555");
-        Set<Integer> sizes = new HashSet<Integer>();
-        sizes.add(0);
+        Set<Company.Size> sizes = new HashSet<>();
+        sizes.add(Company.Size.DONT_CARE);
         newStudent.setPreferredCompanySizes(sizes);
-        newStudent.setPreferredLocations(new HashSet<String>());
+        newStudent.setPreferredLocations(new HashSet<>());
         newStudent.setSchool("RIT");
         newStudent.setSkills(new HashSet<>());
 

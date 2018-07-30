@@ -56,12 +56,16 @@ public class Student {
     private Set<String> preferredIndustries = new HashSet<>();
     private double preferredIndustriesWeight = 0.3f;
 
-    private Set<Integer> preferredCompanySizes = new HashSet<>(Company.Size.DONT_CARE.toInt());
+    private Set<Company.Size> preferredCompanySizes = new HashSet<>();
     private double preferredCompanySizeWeight = 0.2f;
 
     private Set<PresentationLink> presentationLinks;
 
     private Set<ProblemStatement> problemStatements;
+
+    public Student(){
+        this.preferredCompanySizes.add(Company.Size.DONT_CARE);
+    }
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -197,10 +201,10 @@ public class Student {
     }
 
     @ElementCollection
-    public Set<Integer> getPreferredCompanySizes() {
+    public Set<Company.Size> getPreferredCompanySizes() {
         return preferredCompanySizes;
     }
-    public void setPreferredCompanySizes(Set<Integer> preferredCompanySizes) {
+    public void setPreferredCompanySizes(Set<Company.Size> preferredCompanySizes) {
         this.preferredCompanySizes = preferredCompanySizes;
     }
     public void setPreferredCompanySizeWeight(double preferredCompanySizeWeight) {
@@ -238,7 +242,7 @@ public class Student {
         if(locationMatch){ sumScores += preferredLocationsWeight; }
 
         boolean sizeMatch = preferredCompanySizes.isEmpty() ||
-                preferredCompanySizes.contains(Company.Size.DONT_CARE.toInt()) ||
+                preferredCompanySizes.contains(Company.Size.DONT_CARE) ||
                 preferredCompanySizes.contains(job.getCompany().getSize());
         if(sizeMatch){ sumScores += preferredCompanySizeWeight; }
 

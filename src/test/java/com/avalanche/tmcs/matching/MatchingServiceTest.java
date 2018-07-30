@@ -64,8 +64,8 @@ public class MatchingServiceTest {
         allSkills.addAll(requiredSkills);
         Student sampleStudent = allStudents.iterator().next();
         sampleStudent.setSkills(allSkills);
-        Set<Integer> preferredCompanySize = new HashSet<>();
-        preferredCompanySize.add(Company.Size.LARGE.toInt());
+        Set<Company.Size> preferredCompanySize = new HashSet<>();
+        preferredCompanySize.add(Company.Size.LARGE);
         sampleStudent.setPreferredCompanySizes(preferredCompanySize);
         sampleStudent.setPreferredCompanySizeWeight(0.8);
 
@@ -155,7 +155,7 @@ public class MatchingServiceTest {
         JobPosting post = new JobPosting();
         Company company = new Company();
         company.setCompanyName("Company A");
-        company.setSize(Company.Size.MEDIUM.toInt());
+        company.setSize(Company.Size.MEDIUM);
         post.setCompany(company);
         post.setPositionTitle("Post A");
         post.setLocations(locations);
@@ -167,7 +167,7 @@ public class MatchingServiceTest {
         post = new JobPosting();
         post.setPositionTitle("Post B");
         post.setMatchThreshold(0.5);
-        company.setSize(Company.Size.HUGE.toInt());
+        company.setSize(Company.Size.HUGE);
         company.setCompanyName("Company B");
         post.setCompany(company);
         post.setRequiredSkills(requiredSkills);

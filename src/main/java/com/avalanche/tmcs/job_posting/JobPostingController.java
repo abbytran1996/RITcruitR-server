@@ -63,7 +63,7 @@ public class JobPostingController {
         }
 
         // Company is not approved and can't post jobs
-        else if (company.getStatus() != Company.Status.APPROVED.toInt()){
+        else if (company.getStatus() != Company.Status.APPROVED){
             return new ResponseEntity<String>(
                     "Company '" + company.getCompanyName() + "' is not authorized to post jobs",
                     HttpStatus.UNAUTHORIZED

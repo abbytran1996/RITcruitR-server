@@ -74,7 +74,7 @@ public class CompanyController {
     // ================================================================================================================
     @RequestMapping(value = "/byStatus/{status}", method = RequestMethod.GET)
     public ResponseEntity<List<Company>> getCompanyByStatus(@PathVariable String status) {
-        int companyStatus = Company.getIntStatusFromString(status);
+        Company.Status companyStatus = Company.getStatusFromString(status);
         return ResponseEntity.ok(companyDAO.findByStatus(companyStatus));
     }
 
@@ -118,7 +118,7 @@ public class CompanyController {
     @RequestMapping(value = "/{id}/status/{status}", method = RequestMethod.PATCH)
     public ResponseEntity<?> approveCompany(@PathVariable long id, @PathVariable String status){
         Company company = companyDAO.findOne(id);
-        int companyStatus = Company.getIntStatusFromString(status);
+        Company.Status companyStatus = Company.getStatusFromString(status);
         company.setStatus(companyStatus);
         companyDAO.save(company);
         return ResponseEntity.ok().build();
