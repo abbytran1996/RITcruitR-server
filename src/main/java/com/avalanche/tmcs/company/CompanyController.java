@@ -5,7 +5,7 @@ import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.NewRecruiter;
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.RecruiterDAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,13 +27,13 @@ import java.util.Set;
 public class CompanyController {
     private CompanyDAO companyDAO;
     private PresentationLinkDAO presentationLinkDAO;
-    private RecruiterRepository recruiterRepo;
+    private RecruiterDAO recruiterDAO;
     private UserService userService;
     private SecurityService securityService;
 
     @Autowired
-    public CompanyController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO, SecurityService securityService){
-        this.recruiterRepo = repo;
+    public CompanyController(RecruiterDAO repo, UserService userService, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO, SecurityService securityService){
+        this.recruiterDAO = repo;
         this.userService = userService;
         this.companyDAO = companyDAO;
         this.presentationLinkDAO = presentationLinkDAO;
@@ -74,7 +74,7 @@ public class CompanyController {
     // ================================================================================================================
     @RequestMapping(value = "/byStatus/{status}", method = RequestMethod.GET)
     public ResponseEntity<List<Company>> getCompanyByStatus(@PathVariable String status) {
-        int companyStatus = Company.getIntStatusFromString(status);
+        Company.Status companyStatus = Company.getStatusFromString(status);
         return ResponseEntity.ok(companyDAO.findByStatus(companyStatus));
     }
 
@@ -118,7 +118,7 @@ public class CompanyController {
     @RequestMapping(value = "/{id}/status/{status}", method = RequestMethod.PATCH)
     public ResponseEntity<?> approveCompany(@PathVariable long id, @PathVariable String status){
         Company company = companyDAO.findOne(id);
-        int companyStatus = Company.getIntStatusFromString(status);
+        Company.Status companyStatus = Company.getStatusFromString(status);
         company.setStatus(companyStatus);
         companyDAO.save(company);
         return ResponseEntity.ok().build();
@@ -195,7 +195,7 @@ public class CompanyController {
             Company company = companyDAO.findOne(id);
             newRecruiter.setCompany(company);
 
-            Recruiter savedRecruiter = recruiterRepo.save(newRecruiter.toRecruiter());
+            Recruiter savedRecruiter = recruiterDAO.save(newRecruiter.toRecruiter());
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()

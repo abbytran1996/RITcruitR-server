@@ -1,6 +1,8 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.User;
+import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.Skill;
 
@@ -8,7 +10,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
+
+import static com.avalanche.tmcs.utils.SetUtilities.getSetIntersection;
 
 /**
  * Class to represent a student in the database
@@ -45,15 +50,22 @@ public class Student {
 
     private String website; // TODO: Remove field
 
-    private Set<String> preferredLocations;
+    private Set<String> preferredLocations = new HashSet<>();
+    private double preferredLocationsWeight = 0.4f;
 
-    private Set<String> preferredIndustries;
+    private Set<String> preferredIndustries = new HashSet<>();
+    private double preferredIndustriesWeight = 0.3f;
 
-    private Set<Integer> preferredCompanySizes;
+    private Set<Company.Size> preferredCompanySizes = new HashSet<>();
+    private double preferredCompanySizeWeight = 0.2f;
 
     private Set<PresentationLink> presentationLinks;
 
     private Set<ProblemStatement> problemStatements;
+
+    public Student(){
+        this.preferredCompanySizes.add(Company.Size.DONT_CARE);
+    }
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -170,27 +182,33 @@ public class Student {
     public Set<String> getPreferredLocations() {
         return preferredLocations;
     }
-
     public void setPreferredLocations(Set<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
+    }
+    public void setPreferredLocationsWeight(double preferredLocationsWeight) {
+        this.preferredLocationsWeight = preferredLocationsWeight;
     }
 
     @ElementCollection
     public Set<String> getPreferredIndustries() {
         return preferredIndustries;
     }
-
     public void setPreferredIndustries(Set<String> preferredIndustries) {
         this.preferredIndustries = preferredIndustries;
     }
-
-    @ElementCollection
-    public Set<Integer> getPreferredCompanySizes() {
-        return preferredCompanySizes;
+    public void setPreferredIndustriesWeight(double preferredIndustriesWeight) {
+        this.preferredIndustriesWeight = preferredIndustriesWeight;
     }
 
-    public void setPreferredCompanySizes(Set<Integer> preferredCompanySizes) {
+    @ElementCollection
+    public Set<Company.Size> getPreferredCompanySizes() {
+        return preferredCompanySizes;
+    }
+    public void setPreferredCompanySizes(Set<Company.Size> preferredCompanySizes) {
         this.preferredCompanySizes = preferredCompanySizes;
+    }
+    public void setPreferredCompanySizeWeight(double preferredCompanySizeWeight) {
+        this.preferredCompanySizeWeight = preferredCompanySizeWeight;
     }
 
     @ElementCollection
@@ -209,6 +227,30 @@ public class Student {
 
     public void setProblemStatements(Set<ProblemStatement> problemStatements) {
         this.problemStatements = problemStatements;
+    }
+
+    public double calculateStudentPreferencesWeight(){
+        return preferredCompanySizeWeight + preferredIndustriesWeight + preferredLocationsWeight;
+    }
+
+    public double calculateStudentPreferencesScore(JobPosting job){
+        double sumScores = 0;
+        double normalizedWeightDenominator = calculateStudentPreferencesWeight();
+
+        boolean locationMatch = preferredLocations.isEmpty() ||
+                !getSetIntersection(preferredLocations, job.getLocations()).isEmpty();
+        if(locationMatch){ sumScores += preferredLocationsWeight; }
+
+        boolean sizeMatch = preferredCompanySizes.isEmpty() ||
+                preferredCompanySizes.contains(Company.Size.DONT_CARE) ||
+                preferredCompanySizes.contains(job.getCompany().getSize());
+        if(sizeMatch){ sumScores += preferredCompanySizeWeight; }
+
+        boolean industryMatch = preferredIndustries.isEmpty() ||
+                !getSetIntersection(preferredIndustries, job.getCompany().getIndustries()).isEmpty();
+        if(industryMatch){ sumScores += preferredIndustriesWeight; }
+
+        return (sumScores * 1.0f)/normalizedWeightDenominator;
     }
 
     @Override

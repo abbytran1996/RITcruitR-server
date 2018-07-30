@@ -17,6 +17,7 @@ import java.util.Set;
 @Transactional
 public interface StudentDAO extends CrudRepository<Student, Long> {
     Set<Student> findAllBySkillsContains(Skill skill);
+    Set<Student> findAll();
 
     Student findByEmail(String email);
 }

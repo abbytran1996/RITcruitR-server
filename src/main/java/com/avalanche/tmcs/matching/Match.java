@@ -109,18 +109,20 @@ public class Match {
     public float getMatchStrength() {
         return matchStrength;
     }
+    public Match setMatchStrength(float matchStrength) {
+        this.matchStrength = matchStrength;
+        return this;
+    }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setStudent(Student student) {
+    public Match setStudent(Student student) {
         this.student = student;
+        return this;
     }
 
-    public void setMatchStrength(float matchStrength) {
-        this.matchStrength = matchStrength;
-    }
 
     @NotNull
     @ManyToOne
@@ -128,15 +130,14 @@ public class Match {
     public JobPosting getJob() {
         return job;
     }
-
-    public void setJob(JobPosting job) {
+    public Match setJob(JobPosting job) {
         this.job = job;
+        return this;
     }
 
     public String getTag() {
         return tag;
     }
-
     public void setTag(final String tag) {
         this.tag = tag;
         if(tag != null) {
@@ -252,6 +253,17 @@ public class Match {
         // Yes, this is how Java Dates are now. I'm using the parent class to get the current time, then sending that
         // to the constructor of the child class. Yay Java dates!
         setTimeLastUpdated(new Date(new java.util.Date().getTime()));
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (!(o instanceof Match)) return false;
+
+        Match otherMatch = (Match) o;
+        if (this.getJob() != otherMatch.getJob()){ return false; }
+        if (this.getStudent() != otherMatch.getStudent()){ return false; }
+        return this.applicationStatus == otherMatch.applicationStatus;
     }
 
 }

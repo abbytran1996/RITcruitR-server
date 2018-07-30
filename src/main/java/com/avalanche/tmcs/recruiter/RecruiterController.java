@@ -5,7 +5,6 @@ import com.avalanche.tmcs.auth.Role.RoleName;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.SecurityService;
 import com.avalanche.tmcs.auth.User;
-import com.avalanche.tmcs.auth.UserDAO;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +24,7 @@ import java.util.Set;
 @RequestMapping("/recruiters")
 public class RecruiterController {
 
-    private RecruiterRepository recruiterRepo;
+    private RecruiterDAO recruiterRepo;
     private UserService userService;
     private CompanyDAO companyDAO;
     private RoleDAO roleDAO;
@@ -35,8 +32,8 @@ public class RecruiterController {
 
 
     @Autowired
-    public RecruiterController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService){
-        this.recruiterRepo = repo;
+    public RecruiterController(RecruiterDAO recruiterDAO, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService){
+        this.recruiterRepo = recruiterDAO;
         this.userService = userService;
         this.companyDAO = companyDAO;
         this.roleDAO = roleDAO;
@@ -84,7 +81,7 @@ public class RecruiterController {
         recruiterRepo.save(recruiter);
         return ResponseEntity.ok().build();
     }
-    
+
     // ================================================================================================================
     // * UPDATE RECRUITER TO PRIMARY [PUT]                                                                                       *
     // ================================================================================================================
@@ -108,7 +105,7 @@ public class RecruiterController {
         recruiterRepo.save(recruiter);
         return ResponseEntity.ok().build();
     }
-    
+
     // ================================================================================================================
     // * REMOVE PRIMARY RECRUITER STATUS [DELETE]                                                                                       *
     // ================================================================================================================

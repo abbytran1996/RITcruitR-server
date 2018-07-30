@@ -4,6 +4,7 @@ package com.avalanche.tmcs.job_posting;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
+import com.avalanche.tmcs.students.Student;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -29,7 +30,7 @@ public class JobPosting {
             this.status = status;
         }
 
-        int toInt(){
+        public int toInt(){
             return status;
         }
     }
@@ -47,18 +48,18 @@ public class JobPosting {
 
     private Set<Skill> requiredSkills;
 
-    private Set<Skill> niceToHaveSkills;
-
-    private double niceToHaveSkillsWeight;
+    private Set<Skill> recommendedSkills;
+    private double recommendedSkillsWeight = 0.2;
 
     private double minGPA;
+    private double minGPAWeight = 0.3;
 
     private boolean hasWorkExperience;
 
-    private double matchThreshold;
+    private double matchThreshold = 0.6;
 
     @Max(10)
-    private int duration;
+    private int duration = 10;
 
     private int numDaysRemaining;
 
@@ -132,21 +133,21 @@ public class JobPosting {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
-    public Set<Skill> getNiceToHaveSkills() {
-        return niceToHaveSkills;
+    public Set<Skill> getRecommendedSkills() {
+        return recommendedSkills;
     }
 
-    public void setNiceToHaveSkills(Set<Skill> niceToHaveSkills) {
-        this.niceToHaveSkills = niceToHaveSkills;
+    public void setRecommendedSkills(Set<Skill> recommendedSkills) {
+        this.recommendedSkills = recommendedSkills;
     }
 
     @NotNull
-    public double getNiceToHaveSkillsWeight() {
-        return niceToHaveSkillsWeight;
+    public double getRecommendedSkillsWeight() {
+        return recommendedSkillsWeight;
     }
 
-    public void setNiceToHaveSkillsWeight(double niceToHaveSkillsWeight) {
-        this.niceToHaveSkillsWeight = niceToHaveSkillsWeight;
+    public void setRecommendedSkillsWeight(double recommendedSkillsWeight) {
+        this.recommendedSkillsWeight = recommendedSkillsWeight;
     }
 
     public double getMinGPA() { return minGPA; }
@@ -230,6 +231,15 @@ public class JobPosting {
 
     public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
         this.presentationLinks = presentationLinks;
+    }
+
+    public double calculateJobFiltersWeight(){
+        return minGPAWeight;
+    }
+
+    public double calculateJobFiltersScore(Student student){
+        boolean gpaMatch = student.getGpa() >= minGPA;
+        return gpaMatch? minGPAWeight * 1.0 : 0;
     }
 
     @Override

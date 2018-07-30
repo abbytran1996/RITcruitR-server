@@ -1,7 +1,7 @@
 package com.avalanche.tmcs;
 
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;
@@ -53,7 +53,7 @@ public class DataLoader implements ApplicationRunner {
 
     private RoleDAO roleDAO;
 
-    private RecruiterRepository recruiterDAO;
+    private RecruiterDAO recruiterDAO;
     private CompanyDAO companyDAO;
     private JobPostingDAO jobPostingDAO;
     private StudentDAO studentDAO;
@@ -63,7 +63,7 @@ public class DataLoader implements ApplicationRunner {
     private MatchingService matchingService;
 
     @Autowired
-    public DataLoader(RoleDAO roleDAO, RecruiterRepository recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
+    public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
                       UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MatchingService matchingService,
                       @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
@@ -129,24 +129,22 @@ public class DataLoader implements ApplicationRunner {
                 newStudent.setLastName((String) student.get("lastName"));
                 newStudent.setMajor((String) student.get("major"));
                 newStudent.setPhoneNumber((String) student.get("phoneNumber"));
-                ArrayList<Integer> companySizesList = (ArrayList<Integer>) student.get("preferredCompanySizes");
-                Set<Integer> preferredCompanySizes = new HashSet<Integer>();
-                for (Integer size : companySizesList) {
-                	preferredCompanySizes.add(size);
-                }
+
+                ArrayList<Company.Size> companySizesList = (ArrayList<Company.Size>) student.get("preferredCompanySizes");
+                Set<Company.Size> preferredCompanySizes = new HashSet<>();
+                preferredCompanySizes.addAll(companySizesList);
                 newStudent.setPreferredCompanySizes(preferredCompanySizes);
+
                 ArrayList<String> industriesList = (ArrayList<String>) student.get("preferredIndustries");
                 Set<String> preferredIndustries = new HashSet<String>();
-                for (String industry : industriesList) {
-                	preferredIndustries.add(industry);
-                }
+                preferredIndustries.addAll(industriesList);
                 newStudent.setPreferredIndustries(preferredIndustries);
+
                 ArrayList<String> locationsList = (ArrayList<String>) student.get("preferredLocations");
                 Set<String> preferredLocations = new HashSet<String>();
-                for (String location : locationsList) {
-                	preferredLocations.add(location);
-                }
+                preferredLocations.addAll(locationsList);
                 newStudent.setPreferredLocations(preferredLocations);
+
                 newStudent.setSchool((String) student.get("school"));
                 Set<Skill> studentSkills = new HashSet<Skill>();
                 JSONArray skillsList = (JSONArray) student.get("skills");
@@ -181,10 +179,8 @@ public class DataLoader implements ApplicationRunner {
                 //locations
                 ArrayList<String> locationsList = (ArrayList<String>) job.get("locations");
                 Set<String> locations = new HashSet<String>();
-                for (String loc : locationsList) {
-                	locations.add(loc);
-                }
-                
+                locations.addAll(locationsList);
+
                 //required skills
                 Set<Skill> requiredSkills = new HashSet<Skill>();
                 JSONArray requiredSkillsList = (JSONArray) job.get("requiredSkills");
@@ -232,8 +228,8 @@ public class DataLoader implements ApplicationRunner {
 //                newJob.setMatchThreshold(matchThreshold);
                 newJob.setMinGPA(minGPA);
 //                newJob.setNewVideo(newVideo);
-                newJob.setNiceToHaveSkills(niceToHaveSkills);
-//                newJob.setNiceToHaveSkillsWeight(niceToHaveSkillsWeight);
+                newJob.setRecommendedSkills(niceToHaveSkills);
+//                newJob.setRecommendedSkillsWeight(niceToHaveSkillsWeight);
                 newJob.setPositionTitle(jobTitle);
                 newJob.setProblemStatement(problemStatement);
                 newJob.setRecruiter(recruiter);
@@ -336,9 +332,9 @@ public class DataLoader implements ApplicationRunner {
 
         stud.setUser(user);
 
-        stud.setPreferredCompanySizes(new HashSet<Integer>());
+        stud.setPreferredCompanySizes(new HashSet<>());
 
-        HashSet<Skill> skills=new HashSet<Skill>();
+        HashSet<Skill> skills=new HashSet<>();
         for(int i=0;i<15;i++)
             skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
         stud.setSkills(skills);
