@@ -13,6 +13,8 @@ import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.job_posting.NewJobPosting;
 import com.avalanche.tmcs.matching.Location;
 import com.avalanche.tmcs.matching.LocationDAO;
+import com.avalanche.tmcs.matching.Major;
+import com.avalanche.tmcs.matching.MajorDAO;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
@@ -59,12 +61,13 @@ public class DataLoader implements ApplicationRunner {
     private StudentDAO studentDAO;
     private SkillDAO skillDAO;
     private LocationDAO locationDAO;
+    private MajorDAO majorDAO;
     private UserService userService;
     private MatchingService matchingService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterRepository recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
-                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MatchingService matchingService,
+                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MajorDAO majorDAO, MatchingService matchingService,
                       @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
         this.recruiterDAO = recruiterDAO;
@@ -75,6 +78,7 @@ public class DataLoader implements ApplicationRunner {
         this.userService = userService;
         this.skillDAO = skillDAO;
         this.locationDAO = locationDAO;
+        this.majorDAO = majorDAO;
         this.matchingService = matchingService;
     }
 
@@ -115,15 +119,22 @@ public class DataLoader implements ApplicationRunner {
     	//Need to get response from portfolium API first
     	String portfoliumMajors = "";
     	JSONParser jsonParser = new JSONParser();
+    	List<Major> savedMajors = new ArrayList<>();
+    	majorDAO.findAll().forEach(savedMajors::add);
+    	ArrayList<Major> majorsToSave = new ArrayList<>();
     	try {
 			JSONArray arr = (JSONArray) jsonParser.parse(portfoliumMajors);
 	    	for (Object majorObject : arr) {
 	    		JSONObject major = (JSONObject) majorObject;
-	    		
+	    		String newMajorName = (String) major.get("major");
+	    		Major newMajor = new Major(newMajorName);
+	    		if (!savedMajors.contains(newMajor)) {
+	    			majorsToSave.add(newMajor);
+	    		}
 	    	}
+	    	majorDAO.save(majorsToSave);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.warn("Unable to retrieve/parse majors from Portfolium API", e);
 		}
     }
     
