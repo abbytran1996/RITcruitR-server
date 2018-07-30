@@ -3,6 +3,7 @@ package com.avalanche.tmcs.students;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.job_posting.JobPosting;
+import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.Skill;
 
@@ -13,7 +14,7 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.avalanche.tmcs.utils.SetUtilities.getSetIntersection;
+import static com.avalanche.tmcs.matching.MatchingService.getStringSetIntersection;
 
 /**
  * Class to represent a student in the database
@@ -233,22 +234,28 @@ public class Student {
         return preferredCompanySizeWeight + preferredIndustriesWeight + preferredLocationsWeight;
     }
 
-    public double calculateStudentPreferencesScore(JobPosting job){
+    public double calculateStudentPreferencesScore(JobPosting job, Match newMatch){
         double sumScores = 0;
         double normalizedWeightDenominator = calculateStudentPreferencesWeight();
 
-        boolean locationMatch = preferredLocations.isEmpty() ||
-                !getSetIntersection(preferredLocations, job.getLocations()).isEmpty();
-        if(locationMatch){ sumScores += preferredLocationsWeight; }
+        Set<String> matchedLocations = getStringSetIntersection(preferredLocations, job.getLocations());
+        boolean locationMatch = preferredLocations.isEmpty() || !matchedLocations.isEmpty();
+        if(locationMatch){
+            sumScores += preferredLocationsWeight;
+            newMatch.setMatchedLocations(matchedLocations);
+        }
 
         boolean sizeMatch = preferredCompanySizes.isEmpty() ||
                 preferredCompanySizes.contains(Company.Size.DONT_CARE) ||
                 preferredCompanySizes.contains(job.getCompany().getSize());
         if(sizeMatch){ sumScores += preferredCompanySizeWeight; }
 
-        boolean industryMatch = preferredIndustries.isEmpty() ||
-                !getSetIntersection(preferredIndustries, job.getCompany().getIndustries()).isEmpty();
-        if(industryMatch){ sumScores += preferredIndustriesWeight; }
+        Set<String> matchedIndustries = getStringSetIntersection(preferredIndustries, job.getCompany().getIndustries());
+        boolean industryMatch = preferredIndustries.isEmpty() || !matchedIndustries.isEmpty();
+        if(industryMatch){
+            sumScores += preferredIndustriesWeight;
+            newMatch.setMatchedIndustries(matchedIndustries);
+        }
 
         return (sumScores * 1.0f)/normalizedWeightDenominator;
     }

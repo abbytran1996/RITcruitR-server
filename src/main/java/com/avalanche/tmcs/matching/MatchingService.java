@@ -1,6 +1,5 @@
 package com.avalanche.tmcs.matching;
 
-import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.avalanche.tmcs.utils.SetUtilities.*;
 
 /**
  * Matches students and job postings
@@ -96,42 +93,54 @@ public class MatchingService {
 
 
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
+        if(student == null || job == null) { return Optional.empty(); }
+
+        Match newMatch = new Match()
+                .setJob(job)
+                .setStudent(student);
+
         Set<Skill> studentSkills = student.getSkills();
-        double requiredSkillsScore = weightedPercentageSetIntersection(
-                job.getRequiredSkills(),
-                studentSkills,
-                REQUIRED_SKILL_WEIGHT
-        );
+        double requiredSkillsPercentage = calculateAndStoreMatchedRequiredSkills(job.getRequiredSkills(), studentSkills, newMatch);
+        double requiredSkillsScore = REQUIRED_SKILL_WEIGHT * requiredSkillsPercentage;
 
         double recommendedSkillsWeight = job.getRecommendedSkillsWeight();
-        double recommendedSkillsScore = weightedPercentageSetIntersection(
-                job.getRecommendedSkills(),
-                studentSkills,
-                (float) recommendedSkillsWeight
-        );
+        double recommendedSkillsPercentage = calculateAndStoreMatchedRecommendedSkills(job.getRequiredSkills(), studentSkills, newMatch);
+        double recommendedSkillsScore = recommendedSkillsWeight * recommendedSkillsPercentage;
 
         double jobFilterWeight = job.calculateJobFiltersWeight();
         double jobFilterScore = job.calculateJobFiltersScore(student);
 
         double studentPreferencesWeight = student.calculateStudentPreferencesWeight();
-        double studentPreferencesScore = student.calculateStudentPreferencesScore(job);
+        double studentPreferencesScore = student.calculateStudentPreferencesScore(job, newMatch);
 
         double normalizedWeightDenominator = REQUIRED_SKILL_WEIGHT+recommendedSkillsWeight+jobFilterWeight+studentPreferencesWeight;
         double matchScore = (requiredSkillsScore+recommendedSkillsScore+jobFilterScore+studentPreferencesScore) /
                 (1.0*normalizedWeightDenominator);
 
         if(matchScore >= job.getMatchThreshold()){
-            Match newMatch = new Match()
-                    .setJob(job)
-                    .setStudent(student)
-                    .setMatchStrength((float) matchScore);
+            newMatch.setMatchStrength((float) matchScore);
             newMatch.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
             newMatch.setApplicationStatus(Match.ApplicationStatus.NEW);
-            newMatch = storeMatchCriteria(newMatch);
             return Optional.of(newMatch);
         } else {
             return Optional.empty();
         }
+    }
+
+    private static double calculateAndStoreMatchedRequiredSkills(Set<Skill> reqSkills, Set<Skill> studentSkills, Match newMatch){
+        if(studentSkills == null || studentSkills.isEmpty()){ return 0; }
+        if(reqSkills == null || reqSkills.isEmpty()){ return 1.00; }
+        Set<Skill> matchedRequiredSkills = getSkillSetIntersection(reqSkills, studentSkills);
+        newMatch.setMatchedRequiredSkills(matchedRequiredSkills);
+        return matchedRequiredSkills.size()/(1.00f * reqSkills.size());
+    }
+
+    private static double calculateAndStoreMatchedRecommendedSkills(Set<Skill> recSkills, Set<Skill> studentSkills, Match newMatch){
+        if(studentSkills == null || studentSkills.isEmpty()){ return 0; }
+        if(recSkills == null || recSkills.isEmpty()){ return 1.00; }
+        Set<Skill> matchedRecommendedSkills = getSkillSetIntersection(recSkills, studentSkills);
+        newMatch.setMatchedNiceToHaveSkills(matchedRecommendedSkills);
+        return matchedRecommendedSkills.size()/(1.00f * recSkills.size());
     }
 
     private static List<Match> dedupeMatchListPreservingMatchStatus(List<Match> newMatches, List<Match> oldMatches){
@@ -151,55 +160,23 @@ public class MatchingService {
         return newMatches;
     }
 
-    static Match storeMatchCriteria(Match match) {
-        Student student = match.getStudent();
-        JobPosting job = match.getJob();
-        Set<Skill> requiredSkills = job.getRequiredSkills();
-        Set<Skill> nthSkills = job.getRecommendedSkills();
-        Set<Skill> studentSkills = student.getSkills();
-        if (studentSkills != null && requiredSkills != null && nthSkills != null) {
-            Set<Skill> requiredSkillsCopy = new HashSet<Skill>(requiredSkills);
-            Set<Skill> nthSkillsCopy = new HashSet<Skill>(nthSkills);
-            Set<Skill> studentSkillsCopy = new HashSet<Skill>(studentSkills);
-            requiredSkillsCopy.retainAll(studentSkillsCopy);
-            match.setMatchedRequiredSkills(requiredSkillsCopy);
-            nthSkillsCopy.retainAll(studentSkillsCopy);
-            match.setMatchedNiceToHaveSkills(nthSkillsCopy);
-        } else {
-            match.setMatchedRequiredSkills(new HashSet<Skill>());
-            match.setMatchedNiceToHaveSkills(new HashSet<Skill>());
-        }
-        Set<String> locations = job.getLocations();
-        Set<String> studentPreferredLocations = student.getPreferredLocations();
-        if (studentPreferredLocations != null && locations != null) {
-            Set<String> locationsCopy = new HashSet<String>(locations);
-            Set<String> studentPreferredLocationsCopy = new HashSet<String>(studentPreferredLocations);
-            locationsCopy.retainAll(studentPreferredLocationsCopy);
-            match.setMatchedLocations(locationsCopy);
-        } else {
-            match.setMatchedLocations(new HashSet<String>());
-        }
-        Company company = job.getCompany();
-        if (company != null) {
-            Set<String> industries = company.getIndustries();
-            Set<String> studentPreferredIndustries = student.getPreferredIndustries();
-            if (studentPreferredIndustries != null && industries != null) {
-                Set<String> industriesCopy = new HashSet<String>(industries);
-                Set<String> studentPreferredIndustriesCopy = new HashSet<String>(studentPreferredIndustries);
-                industriesCopy.retainAll(studentPreferredIndustriesCopy);
-                match.setMatchedIndustries(industriesCopy);
-            } else {
-                match.setMatchedIndustries(new HashSet<String>());
-            }
-        } else {
-            match.setMatchedIndustries(new HashSet<String>());
-        }
-        return match;
+    private static Set<Skill> getSkillSetIntersection(Set<Skill> src, Set<Skill> cmp){
+        // default return to empty set
+        Set<Skill> cmpInSource = new HashSet<>();
+        if(src == null || cmp == null){ return cmpInSource; }
+
+        // populate
+        cmpInSource.addAll(src);
+        cmpInSource.retainAll(cmp);
+        return cmpInSource;
     }
 
-    static class MatchedSkillsCount {
-        int requiredSkillsCount = 0;
-        int recommendedSkillsCount = 0;
+    public static Set<String> getStringSetIntersection(Set<String> src, Set<String> cmp){
+        Set<String> toCompareInSrc = new HashSet<>();
+        if(src == null || cmp == null){ return toCompareInSrc; }
+        toCompareInSrc.addAll(src);
+        toCompareInSrc.retainAll(cmp);
+        return toCompareInSrc;
     }
 }
 
