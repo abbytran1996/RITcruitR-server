@@ -11,6 +11,8 @@ import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.job_posting.NewJobPosting;
+import com.avalanche.tmcs.matching.Industry;
+import com.avalanche.tmcs.matching.IndustryDAO;
 import com.avalanche.tmcs.matching.Location;
 import com.avalanche.tmcs.matching.LocationDAO;
 import com.avalanche.tmcs.matching.Major;
@@ -18,6 +20,8 @@ import com.avalanche.tmcs.matching.MajorDAO;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
+import com.avalanche.tmcs.matching.University;
+import com.avalanche.tmcs.matching.UniversityDAO;
 import com.avalanche.tmcs.students.NewStudent;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
@@ -62,13 +66,15 @@ public class DataLoader implements ApplicationRunner {
     private SkillDAO skillDAO;
     private LocationDAO locationDAO;
     private MajorDAO majorDAO;
+    private IndustryDAO industryDAO;
+    private UniversityDAO universityDAO;
     private UserService userService;
     private MatchingService matchingService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterRepository recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
-                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MajorDAO majorDAO, MatchingService matchingService,
-                      @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
+                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MajorDAO majorDAO, IndustryDAO industryDAO, 
+                      UniversityDAO universityDAO, MatchingService matchingService, @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
         this.recruiterDAO = recruiterDAO;
         this.companyDAO = companyDAO;
@@ -79,6 +85,8 @@ public class DataLoader implements ApplicationRunner {
         this.skillDAO = skillDAO;
         this.locationDAO = locationDAO;
         this.majorDAO = majorDAO;
+        this.industryDAO = industryDAO;
+        this.universityDAO = universityDAO;
         this.matchingService = matchingService;
     }
 
@@ -135,6 +143,52 @@ public class DataLoader implements ApplicationRunner {
 	    	majorDAO.save(majorsToSave);
 		} catch (ParseException e) {
 			LOG.warn("Unable to retrieve/parse majors from Portfolium API", e);
+		}
+    }
+    
+    private void updateIndustriesFromPortfolium() {
+    	//Need to get response from portfolium API first
+    	String portfoliumIndustries = "";
+    	JSONParser jsonParser = new JSONParser();
+    	List<Industry> savedIndustries = new ArrayList<>();
+    	industryDAO.findAll().forEach(savedIndustries::add);
+    	ArrayList<Industry> industriesToSave = new ArrayList<>();
+    	try {
+			JSONArray arr = (JSONArray) jsonParser.parse(portfoliumIndustries);
+	    	for (Object industryObject : arr) {
+	    		JSONObject industry = (JSONObject) industryObject;
+	    		String newIndustryName = (String) industry.get("industry");
+	    		Industry newIndustry = new Industry(newIndustryName);
+	    		if (!savedIndustries.contains(newIndustry)) {
+	    			industriesToSave.add(newIndustry);
+	    		}
+	    	}
+	    	industryDAO.save(industriesToSave);
+		} catch (ParseException e) {
+			LOG.warn("Unable to retrieve/parse industries from Portfolium API", e);
+		}
+    }
+    
+    private void updateUniversitiesFromPortfolium() {
+    	//Need to get response from portfolium API first
+    	String portfoliumUniversities = "";
+    	JSONParser jsonParser = new JSONParser();
+    	List<University> savedUniversities = new ArrayList<>();
+    	universityDAO.findAll().forEach(savedUniversities::add);
+    	ArrayList<University> universitiesToSave = new ArrayList<>();
+    	try {
+			JSONArray arr = (JSONArray) jsonParser.parse(portfoliumUniversities);
+	    	for (Object universityObject : arr) {
+	    		JSONObject university = (JSONObject) universityObject;
+	    		String newUniversityName = (String) university.get("name");
+	    		University newUniversity = new University(newUniversityName);
+	    		if (!savedUniversities.contains(newUniversity)) {
+	    			universitiesToSave.add(newUniversity);
+	    		}
+	    	}
+	    	universityDAO.save(universitiesToSave);
+		} catch (ParseException e) {
+			LOG.warn("Unable to retrieve/parse universities from Portfolium API", e);
 		}
     }
     
