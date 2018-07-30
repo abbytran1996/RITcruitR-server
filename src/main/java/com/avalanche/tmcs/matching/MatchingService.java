@@ -55,6 +55,7 @@ public class MatchingService {
         List<Match> newMatches = generateMatchesForJob(posting);
         newMatches = deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches);
         resetAllMatchesForJob(posting, newMatches)
+        resetAllMatchesForJob(posting, newMatches);
     }
 
     public List<Match> generateMatchesForStudent(final Student student) {
