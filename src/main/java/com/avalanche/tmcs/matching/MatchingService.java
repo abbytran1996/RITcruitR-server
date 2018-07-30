@@ -92,6 +92,16 @@ public class MatchingService {
         return matchesToReturn;
     }
 
+    private void resetAllMatchesForJob(JobPosting job, List<Match> newMatchesForJob){
+        matchDAO.deleteAllByJob(job);
+        matchDAO.save(newMatchesForJob);
+    }
+
+    private void resetAllMatchesForStudent(Student student, List<Match> newMatchesForStudent){
+        matchDAO.deleteAllByStudent(student);
+        matchDAO.save(newMatchesForStudent);
+    }
+
 
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
         if(student == null || job == null) { return Optional.empty(); }

@@ -33,4 +33,8 @@ public interface MatchDAO extends CrudRepository<Match, Long> {
     long countAllByStudentAndCurrentPhase(Student student, Match.CurrentPhase currentPhase);
     
     long countAllByStudent(Student student);
+
+    void deleteAllByJob(JobPosting jobPosting);
+
+    void deleteAllByStudent(Student student);
 }
