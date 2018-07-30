@@ -225,13 +225,13 @@ public class Student {
         this.problemStatements = problemStatements;
     }
 
-    public double getStudentPreferencesWeight(){
+    public double calculateStudentPreferencesWeight(){
         return preferredCompanySizeWeight + preferredIndustriesWeight + preferredLocationsWeight;
     }
 
     public double calculateStudentPreferencesScore(JobPosting job){
         double sumScores = 0;
-        double normalizedWeightDenominator = getStudentPreferencesWeight();
+        double normalizedWeightDenominator = calculateStudentPreferencesWeight();
 
         boolean locationMatch = preferredLocations.isEmpty() ||
                 !getSetIntersection(preferredLocations, job.getLocations()).isEmpty();

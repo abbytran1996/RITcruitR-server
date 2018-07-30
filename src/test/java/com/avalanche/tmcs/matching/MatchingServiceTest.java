@@ -77,7 +77,7 @@ public class MatchingServiceTest {
 
     @Test
     public void testBuildMatch_badStudent() {
-        JobPosting sampleJobPosting = allJobPostings.get(1);
+        JobPosting sampleJobPosting = allJobPostings.get(0);
         Student sampleStudent = allStudents.iterator().next();
         sampleStudent.setGpa(1.5);
 

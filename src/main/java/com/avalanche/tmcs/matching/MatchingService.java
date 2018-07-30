@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.avalanche.tmcs.utils.SetUtilities.*;
@@ -112,16 +109,15 @@ public class MatchingService {
                 (float) recommendedSkillsWeight
         );
 
-        double jobFilterWeight = job.getJobFiltersWeight();
+        double jobFilterWeight = job.calculateJobFiltersWeight();
         double jobFilterScore = job.calculateJobFiltersScore(student);
 
-        double studentPreferencesWeight = student.getStudentPreferencesWeight();
+        double studentPreferencesWeight = student.calculateStudentPreferencesWeight();
         double studentPreferencesScore = student.calculateStudentPreferencesScore(job);
-
 
         double normalizedWeightDenominator = REQUIRED_SKILL_WEIGHT+recommendedSkillsWeight+jobFilterWeight+studentPreferencesWeight;
         double matchScore = (requiredSkillsScore+recommendedSkillsScore+jobFilterScore+studentPreferencesScore) /
-                normalizedWeightDenominator;
+                (1.0*normalizedWeightDenominator);
 
         if(matchScore >= job.getMatchThreshold()){
             Match newMatch = new Match()

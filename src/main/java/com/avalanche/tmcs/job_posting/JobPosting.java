@@ -30,7 +30,7 @@ public class JobPosting {
             this.status = status;
         }
 
-        int toInt(){
+        public int toInt(){
             return status;
         }
     }
@@ -233,7 +233,7 @@ public class JobPosting {
         this.presentationLinks = presentationLinks;
     }
 
-    public double getJobFiltersWeight(){
+    public double calculateJobFiltersWeight(){
         return minGPAWeight;
     }
 
