@@ -101,11 +101,10 @@ public class DataLoader implements ApplicationRunner {
                 LOG.info("Adding test data...");
                 String skillFilePath = new File("skills.json").getAbsolutePath();
                 String jobFilePath = new File("jobs.json").getAbsolutePath();
-                String studentsFilePath = new File("students.json").getAbsolutePath();
                 String locationsFilePath = new File("locations.json").getAbsolutePath();
                 loadSkills(skillFilePath);
                 loadJobs(jobFilePath);
-              loadLocations(locationsFilePath);
+                loadLocations(locationsFilePath);
             } catch (IOException e) {
                 LOG.warn("IOException reached while trying to load the test data. Please check the filename for any typos.", e);
             }
@@ -126,63 +125,6 @@ public class DataLoader implements ApplicationRunner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
-
-    private void loadStudents(String fileName) throws IOException {
-        try {
-            JSONParser jsonParser = new JSONParser();
-            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
-
-            for (Object studentObject : arr) {
-                JSONObject student = (JSONObject) studentObject;
-                NewStudent newStudent = new NewStudent();
-                newStudent.setContactEmail((String) student.get("contactEmail"));
-                newStudent.setEmail((String) student.get("email"));
-                newStudent.setFirstName((String) student.get("firstName"));
-                newStudent.setGpa((long) student.get("gpa"));
-                Date graduationDate = Date.valueOf((String) student.get("graduationDate"));
-                newStudent.setGraduationDate(graduationDate);
-                newStudent.setLastName((String) student.get("lastName"));
-                newStudent.setMajor((String) student.get("major"));
-                newStudent.setPhoneNumber((String) student.get("phoneNumber"));
-                ArrayList<Integer> companySizesList = (ArrayList<Integer>) student.get("preferredCompanySizes");
-                Set<Integer> preferredCompanySizes = new HashSet<Integer>();
-                for (Integer size : companySizesList) {
-                	preferredCompanySizes.add(size);
-                }
-                newStudent.setPreferredCompanySizes(preferredCompanySizes);
-                ArrayList<String> industriesList = (ArrayList<String>) student.get("preferredIndustries");
-                Set<String> preferredIndustries = new HashSet<String>();
-                for (String industry : industriesList) {
-                	preferredIndustries.add(industry);
-                }
-                newStudent.setPreferredIndustries(preferredIndustries);
-                ArrayList<String> locationsList = (ArrayList<String>) student.get("preferredLocations");
-                Set<String> preferredLocations = new HashSet<String>();
-                for (String location : locationsList) {
-                	preferredLocations.add(location);
-                }
-                newStudent.setPreferredLocations(preferredLocations);
-                newStudent.setSchool((String) student.get("school"));
-                Set<Skill> studentSkills = new HashSet<Skill>();
-                JSONArray skillsList = (JSONArray) student.get("skills");
-                for (Object skillObject : skillsList) {
-                	JSONObject skill = (JSONObject) skillObject;
-                	String skillName = (String) skill.get("name");
-                	Skill newSkill = new Skill(skillName);
-                	studentSkills.add(newSkill);
-                }
-                newStudent.setSkills(studentSkills);
-                newStudent.setWebsite((String) student.get("website"));
-                //a new student needs to be linked to a user object which needs an email and password to be in the system
-//                User newUser = new User(email, password);
-//                newStudent.setUser(newUser);
-                Student savedStudent = studentDAO.save(newStudent.toStudent());
-                matchingService.registerStudent(savedStudent);
-            }
-        } catch (ParseException e) {
-            LOG.warn(e.getMessage());
-        }
     }
     
     private void loadJobs(String fileName) throws IOException {
