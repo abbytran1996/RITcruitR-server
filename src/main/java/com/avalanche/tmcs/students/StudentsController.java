@@ -1,26 +1,15 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.*;
-import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.exceptions.ResourceNotFound;
 import com.avalanche.tmcs.matching.*;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 import java.util.*;
 
-import com.sun.org.apache.regexp.internal.RE;
-import org.apache.catalina.connector.Response;
-import org.apache.tomcat.jni.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

@@ -18,24 +18,14 @@ import java.util.Set;
 public interface MatchDAO extends CrudRepository<Match, Long> {
     List<Match> findAllByStudent(Student student);
 
-    List<Match> findAllByApplicationStatus(Match.ApplicationStatus status);
-
     List<Match> findAllByJobAndApplicationStatus(JobPosting job, Match.ApplicationStatus status);
 
     List<Match> findAllByJobAndCurrentPhase(JobPosting job, Match.CurrentPhase currentPhase);
 
     List<Match> findAllByStudentAndCurrentPhase(Student student, Match.CurrentPhase currentPhase);
 
-    List<Match> findAllByJobAndCurrentPhaseAndApplicationStatus(JobPosting job, Match.CurrentPhase currentPhase, Match.ApplicationStatus applicationStatus);
-
-    List<Match> findAllByStudentAndCurrentPhaseAndApplicationStatus(Student student, Match.CurrentPhase currentPhase, Match.ApplicationStatus applicationStatus);
-
     List<Match> findAllByJob(JobPosting job);
 
-    long countAllByJobAndCurrentPhaseAndApplicationStatusAndViewedSinceLastUpdateIsFalse(JobPosting job, Match.CurrentPhase currentPhase, Match.ApplicationStatus applicationStatus);
-
-    long countAllByJobAndCurrentPhaseAndApplicationStatus(JobPosting job, Match.CurrentPhase currentPhase, Match.ApplicationStatus applicationStatus);
-    
     long countAllByJobAndCurrentPhase(JobPosting job, Match.CurrentPhase currentPhase);
     
     long countAllByJob(JobPosting job);

@@ -27,13 +27,13 @@ import java.util.Set;
 public class CompanyController {
     private CompanyDAO companyDAO;
     private PresentationLinkDAO presentationLinkDAO;
-    private RecruiterDAO recruiterRepo;
+    private RecruiterDAO recruiterDAO;
     private UserService userService;
     private SecurityService securityService;
 
     @Autowired
     public CompanyController(RecruiterDAO repo, UserService userService, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO, SecurityService securityService){
-        this.recruiterRepo = repo;
+        this.recruiterDAO = repo;
         this.userService = userService;
         this.companyDAO = companyDAO;
         this.presentationLinkDAO = presentationLinkDAO;
@@ -195,7 +195,7 @@ public class CompanyController {
             Company company = companyDAO.findOne(id);
             newRecruiter.setCompany(company);
 
-            Recruiter savedRecruiter = recruiterRepo.save(newRecruiter.toRecruiter());
+            Recruiter savedRecruiter = recruiterDAO.save(newRecruiter.toRecruiter());
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
