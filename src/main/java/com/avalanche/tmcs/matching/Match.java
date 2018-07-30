@@ -71,6 +71,14 @@ public class Match {
     private String studentPresentationLink;
 
     private Set<MatchPresentationLink> studentPresentationLinks;
+    
+    private Set<Skill> matchedRequiredSkills;
+    
+    private Set<Skill> matchedNiceToHaveSkills;
+    
+    private Set<String> matchedIndustries;
+    
+    private Set<String> matchedLocations;
 
     private boolean viewedSinceLastUpdate = false;
 
@@ -161,6 +169,46 @@ public class Match {
 
     public void setStudentPresentationLinks(Set<MatchPresentationLink> studentPresentationLinks) {
         this.studentPresentationLinks = studentPresentationLinks;
+    }
+    
+    @NotNull
+    @ElementCollection
+    public Set<Skill> getMatchedRequiredSkills() {
+    	return this.matchedRequiredSkills;
+    }
+    
+    public void setMatchedRequiredSkills(Set<Skill> matchedSkills) {
+    	this.matchedRequiredSkills = matchedSkills;
+    }
+    
+    @NotNull
+    @ElementCollection
+    public Set<Skill> getMatchedNiceToHaveSkills() {
+    	return this.matchedNiceToHaveSkills;
+    }
+    
+    public void setMatchedNiceToHaveSkills(Set<Skill> matchedSkills) {
+    	this.matchedNiceToHaveSkills = matchedSkills;
+    }
+    
+    @NotNull
+    @ElementCollection
+    public Set<String> getMatchedLocations() {
+    	return this.matchedLocations;
+    }
+    
+    public void setMatchedLocations(Set<String> matchedLocations) {
+    	this.matchedLocations = matchedLocations;
+    }
+    
+    @NotNull
+    @ElementCollection
+    public Set<String> getMatchedIndustries() {
+    	return this.matchedIndustries;
+    }
+    
+    public void setMatchedIndustries(Set<String> matchedIndustries) {
+    	this.matchedIndustries = matchedIndustries;
     }
 
     public boolean getViewedSinceLastUpdate(){

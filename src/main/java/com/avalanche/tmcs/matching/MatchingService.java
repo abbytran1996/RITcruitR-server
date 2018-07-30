@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
@@ -107,6 +108,7 @@ public class MatchingService {
                     match.setStudent(student);
                     match.setJob(posting);
                     match.setMatchStrength(weight);
+                    match = storeMatchCriteria(match);
 
                     matches.add(match);
                 }
@@ -164,9 +166,56 @@ public class MatchingService {
             match.setStudent(student);
             match.setApplicationStatus(Match.ApplicationStatus.NEW);
             match.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+            match = storeMatchCriteria(match);
             matches.add(match);
         }
         return matches;
+    }
+    
+    Match storeMatchCriteria(Match match) {
+    	Student student = match.getStudent();
+    	JobPosting job = match.getJob();
+    	Set<Skill> requiredSkills = job.getRequiredSkills();
+    	Set<Skill> nthSkills = job.getNiceToHaveSkills();
+    	Set<Skill> studentSkills = student.getSkills();
+    	if (studentSkills != null && requiredSkills != null && nthSkills != null) {
+    		Set<Skill> requiredSkillsCopy = new HashSet<Skill>(requiredSkills);
+    		Set<Skill> nthSkillsCopy = new HashSet<Skill>(nthSkills);
+    		Set<Skill> studentSkillsCopy = new HashSet<Skill>(studentSkills);
+        	requiredSkillsCopy.retainAll(studentSkillsCopy);
+        	match.setMatchedRequiredSkills(requiredSkillsCopy);
+        	nthSkillsCopy.retainAll(studentSkillsCopy);
+        	match.setMatchedNiceToHaveSkills(nthSkillsCopy);
+    	} else {
+    		match.setMatchedRequiredSkills(new HashSet<Skill>());
+    		match.setMatchedNiceToHaveSkills(new HashSet<Skill>());
+    	}
+    	Set<String> locations = job.getLocations();
+    	Set<String> studentPreferredLocations = student.getPreferredLocations();
+    	if (studentPreferredLocations != null && locations != null) {
+    		Set<String> locationsCopy = new HashSet<String>(locations);
+    		Set<String> studentPreferredLocationsCopy = new HashSet<String>(studentPreferredLocations);
+    		locationsCopy.retainAll(studentPreferredLocationsCopy);
+        	match.setMatchedLocations(locationsCopy);
+    	} else {
+    		match.setMatchedLocations(new HashSet<String>());
+    	}
+    	Company company = job.getCompany();
+    	if (company != null) {
+        	Set<String> industries = company.getIndustries();
+        	Set<String> studentPreferredIndustries = student.getPreferredIndustries();
+        	if (studentPreferredIndustries != null && industries != null) {
+        		Set<String> industriesCopy = new HashSet<String>(industries);
+        		Set<String> studentPreferredIndustriesCopy = new HashSet<String>(studentPreferredIndustries);
+        		industriesCopy.retainAll(studentPreferredIndustriesCopy);
+            	match.setMatchedIndustries(industriesCopy);
+        	} else {
+        		match.setMatchedIndustries(new HashSet<String>());
+        	}
+    	} else {
+    		match.setMatchedIndustries(new HashSet<String>());
+    	}
+    	return match;
     }
 
     static class MatchedSkillsCount {
