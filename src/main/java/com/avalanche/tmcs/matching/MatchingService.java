@@ -145,16 +145,19 @@ public class MatchingService {
 
     private static List<Match> deduplicateMatchListPreservingMatchStatus(List<Match> newMatches, List<Match> oldMatches){
         // get list of duplicate matches
-        List<Match> duplicateMatches = oldMatches.parallelStream()
+        List<Match> duplicateOldMatches = oldMatches.parallelStream()
                 .filter(newMatches::contains)
                 .collect(Collectors.toList());
 
-        // replace the duplicated match in the new list to the old one
+        // preserve the ApplicationStatus and CurrentPhase of the oldMatch when replacing it with its newer one
         int dupedNewMatchLocation;
-        for(Match duplicate: duplicateMatches){
-            dupedNewMatchLocation = newMatches.indexOf(duplicate);
-            if(dupedNewMatchLocation != -1){
-                newMatches.set(dupedNewMatchLocation, duplicate);
+        for(Match oldDuplicate: duplicateOldMatches){
+            dupedNewMatchLocation = newMatches.indexOf(oldDuplicate);
+            if(dupedNewMatchLocation != -1){ // -1 catches any mistaken duplicates
+                Match newMatch = newMatches.get(dupedNewMatchLocation);
+                newMatch.setApplicationStatus(oldDuplicate.getApplicationStatus());
+                newMatch.setCurrentPhase(oldDuplicate.getCurrentPhase());
+                newMatches.set(dupedNewMatchLocation, newMatch);
             }
         }
         return newMatches;
