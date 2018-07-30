@@ -41,7 +41,7 @@ public class MatchingService {
     public void registerStudent(final Student student) {
         final List<Match> oldMatches = matchDAO.findAllByStudent(student);
         final List<Match> newMatches = generateMatchesForStudent(student);
-        matchDAO.save(dedupeMatchListPreservingMatchStatus(newMatches, oldMatches));
+        matchDAO.save(deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches));
     }
 
     /**
@@ -52,7 +52,7 @@ public class MatchingService {
     public void registerJobPosting(final JobPosting posting) {
         final List<Match> oldMatches = matchDAO.findAllByJob(posting);
         final List<Match> newMatches = generateMatchesForJob(posting);
-        matchDAO.save(dedupeMatchListPreservingMatchStatus(newMatches, oldMatches));
+        matchDAO.save(deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches));
     }
 
     public List<Match> generateMatchesForStudent(final Student student) {
@@ -143,7 +143,7 @@ public class MatchingService {
         return matchedRecommendedSkills.size()/(1.00f * recSkills.size());
     }
 
-    private static List<Match> dedupeMatchListPreservingMatchStatus(List<Match> newMatches, List<Match> oldMatches){
+    private static List<Match> deduplicateMatchListPreservingMatchStatus(List<Match> newMatches, List<Match> oldMatches){
         // get list of duplicate matches
         List<Match> duplicateMatches = oldMatches.parallelStream()
                 .filter(newMatches::contains)
