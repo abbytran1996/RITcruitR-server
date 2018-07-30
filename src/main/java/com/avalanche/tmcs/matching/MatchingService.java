@@ -40,8 +40,9 @@ public class MatchingService {
      */
     public void registerStudent(final Student student) {
         final List<Match> oldMatches = matchDAO.findAllByStudent(student);
-        final List<Match> newMatches = generateMatchesForStudent(student);
-        matchDAO.save(deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches));
+        List<Match> newMatches = generateMatchesForStudent(student);
+        newMatches = deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches);
+        resetAllMatchesForStudent(student, newMatches);
     }
 
     /**
@@ -51,9 +52,9 @@ public class MatchingService {
      */
     public void registerJobPosting(final JobPosting posting) {
         final List<Match> oldMatches = matchDAO.findAllByJob(posting);
-        final List<Match> newMatches = generateMatchesForJob(posting);
-        deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches).parallelStream()
-                .forEach(match -> matchDAO.save(match));
+        List<Match> newMatches = generateMatchesForJob(posting);
+        newMatches = deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches);
+        resetAllMatchesForJob(posting, newMatches)
     }
 
     public List<Match> generateMatchesForStudent(final Student student) {
