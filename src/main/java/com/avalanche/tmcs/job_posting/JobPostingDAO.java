@@ -20,8 +20,4 @@ public interface JobPostingDAO extends CrudRepository<JobPosting, Long> {
 
     List<JobPosting> findAllByRecruiter(Recruiter recruiter);
 
-    List<JobPosting> findAllByRequiredSkillsContains(Skill skill);
-
-    List<JobPosting> findAllByNiceToHaveSkillsContains(Skill skill);
-
 }
