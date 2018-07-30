@@ -12,7 +12,8 @@ package com.avalanche.tmcs.matching;
         import org.springframework.web.bind.annotation.*;
 
         import java.util.ArrayList;
-        import java.util.List;
+import java.util.HashSet;
+import java.util.List;
         import java.util.Set;
 
 /**
@@ -330,5 +331,73 @@ public class MatchController {
         matchDAO.save(match);
 
         return ResponseEntity.ok().build();
+    }
+    
+    // ================================================================================================================
+    // * GET TOP MATCHED SKILLS [GET]                                                                        *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/matchedSkills", method = RequestMethod.GET)
+    public ResponseEntity<?> getTopMatchedSkills(@PathVariable long id) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Set<Skill> requiredSkills = match.getMatchedRequiredSkills();
+        Set<Skill> niceToHaveSkills = match.getMatchedNiceToHaveSkills();
+        Set<Skill> topMatchedSkills = new HashSet<Skill>();
+        int totalTopSkills = 3;
+        int prefNumReqSkills = 2;
+        int prefNumNthSkills = 1;
+        for (Skill skill : requiredSkills) {
+        	if (topMatchedSkills.size() < prefNumReqSkills) {
+        		topMatchedSkills.add(skill);
+        		requiredSkills.remove(skill);
+        	} else {
+        		break;
+        	}
+        }
+        for (Skill skill : niceToHaveSkills) {
+        	if (topMatchedSkills.size() < totalTopSkills) {
+        		topMatchedSkills.add(skill);
+        		niceToHaveSkills.remove(skill);
+        	} else {
+        		break;
+        	}
+        }
+        if (topMatchedSkills.size() < totalTopSkills) {
+        	for (Skill skill : requiredSkills) {
+        		if (topMatchedSkills.size() < totalTopSkills) {
+        			topMatchedSkills.add(skill);
+        		} else {
+        			break;
+        		}
+        	}
+        }
+        return ResponseEntity.ok(topMatchedSkills);
+    }
+    
+    // ================================================================================================================
+    // * GET MATCHED INDUSTRIES [GET]                                                                        *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/matchedIndustries", method = RequestMethod.GET)
+    public ResponseEntity<?> getMatchedIndustries(@PathVariable long id) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(match.getMatchedIndustries());
+    }
+    
+    // ================================================================================================================
+    // * GET MATCHED LOCATIONS [GET]                                                                        *
+    // ================================================================================================================
+    @RequestMapping(value = "/{id}/matchedLocations", method = RequestMethod.GET)
+    public ResponseEntity<?> getMatchedLocations(@PathVariable long id) {
+        Match match = matchDAO.findOne(id);
+        if(match == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(match.getMatchedLocations()); 
     }
 }
