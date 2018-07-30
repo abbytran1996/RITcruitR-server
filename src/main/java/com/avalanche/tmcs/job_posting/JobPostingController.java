@@ -81,6 +81,7 @@ public class JobPostingController {
                 link.setJob(savedJobPosting);
             }
             savedJobPosting.setPresentationLinks(newJobPosting.getPresentationLinks());
+            savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
             jobPostingDAO.save(savedJobPosting);
 
             matchingService.registerJobPosting(savedJobPosting);
