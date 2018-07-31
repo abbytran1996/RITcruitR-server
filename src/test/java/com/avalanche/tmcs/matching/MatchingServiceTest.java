@@ -111,7 +111,7 @@ public class MatchingServiceTest {
 
     private JobPostingDAO makeMockJobPostingDAO() {
         JobPostingDAO jobPostingDAO = mock(JobPostingDAO.class);
-        when(jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE.toInt())).thenReturn(makeJobPostings());
+        when(jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE)).thenReturn(makeJobPostings());
         return jobPostingDAO;
     }
 

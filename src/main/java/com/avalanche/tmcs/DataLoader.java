@@ -266,7 +266,7 @@ public class DataLoader implements ApplicationRunner {
                 newJob.setProblemStatement(problemStatement);
                 newJob.setRecruiter(recruiter);
                 newJob.setRequiredSkills(requiredSkills);
-                newJob.setStatus(0);
+                newJob.setStatus(JobPosting.Status.ACTIVE);
                 newJob.setVideo(video);
                 System.out.println(newJob.toString());
 //                JobPosting savedJobPosting = jobPostingDAO.save(newJob.toJobPosting());

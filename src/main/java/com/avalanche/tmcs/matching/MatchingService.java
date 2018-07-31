@@ -71,7 +71,7 @@ public class MatchingService {
 
     public List<Match> generateMatchesForStudent(final Student student) {
         // create new matches for a student from all currently active jobs
-        List<Match> matchesToReturn = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE.toInt()).parallelStream()
+        List<Match> matchesToReturn = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE).parallelStream()
                 .map(job -> generateMatchForStudentAndJob(student, job))
                 .filter(Optional::isPresent)
                 .map(Optional::get)

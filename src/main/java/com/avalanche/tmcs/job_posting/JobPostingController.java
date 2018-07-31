@@ -147,19 +147,19 @@ public class JobPostingController {
         switch (status) {
         case "active":
         	int duration = jobPosting.getDuration();
-        	jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
+        	jobPosting.setStatus(JobPosting.Status.ACTIVE);
         	jobPosting.setNumDaysRemaining(duration);
             matchingService.reactivateMatchesForJob(jobPosting);
             break;
         case "inactive":
-        	jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
+        	jobPosting.setStatus(JobPosting.Status.INACTIVE);
         	matchingService.expireNonFinalMatchesForJob(jobPosting);
             break;
         case "archived":
-        	jobPosting.setStatus(JobPosting.Status.ARCHIVED.toInt());
+        	jobPosting.setStatus(JobPosting.Status.ARCHIVED);
             break;
         case "needs_detailing":
-        	jobPosting.setStatus(JobPosting.Status.NEEDS_DETAILING.toInt());
+        	jobPosting.setStatus(JobPosting.Status.NEEDS_DETAILING);
             break;
         default:
         	return ResponseEntity.badRequest().build();
@@ -174,7 +174,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
-        toDelete.setStatus(JobPosting.Status.ARCHIVED.toInt());
+        toDelete.setStatus(JobPosting.Status.ARCHIVED);
         jobPostingDAO.save(toDelete);
 
         return ResponseEntity.ok().build();
@@ -204,16 +204,16 @@ public class JobPostingController {
         List<JobPosting> jobPostings;
         switch (status) {
         case "active":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE);
             break;
         case "inactive":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE);
             break;
         case "archived":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED);
             break;
         case "needs_detailing":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.NEEDS_DETAILING.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.NEEDS_DETAILING);
             break;
         default:
             jobPostings = jobPostingDAO.findAllByCompany(companyWithID);
@@ -229,10 +229,7 @@ public class JobPostingController {
         Company companyWithID = new Company();
         companyWithID.setId(company_id);
 
-        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
-                companyWithID,
-                JobPosting.Status.ACTIVE.toInt()
-        );
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE);
 
         return ResponseEntity.ok(jobPostings);
     }
@@ -245,10 +242,7 @@ public class JobPostingController {
         Company companyWithID = new Company();
         companyWithID.setId(company_id);
 
-        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
-                companyWithID,
-                JobPosting.Status.INACTIVE.toInt()
-        );
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE);
 
         return ResponseEntity.ok(jobPostings);
     }
@@ -270,10 +264,7 @@ public class JobPostingController {
         Company companyWithID = new Company();
         companyWithID.setId(company_id);
 
-        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
-                companyWithID,
-                JobPosting.Status.ARCHIVED.toInt()
-        );
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED);
 
         return ResponseEntity.ok(jobPostings);
     }
@@ -297,7 +288,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}/fulfill", method = RequestMethod.POST)
     public ResponseEntity<?> fulfillJobPosting(@PathVariable long id){
         JobPosting toFulfill = jobPostingDAO.findOne(id);
-        toFulfill.setStatus(JobPosting.Status.INACTIVE.toInt());
+        toFulfill.setStatus(JobPosting.Status.INACTIVE);
         jobPostingDAO.save(toFulfill);
 
         return ResponseEntity.ok().build();

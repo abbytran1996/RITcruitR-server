@@ -19,26 +19,15 @@ import java.util.Set;
 @Table(name="job_posting")
 public class JobPosting {
     public enum Status {
-        ACTIVE(0),
-        INACTIVE(1),
-        ARCHIVED(2),
-        NEEDS_DETAILING(3);
-
-        private int status;
-
-        Status(int status){
-            this.status = status;
-        }
-
-        public int toInt(){
-            return status;
-        }
+        ACTIVE,
+        INACTIVE,
+        ARCHIVED,
+        NEEDS_DETAILING
     }
 
     private long id;
 
-    // Status Enum above
-    private int status;
+    private Status status;
 
     private String positionTitle;
 
@@ -84,11 +73,11 @@ public class JobPosting {
     }
 
     @NotNull
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
