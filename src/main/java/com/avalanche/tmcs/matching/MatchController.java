@@ -256,7 +256,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET RECRUITER MATCH COUNT [GET]                                                                                  *
+    // * GET RECRUITER MATCH COUNT [GET]                                                                              *
     // ================================================================================================================
     @RequestMapping(value = "/posting/{id}/count", method = RequestMethod.GET)
     public ResponseEntity<?> getRecruiterMatchCount(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
@@ -284,7 +284,10 @@ public class MatchController {
             	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
                 break;
             default:
-            	count = matchDAO.countAllByJob(job);
+                long problemCount = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+                long presCount = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+                long finalCount = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
+            	count = problemCount + presCount + finalCount;
         }
 
         return ResponseEntity.ok(count);
@@ -334,7 +337,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET TOP MATCHED SKILLS [GET]                                                                        *
+    // * GET TOP MATCHED SKILLS [GET]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/matchedSkills", method = RequestMethod.GET)
     public ResponseEntity<?> getTopMatchedSkills(@PathVariable long id) {
@@ -378,7 +381,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET MATCHED INDUSTRIES [GET]                                                                        *
+    // * GET MATCHED INDUSTRIES [GET]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/matchedIndustries", method = RequestMethod.GET)
     public ResponseEntity<?> getMatchedIndustries(@PathVariable long id) {
@@ -390,7 +393,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET MATCHED LOCATIONS [GET]                                                                        *
+    // * GET MATCHED LOCATIONS [GET]                                                                                  *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/matchedLocations", method = RequestMethod.GET)
     public ResponseEntity<?> getMatchedLocations(@PathVariable long id) {
