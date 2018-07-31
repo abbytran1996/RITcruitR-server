@@ -289,4 +289,9 @@ public class Match {
         return this.applicationStatus == otherMatch.applicationStatus;
     }
 
+    @Override
+    public String toString(){
+        return String.format("matchID: %s, studentID: %s, jobID: %s", this.id, this.student.getId(), this.job.getId());
+    }
+
 }
