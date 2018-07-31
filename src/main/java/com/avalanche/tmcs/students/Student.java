@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,6 @@ public class Student {
     private long id;
 
     private String firstName;
-
     private String lastName;
 
     private Set<Skill> skills;
@@ -67,6 +67,19 @@ public class Student {
 
     public Student(){
         this.preferredCompanySizes.add(Company.Size.DONT_CARE);
+        this.preferredLocations = new HashSet<>();
+        this.preferredCompanySizes = new HashSet<>();
+        this.graduationDate = new Date(LocalDate.now().toEpochDay());
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.major = "";
+        this.gpa = 0;
+        this.preferredIndustries = new HashSet<>();
+    }
+
+    public boolean readyToMatch(){
+        return !(this.skills == null || this.skills.isEmpty());
     }
 
     private boolean isSetup;

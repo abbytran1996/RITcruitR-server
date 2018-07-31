@@ -72,13 +72,11 @@ public class Match {
 
     private Set<MatchPresentationLink> studentPresentationLinks;
     
-    private Set<Skill> matchedRequiredSkills = new HashSet<Skill>();
+    private Set<Skill> matchedRequiredSkills;
+    private Set<Skill> matchedNiceToHaveSkills;
     
-    private Set<Skill> matchedNiceToHaveSkills = new HashSet<Skill>();
-    
-    private Set<String> matchedIndustries = new HashSet<String>();
-    
-    private Set<String> matchedLocations = new HashSet<String>();
+    private Set<String> matchedIndustries;
+    private Set<String> matchedLocations;
 
     private boolean viewedSinceLastUpdate = false;
 
@@ -90,6 +88,12 @@ public class Match {
 
     public Match() {
         setLastUpdatedTimeToNow();
+        setStudentPresentationLinks(new HashSet<>());
+        setMatchedRequiredSkills(new HashSet<>());
+        setMatchedNiceToHaveSkills(new HashSet<>());
+        setMatchedIndustries(new HashSet<>());
+        setMatchedLocations(new HashSet<>());
+        setMatchStrength(0f);
     }
 
     @Id

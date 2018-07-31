@@ -58,7 +58,7 @@ public class MatchingService {
     }
 
     public void reactivateMatchesForJob(JobPosting job){
-        matchDAO.findAllByJob(job).parallelStream()
+        matchDAO.findAllByJob(job).stream()
                 .map(Match::resetIfDeactivated)
                 .forEach(matchDAO::save);
     }
@@ -117,7 +117,7 @@ public class MatchingService {
 
 
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
-        if(student == null || job == null) { return Optional.empty(); }
+        if(student == null || job == null || !student.readyToMatch()) { return Optional.empty(); }
 
         Match newMatch = new Match()
                 .setJob(job)
