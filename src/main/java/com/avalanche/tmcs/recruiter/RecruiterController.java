@@ -121,7 +121,7 @@ public class RecruiterController {
     }
 
     // ================================================================================================================
-    // * DELETE RECRUITER [DELETE] - **NOT WORKING**                                                                  *
+    // * DELETE RECRUITER [DELETE]                                                              *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteRecruiter(@PathVariable long id) {

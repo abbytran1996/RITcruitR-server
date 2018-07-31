@@ -115,11 +115,10 @@ public class MatchingService {
         matchDAO.save(newMatchesForStudent);
     }
 
-
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
         if(student == null || !student.readyToMatch() ||
                 job == null || !job.readyToMatch()) {
-            return Optional.empty(); 
+            return Optional.empty();
         }
 
         Match newMatch = new Match()
