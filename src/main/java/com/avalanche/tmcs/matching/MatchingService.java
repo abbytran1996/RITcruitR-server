@@ -59,12 +59,14 @@ public class MatchingService {
 
     public void reactivateMatchesForJob(JobPosting job){
         matchDAO.findAllByJob(job).parallelStream()
-                .forEach(Match::resetIfDeactivated);
+                .map(Match::resetIfDeactivated)
+                .forEach(matchDAO::save);
     }
 
     public void expireNonFinalMatchesForJob(JobPosting job){
         matchDAO.findAllByJob(job).parallelStream()
-                .forEach(Match::deactivateIfNotFinal);
+                .map(Match::deactivateIfNotFinal)
+                .forEach(matchDAO::save);
     }
 
     public List<Match> generateMatchesForStudent(final Student student) {
