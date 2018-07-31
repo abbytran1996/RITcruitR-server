@@ -59,9 +59,6 @@ public class MatchController {
             case "presentation":
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
                 break;
-            case "interview":
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
-                break;
             case "final":
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
                 break;
@@ -92,9 +89,6 @@ public class MatchController {
                 break;
             case "presentation":
             	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
-                break;
-            case "interview":
-            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
                 break;
             case "final":
             	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
@@ -136,13 +130,12 @@ public class MatchController {
                 match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
                 break;
             case PRESENTATION_WAITING_FOR_RECRUITER:
-                match.setCurrentPhase(Match.CurrentPhase.INTERVIEW);
+                match.setCurrentPhase(Match.CurrentPhase.FINAL);
                 break;
-            case INTERVIEW:
+            case FINAL:
                 match.setCurrentPhase(Match.CurrentPhase.FINAL);
                 match.setApplicationStatus(Match.ApplicationStatus.ACCEPTED);
                 break;
-            case FINAL:
             default:
                 return ResponseEntity.status(300).build();
         }
@@ -186,9 +179,8 @@ public class MatchController {
 
         // checks if the match isn't in the final stage
         if (match.getCurrentPhase() != Match.CurrentPhase.FINAL) {
-            return ResponseEntity.status(300).build();
+            return ResponseEntity.status(400).build();
         }
-
         match.setCurrentPhase(Match.CurrentPhase.ARCHIVED);
 
         match.setLastUpdatedTimeToNow();
@@ -237,9 +229,6 @@ public class MatchController {
             case "presentation":
                 matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
                 break;
-            case "interview":
-                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
-                break;
             case "final":
                 matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
                 break;
@@ -271,9 +260,6 @@ public class MatchController {
                 break;
             case "presentation":
             	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
-                break;
-            case "interview":
-            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
                 break;
             case "final":
             	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
