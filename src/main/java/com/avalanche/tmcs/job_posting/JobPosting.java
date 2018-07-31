@@ -62,6 +62,10 @@ public class JobPosting {
 
     private Set<JobPresentationLink> presentationLinks;
 
+    public boolean readyToMatch(){
+        return Status.ACTIVE.equals(this.status) && Company.Status.APPROVED.equals(this.company.getStatus());
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {

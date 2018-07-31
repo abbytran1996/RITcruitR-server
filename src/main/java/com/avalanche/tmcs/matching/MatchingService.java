@@ -117,7 +117,10 @@ public class MatchingService {
 
 
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
-        if(student == null || job == null || !student.readyToMatch()) { return Optional.empty(); }
+        if(student == null || !student.readyToMatch() ||
+                job == null || !job.readyToMatch()) {
+            return Optional.empty(); 
+        }
 
         Match newMatch = new Match()
                 .setJob(job)
