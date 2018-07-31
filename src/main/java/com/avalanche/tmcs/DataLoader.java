@@ -11,11 +11,17 @@ import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.job_posting.NewJobPosting;
+import com.avalanche.tmcs.matching.Industry;
+import com.avalanche.tmcs.matching.IndustryDAO;
 import com.avalanche.tmcs.matching.Location;
 import com.avalanche.tmcs.matching.LocationDAO;
+import com.avalanche.tmcs.matching.Major;
+import com.avalanche.tmcs.matching.MajorDAO;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
+import com.avalanche.tmcs.matching.University;
+import com.avalanche.tmcs.matching.UniversityDAO;
 import com.avalanche.tmcs.students.NewStudent;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
@@ -42,6 +48,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimerTask;
 
 /**
  * Gives the database its initial data
@@ -59,13 +66,16 @@ public class DataLoader implements ApplicationRunner {
     private StudentDAO studentDAO;
     private SkillDAO skillDAO;
     private LocationDAO locationDAO;
+    private MajorDAO majorDAO;
+    private IndustryDAO industryDAO;
+    private UniversityDAO universityDAO;
     private UserService userService;
     private MatchingService matchingService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
-                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MatchingService matchingService,
-                      @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
+                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MajorDAO majorDAO, IndustryDAO industryDAO,
+                      UniversityDAO universityDAO, MatchingService matchingService, @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
         this.recruiterDAO = recruiterDAO;
         this.companyDAO = companyDAO;
@@ -75,6 +85,9 @@ public class DataLoader implements ApplicationRunner {
         this.userService = userService;
         this.skillDAO = skillDAO;
         this.locationDAO = locationDAO;
+        this.majorDAO = majorDAO;
+        this.industryDAO = industryDAO;
+        this.universityDAO = universityDAO;
         this.matchingService = matchingService;
     }
 
@@ -101,70 +114,89 @@ public class DataLoader implements ApplicationRunner {
                 LOG.info("Adding test data...");
                 String skillFilePath = new File("skills.json").getAbsolutePath();
                 String jobFilePath = new File("jobs.json").getAbsolutePath();
-                String studentsFilePath = new File("students.json").getAbsolutePath();
                 String locationsFilePath = new File("locations.json").getAbsolutePath();
+                String majorsFilePath = new File("majors.json").getAbsolutePath();
+                String universitiesFilePath = new File("universities.json").getAbsolutePath();
+                String industriesFilePath = new File("industries.json").getAbsolutePath();
                 loadSkills(skillFilePath);
                 loadJobs(jobFilePath);
-              loadLocations(locationsFilePath);
+                loadLocations(locationsFilePath);
+                loadMajors(majorsFilePath);
+                loadUniversities(universitiesFilePath);
+                loadIndustries(industriesFilePath);
             } catch (IOException e) {
                 LOG.warn("IOException reached while trying to load the test data. Please check the filename for any typos.", e);
             }
         }
     }
 
-    private void loadStudents(String fileName) throws IOException {
-        try {
-            JSONParser jsonParser = new JSONParser();
-            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+    private void updateMajorsFromPortfolium() {
+    	//Need to get response from portfolium API first
+    	String portfoliumMajors = "";
+    	JSONParser jsonParser = new JSONParser();
+    	List<Major> savedMajors = new ArrayList<>();
+    	majorDAO.findAll().forEach(savedMajors::add);
+    	ArrayList<Major> majorsToSave = new ArrayList<>();
+    	try {
+			JSONArray arr = (JSONArray) jsonParser.parse(portfoliumMajors);
+	    	for (Object majorObject : arr) {
+	    		JSONObject major = (JSONObject) majorObject;
+	    		String newMajorName = (String) major.get("major");
+	    		Major newMajor = new Major(newMajorName);
+	    		if (!savedMajors.contains(newMajor)) {
+	    			majorsToSave.add(newMajor);
+	    		}
+	    	}
+	    	majorDAO.save(majorsToSave);
+		} catch (ParseException e) {
+			LOG.warn("Unable to retrieve/parse majors from Portfolium API", e);
+		}
+    }
 
-            for (Object studentObject : arr) {
-                JSONObject student = (JSONObject) studentObject;
-                NewStudent newStudent = new NewStudent();
-                newStudent.setContactEmail((String) student.get("contactEmail"));
-                newStudent.setEmail((String) student.get("email"));
-                newStudent.setFirstName((String) student.get("firstName"));
-                newStudent.setGpa((long) student.get("gpa"));
-                Date graduationDate = Date.valueOf((String) student.get("graduationDate"));
-                newStudent.setGraduationDate(graduationDate);
-                newStudent.setLastName((String) student.get("lastName"));
-                newStudent.setMajor((String) student.get("major"));
-                newStudent.setPhoneNumber((String) student.get("phoneNumber"));
+    private void updateIndustriesFromPortfolium() {
+    	//Need to get response from portfolium API first
+    	String portfoliumIndustries = "";
+    	JSONParser jsonParser = new JSONParser();
+    	List<Industry> savedIndustries = new ArrayList<>();
+    	industryDAO.findAll().forEach(savedIndustries::add);
+    	ArrayList<Industry> industriesToSave = new ArrayList<>();
+    	try {
+			JSONArray arr = (JSONArray) jsonParser.parse(portfoliumIndustries);
+	    	for (Object industryObject : arr) {
+	    		JSONObject industry = (JSONObject) industryObject;
+	    		String newIndustryName = (String) industry.get("industry");
+	    		Industry newIndustry = new Industry(newIndustryName);
+	    		if (!savedIndustries.contains(newIndustry)) {
+	    			industriesToSave.add(newIndustry);
+	    		}
+	    	}
+	    	industryDAO.save(industriesToSave);
+		} catch (ParseException e) {
+			LOG.warn("Unable to retrieve/parse industries from Portfolium API", e);
+		}
+    }
 
-                ArrayList<Company.Size> companySizesList = (ArrayList<Company.Size>) student.get("preferredCompanySizes");
-                Set<Company.Size> preferredCompanySizes = new HashSet<>();
-                preferredCompanySizes.addAll(companySizesList);
-                newStudent.setPreferredCompanySizes(preferredCompanySizes);
-
-                ArrayList<String> industriesList = (ArrayList<String>) student.get("preferredIndustries");
-                Set<String> preferredIndustries = new HashSet<String>();
-                preferredIndustries.addAll(industriesList);
-                newStudent.setPreferredIndustries(preferredIndustries);
-
-                ArrayList<String> locationsList = (ArrayList<String>) student.get("preferredLocations");
-                Set<String> preferredLocations = new HashSet<String>();
-                preferredLocations.addAll(locationsList);
-                newStudent.setPreferredLocations(preferredLocations);
-
-                newStudent.setSchool((String) student.get("school"));
-                Set<Skill> studentSkills = new HashSet<Skill>();
-                JSONArray skillsList = (JSONArray) student.get("skills");
-                for (Object skillObject : skillsList) {
-                	JSONObject skill = (JSONObject) skillObject;
-                	String skillName = (String) skill.get("name");
-                	Skill newSkill = new Skill(skillName);
-                	studentSkills.add(newSkill);
-                }
-                newStudent.setSkills(studentSkills);
-                newStudent.setWebsite((String) student.get("website"));
-                //a new student needs to be linked to a user object which needs an email and password to be in the system
-//                User newUser = new User(email, password);
-//                newStudent.setUser(newUser);
-                Student savedStudent = studentDAO.save(newStudent.toStudent());
-                matchingService.registerStudent(savedStudent);
-            }
-        } catch (ParseException e) {
-            LOG.warn(e.getMessage());
-        }
+    private void updateUniversitiesFromPortfolium() {
+    	//Need to get response from portfolium API first
+    	String portfoliumUniversities = "";
+    	JSONParser jsonParser = new JSONParser();
+    	List<University> savedUniversities = new ArrayList<>();
+    	universityDAO.findAll().forEach(savedUniversities::add);
+    	ArrayList<University> universitiesToSave = new ArrayList<>();
+    	try {
+			JSONArray arr = (JSONArray) jsonParser.parse(portfoliumUniversities);
+	    	for (Object universityObject : arr) {
+	    		JSONObject university = (JSONObject) universityObject;
+	    		String newUniversityName = (String) university.get("name");
+	    		University newUniversity = new University(newUniversityName);
+	    		if (!savedUniversities.contains(newUniversity)) {
+	    			universitiesToSave.add(newUniversity);
+	    		}
+	    	}
+	    	universityDAO.save(universitiesToSave);
+		} catch (ParseException e) {
+			LOG.warn("Unable to retrieve/parse universities from Portfolium API", e);
+		}
     }
     
     private void loadJobs(String fileName) throws IOException {
@@ -241,12 +273,12 @@ public class DataLoader implements ApplicationRunner {
 //                matchingService.registerJobPosting(savedJobPosting);
             }
 //            Iterable<JobPosting> savedJobs = jobPostingDAO.save(jobsToAdd);
-        } catch (ParseException e) {
+        } catch (ParseException | IOException e) {
             LOG.warn(e.getMessage());
         }
     }
     
-    private void loadLocations (String fileName) throws IOException {
+    private void loadLocations (String fileName) {
         try {
             JSONParser jsonParser = new JSONParser();
             JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
@@ -262,17 +294,113 @@ public class DataLoader implements ApplicationRunner {
                 Location newLocation = new Location(newLocationName);
                 boolean isLocationInDb = false;
                 for (Location lid : locationsInDb) {
-                	if (lid.getName().equals(newLocation.getName())) {
+                	if (lid.getName().equalsIgnoreCase(newLocation.getName())) {
                 		isLocationInDb = true;
                 		break;
                 	}
                 }
-                //save newLocation to db
+                //save new location to db
                 if (!isLocationInDb) {
                     locationsToAdd.add(newLocation);
                 }
             }
             Iterable<Location> savedLocations = locationDAO.save(locationsToAdd);
+        } catch (ParseException | IOException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+
+    private void loadMajors (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            Iterable<Major> iterableMajorsInDb = majorDAO.findAll();
+            List<Major> majorsInDb = new ArrayList<>();
+            iterableMajorsInDb.forEach(majorsInDb::add);
+            List<Major> majorsToAdd = new ArrayList<>();
+
+            for (Object majorObject : arr) {
+                JSONObject major = (JSONObject) majorObject;
+                String newMajorName = (String) major.get("name");
+                Major newMajor = new Major(newMajorName);
+                boolean isMajorInDb = false;
+                for (Major dbMajor : majorsInDb) {
+                	if (dbMajor.getName().equalsIgnoreCase(newMajor.getName())) {
+                		isMajorInDb = true;
+                		break;
+                	}
+                }
+                //save new major to db
+                if (!isMajorInDb) {
+                	majorsToAdd.add(newMajor);
+                }
+            }
+            Iterable<Major> savedMajors = majorDAO.save(majorsToAdd);
+        } catch (ParseException | IOException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+
+    private void loadUniversities (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            Iterable<University> iterableUniversitiesInDb = universityDAO.findAll();
+            List<University> universitiesInDb = new ArrayList<>();
+            iterableUniversitiesInDb.forEach(universitiesInDb::add);
+            List<University> universitiesToAdd = new ArrayList<>();
+
+            for (Object universityObject : arr) {
+                JSONObject university = (JSONObject) universityObject;
+                String newUniversityName = (String) university.get("name");
+                University newUniversity = new University(newUniversityName);
+                boolean isUniversityInDb = false;
+                for (University dbUniversity : universitiesInDb) {
+                	if (dbUniversity.getName().equalsIgnoreCase(newUniversity.getName())) {
+                		isUniversityInDb = true;
+                		break;
+                	}
+                }
+                //save new university to db
+                if (!isUniversityInDb) {
+                	universitiesToAdd.add(newUniversity);
+                }
+            }
+            Iterable<University> savedUniversities = universityDAO.save(universitiesToAdd);
+        } catch (ParseException | IOException e) {
+            LOG.warn(e.getMessage());
+        }
+    }
+
+    private void loadIndustries (String fileName) throws IOException {
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray arr = (JSONArray) jsonParser.parse(new FileReader(fileName));
+
+            Iterable<Industry> iterableIndustriesInDb = industryDAO.findAll();
+            List<Industry> industriesInDb = new ArrayList<>();
+            iterableIndustriesInDb.forEach(industriesInDb::add);
+            List<Industry> industriesToAdd = new ArrayList<>();
+
+            for (Object industryObject : arr) {
+                JSONObject industry = (JSONObject) industryObject;
+                String newIndustryName = (String) industry.get("name");
+                Industry newIndustry = new Industry(newIndustryName);
+                boolean isIndustryInDb = false;
+                for (Industry dbIndustry : industriesInDb) {
+                	if (dbIndustry.getName().equalsIgnoreCase(newIndustry.getName())) {
+                		isIndustryInDb = true;
+                		break;
+                	}
+                }
+                //save newLocation to db
+                if (!isIndustryInDb) {
+                	industriesToAdd.add(newIndustry);
+                }
+            }
+            Iterable<Industry> savedIndustries = industryDAO.save(industriesToAdd);
         } catch (ParseException e) {
             LOG.warn(e.getMessage());
         }
@@ -360,5 +488,43 @@ public class DataLoader implements ApplicationRunner {
     private Company.Size randomSize(Faker faker){
         List<Company.Size> sizes= Arrays.asList(Company.Size.values());
         return sizes.get(faker.number().numberBetween(0,sizes.size()));
+    }
+
+    class PortfoliumSkillsUpdater extends TimerTask{
+
+		@Override
+		public void run() {
+	        try {
+	        	List<Skill> savedSkills = new ArrayList<>();
+	            List<Skill> skillsToSave = new ArrayList<>();
+	            skillDAO.findAll().forEach(savedSkills::add);
+
+	            String portfoliumSkillsResponse = "";
+	            JSONParser jsonParser = new JSONParser();
+	            JSONArray arr = (JSONArray) jsonParser.parse(portfoliumSkillsResponse);
+	            for (Object skillObject : arr) {
+	                JSONObject skill = (JSONObject) skillObject;
+	                String newSkillName = (String) skill.get("name");
+	                Skill newSkill = new Skill(newSkillName);
+
+	                // ensure there aren't any duplicates
+	                boolean dbContainsSkill = false;
+	                for (Skill savedSkill : savedSkills) {
+	                	if (savedSkill.getName().equalsIgnoreCase(newSkill.getName())) {
+	                		dbContainsSkill = true;
+	                		break;
+	                	}
+	                }
+	                if (!dbContainsSkill) {
+	                	skillsToSave.add(newSkill);
+	                }
+	            }
+
+	            skillDAO.save(skillsToSave);
+	        } catch (ParseException e) {
+	            LOG.warn("Unable to parse/retrieve trending skills from Portfolium", e);
+	        }
+		}
+
     }
 }

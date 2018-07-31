@@ -6,6 +6,7 @@ import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.Skill;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -67,6 +68,8 @@ public class Student {
     public Student(){
         this.preferredCompanySizes.add(Company.Size.DONT_CARE);
     }
+
+    private boolean isSetup;
 
     // TODO: Figure out what the job preferences and notification preferences will look like
     // Pretty sure we agreed to handle them later
@@ -228,6 +231,14 @@ public class Student {
 
     public void setProblemStatements(Set<ProblemStatement> problemStatements) {
         this.problemStatements = problemStatements;
+    }
+
+    public boolean getIsSetup() {
+        return this.isSetup;
+    }
+
+    public void setIsSetup(boolean flag) {
+        this.isSetup = flag;
     }
 
     public double calculateStudentPreferencesWeight(){
