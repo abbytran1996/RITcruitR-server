@@ -25,6 +25,7 @@ import java.util.Set;
 public class JobPostingController {
 
     private JobPostingDAO jobPostingDAO;
+    private JobPostingExpirationChecker expirationChecker;
     private RecruiterDAO recruiterRepo;
     private JobPresentationLinkDAO presentationLinkDAO;
     private CompanyDAO companyDAO;
@@ -32,8 +33,10 @@ public class JobPostingController {
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, JobPostingExpirationChecker expirationChecker,
+                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO){
         this.jobPostingDAO = jobPostingDAO;
+        this.expirationChecker = expirationChecker;
         this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = recruiterDAO;
@@ -248,6 +251,15 @@ public class JobPostingController {
         );
 
         return ResponseEntity.ok(jobPostings);
+    }
+
+    // ================================================================================================================
+    // * RUN A SIMULATED DAY TO TRIGGER EXPIRATION [PATCH]                                                              *
+    // ================================================================================================================
+    @RequestMapping(value = "/clock", method=RequestMethod.PATCH)
+    public ResponseEntity simulatePassageOfOneWeekdayForJobExpiration() {
+        expirationChecker.automateJobExpiration();
+        return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
