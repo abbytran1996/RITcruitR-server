@@ -4,7 +4,6 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,7 +146,7 @@ public class JobPostingController {
         	int duration = jobPosting.getDuration();
         	jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
         	jobPosting.setNumDaysRemaining(duration);
-            matchingService.reactivateExpiredMatchesForJob(jobPosting);
+            matchingService.reactivateMatchesForJob(jobPosting);
             break;
         case "inactive":
         	jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());

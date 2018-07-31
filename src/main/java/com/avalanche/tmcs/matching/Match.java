@@ -236,7 +236,7 @@ public class Match {
         return applicationStatus;
     }
 
-    public Match expireIfNotFinal(){
+    public Match deactivateIfNotFinal(){
         // don't reset applicants who have already been accepted
         if(this.applicationStatus != ApplicationStatus.ACCEPTED){
             this.applicationStatus = ApplicationStatus.TIMED_OUT;
@@ -249,11 +249,11 @@ public class Match {
         return this;
     }
 
-    public Match unexpireIfNotFinal(){
-        if(this.applicationStatus != ApplicationStatus.ACCEPTED){
+    public Match resetIfDeactivated(){
+        if(this.applicationStatus == ApplicationStatus.TIMED_OUT){
             this.applicationStatus = ApplicationStatus.IN_PROGRESS;
         }
-        if(this.currentPhase != CurrentPhase.FINAL){
+        if(this.currentPhase == CurrentPhase.NONE){
             this.currentPhase = CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
         }
         return this;
