@@ -83,23 +83,13 @@ public class RecruiterController {
     }
 
     // ================================================================================================================
-    // * UPDATE RECRUITER TO PRIMARY [PUT]                                                                                       *
+    // * UPDATE RECRUITER TO PRIMARY [PUT]                                                                            *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/primary", method = RequestMethod.PUT)
     public ResponseEntity<?> updateRecruiterToPrimary(@PathVariable long id){
         Recruiter recruiter = recruiterRepo.findOne(id);
-        Company recruiterCompany = recruiter.getCompany();
-        List<Recruiter> companyRecruiters = recruiterRepo.findAllByCompany(recruiterCompany);
-        String rolsss = Role.RoleName.PrimaryRecruiter.name().toLowerCase();
-        System.out.println("***Rolename: " + rolsss);
-        Role primaryRecruiterRole = roleDAO.findByName(rolsss);
-        for (Recruiter r : companyRecruiters) {
-        	Set<Role> recruiterRoles = r.getUser().getRoles();
-        	if (recruiterRoles.contains(primaryRecruiterRole)) {
-        		return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
-        	}
-        }
         User user = recruiter.getUser();
+        user = userService.removeRole(user, RoleName.Recruiter);
         user = userService.addRole(user, RoleName.PrimaryRecruiter);
         recruiter.setUser(user);
         recruiterRepo.save(recruiter);
@@ -107,7 +97,7 @@ public class RecruiterController {
     }
 
     // ================================================================================================================
-    // * REMOVE PRIMARY RECRUITER STATUS [DELETE]                                                                                       *
+    // * REMOVE PRIMARY RECRUITER STATUS [DELETE]                                                                     *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/primary", method = RequestMethod.DELETE)
     public ResponseEntity<?> removePrimaryRecruiter(@PathVariable long id){
@@ -115,6 +105,7 @@ public class RecruiterController {
         User user = recruiter.getUser();
         Role primaryRecruiterRole = roleDAO.findByName(Role.RoleName.PrimaryRecruiter.name().toLowerCase());
         user = userService.removeRole(user, RoleName.PrimaryRecruiter);
+        user = userService.addRole(user, RoleName.Recruiter);
         recruiter.setUser(user);
         recruiterRepo.save(recruiter);
         return ResponseEntity.ok().build();
