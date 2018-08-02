@@ -124,6 +124,7 @@ public class DataLoader implements ApplicationRunner {
                 loadMajors(majorsFilePath);
                 loadUniversities(universitiesFilePath);
                 loadIndustries(industriesFilePath);
+
             } catch (IOException e) {
                 LOG.warn("IOException reached while trying to load the test data. Please check the filename for any typos.", e);
             }
@@ -223,19 +224,19 @@ public class DataLoader implements ApplicationRunner {
                 	requiredSkills.add(newSkill);
                 }
                 
-                //nice to have skills
-                Set<Skill> niceToHaveSkills = new HashSet<Skill>();
-                JSONArray niceToHaveSkillsList = (JSONArray) job.get("niceToHaveSkills");
-                for (Object niceToHaveSkillObject : niceToHaveSkillsList) {
-                	JSONObject niceToHaveSkill = (JSONObject) niceToHaveSkillObject;
-                	String skillName = (String) niceToHaveSkill.get("name");
+                //recommended to have skills
+                Set<Skill> recommendedSkills = new HashSet<Skill>();
+                JSONArray recommendedSkillsList = (JSONArray) job.get("recommendedSkills");
+                for (Object recommendedSkillObject : recommendedSkillsList) {
+                	JSONObject recommendedSkill = (JSONObject) recommendedSkillObject;
+                	String skillName = (String) recommendedSkill.get("name");
                 	Skill newSkill = new Skill(skillName);
-                	niceToHaveSkills.add(newSkill);
+                    recommendedSkills.add(newSkill);
                 }
                 
-                //nice to have skills weight ?
+                //recommended to have skills weight ?
                 long minGPA = (long) job.get("minGPA");
-                //has work experience
+
                 //match threshold
                 int duration = ((Long) job.get("duration")).intValue();
                 String problemStatement = (String) job.get("problemStatement");
@@ -260,8 +261,8 @@ public class DataLoader implements ApplicationRunner {
 //                newJob.setMatchThreshold(matchThreshold);
                 newJob.setMinGPA(minGPA);
 //                newJob.setNewVideo(newVideo);
-                newJob.setRecommendedSkills(niceToHaveSkills);
-//                newJob.setRecommendedSkillsWeight(niceToHaveSkillsWeight);
+                newJob.setRecommendedSkills(recommendedSkills);
+//                newJob.setRecommendedSkillsWeight(recommendedSkillsWeight);
                 newJob.setPositionTitle(jobTitle);
                 newJob.setProblemStatement(problemStatement);
                 newJob.setRecruiter(recruiter);
@@ -466,8 +467,6 @@ public class DataLoader implements ApplicationRunner {
         for(int i=0;i<15;i++)
             skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
         stud.setSkills(skills);
-        stud.setSchool("RIT");
-        stud.setMajor("Software Engineering");
         stud.setGpa(3.00);
 
         return stud;

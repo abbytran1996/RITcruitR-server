@@ -1,5 +1,7 @@
 package com.avalanche.tmcs.company;
 
+import com.avalanche.tmcs.matching.Industry;
+
 import java.util.Set;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Set;
 public class NewCompany extends Company {
     public String companyName;
     public Set<String> locations;
-    public Set<String> industries;
+    public Set<Industry> industries;
     public Size size;
     public String websiteURL;
 
@@ -27,10 +29,10 @@ public class NewCompany extends Company {
         this.locations = locations;
     }
 
-    public Set<String> getIndustries() {
+    public Set<Industry> getIndustries() {
         return industries;
     }
-    public void setIndustries(Set<String> industries) {
+    public void setIndustries(Set<Industry> industries) {
         this.industries = industries;
     }
 

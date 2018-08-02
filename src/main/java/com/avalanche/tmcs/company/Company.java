@@ -1,12 +1,16 @@
 package com.avalanche.tmcs.company;
 
+import com.avalanche.tmcs.matching.Industry;
 import com.avalanche.tmcs.matching.PresentationLink;
+import org.springframework.data.annotation.CreatedDate;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
  * @author Zane Grasso
@@ -48,7 +52,7 @@ public class Company {
 
     private Size size;
 
-    private Set<String> industries;
+    private Set<Industry> industries;
 
     private String presentation;
 
@@ -93,11 +97,11 @@ public class Company {
 
     @NotNull
     @ElementCollection
-    public Set<String> getIndustries() {
+    public Set<Industry> getIndustries() {
         return industries;
     }
 
-    public void setIndustries(Set<String> industries) {
+    public void setIndustries(Set<Industry> industries) {
         this.industries = industries;
     }
 
@@ -157,6 +161,8 @@ public class Company {
         this.userId = userId;
     }
 
+    @CreatedDate
+    @Temporal(TIMESTAMP)
     public Date getTimeRegistered() {
         return timeRegistered;
     }

@@ -22,13 +22,13 @@
             "name": "HTML5"
         }
     ],
-    "niceToHaveSkills": [
+    "recommendedSkills": [
         {
             "id": 74,
             "name": "React"
         }
     ],
-    "niceToHaveSkillsWeight": 0.003,
+    "recommendedSkillsWeight": 0.003,
     "minGPA": 0,
     "hasWorkExperience": false,
     "matchThreshold": 0.005,

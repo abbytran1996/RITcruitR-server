@@ -42,11 +42,13 @@ public class NewStudent extends Student {
         student.setFirstName(getFirstName());
         student.setLastName(getLastName());
         student.setGraduationDate(new Date(System.currentTimeMillis() + 900000));
-        student.setSchool("");
         student.setGpa(0.0);
         student.setUser(getUser());
         student.setPresentationLinks(getPresentationLinks());
         student.setProblemStatements(getProblemStatements());
+        student.setPreferredLocationsWeight(0.4f);
+        student.setPreferredIndustriesWeight(0.3f);
+        student.setPreferredCompanySizeWeight(0.2f);
 
         return student;
     }

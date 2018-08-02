@@ -124,6 +124,9 @@ public class StudentsController {
         student.setPreferredLocations(updatedStudent.getPreferredLocations());
         student.setPreferredIndustries(updatedStudent.getPreferredIndustries());
         student.setPreferredCompanySizes(updatedStudent.getPreferredCompanySizes());
+        student.setPreferredLocationsWeight(updatedStudent.getPreferredLocationsWeight());
+        student.setPreferredIndustriesWeight(updatedStudent.getPreferredIndustriesWeight());
+        student.setPreferredCompanySizeWeight(updatedStudent.getPreferredCompanySizeWeight());
         studentDAO.save(student);
 
         return ResponseEntity.ok().build();
