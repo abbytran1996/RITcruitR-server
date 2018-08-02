@@ -88,7 +88,7 @@ public class Match {
         setMatchedRecommendedSkills(new HashSet<>());
         setMatchedIndustries(new HashSet<>());
         setMatchedLocations(new HashSet<>());
-        setMatchStrength(0f);
+        setMatchStrength(0.0f);
     }
 
     @Id

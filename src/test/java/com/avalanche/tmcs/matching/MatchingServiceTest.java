@@ -80,6 +80,7 @@ public class MatchingServiceTest {
         JobPosting sampleJobPosting = allJobPostings.get(0);
         Student sampleStudent = allStudents.iterator().next();
         sampleStudent.setGpa(1.5);
+        sampleStudent.setSkills(makeRecommendedSkills());
 
         Optional<Match> match = MatchingService.generateMatchForStudentAndJob(sampleStudent, sampleJobPosting);
         Assert.assertFalse(match.isPresent());
@@ -121,12 +122,16 @@ public class MatchingServiceTest {
         marx.setFirstName("Karl");
         marx.setEmail("marx@iso.org");
         marx.setGpa(1.5);
+        Set<Skill> skills = makeRequiredSkills();
+        marx.setSkills(skills);
         allStudents.add(marx);
 
         Student hayek = new Student();
+        skills.addAll(makeRecommendedSkills());
         hayek.setFirstName("Frederich");
         hayek.setEmail("hayek@mises.org");
         hayek.setGpa(4.0);
+        hayek.setSkills(skills);
         allStudents.add(hayek);
         return allStudents;
     }
@@ -156,6 +161,8 @@ public class MatchingServiceTest {
         Company company = new Company();
         company.setCompanyName("Company A");
         company.setSize(Company.Size.MEDIUM);
+        company.setStatus(Company.Status.APPROVED);
+        post.setStatus(JobPosting.Status.ACTIVE);
         post.setCompany(company);
         post.setPositionTitle("Post A");
         post.setLocations(locations);
@@ -169,6 +176,7 @@ public class MatchingServiceTest {
         post.setMatchThreshold(0.5);
         company.setSize(Company.Size.HUGE);
         company.setCompanyName("Company B");
+        post.setStatus(JobPosting.Status.ACTIVE);
         post.setCompany(company);
         post.setRequiredSkills(requiredSkills);
         post.setRecommendedSkills(recommendedSkills);
@@ -177,6 +185,7 @@ public class MatchingServiceTest {
         post = new JobPosting();
         post.setPositionTitle("Post C");
         company.setCompanyName("Company C");
+        post.setStatus(JobPosting.Status.ACTIVE);
         post.setCompany(company);
         post.setMatchThreshold(0.3);
         post.setRecommendedSkills(requiredSkills);
@@ -186,6 +195,7 @@ public class MatchingServiceTest {
         post = new JobPosting();
         post.setPositionTitle("Post D");
         company.setCompanyName("Company D");
+        post.setStatus(JobPosting.Status.ACTIVE);
         post.setCompany(company);
         post.setMatchThreshold(0.1);
         post.setRecommendedSkills(requiredSkills);
