@@ -1,17 +1,16 @@
 package com.avalanche.tmcs.matching;
 
-        import com.avalanche.tmcs.job_posting.JobPosting;
-        import com.avalanche.tmcs.job_posting.JobPostingDAO;
-        import com.avalanche.tmcs.students.Student;
-        import com.avalanche.tmcs.students.StudentDAO;
-        import org.springframework.web.bind.annotation.RequestMapping;
-        import org.springframework.web.bind.annotation.RestController;
-        import com.avalanche.tmcs.auth.*;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.http.ResponseEntity;
-        import org.springframework.web.bind.annotation.*;
+import com.avalanche.tmcs.job_posting.JobPosting;
+import com.avalanche.tmcs.job_posting.JobPostingDAO;
+import com.avalanche.tmcs.students.Student;
+import com.avalanche.tmcs.students.StudentDAO;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.avalanche.tmcs.auth.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-        import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
         import java.util.Set;
@@ -60,9 +59,6 @@ public class MatchController {
             case "presentation":
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
                 break;
-            case "interview":
-                matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
-                break;
             case "final":
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
                 break;
@@ -73,12 +69,11 @@ public class MatchController {
                 matchingService.registerStudent(student);
                 matches = matchDAO.findAllByStudentAndCurrentPhase(student, Match.CurrentPhase.NONE);
         }
-
         return ResponseEntity.ok(matches);
     }
     
     // ================================================================================================================
-    // * GET STUDENT MATCH COUNT [GET]                                                                                    *
+    // * GET STUDENT MATCH COUNT [GET]                                                                                *
     // ================================================================================================================
     @RequestMapping(value = "/studentMatches/{id}/count", method = RequestMethod.GET)
     public ResponseEntity<?> getMatchCountForStudent(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
@@ -95,9 +90,6 @@ public class MatchController {
             case "presentation":
             	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_STUDENT);
                 break;
-            case "interview":
-            	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.INTERVIEW);
-                break;
             case "final":
             	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
                 break;
@@ -105,7 +97,10 @@ public class MatchController {
             	count = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.ARCHIVED);
                 break;
             default:
-            	count = matchDAO.countAllByStudent(student);
+                long problemCount = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+                long presCount = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+                long finalCount = matchDAO.countAllByStudentAndCurrentPhase(student, Match.CurrentPhase.FINAL);
+                count = problemCount + presCount + finalCount;
         }
 
         return ResponseEntity.ok(count);
@@ -138,13 +133,12 @@ public class MatchController {
                 match.setCurrentPhase(Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
                 break;
             case PRESENTATION_WAITING_FOR_RECRUITER:
-                match.setCurrentPhase(Match.CurrentPhase.INTERVIEW);
+                match.setCurrentPhase(Match.CurrentPhase.FINAL);
                 break;
-            case INTERVIEW:
+            case FINAL:
                 match.setCurrentPhase(Match.CurrentPhase.FINAL);
                 match.setApplicationStatus(Match.ApplicationStatus.ACCEPTED);
                 break;
-            case FINAL:
             default:
                 return ResponseEntity.status(300).build();
         }
@@ -188,9 +182,8 @@ public class MatchController {
 
         // checks if the match isn't in the final stage
         if (match.getCurrentPhase() != Match.CurrentPhase.FINAL) {
-            return ResponseEntity.status(300).build();
+            return ResponseEntity.status(400).build();
         }
-
         match.setCurrentPhase(Match.CurrentPhase.ARCHIVED);
 
         match.setLastUpdatedTimeToNow();
@@ -239,9 +232,6 @@ public class MatchController {
             case "presentation":
                 matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
                 break;
-            case "interview":
-                matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
-                break;
             case "final":
                 matches = matchDAO.findAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
                 break;
@@ -256,7 +246,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET RECRUITER MATCH COUNT [GET]                                                                                  *
+    // * GET RECRUITER MATCH COUNT [GET]                                                                              *
     // ================================================================================================================
     @RequestMapping(value = "/posting/{id}/count", method = RequestMethod.GET)
     public ResponseEntity<?> getRecruiterMatchCount(@PathVariable long id, @RequestParam(value = "phase", defaultValue = "") String phase) {
@@ -274,9 +264,6 @@ public class MatchController {
             case "presentation":
             	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
                 break;
-            case "interview":
-            	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.INTERVIEW);
-                break;
             case "final":
             	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
                 break;
@@ -284,7 +271,10 @@ public class MatchController {
             	count = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.ARCHIVED);
                 break;
             default:
-            	count = matchDAO.countAllByJob(job);
+                long problemCount = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PROBLEM_WAITING_FOR_RECRUITER);
+                long presCount = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.PRESENTATION_WAITING_FOR_RECRUITER);
+                long finalCount = matchDAO.countAllByJobAndCurrentPhase(job, Match.CurrentPhase.FINAL);
+                count = problemCount + presCount + finalCount;
         }
 
         return ResponseEntity.ok(count);
@@ -334,7 +324,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET TOP MATCHED SKILLS [GET]                                                                        *
+    // * GET TOP MATCHED SKILLS [GET]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/matchedSkills", method = RequestMethod.GET)
     public ResponseEntity<?> getTopMatchedSkills(@PathVariable long id) {
@@ -344,11 +334,11 @@ public class MatchController {
         }
         
         Set<Skill> requiredSkills = match.getMatchedRequiredSkills();
-        Set<Skill> niceToHaveSkills = match.getMatchedNiceToHaveSkills();
+        Set<Skill> recommendedSkills = match.getMatchedRecommendedSkills();
         Set<Skill> topMatchedSkills = new HashSet<Skill>();
         int totalTopSkills = 3;
         int prefNumReqSkills = 2;
-        int prefNumNthSkills = 1;
+        int prefNumRecommendedSkills = 1;
         for (Skill skill : requiredSkills) {
         	if (topMatchedSkills.size() < prefNumReqSkills) {
         		topMatchedSkills.add(skill);
@@ -357,10 +347,10 @@ public class MatchController {
         		break;
         	}
         }
-        for (Skill skill : niceToHaveSkills) {
+        for (Skill skill : recommendedSkills) {
         	if (topMatchedSkills.size() < totalTopSkills) {
         		topMatchedSkills.add(skill);
-        		niceToHaveSkills.remove(skill);
+                recommendedSkills.remove(skill);
         	} else {
         		break;
         	}
@@ -378,7 +368,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET MATCHED INDUSTRIES [GET]                                                                        *
+    // * GET MATCHED INDUSTRIES [GET]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/matchedIndustries", method = RequestMethod.GET)
     public ResponseEntity<?> getMatchedIndustries(@PathVariable long id) {
@@ -390,7 +380,7 @@ public class MatchController {
     }
     
     // ================================================================================================================
-    // * GET MATCHED LOCATIONS [GET]                                                                        *
+    // * GET MATCHED LOCATIONS [GET]                                                                                  *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/matchedLocations", method = RequestMethod.GET)
     public ResponseEntity<?> getMatchedLocations(@PathVariable long id) {

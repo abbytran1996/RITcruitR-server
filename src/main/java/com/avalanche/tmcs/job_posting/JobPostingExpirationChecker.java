@@ -1,10 +1,8 @@
 package com.avalanche.tmcs.job_posting;
 
-import com.avalanche.tmcs.matching.Match;
-import com.avalanche.tmcs.matching.MatchDAO;
+import com.avalanche.tmcs.matching.MatchingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +18,11 @@ public class JobPostingExpirationChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger(JobPostingExpirationChecker.class);
 
     private final JobPostingDAO jobPostingDAO;
-    private final MatchDAO matchDAO;
+    private final MatchingService matchingService;
 
-    public JobPostingExpirationChecker (final JobPostingDAO jobPostingDAO, final MatchDAO matchDAO) {
+    public JobPostingExpirationChecker (final JobPostingDAO jobPostingDAO, final MatchingService matchingService) {
         this.jobPostingDAO = jobPostingDAO;
-        this.matchDAO = matchDAO;
+        this.matchingService= matchingService;
     }
 
     /**
@@ -34,41 +32,19 @@ public class JobPostingExpirationChecker {
     public void automateJobExpiration() {
         LOGGER.info("Checking whether if jobs have expired or not...");
 
-        List<JobPosting> allActiveJobPostings = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE.toInt());
+        List<JobPosting> allActiveJobPostings = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE);
         allActiveJobPostings.stream()
                 .forEach(jobPosting -> {
                     int numDaysRemaining = jobPosting.getNumDaysRemaining();
 
                     if (numDaysRemaining == 0) {
-                        jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
-
-                        List<Match> newlyExpiredMatches = matchDAO.findAllByJobAndApplicationStatus(jobPosting, Match.ApplicationStatus.IN_PROGRESS);
-                        newlyExpiredMatches.stream()
-                                .forEach(match -> {
-                                    match.setApplicationStatus(Match.ApplicationStatus.TIMED_OUT);
-
-                                    matchDAO.save(match);
-                                });
+                        jobPosting.setStatus(JobPosting.Status.INACTIVE);
+                        matchingService.expireNonFinalMatchesForJob(jobPosting);
                     } else {
                         jobPosting.setNumDaysRemaining(numDaysRemaining - 1);
                     }
 
                     jobPostingDAO.save(jobPosting);
                 });
-    }
-
-    /**
-     * When a job is being reactivated, its number of days remaining will be reset back to its duration
-     * and the status will be set as active.
-     */
-    public void resetExpiration(long jobPostingId) {
-        JobPosting jobPosting = jobPostingDAO.findOne(jobPostingId);
-
-        if (jobPosting != null) {
-            jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
-            jobPosting.setNumDaysRemaining(jobPosting.getDuration());
-
-            jobPostingDAO.save(jobPosting);
-        }
     }
 }

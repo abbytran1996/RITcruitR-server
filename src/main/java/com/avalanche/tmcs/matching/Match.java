@@ -2,15 +2,11 @@ package com.avalanche.tmcs.matching;
 
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URL;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,7 +32,7 @@ public class Match {
         // Either the student or the recruiter has rejected this application
         REJECTED,
 
-        // One of the parties took too long to respond
+        // One of the parties took too long to respond, or the job in question was deactivated
         TIMED_OUT
     }
 
@@ -46,7 +42,6 @@ public class Match {
         PROBLEM_WAITING_FOR_RECRUITER,
         PRESENTATION_WAITING_FOR_STUDENT,
         PRESENTATION_WAITING_FOR_RECRUITER,
-        INTERVIEW,
         ARCHIVED,
         FINAL
     }
@@ -73,11 +68,9 @@ public class Match {
     private Set<MatchPresentationLink> studentPresentationLinks;
     
     private Set<Skill> matchedRequiredSkills;
+    private Set<Skill> matchedRecommendedSkills;
     
-    private Set<Skill> matchedNiceToHaveSkills;
-    
-    private Set<String> matchedIndustries;
-    
+    private Set<Industry> matchedIndustries;
     private Set<String> matchedLocations;
 
     private boolean viewedSinceLastUpdate = false;
@@ -90,6 +83,12 @@ public class Match {
 
     public Match() {
         setLastUpdatedTimeToNow();
+        setStudentPresentationLinks(new HashSet<>());
+        setMatchedRequiredSkills(new HashSet<>());
+        setMatchedRecommendedSkills(new HashSet<>());
+        setMatchedIndustries(new HashSet<>());
+        setMatchedLocations(new HashSet<>());
+        setMatchStrength(0.0f);
     }
 
     @Id
@@ -109,18 +108,20 @@ public class Match {
     public float getMatchStrength() {
         return matchStrength;
     }
+    public Match setMatchStrength(float matchStrength) {
+        this.matchStrength = matchStrength;
+        return this;
+    }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setStudent(Student student) {
+    public Match setStudent(Student student) {
         this.student = student;
+        return this;
     }
 
-    public void setMatchStrength(float matchStrength) {
-        this.matchStrength = matchStrength;
-    }
 
     @NotNull
     @ManyToOne
@@ -128,15 +129,14 @@ public class Match {
     public JobPosting getJob() {
         return job;
     }
-
-    public void setJob(JobPosting job) {
+    public Match setJob(JobPosting job) {
         this.job = job;
+        return this;
     }
 
     public String getTag() {
         return tag;
     }
-
     public void setTag(final String tag) {
         this.tag = tag;
         if(tag != null) {
@@ -183,12 +183,12 @@ public class Match {
     
     @NotNull
     @ElementCollection
-    public Set<Skill> getMatchedNiceToHaveSkills() {
-    	return this.matchedNiceToHaveSkills;
+    public Set<Skill> getMatchedRecommendedSkills() {
+    	return this.matchedRecommendedSkills;
     }
     
-    public void setMatchedNiceToHaveSkills(Set<Skill> matchedSkills) {
-    	this.matchedNiceToHaveSkills = matchedSkills;
+    public void setMatchedRecommendedSkills(Set<Skill> matchedSkills) {
+    	this.matchedRecommendedSkills = matchedSkills;
     }
     
     @NotNull
@@ -203,11 +203,11 @@ public class Match {
     
     @NotNull
     @ElementCollection
-    public Set<String> getMatchedIndustries() {
+    public Set<Industry> getMatchedIndustries() {
     	return this.matchedIndustries;
     }
     
-    public void setMatchedIndustries(Set<String> matchedIndustries) {
+    public void setMatchedIndustries(Set<Industry> matchedIndustries) {
     	this.matchedIndustries = matchedIndustries;
     }
 
@@ -234,6 +234,29 @@ public class Match {
         return applicationStatus;
     }
 
+    public Match deactivateIfNotFinal(){
+        // don't reset applicants who have already been accepted
+        if(this.applicationStatus != ApplicationStatus.ACCEPTED){
+            this.applicationStatus = ApplicationStatus.TIMED_OUT;
+        }
+
+        // don't make users who have already reached the final phase start over
+        if(this.currentPhase != CurrentPhase.FINAL){
+            this.currentPhase = CurrentPhase.NONE;
+        }
+        return this;
+    }
+
+    public Match resetIfDeactivated(){
+        if(this.applicationStatus == ApplicationStatus.TIMED_OUT){
+            this.applicationStatus = ApplicationStatus.IN_PROGRESS;
+        }
+        if(this.currentPhase == CurrentPhase.NONE){
+            this.currentPhase = CurrentPhase.PROBLEM_WAITING_FOR_STUDENT;
+        }
+        return this;
+    }
+
     public void setApplicationStatus(final ApplicationStatus applicationStatus) {
         this.applicationStatus = applicationStatus;
     }
@@ -252,6 +275,22 @@ public class Match {
         // Yes, this is how Java Dates are now. I'm using the parent class to get the current time, then sending that
         // to the constructor of the child class. Yay Java dates!
         setTimeLastUpdated(new Date(new java.util.Date().getTime()));
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (!(o instanceof Match)) return false;
+
+        Match otherMatch = (Match) o;
+        if (this.getJob() != otherMatch.getJob()){ return false; }
+        if (this.getStudent() != otherMatch.getStudent()){ return false; }
+        return this.applicationStatus == otherMatch.applicationStatus;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("matchID: %s, studentID: %s, jobID: %s", this.id, this.student.getId(), this.job.getId());
     }
 
 }

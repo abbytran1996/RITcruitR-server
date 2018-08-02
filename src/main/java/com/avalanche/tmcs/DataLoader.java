@@ -1,7 +1,7 @@
 package com.avalanche.tmcs;
 
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;
@@ -60,7 +60,7 @@ public class DataLoader implements ApplicationRunner {
 
     private RoleDAO roleDAO;
 
-    private RecruiterRepository recruiterDAO;
+    private RecruiterDAO recruiterDAO;
     private CompanyDAO companyDAO;
     private JobPostingDAO jobPostingDAO;
     private StudentDAO studentDAO;
@@ -73,8 +73,8 @@ public class DataLoader implements ApplicationRunner {
     private MatchingService matchingService;
 
     @Autowired
-    public DataLoader(RoleDAO roleDAO, RecruiterRepository recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
-                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MajorDAO majorDAO, IndustryDAO industryDAO, 
+    public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
+                      UserService userService, SkillDAO skillDAO, LocationDAO locationDAO, MajorDAO majorDAO, IndustryDAO industryDAO,
                       UniversityDAO universityDAO, MatchingService matchingService, @Value(PropertyNames.ADD_TEST_DATA_NAME) boolean addTestData) {
         this.roleDAO = roleDAO;
         this.recruiterDAO = recruiterDAO;
@@ -124,12 +124,13 @@ public class DataLoader implements ApplicationRunner {
                 loadMajors(majorsFilePath);
                 loadUniversities(universitiesFilePath);
                 loadIndustries(industriesFilePath);
+
             } catch (IOException e) {
                 LOG.warn("IOException reached while trying to load the test data. Please check the filename for any typos.", e);
             }
         }
     }
-    
+
     private void updateMajorsFromPortfolium() {
     	//Need to get response from portfolium API first
     	String portfoliumMajors = "";
@@ -152,7 +153,7 @@ public class DataLoader implements ApplicationRunner {
 			LOG.warn("Unable to retrieve/parse majors from Portfolium API", e);
 		}
     }
-    
+
     private void updateIndustriesFromPortfolium() {
     	//Need to get response from portfolium API first
     	String portfoliumIndustries = "";
@@ -175,7 +176,7 @@ public class DataLoader implements ApplicationRunner {
 			LOG.warn("Unable to retrieve/parse industries from Portfolium API", e);
 		}
     }
-    
+
     private void updateUniversitiesFromPortfolium() {
     	//Need to get response from portfolium API first
     	String portfoliumUniversities = "";
@@ -211,10 +212,8 @@ public class DataLoader implements ApplicationRunner {
                 //locations
                 ArrayList<String> locationsList = (ArrayList<String>) job.get("locations");
                 Set<String> locations = new HashSet<String>();
-                for (String loc : locationsList) {
-                	locations.add(loc);
-                }
-                
+                locations.addAll(locationsList);
+
                 //required skills
                 Set<Skill> requiredSkills = new HashSet<Skill>();
                 JSONArray requiredSkillsList = (JSONArray) job.get("requiredSkills");
@@ -225,19 +224,19 @@ public class DataLoader implements ApplicationRunner {
                 	requiredSkills.add(newSkill);
                 }
                 
-                //nice to have skills
-                Set<Skill> niceToHaveSkills = new HashSet<Skill>();
-                JSONArray niceToHaveSkillsList = (JSONArray) job.get("niceToHaveSkills");
-                for (Object niceToHaveSkillObject : niceToHaveSkillsList) {
-                	JSONObject niceToHaveSkill = (JSONObject) niceToHaveSkillObject;
-                	String skillName = (String) niceToHaveSkill.get("name");
+                //recommended to have skills
+                Set<Skill> recommendedSkills = new HashSet<Skill>();
+                JSONArray recommendedSkillsList = (JSONArray) job.get("recommendedSkills");
+                for (Object recommendedSkillObject : recommendedSkillsList) {
+                	JSONObject recommendedSkill = (JSONObject) recommendedSkillObject;
+                	String skillName = (String) recommendedSkill.get("name");
                 	Skill newSkill = new Skill(skillName);
-                	niceToHaveSkills.add(newSkill);
+                    recommendedSkills.add(newSkill);
                 }
                 
-                //nice to have skills weight ?
+                //recommended to have skills weight ?
                 long minGPA = (long) job.get("minGPA");
-                //has work experience
+
                 //match threshold
                 int duration = ((Long) job.get("duration")).intValue();
                 String problemStatement = (String) job.get("problemStatement");
@@ -262,13 +261,13 @@ public class DataLoader implements ApplicationRunner {
 //                newJob.setMatchThreshold(matchThreshold);
                 newJob.setMinGPA(minGPA);
 //                newJob.setNewVideo(newVideo);
-                newJob.setNiceToHaveSkills(niceToHaveSkills);
-//                newJob.setNiceToHaveSkillsWeight(niceToHaveSkillsWeight);
+                newJob.setRecommendedSkills(recommendedSkills);
+//                newJob.setRecommendedSkillsWeight(recommendedSkillsWeight);
                 newJob.setPositionTitle(jobTitle);
                 newJob.setProblemStatement(problemStatement);
                 newJob.setRecruiter(recruiter);
                 newJob.setRequiredSkills(requiredSkills);
-                newJob.setStatus(0);
+                newJob.setStatus(JobPosting.Status.ACTIVE);
                 newJob.setVideo(video);
                 System.out.println(newJob.toString());
 //                JobPosting savedJobPosting = jobPostingDAO.save(newJob.toJobPosting());
@@ -311,7 +310,7 @@ public class DataLoader implements ApplicationRunner {
             LOG.warn(e.getMessage());
         }
     }
-    
+
     private void loadMajors (String fileName) throws IOException {
         try {
             JSONParser jsonParser = new JSONParser();
@@ -343,7 +342,7 @@ public class DataLoader implements ApplicationRunner {
             LOG.warn(e.getMessage());
         }
     }
-    
+
     private void loadUniversities (String fileName) throws IOException {
         try {
             JSONParser jsonParser = new JSONParser();
@@ -375,7 +374,7 @@ public class DataLoader implements ApplicationRunner {
             LOG.warn(e.getMessage());
         }
     }
-    
+
     private void loadIndustries (String fileName) throws IOException {
         try {
             JSONParser jsonParser = new JSONParser();
@@ -462,14 +461,12 @@ public class DataLoader implements ApplicationRunner {
 
         stud.setUser(user);
 
-        stud.setPreferredCompanySizes(new HashSet<Integer>());
+        stud.setPreferredCompanySizes(new HashSet<>());
 
-        HashSet<Skill> skills=new HashSet<Skill>();
+        HashSet<Skill> skills=new HashSet<>();
         for(int i=0;i<15;i++)
             skills.add(possibleSkills.get(faker.number().numberBetween(0,possibleSkills.size()-1)));
         stud.setSkills(skills);
-        stud.setSchool("RIT");
-        stud.setMajor("Software Engineering");
         stud.setGpa(3.00);
 
         return stud;
@@ -491,7 +488,7 @@ public class DataLoader implements ApplicationRunner {
         List<Company.Size> sizes= Arrays.asList(Company.Size.values());
         return sizes.get(faker.number().numberBetween(0,sizes.size()));
     }
-    
+
     class PortfoliumSkillsUpdater extends TimerTask{
 
 		@Override
@@ -521,12 +518,12 @@ public class DataLoader implements ApplicationRunner {
 	                	skillsToSave.add(newSkill);
 	                }
 	            }
-	            
+
 	            skillDAO.save(skillsToSave);
 	        } catch (ParseException e) {
 	            LOG.warn("Unable to parse/retrieve trending skills from Portfolium", e);
 	        }
 		}
-    	
+
     }
 }

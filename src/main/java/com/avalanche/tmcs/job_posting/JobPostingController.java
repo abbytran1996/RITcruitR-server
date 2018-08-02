@@ -4,9 +4,8 @@ import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.matching.Match;
 import com.avalanche.tmcs.matching.MatchingService;
-import com.avalanche.tmcs.recruiter.RecruiterRepository;
+import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -27,18 +25,21 @@ import java.util.Set;
 public class JobPostingController {
 
     private JobPostingDAO jobPostingDAO;
+    private JobPostingExpirationChecker expirationChecker;
+    private RecruiterDAO recruiterRepo;
     private JobPresentationLinkDAO presentationLinkDAO;
-    private RecruiterRepository recruiterRepo;
     private CompanyDAO companyDAO;
 
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, MatchingService matchingService, RecruiterRepository repo, CompanyDAO companyDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, JobPostingExpirationChecker expirationChecker,
+                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO){
         this.jobPostingDAO = jobPostingDAO;
+        this.expirationChecker = expirationChecker;
         this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
-        this.recruiterRepo = repo;
+        this.recruiterRepo = recruiterDAO;
         this.companyDAO = companyDAO;
     }
 
@@ -64,7 +65,7 @@ public class JobPostingController {
         }
 
         // Company is not approved and can't post jobs
-        else if (company.getStatus() != Company.Status.APPROVED.toInt()){
+        else if (company.getStatus() != Company.Status.APPROVED){
             return new ResponseEntity<String>(
                     "Company '" + company.getCompanyName() + "' is not authorized to post jobs",
                     HttpStatus.UNAUTHORIZED
@@ -82,6 +83,7 @@ public class JobPostingController {
                 link.setJob(savedJobPosting);
             }
             savedJobPosting.setPresentationLinks(newJobPosting.getPresentationLinks());
+            savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
             jobPostingDAO.save(savedJobPosting);
 
             matchingService.registerJobPosting(savedJobPosting);
@@ -106,7 +108,7 @@ public class JobPostingController {
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());
         jobPosting.setLocations(updatedJobPosting.getLocations());
-        jobPosting.setNiceToHaveSkillsWeight(updatedJobPosting.getNiceToHaveSkillsWeight());
+        jobPosting.setRecommendedSkillsWeight(updatedJobPosting.getRecommendedSkillsWeight());
         jobPosting.setMinGPA(updatedJobPosting.getMinGPA());
         jobPosting.setHasWorkExperience(updatedJobPosting.getHasWorkExperience());
         jobPosting.setMatchThreshold(updatedJobPosting.getMatchThreshold());
@@ -116,24 +118,26 @@ public class JobPostingController {
 
         // Remove existing removed presentation links
         for (JobPresentationLink link : jobPosting.getPresentationLinks()) {
-            if (!link.isInSet(updatedJobPosting.getPresentationLinks())) {
+            if (updatedJobPosting.getPresentationLinks() != null && !link.isInSet(updatedJobPosting.getPresentationLinks())) {
                 jobPosting.getPresentationLinks().remove(link);
                 presentationLinkDAO.delete(link);
             }
         }
 
         // Add new presentation links
-        for (JobPresentationLink link : updatedJobPosting.getPresentationLinks()) {
-            if (!link.isInSet(jobPosting.getPresentationLinks())) {
-                link.setJob(jobPosting);
-                jobPosting.getPresentationLinks().add(link);
-            }
+        if (updatedJobPosting.getPresentationLinks() != null) {
+	        for (JobPresentationLink link : updatedJobPosting.getPresentationLinks()) {
+	            if (!link.isInSet(jobPosting.getPresentationLinks())) {
+	                link.setJob(jobPosting);
+	                jobPosting.getPresentationLinks().add(link);
+	            }
+	        }
         }
 
         jobPostingDAO.save(jobPosting);
         return ResponseEntity.ok().build();
     }
-    
+
     // ================================================================================================================
     // * UPDATE JOB STATUS [PATCH]                                                                                             *
     // ================================================================================================================
@@ -143,17 +147,19 @@ public class JobPostingController {
         switch (status) {
         case "active":
         	int duration = jobPosting.getDuration();
-        	jobPosting.setStatus(JobPosting.Status.ACTIVE.toInt());
+        	jobPosting.setStatus(JobPosting.Status.ACTIVE);
         	jobPosting.setNumDaysRemaining(duration);
+            matchingService.reactivateMatchesForJob(jobPosting);
             break;
         case "inactive":
-        	jobPosting.setStatus(JobPosting.Status.INACTIVE.toInt());
+        	jobPosting.setStatus(JobPosting.Status.INACTIVE);
+        	matchingService.expireNonFinalMatchesForJob(jobPosting);
             break;
         case "archived":
-        	jobPosting.setStatus(JobPosting.Status.ARCHIVED.toInt());
+        	jobPosting.setStatus(JobPosting.Status.ARCHIVED);
             break;
         case "needs_detailing":
-        	jobPosting.setStatus(JobPosting.Status.NEEDS_DETAILING.toInt());
+        	jobPosting.setStatus(JobPosting.Status.NEEDS_DETAILING);
             break;
         default:
         	return ResponseEntity.badRequest().build();
@@ -168,7 +174,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
-        toDelete.setStatus(JobPosting.Status.ARCHIVED.toInt());
+        toDelete.setStatus(JobPosting.Status.ARCHIVED);
         jobPostingDAO.save(toDelete);
 
         return ResponseEntity.ok().build();
@@ -186,7 +192,7 @@ public class JobPostingController {
 
         return ResponseEntity.ok(jobPostings);
     }
-    
+
     // ================================================================================================================
     // * GET JOBS BY COMPANY AND STATUS [GET]                                                                               *
     // ================================================================================================================
@@ -194,20 +200,20 @@ public class JobPostingController {
     public ResponseEntity<List<JobPosting>> getJobPostingsByCompanyAndStatus(@PathVariable long company_id, @PathVariable String status){
         Company companyWithID = new Company();
         companyWithID.setId(company_id);
-        
+
         List<JobPosting> jobPostings;
         switch (status) {
         case "active":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE);
             break;
         case "inactive":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE);
             break;
         case "archived":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED);
             break;
         case "needs_detailing":
-        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.NEEDS_DETAILING.toInt());
+        	jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.NEEDS_DETAILING);
             break;
         default:
             jobPostings = jobPostingDAO.findAllByCompany(companyWithID);
@@ -223,10 +229,7 @@ public class JobPostingController {
         Company companyWithID = new Company();
         companyWithID.setId(company_id);
 
-        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
-                companyWithID,
-                JobPosting.Status.ACTIVE.toInt()
-        );
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ACTIVE);
 
         return ResponseEntity.ok(jobPostings);
     }
@@ -239,12 +242,18 @@ public class JobPostingController {
         Company companyWithID = new Company();
         companyWithID.setId(company_id);
 
-        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
-                companyWithID,
-                JobPosting.Status.INACTIVE.toInt()
-        );
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.INACTIVE);
 
         return ResponseEntity.ok(jobPostings);
+    }
+
+    // ================================================================================================================
+    // * RUN A SIMULATED DAY TO TRIGGER EXPIRATION [PATCH]                                                              *
+    // ================================================================================================================
+    @RequestMapping(value = "/clock", method=RequestMethod.PATCH)
+    public ResponseEntity simulatePassageOfOneWeekdayForJobExpiration() {
+        expirationChecker.automateJobExpiration();
+        return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
@@ -255,10 +264,7 @@ public class JobPostingController {
         Company companyWithID = new Company();
         companyWithID.setId(company_id);
 
-        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(
-                companyWithID,
-                JobPosting.Status.ARCHIVED.toInt()
-        );
+        List<JobPosting> jobPostings = jobPostingDAO.findAllByCompanyAndStatus(companyWithID, JobPosting.Status.ARCHIVED);
 
         return ResponseEntity.ok(jobPostings);
     }
@@ -282,7 +288,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}/fulfill", method = RequestMethod.POST)
     public ResponseEntity<?> fulfillJobPosting(@PathVariable long id){
         JobPosting toFulfill = jobPostingDAO.findOne(id);
-        toFulfill.setStatus(JobPosting.Status.INACTIVE.toInt());
+        toFulfill.setStatus(JobPosting.Status.INACTIVE);
         jobPostingDAO.save(toFulfill);
 
         return ResponseEntity.ok().build();
@@ -304,15 +310,15 @@ public class JobPostingController {
     }
 
     // ================================================================================================================
-    // * ADD NICE TO HAVE SKILLS TO JOB [POST]                                                                        *
+    // * ADD RECOMMENDED SKILLS TO JOB [POST]                                                                         *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/nicetohaveskills", method = RequestMethod.POST)
-    public ResponseEntity<JobPosting> updateNiceToHaveSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
+    @RequestMapping(value = "/{id}/recommendedskills", method = RequestMethod.POST)
+    public ResponseEntity<JobPosting> updateRecommendedSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
         JobPosting posting = jobPostingDAO.findOne(id);
         if(posting == null) {
             return ResponseEntity.notFound().build();
         }
-        posting.setNiceToHaveSkills(skills);
+        posting.setRecommendedSkills(skills);
         jobPostingDAO.save(posting);
         matchingService.registerJobPosting(posting);
         return ResponseEntity.ok(posting);

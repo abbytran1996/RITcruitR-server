@@ -1,12 +1,16 @@
 package com.avalanche.tmcs.company;
 
+import com.avalanche.tmcs.matching.Industry;
 import com.avalanche.tmcs.matching.PresentationLink;
+import org.springframework.data.annotation.CreatedDate;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
  * @author Zane Grasso
@@ -16,32 +20,14 @@ import java.util.Set;
 @Table(name="company")
 public class Company {
     public enum Status {
-        AWAITING_APPROVAL(0),
-        APPROVED(1),
-        DENIED(2),
-        ARCHIVED(3);
-
-        private int status;
-
-        Status(int status) {
-            this.status = status;
-        }
-
-        public int toInt(){
-            return status;
-        }
+        AWAITING_APPROVAL, APPROVED, DENIED, ARCHIVED
     }
 
     public enum Size {
-        DONT_CARE,
-        STARTUP,
-        SMALL,
-        MEDIUM,
-        LARGE,
-        HUGE,
+        DONT_CARE, STARTUP, SMALL, MEDIUM, LARGE, HUGE
     }
 
-    public static int getIntStatusFromString(String statusString){
+    public static Status getStatusFromString(String statusString){
         Status companyStatus;
         if(StringUtils.equalsIgnoreCase("archived", statusString))
             companyStatus = Status.ARCHIVED;
@@ -52,21 +38,21 @@ public class Company {
         else
             companyStatus = Status.AWAITING_APPROVAL;
 
-        return companyStatus.toInt();
+        return companyStatus;
 
     }
 
     private long id;
 
-    private int status = Status.AWAITING_APPROVAL.toInt();
+    private Status status = Status.AWAITING_APPROVAL;
 
     private String companyName;
 
     private Set<String> locations;
 
-    private int size;
+    private Size size;
 
-    private Set<String> industries;
+    private Set<Industry> industries;
 
     private String presentation;
 
@@ -111,25 +97,25 @@ public class Company {
 
     @NotNull
     @ElementCollection
-    public Set<String> getIndustries() {
+    public Set<Industry> getIndustries() {
         return industries;
     }
 
-    public void setIndustries(Set<String> industries) {
+    public void setIndustries(Set<Industry> industries) {
         this.industries = industries;
     }
 
     @NotNull
-    public int getSize(){return size;}
+    public Size getSize(){return size;}
 
-    public void setSize(int size) {this.size = size;}
+    public void setSize(Size size) {this.size = size;}
 
     @NotNull
-    public int getStatus() {
+    public Status getStatus() {
         return this.status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -175,6 +161,8 @@ public class Company {
         this.userId = userId;
     }
 
+    @CreatedDate
+    @Temporal(TIMESTAMP)
     public Date getTimeRegistered() {
         return timeRegistered;
     }

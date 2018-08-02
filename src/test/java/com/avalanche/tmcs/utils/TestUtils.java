@@ -2,6 +2,7 @@ package com.avalanche.tmcs.utils;
 
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.matching.University;
 import com.avalanche.tmcs.students.NewStudent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +42,11 @@ public class TestUtils {
         newStudent.setLastName("Student");
         newStudent.setGraduationDate(new Date(2099, 1, 1));
         newStudent.setPhoneNumber("5555555555");
-        Set<Integer> sizes = new HashSet<Integer>();
-        sizes.add(0);
+        Set<Company.Size> sizes = new HashSet<>();
+        sizes.add(Company.Size.DONT_CARE);
         newStudent.setPreferredCompanySizes(sizes);
-        newStudent.setPreferredLocations(new HashSet<String>());
-        newStudent.setSchool("RIT");
+        newStudent.setPreferredLocations(new HashSet<>());
+        newStudent.setSchool(new University("RIT"));
         newStudent.setSkills(new HashSet<>());
 
         restTemplate.postForLocation(ServerContext.urlBase + REGISTER_STUDENT_URL, newStudent);
