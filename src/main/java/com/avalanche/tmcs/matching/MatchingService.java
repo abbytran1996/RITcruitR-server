@@ -130,7 +130,7 @@ public class MatchingService {
         double requiredSkillsScore = REQUIRED_SKILL_WEIGHT * requiredSkillsPercentage;
 
         double recommendedSkillsWeight = job.getRecommendedSkillsWeight();
-        double recommendedSkillsPercentage = calculateAndStoreMatchedRecommendedSkills(job.getRequiredSkills(), studentSkills, newMatch);
+        double recommendedSkillsPercentage = calculateAndStoreMatchedRecommendedSkills(job.getRecommendedSkills(), studentSkills, newMatch);
         double recommendedSkillsScore = recommendedSkillsWeight * recommendedSkillsPercentage;
 
         double jobFilterWeight = job.calculateJobFiltersWeight();
