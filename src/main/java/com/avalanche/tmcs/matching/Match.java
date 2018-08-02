@@ -2,14 +2,9 @@ package com.avalanche.tmcs.matching;
 
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.students.Student;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URL;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -73,9 +68,9 @@ public class Match {
     private Set<MatchPresentationLink> studentPresentationLinks;
     
     private Set<Skill> matchedRequiredSkills;
-    private Set<Skill> matchedNiceToHaveSkills;
+    private Set<Skill> matchedRecommendedSkills;
     
-    private Set<String> matchedIndustries;
+    private Set<Industry> matchedIndustries;
     private Set<String> matchedLocations;
 
     private boolean viewedSinceLastUpdate = false;
@@ -90,7 +85,7 @@ public class Match {
         setLastUpdatedTimeToNow();
         setStudentPresentationLinks(new HashSet<>());
         setMatchedRequiredSkills(new HashSet<>());
-        setMatchedNiceToHaveSkills(new HashSet<>());
+        setMatchedRecommendedSkills(new HashSet<>());
         setMatchedIndustries(new HashSet<>());
         setMatchedLocations(new HashSet<>());
         setMatchStrength(0f);
@@ -188,12 +183,12 @@ public class Match {
     
     @NotNull
     @ElementCollection
-    public Set<Skill> getMatchedNiceToHaveSkills() {
-    	return this.matchedNiceToHaveSkills;
+    public Set<Skill> getMatchedRecommendedSkills() {
+    	return this.matchedRecommendedSkills;
     }
     
-    public void setMatchedNiceToHaveSkills(Set<Skill> matchedSkills) {
-    	this.matchedNiceToHaveSkills = matchedSkills;
+    public void setMatchedRecommendedSkills(Set<Skill> matchedSkills) {
+    	this.matchedRecommendedSkills = matchedSkills;
     }
     
     @NotNull
@@ -208,11 +203,11 @@ public class Match {
     
     @NotNull
     @ElementCollection
-    public Set<String> getMatchedIndustries() {
+    public Set<Industry> getMatchedIndustries() {
     	return this.matchedIndustries;
     }
     
-    public void setMatchedIndustries(Set<String> matchedIndustries) {
+    public void setMatchedIndustries(Set<Industry> matchedIndustries) {
     	this.matchedIndustries = matchedIndustries;
     }
 

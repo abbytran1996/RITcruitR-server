@@ -166,7 +166,7 @@ public class MatchingService {
         if(studentSkills == null || studentSkills.isEmpty()){ return 0; }
         if(recSkills == null || recSkills.isEmpty()){ return 1.00; }
         Set<Skill> matchedRecommendedSkills = getSkillSetIntersection(recSkills, studentSkills);
-        newMatch.setMatchedNiceToHaveSkills(matchedRecommendedSkills);
+        newMatch.setMatchedRecommendedSkills(matchedRecommendedSkills);
         return matchedRecommendedSkills.size()/(1.00f * recSkills.size());
     }
 
@@ -207,6 +207,17 @@ public class MatchingService {
         toCompareInSrc.addAll(src);
         toCompareInSrc.retainAll(cmp);
         return toCompareInSrc;
+    }
+
+    public static Set<Industry> getIndustrySetIntersection(Set<Industry> src, Set<Industry> cmp){
+        // default return to empty set
+        Set<Industry> cmpInSource = new HashSet<>();
+        if(src == null || cmp == null){ return cmpInSource; }
+
+        // populate
+        cmpInSource.addAll(src);
+        cmpInSource.retainAll(cmp);
+        return cmpInSource;
     }
 }
 

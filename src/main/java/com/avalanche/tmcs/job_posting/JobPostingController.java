@@ -310,10 +310,10 @@ public class JobPostingController {
     }
 
     // ================================================================================================================
-    // * ADD NICE TO HAVE SKILLS TO JOB [POST]                                                                        *
+    // * ADD RECOMMENDED SKILLS TO JOB [POST]                                                                         *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/nicetohaveskills", method = RequestMethod.POST)
-    public ResponseEntity<JobPosting> updateNiceToHaveSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
+    @RequestMapping(value = "/{id}/recommendedskills", method = RequestMethod.POST)
+    public ResponseEntity<JobPosting> updateRecommendedSkills(@PathVariable long id, @RequestBody Set<Skill> skills){
         JobPosting posting = jobPostingDAO.findOne(id);
         if(posting == null) {
             return ResponseEntity.notFound().build();

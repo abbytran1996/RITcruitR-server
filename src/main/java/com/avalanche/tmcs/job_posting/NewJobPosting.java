@@ -30,7 +30,7 @@ public class NewJobPosting extends JobPosting {
     public JobPosting toJobPosting() {
         JobPosting job = new JobPosting();
 
-        job.setStatus(getStatus());
+        job.setStatus(Status.ACTIVE);
         job.setPositionTitle(getPositionTitle());
         job.setDescription(getDescription());
         job.setLocations(getLocations());

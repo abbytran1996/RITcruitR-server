@@ -70,7 +70,7 @@ public class CompanyController {
     }
 
     // ================================================================================================================
-    // * GET COMPANY BY STATUS [GET]                                                                                    *
+    // * GET COMPANY BY STATUS [GET]                                                                                  *
     // ================================================================================================================
     @RequestMapping(value = "/byStatus/{status}", method = RequestMethod.GET)
     public ResponseEntity<List<Company>> getCompanyByStatus(@PathVariable String status) {
@@ -113,7 +113,7 @@ public class CompanyController {
     }
 
     // ================================================================================================================
-    // * UPDATE COMPANY STATUS [PATCH]                                                                                         *
+    // * UPDATE COMPANY STATUS [PATCH]                                                                                *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/status/{status}", method = RequestMethod.PATCH)
     public ResponseEntity<?> approveCompany(@PathVariable long id, @PathVariable String status){

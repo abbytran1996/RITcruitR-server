@@ -3,9 +3,7 @@ package com.avalanche.tmcs.students;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.job_posting.JobPosting;
-import com.avalanche.tmcs.matching.Match;
-import com.avalanche.tmcs.matching.PresentationLink;
-import com.avalanche.tmcs.matching.Skill;
+import com.avalanche.tmcs.matching.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
@@ -17,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.avalanche.tmcs.matching.MatchingService.getStringSetIntersection;
+import static com.avalanche.tmcs.matching.MatchingService.getIndustrySetIntersection;
 
 /**
  * Class to represent a student in the database
@@ -38,9 +37,9 @@ public class Student {
 
     private Date graduationDate;
 
-    private String school;
+    private University school;
 
-    private String major;
+    private Major major;
 
     private double gpa;
 
@@ -55,7 +54,7 @@ public class Student {
     private Set<String> preferredLocations = new HashSet<>();
     private double preferredLocationsWeight = 0.4f;
 
-    private Set<String> preferredIndustries = new HashSet<>();
+    private Set<Industry> preferredIndustries = new HashSet<>();
     private double preferredIndustriesWeight = 0.3f;
 
     private Set<Company.Size> preferredCompanySizes = new HashSet<>();
@@ -73,7 +72,6 @@ public class Student {
         this.firstName = "";
         this.lastName = "";
         this.email = "";
-        this.major = "";
         this.gpa = 0;
         this.preferredIndustries = new HashSet<>();
     }
@@ -83,9 +81,6 @@ public class Student {
     }
 
     private boolean isSetup;
-
-    // TODO: Figure out what the job preferences and notification preferences will look like
-    // Pretty sure we agreed to handle them later
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -134,18 +129,21 @@ public class Student {
         this.graduationDate = graduationDate;
     }
 
-    @NotNull
-    public String getSchool() {
+    @ManyToOne
+    @JoinColumn(name = "school")
+    public University getSchool() {
         return school;
     }
 
-    public void setSchool(String school) {
+    public void setSchool(University school) {
         this.school = school;
     }
 
-    public String getMajor() { return major; }
+    @ManyToOne
+    @JoinColumn(name = "major")
+    public Major getMajor() { return major; }
 
-    public void setMajor(String major) { this.major = major; }
+    public void setMajor(Major major) { this.major = major; }
 
     public double getGpa() { return gpa; }
 
@@ -202,16 +200,26 @@ public class Student {
     public void setPreferredLocations(Set<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
     }
+
+    @NotNull
+    public double getPreferredLocationsWeight() {
+        return this.preferredLocationsWeight;
+    }
     public void setPreferredLocationsWeight(double preferredLocationsWeight) {
         this.preferredLocationsWeight = preferredLocationsWeight;
     }
 
     @ElementCollection
-    public Set<String> getPreferredIndustries() {
+    public Set<Industry> getPreferredIndustries() {
         return preferredIndustries;
     }
-    public void setPreferredIndustries(Set<String> preferredIndustries) {
+    public void setPreferredIndustries(Set<Industry> preferredIndustries) {
         this.preferredIndustries = preferredIndustries;
+    }
+
+    @NotNull
+    public double getPreferredIndustriesWeight() {
+        return this.preferredIndustriesWeight;
     }
     public void setPreferredIndustriesWeight(double preferredIndustriesWeight) {
         this.preferredIndustriesWeight = preferredIndustriesWeight;
@@ -223,6 +231,11 @@ public class Student {
     }
     public void setPreferredCompanySizes(Set<Company.Size> preferredCompanySizes) {
         this.preferredCompanySizes = preferredCompanySizes;
+    }
+
+    @NotNull
+    public double getPreferredCompanySizeWeight() {
+        return this.preferredCompanySizeWeight;
     }
     public void setPreferredCompanySizeWeight(double preferredCompanySizeWeight) {
         this.preferredCompanySizeWeight = preferredCompanySizeWeight;
@@ -274,7 +287,7 @@ public class Student {
                 preferredCompanySizes.contains(job.getCompany().getSize());
         if(sizeMatch){ sumScores += preferredCompanySizeWeight; }
 
-        Set<String> matchedIndustries = getStringSetIntersection(preferredIndustries, job.getCompany().getIndustries());
+        Set<Industry> matchedIndustries = getIndustrySetIntersection(preferredIndustries, job.getCompany().getIndustries());
         boolean industryMatch = preferredIndustries.isEmpty() || !matchedIndustries.isEmpty();
         if(industryMatch){
             sumScores += preferredIndustriesWeight;
