@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.*;
+import com.avalanche.tmcs.data.Skill;
 import com.avalanche.tmcs.exceptions.ResourceNotFound;
 import com.avalanche.tmcs.matching.*;
 
@@ -30,8 +31,6 @@ public class StudentsController {
     private StudentDAO studentDAO;
     private PresentationLinkDAO presentationLinkDAO;
     private ProblemStatementDAO problemStatementDAO;
-    private SkillDAO skillDAO;
-    private MatchDAO matchDAO;
 
     private UserService userService;
 
@@ -40,12 +39,10 @@ public class StudentsController {
     private MatchingService matchingService;
 
     @Autowired
-    public StudentsController(StudentDAO studentDAO, PresentationLinkDAO presentationLinkDAO, ProblemStatementDAO problemStatementDAO, SkillDAO skillDAO, MatchDAO matchDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
+    public StudentsController(StudentDAO studentDAO, PresentationLinkDAO presentationLinkDAO, ProblemStatementDAO problemStatementDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.studentDAO = studentDAO;
         this.presentationLinkDAO = presentationLinkDAO;
         this.problemStatementDAO = problemStatementDAO;
-        this.skillDAO = skillDAO;
-        this.matchDAO = matchDAO;
         this.userService = userService;
         this.securityService = securityService;
         this.matchingService = matchingService;

@@ -1,6 +1,6 @@
 package com.avalanche.tmcs.company;
 
-import com.avalanche.tmcs.matching.Industry;
+import com.avalanche.tmcs.data.Industry;
 import com.avalanche.tmcs.matching.PresentationLink;
 import org.springframework.data.annotation.CreatedDate;
 import org.thymeleaf.util.StringUtils;

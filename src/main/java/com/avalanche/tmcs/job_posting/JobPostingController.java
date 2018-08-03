@@ -2,7 +2,7 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
-import com.avalanche.tmcs.matching.Skill;
+import com.avalanche.tmcs.data.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;

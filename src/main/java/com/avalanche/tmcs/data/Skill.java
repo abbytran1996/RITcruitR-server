@@ -1,4 +1,4 @@
-package com.avalanche.tmcs.matching;
+package com.avalanche.tmcs.data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +14,7 @@ public class Skill {
     private long id;
 
     private String name;
+    private int count = 0;
 
     public Skill(){}
 

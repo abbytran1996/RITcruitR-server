@@ -1,11 +1,9 @@
 package com.avalanche.tmcs.students;
 
-import com.avalanche.tmcs.matching.Skill;
+import com.avalanche.tmcs.data.Skill;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**

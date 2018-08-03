@@ -2,9 +2,12 @@ package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.data.Industry;
+import com.avalanche.tmcs.data.Major;
+import com.avalanche.tmcs.data.Skill;
+import com.avalanche.tmcs.data.University;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.matching.*;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

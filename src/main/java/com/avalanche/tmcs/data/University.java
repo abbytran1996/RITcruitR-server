@@ -1,4 +1,4 @@
-package com.avalanche.tmcs.matching;
+package com.avalanche.tmcs.data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,14 +7,15 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Major {
+public class University {
 	
 	private long id;
 	private String name;
+	private int count;
 	
-	public Major() {}
+	public University() {}
 	
-	public Major(String name) {
+	public University(String name) {
 		this.name = name;
 	}
 	

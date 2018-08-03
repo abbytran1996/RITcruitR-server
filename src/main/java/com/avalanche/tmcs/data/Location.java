@@ -1,4 +1,4 @@
-package com.avalanche.tmcs.matching;
+package com.avalanche.tmcs.data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +11,7 @@ public class Location {
 	
 	private long id;
 	private String name;
+	private int count = 0;
 	
 	public Location() {}
 	

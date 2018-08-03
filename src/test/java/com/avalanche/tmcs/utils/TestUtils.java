@@ -2,7 +2,7 @@ package com.avalanche.tmcs.utils;
 
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.company.Company;
-import com.avalanche.tmcs.matching.University;
+import com.avalanche.tmcs.data.University;
 import com.avalanche.tmcs.students.NewStudent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

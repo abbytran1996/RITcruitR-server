@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.data.Skill;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
