@@ -157,7 +157,7 @@ public class MatchingService {
         if(studentSkills == null || studentSkills.isEmpty()){ return 0; }
         if(reqSkills == null || reqSkills.isEmpty()){ return 1.00; }
         Set<Skill> matchedRequiredSkills = getSkillSetIntersection(reqSkills, studentSkills);
-        newMatch.setMatchedRequiredSkills(matchedRequiredSkills);
+//        newMatch.setMatchedRequiredSkills(matchedRequiredSkills);
         return matchedRequiredSkills.size()/(1.00f * reqSkills.size());
     }
 
@@ -165,7 +165,7 @@ public class MatchingService {
         if(studentSkills == null || studentSkills.isEmpty()){ return 0; }
         if(recSkills == null || recSkills.isEmpty()){ return 1.00; }
         Set<Skill> matchedRecommendedSkills = getSkillSetIntersection(recSkills, studentSkills);
-        newMatch.setMatchedRecommendedSkills(matchedRecommendedSkills);
+//        newMatch.setMatchedRecommendedSkills(matchedRecommendedSkills);
         return matchedRecommendedSkills.size()/(1.00f * recSkills.size());
     }
 

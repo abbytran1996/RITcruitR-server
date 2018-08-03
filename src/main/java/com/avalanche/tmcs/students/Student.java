@@ -279,7 +279,7 @@ public class Student {
         boolean locationMatch = preferredLocations.isEmpty() || !matchedLocations.isEmpty();
         if(locationMatch){
             sumScores += preferredLocationsWeight;
-            newMatch.setMatchedLocations(matchedLocations);
+//            newMatch.setMatchedLocations(matchedLocations);
         }
 
         boolean sizeMatch = preferredCompanySizes.isEmpty() ||
@@ -291,7 +291,7 @@ public class Student {
         boolean industryMatch = preferredIndustries.isEmpty() || !matchedIndustries.isEmpty();
         if(industryMatch){
             sumScores += preferredIndustriesWeight;
-            newMatch.setMatchedIndustries(matchedIndustries);
+//            newMatch.setMatchedIndustries(matchedIndustries);
         }
 
         return (sumScores * 1.0f)/normalizedWeightDenominator;
