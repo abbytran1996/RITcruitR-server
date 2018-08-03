@@ -30,13 +30,13 @@ public class NewJobPosting extends JobPosting {
     public JobPosting toJobPosting() {
         JobPosting job = new JobPosting();
 
-        job.setStatus(getStatus());
+        job.setStatus(Status.ACTIVE);
         job.setPositionTitle(getPositionTitle());
         job.setDescription(getDescription());
         job.setLocations(getLocations());
         job.setRequiredSkills(getRequiredSkills());
-        job.setNiceToHaveSkills(getNiceToHaveSkills());
-        job.setNiceToHaveSkillsWeight(getNiceToHaveSkillsWeight());
+        job.setRecommendedSkills(getRecommendedSkills());
+        job.setRecommendedSkillsWeight(getRecommendedSkillsWeight());
         job.setMinGPA(getMinGPA());
         job.setHasWorkExperience(getHasWorkExperience());
         job.setMatchThreshold(getMatchThreshold());

@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author Maxwell Hadley
- * @since 4/18/17.
+ * @author Nick Krzysiak
+ * @since 7/30/18
  */
 @RestController
-public class SkillController {
-    private SkillDAO skillDAO;
+public class MajorController {
+    private MajorDAO majorDAO;
 
     @Autowired
-    public SkillController(SkillDAO skillDAO){
-        this.skillDAO = skillDAO;
+    public MajorController(MajorDAO majorDAO){
+        this.majorDAO = majorDAO;
     }
 
-    @RequestMapping(value = "/skills", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Skill>> getSkills() {
-        return ResponseEntity.ok(skillDAO.findAll());
+    @RequestMapping(value = "/majors", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Major>> getMajors() {
+        return ResponseEntity.ok(majorDAO.findAll());
     }
 }

@@ -5,7 +5,6 @@ import com.avalanche.tmcs.auth.Role.RoleName;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.SecurityService;
 import com.avalanche.tmcs.auth.User;
-import com.avalanche.tmcs.auth.UserDAO;
 import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +24,7 @@ import java.util.Set;
 @RequestMapping("/recruiters")
 public class RecruiterController {
 
-    private RecruiterRepository recruiterRepo;
+    private RecruiterDAO recruiterRepo;
     private UserService userService;
     private CompanyDAO companyDAO;
     private RoleDAO roleDAO;
@@ -35,8 +32,8 @@ public class RecruiterController {
 
 
     @Autowired
-    public RecruiterController(RecruiterRepository repo, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService){
-        this.recruiterRepo = repo;
+    public RecruiterController(RecruiterDAO recruiterDAO, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService){
+        this.recruiterRepo = recruiterDAO;
         this.userService = userService;
         this.companyDAO = companyDAO;
         this.roleDAO = roleDAO;
@@ -47,16 +44,28 @@ public class RecruiterController {
     // * GET RECRUITER BY ID [GET]                                                                                    *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.GET )
-    public Recruiter getEmployer(@PathVariable long id) {
-        return recruiterRepo.findOne(id);
+    public ResponseEntity<Recruiter> getEmployer(@PathVariable long id) {
+        Recruiter recruiter = recruiterRepo.findOne(id);
+
+        if (recruiter == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(recruiter);
     }
 
     // ================================================================================================================
     // * GET RECRUITER BY EMAIL [GET]                                                                                 *
     // ================================================================================================================
     @RequestMapping(value="/byEmail/{email}", method = RequestMethod.GET)
-    public Recruiter getRecruiterByEmail(@PathVariable String email) {
-        return recruiterRepo.findByEmail(email);
+    public ResponseEntity<Recruiter> getRecruiterByEmail(@PathVariable String email) {
+        Recruiter recruiter = recruiterRepo.findByEmail(email);
+
+        if (recruiter == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(recruiter);
     }
 
     // ================================================================================================================
@@ -72,33 +81,23 @@ public class RecruiterController {
         recruiterRepo.save(recruiter);
         return ResponseEntity.ok().build();
     }
-    
+
     // ================================================================================================================
-    // * UPDATE RECRUITER TO PRIMARY [PUT]                                                                                       *
+    // * UPDATE RECRUITER TO PRIMARY [PUT]                                                                            *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/primary", method = RequestMethod.PUT)
     public ResponseEntity<?> updateRecruiterToPrimary(@PathVariable long id){
         Recruiter recruiter = recruiterRepo.findOne(id);
-        Company recruiterCompany = recruiter.getCompany();
-        List<Recruiter> companyRecruiters = recruiterRepo.findAllByCompany(recruiterCompany);
-        String rolsss = Role.RoleName.PrimaryRecruiter.name().toLowerCase();
-        System.out.println("***Rolename: " + rolsss);
-        Role primaryRecruiterRole = roleDAO.findByName(rolsss);
-        for (Recruiter r : companyRecruiters) {
-        	Set<Role> recruiterRoles = r.getUser().getRoles();
-        	if (recruiterRoles.contains(primaryRecruiterRole)) {
-        		return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
-        	}
-        }
         User user = recruiter.getUser();
+        user = userService.removeRole(user, RoleName.Recruiter);
         user = userService.addRole(user, RoleName.PrimaryRecruiter);
         recruiter.setUser(user);
         recruiterRepo.save(recruiter);
         return ResponseEntity.ok().build();
     }
-    
+
     // ================================================================================================================
-    // * REMOVE PRIMARY RECRUITER STATUS [DELETE]                                                                                       *
+    // * REMOVE PRIMARY RECRUITER STATUS [DELETE]                                                                     *
     // ================================================================================================================
     @RequestMapping(value = "/{id}/primary", method = RequestMethod.DELETE)
     public ResponseEntity<?> removePrimaryRecruiter(@PathVariable long id){
@@ -106,13 +105,14 @@ public class RecruiterController {
         User user = recruiter.getUser();
         Role primaryRecruiterRole = roleDAO.findByName(Role.RoleName.PrimaryRecruiter.name().toLowerCase());
         user = userService.removeRole(user, RoleName.PrimaryRecruiter);
+        user = userService.addRole(user, RoleName.Recruiter);
         recruiter.setUser(user);
         recruiterRepo.save(recruiter);
         return ResponseEntity.ok().build();
     }
 
     // ================================================================================================================
-    // * DELETE RECRUITER [DELETE] - **NOT WORKING**                                                                  *
+    // * DELETE RECRUITER [DELETE]                                                              *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteRecruiter(@PathVariable long id) {

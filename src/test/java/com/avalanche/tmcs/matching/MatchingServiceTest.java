@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
@@ -21,238 +22,82 @@ import static org.mockito.Mockito.when;
 public class MatchingServiceTest {
     private MatchingService matchingService;
 
-    List<JobPosting> recommended;
-    List<JobPosting> required;
-    Set<Student> students;
+    private List<JobPosting> allJobPostings = makeJobPostings();
+    private Set<Student> allStudents = makeStudents();
+
+    private Set<Skill> requiredSkills = makeRequiredSkills();
+    private Set<Skill> recommendedSkills = makeRequiredSkills();
 
     @Before
     public void setUp() {
-        recommended = new ArrayList<>();
-        required = new ArrayList<>();
-        students = new HashSet<>();
-
         MatchDAO matchDAO = makeMockMatchDAO();
         StudentDAO studentDAO = makeMockStudentDAO();
         JobPostingDAO jobPostingDAO = makeMockJobPostingDAO();
         matchingService = new MatchingService(matchDAO, studentDAO, jobPostingDAO);
+
+        requiredSkills = makeRequiredSkills();
+        recommendedSkills = makeRecommendedSkills();
+        allJobPostings = makeJobPostings();
+        allStudents = makeStudents();
     }
 
     @Test
-    public void testBuildMatchesList_allGood() {
-        Student chompsky = new Student();
-        chompsky.setFirstName("Noam");
-        chompsky.setEmail("universal_grammar@trees.org");
+    public void testBuildMatch_multipleSkills() {
+        Set<Skill> allSkills = new HashSet<>();
+        allSkills.addAll(requiredSkills);
+        allSkills.addAll(recommendedSkills);
+        Student sampleStudent = allStudents.iterator().next();
+        sampleStudent.setSkills(allSkills);
 
-        Map<JobPosting, MatchingService.MatchedSkillsCount> postMap = new HashMap<>();
-        JobPosting posting = new JobPosting();
-        posting.setPositionTitle("Position C");
-        posting.setVideo("https://drive.google.com/drive/u/1/my-drive");
-        posting.setRequiredSkills(new HashSet<>());
+        JobPosting sampleJobPosting = allJobPostings.get(0);
+        sampleJobPosting.setRequiredSkills(requiredSkills);
+        sampleJobPosting.setRecommendedSkills(recommendedSkills);
 
-        Skill skill = new Skill();
-        skill.setName("Bash");
-        posting.getRequiredSkills().add(skill);
-
-        skill = new Skill();
-        skill.setName("Linux");
-        posting.getRequiredSkills().add(skill);
-
-        skill = new Skill();
-        skill.setName("C");
-        posting.getRequiredSkills().add(skill);
-
-        posting.setNiceToHaveSkills(new HashSet<>());
-
-        skill = new Skill();
-        skill.setName("Perl");
-        posting.getNiceToHaveSkills().add(skill);
-
-        MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
-        skillsCount.requiredSkillsCount = 3;
-        skillsCount.recommendedSkillsCount = 1;
-
-        postMap.put(posting, skillsCount);
-
-        List<Match> matches = matchingService.buildMatchesList(chompsky, postMap);
-
-        Assert.assertEquals(1, matches.size());
-
-        Match match = matches.get(0);
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNiceToHaveSkills().size();
-
-        Assert.assertEquals(chompsky, match.getStudent());
-        Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
+        Optional<Match> match = MatchingService.generateMatchForStudentAndJob(sampleStudent, sampleJobPosting);
+        Assert.assertTrue(match.isPresent());
     }
 
     @Test
-    public void testBuildMatchesList_multipleSkills() {
-        Student chompsky = new Student();
-        chompsky.setFirstName("Noam");
-        chompsky.setEmail("universal_grammar@trees.org");
-        chompsky.setSkills(new HashSet<>());
+    public void testBuildMatch_choosyStudent() {
+        Set<Skill> allSkills = new HashSet<>();
+        allSkills.addAll(recommendedSkills);
+        allSkills.addAll(requiredSkills);
+        Student sampleStudent = allStudents.iterator().next();
+        sampleStudent.setSkills(allSkills);
+        Set<Company.Size> preferredCompanySize = new HashSet<>();
+        preferredCompanySize.add(Company.Size.LARGE);
+        sampleStudent.setPreferredCompanySizes(preferredCompanySize);
+        sampleStudent.setPreferredCompanySizeWeight(0.8);
 
-        Map<JobPosting, MatchingService.MatchedSkillsCount> postMap = new HashMap<>();
+        JobPosting sampleJobPosting = allJobPostings.get(0);
 
-        JobPosting posting = new JobPosting();
-        posting.setPositionTitle("Position C");
-        posting.setVideo("https://drive.google.com/drive/u/1/my-drive");
-        posting.setRequiredSkills(new HashSet<>());
-
-        Skill skill = new Skill();
-        skill.setName("Bash");
-        posting.getRequiredSkills().add(skill);
-        chompsky.getSkills().add(skill);
-
-        skill = new Skill();
-        skill.setName("Linux");
-        posting.getRequiredSkills().add(skill);
-        chompsky.getSkills().add(skill);
-
-        skill = new Skill();
-        skill.setName("C");
-        posting.getRequiredSkills().add(skill);
-        chompsky.getSkills().add(skill);
-        posting.setNiceToHaveSkills(new HashSet<>());
-
-        skill = new Skill();
-        skill.setName("Perl");
-        posting.getNiceToHaveSkills().add(skill);
-
-        MatchingService.MatchedSkillsCount skillsCount = new MatchingService.MatchedSkillsCount();
-        skillsCount.requiredSkillsCount = 3;
-        skillsCount.recommendedSkillsCount = 1;
-
-        postMap.put(posting, skillsCount);
-
-        List<Match> matches = matchingService.buildMatchesList(chompsky, postMap);
-
-        Assert.assertEquals(1, matches.size());
-
-        Match match = matches.get(0);
-
-        float expectedMatchStrength = skillsCount.requiredSkillsCount * 0.8f / posting.getRequiredSkills().size() + skillsCount.recommendedSkillsCount * 0.2f / posting.getNiceToHaveSkills().size();
-
-        Assert.assertEquals(chompsky, match.getStudent());
-        Assert.assertEquals(expectedMatchStrength, match.getMatchStrength(), 0.01);
+        Optional<Match> match = MatchingService.generateMatchForStudentAndJob(sampleStudent, sampleJobPosting);
+        Assert.assertFalse(match.isPresent());
     }
 
     @Test
-    public void testBuildMatches_noJobs() {
-        Student chompsky = new Student();
-        chompsky.setFirstName("Noam");
-        chompsky.setEmail("universal_grammar@trees.org");
+    public void testBuildMatch_badStudent() {
+        JobPosting sampleJobPosting = allJobPostings.get(0);
+        Student sampleStudent = allStudents.iterator().next();
+        sampleStudent.setGpa(1.5);
+        sampleStudent.setSkills(makeRecommendedSkills());
 
-        Map<JobPosting, MatchingService.MatchedSkillsCount> postMap = new HashMap<>();
-
-        List<Match> matches = matchingService.buildMatchesList(chompsky, postMap);
-
-        Assert.assertEquals(0, matches.size());
+        Optional<Match> match = MatchingService.generateMatchForStudentAndJob(sampleStudent, sampleJobPosting);
+        Assert.assertFalse(match.isPresent());
     }
 
     @Test
-    public void testCountJobPostingsThatRecommendSkill() {
-        /* TODO fix test
-        Map<JobPosting, MatchingService.MatchedSkillsCount> matchCount = new HashMap<>();
-        Skill skill = new Skill();
-        skill.setName("Linux");
-
-        //matchingService.countUnmatchedJobPostingsThatRecommendSkill(matchCount, skill);
-
-        Assert.assertEquals(2, matchCount.size());
-
-        JobPosting first = recommended.get(0);
-        Assert.assertTrue(matchCount.containsKey(first));
-
-        MatchingService.MatchedSkillsCount skillsCount = matchCount.get(first);
-        Assert.assertEquals(1, skillsCount.recommendedSkillsCount);
-        Assert.assertEquals(0, skillsCount.requiredSkillsCount);
-
-        JobPosting second = recommended.get(1);
-        Assert.assertTrue(matchCount.containsKey(second));
-
-        skillsCount = matchCount.get(second);
-        Assert.assertEquals(1, skillsCount.recommendedSkillsCount);
-        Assert.assertEquals(0, skillsCount.requiredSkillsCount);
-        */
+    public void testBuildMatches_buildMatchesForStudent() {
+        Student sampleStudent = allStudents.iterator().next();
+        List<Match> matches = matchingService.generateMatchesForStudent(sampleStudent);
+        Assert.assertFalse(matches.isEmpty());
     }
 
     @Test
-    public void testJobPostingsThatRequireSkill() {
-        /* TODO fix test
-        Map<JobPosting, MatchingService.MatchedSkillsCount> matchCount = new HashMap<>();
-        Skill skill = new Skill();
-        skill.setName("Linux");
-
-        //matchingService.countUnmatchedJobPostingsThatRequireSkill(matchCount, skill);
-
-        Assert.assertEquals(2, matchCount.size());
-
-        JobPosting first = required.get(0);
-        Assert.assertTrue(matchCount.containsKey(first));
-
-        MatchingService.MatchedSkillsCount skillsCount = matchCount.get(first);
-        Assert.assertEquals(0, skillsCount.recommendedSkillsCount);
-        Assert.assertEquals(1, skillsCount.requiredSkillsCount);
-
-        JobPosting second = required.get(1);
-        Assert.assertTrue(matchCount.containsKey(second));
-
-        skillsCount = matchCount.get(second);
-        Assert.assertEquals(0, skillsCount.recommendedSkillsCount);
-        Assert.assertEquals(1, skillsCount.requiredSkillsCount);
-        */
-    }
-
-    @Test
-    public void testJobPostingsThatRequireAndRecommendSkill() {
-        /* TODO fix test
-        Map<JobPosting, MatchingService.MatchedSkillsCount> matchCount = new HashMap<>();
-        Skill skill = new Skill();
-        skill.setName("Linux");
-
-        //matchingService.countUnmatchedJobPostingsThatRequireSkill(matchCount, skill);
-        //matchingService.countUnmatchedJobPostingsThatRecommendSkill(matchCount, skill);
-
-        Assert.assertEquals(3, matchCount.size());
-
-        JobPosting first = required.get(0);
-        Assert.assertTrue(matchCount.containsKey(first));
-
-        MatchingService.MatchedSkillsCount skillsCount = matchCount.get(first);
-        Assert.assertEquals(1, skillsCount.recommendedSkillsCount);
-        Assert.assertEquals(1, skillsCount.requiredSkillsCount);
-
-        JobPosting second = required.get(1);
-        Assert.assertTrue(matchCount.containsKey(second));
-
-        skillsCount = matchCount.get(second);
-        Assert.assertEquals(0, skillsCount.recommendedSkillsCount);
-        Assert.assertEquals(1, skillsCount.requiredSkillsCount);
-
-        JobPosting third = recommended.get(0);
-        Assert.assertTrue(matchCount.containsKey(third));
-
-        skillsCount = matchCount.get(third);
-        Assert.assertEquals(1, skillsCount.recommendedSkillsCount);
-        Assert.assertEquals(0, skillsCount.requiredSkillsCount);
-        */
-    }
-
-    @Test
-    public void testCountStudentsWithSkillsInList() {
-        List<Skill> skills = new ArrayList<>();
-        Skill skill = new Skill();
-        skill.setName("Seizing the means of production");
-        skills.add(skill);
-
-        Map<Student, Integer> counts = matchingService.countStudentsWithSkillInList(skills);
-
-        Assert.assertEquals(2, counts.size());
-
-        for(Student stu : students) {
-            Assert.assertTrue(counts.containsKey(stu));
-            Assert.assertEquals(1, (int)counts.get(stu));
-        }
+    public void testBuildMatches_buildMatchesForJob() {
+        JobPosting post = allJobPostings.get(2);
+        List<Match> matches = matchingService.generateMatchesForJob(post);
+        Assert.assertFalse(matches.isEmpty());
     }
 
     private MatchDAO makeMockMatchDAO() {
@@ -260,51 +105,103 @@ public class MatchingServiceTest {
     }
 
     private StudentDAO makeMockStudentDAO() {
-        setupStudents();
-
         StudentDAO studentDAO = mock(StudentDAO.class);
-        when(studentDAO.findAllBySkillsContains(any())).thenReturn(students);
-
+        when(studentDAO.findAll()).thenReturn(makeStudents());
         return studentDAO;
     }
 
-    private void setupStudents() {
-        Student marx = new Student();
-        marx.setFirstName("Karl");
-        marx.setEmail("manifest@proles.org");
-        students.add(marx);
-
-        Student engels = new Student();
-        engels.setFirstName("Frederick");
-        engels.setEmail("email@email.email");
-        students.add(engels);
-    }
-
     private JobPostingDAO makeMockJobPostingDAO() {
-        setupJobPostings();
-
         JobPostingDAO jobPostingDAO = mock(JobPostingDAO.class);
-        when(jobPostingDAO.findAllByNiceToHaveSkillsContains(any())).thenReturn(recommended);
-        when(jobPostingDAO.findAllByRequiredSkillsContains(any())).thenReturn(required);
-
+        when(jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE)).thenReturn(makeJobPostings());
         return jobPostingDAO;
     }
 
-    private void setupJobPostings() {
+    private static Set<Student> makeStudents() {
+        Set<Student> allStudents = new HashSet<>();
+        Student marx = new Student();
+        marx.setFirstName("Karl");
+        marx.setEmail("marx@iso.org");
+        marx.setGpa(1.5);
+        Set<Skill> skills = makeRequiredSkills();
+        marx.setSkills(skills);
+        allStudents.add(marx);
+
+        Student hayek = new Student();
+        skills.addAll(makeRecommendedSkills());
+        hayek.setFirstName("Frederich");
+        hayek.setEmail("hayek@mises.org");
+        hayek.setGpa(4.0);
+        hayek.setSkills(skills);
+        allStudents.add(hayek);
+        return allStudents;
+    }
+
+    private static Set<Skill> makeRequiredSkills(){
+        Set<Skill> requiredSkills = new HashSet<>();
+        requiredSkills.add(new Skill("Bash"));
+        requiredSkills.add(new Skill("C"));
+        return requiredSkills;
+    }
+
+    private static Set<Skill> makeRecommendedSkills(){
+        Set<Skill> recommendedSkills = new HashSet<>();
+        recommendedSkills.add(new Skill("Linux"));
+        recommendedSkills.add(new Skill("Perl"));
+        return recommendedSkills;
+    }
+
+    private static List<JobPosting> makeJobPostings() {
+        Set<Skill> requiredSkills = makeRequiredSkills();
+        Set<Skill> recommendedSkills = makeRecommendedSkills();
+        Set<String> locations = new HashSet<>();
+        locations.add("Boston, MA");
+        List<JobPosting> allJobPostings = new ArrayList<>();
+
         JobPosting post = new JobPosting();
-        post.setPositionTitle("Post a");
-        post.setVideo("https://drive.google.com/drive/u/1/my-drive");
-        recommended.add(post);
+        Company company = new Company();
+        company.setCompanyName("Company A");
+        company.setSize(Company.Size.MEDIUM);
+        company.setStatus(Company.Status.APPROVED);
+        post.setStatus(JobPosting.Status.ACTIVE);
+        post.setCompany(company);
+        post.setPositionTitle("Post A");
+        post.setLocations(locations);
+        post.setMatchThreshold(0.8);
+        post.setRequiredSkills(requiredSkills);
+        post.setRecommendedSkills(recommendedSkills);
+        allJobPostings.add(post);
 
         post = new JobPosting();
         post.setPositionTitle("Post B");
-        post.setVideo("https://drive.google.com/drive/u/1/my-drive");
-        recommended.add(post);
-        required.add(post);
+        post.setMatchThreshold(0.5);
+        company.setSize(Company.Size.HUGE);
+        company.setCompanyName("Company B");
+        post.setStatus(JobPosting.Status.ACTIVE);
+        post.setCompany(company);
+        post.setRequiredSkills(requiredSkills);
+        post.setRecommendedSkills(recommendedSkills);
+        allJobPostings.add(post);
 
         post = new JobPosting();
         post.setPositionTitle("Post C");
-        post.setVideo("https://drive.google.com/drive/u/1/my-drive");
-        required.add(post);
+        company.setCompanyName("Company C");
+        post.setStatus(JobPosting.Status.ACTIVE);
+        post.setCompany(company);
+        post.setMatchThreshold(0.3);
+        post.setRecommendedSkills(requiredSkills);
+        post.setCompany(company);
+        allJobPostings.add(post);
+
+        post = new JobPosting();
+        post.setPositionTitle("Post D");
+        company.setCompanyName("Company D");
+        post.setStatus(JobPosting.Status.ACTIVE);
+        post.setCompany(company);
+        post.setMatchThreshold(0.1);
+        post.setRecommendedSkills(requiredSkills);
+        post.setCompany(company);
+        allJobPostings.add(post);
+
+        return allJobPostings;
     }
 }

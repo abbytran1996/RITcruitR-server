@@ -18,6 +18,8 @@ public class MatchPresentationLink {
     private String link;
 
     private Match match;
+    
+    private String description = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,6 +47,15 @@ public class MatchPresentationLink {
 
     public void setLink(String link) {
         this.link = link;
+    }
+    
+    @NotNull
+    public String getDescription() {
+    	return description;
+    }
+    
+    public void setDescription(String description) {
+    	this.description = description;
     }
 
     @ManyToOne

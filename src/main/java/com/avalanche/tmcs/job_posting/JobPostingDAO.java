@@ -2,7 +2,6 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.recruiter.Recruiter;
-import com.avalanche.tmcs.matching.Skill;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -19,9 +18,5 @@ public interface JobPostingDAO extends CrudRepository<JobPosting, Long> {
     List<JobPosting> findAllByStatus(JobPosting.Status status);
 
     List<JobPosting> findAllByRecruiter(Recruiter recruiter);
-
-    List<JobPosting> findAllByRequiredSkillsContains(Skill skill);
-
-    List<JobPosting> findAllByNiceToHaveSkillsContains(Skill skill);
 
 }

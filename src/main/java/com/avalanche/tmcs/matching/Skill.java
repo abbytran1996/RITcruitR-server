@@ -46,7 +46,7 @@ public class Skill {
         if (!(o instanceof Skill)) return false;
 
         Skill skill = (Skill) o;
-        return name.equals(skill.name);
+        return name.equalsIgnoreCase(skill.name);
     }
 
     @Override
