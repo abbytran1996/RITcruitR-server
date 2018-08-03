@@ -166,7 +166,6 @@ public class Match {
     public Set<MatchPresentationLink> getStudentPresentationLinks() {
         return studentPresentationLinks;
     }
-
     public void setStudentPresentationLinks(Set<MatchPresentationLink> studentPresentationLinks) {
         this.studentPresentationLinks = studentPresentationLinks;
     }
@@ -176,9 +175,12 @@ public class Match {
     public Set<Skill> getMatchedRequiredSkills() {
     	return this.matchedRequiredSkills;
     }
-    
     public void setMatchedRequiredSkills(Set<Skill> matchedSkills) {
-    	this.matchedRequiredSkills = matchedSkills;
+        if(this.matchedRequiredSkills == null){ this.matchedRequiredSkills = matchedSkills; }
+        else{
+            this.matchedRequiredSkills.clear();
+            this.matchedRequiredSkills.addAll(matchedSkills);
+        }
     }
     
     @NotNull
@@ -186,9 +188,12 @@ public class Match {
     public Set<Skill> getMatchedRecommendedSkills() {
     	return this.matchedRecommendedSkills;
     }
-    
     public void setMatchedRecommendedSkills(Set<Skill> matchedSkills) {
-    	this.matchedRecommendedSkills = matchedSkills;
+    	if(this.matchedRecommendedSkills == null){ this.matchedRecommendedSkills = matchedSkills; }
+    	else{
+    	    this.matchedRecommendedSkills.clear();
+    	    this.matchedRecommendedSkills = matchedSkills;
+        }
     }
     
     @NotNull
@@ -196,9 +201,12 @@ public class Match {
     public Set<String> getMatchedLocations() {
     	return this.matchedLocations;
     }
-    
     public void setMatchedLocations(Set<String> matchedLocations) {
-    	this.matchedLocations = matchedLocations;
+        if(matchedLocations == null){ this.matchedLocations = matchedLocations; }
+        else{
+            this.matchedLocations.clear();
+            this.matchedLocations.addAll(matchedLocations);
+        }
     }
     
     @NotNull
@@ -206,9 +214,12 @@ public class Match {
     public Set<Industry> getMatchedIndustries() {
     	return this.matchedIndustries;
     }
-    
     public void setMatchedIndustries(Set<Industry> matchedIndustries) {
-    	this.matchedIndustries = matchedIndustries;
+        if(matchedIndustries == null){ this.matchedIndustries = matchedIndustries; }
+        else {
+            this.matchedIndustries.clear();
+            this.matchedIndustries.addAll(matchedIndustries);
+        }
     }
 
     public boolean getViewedSinceLastUpdate(){
