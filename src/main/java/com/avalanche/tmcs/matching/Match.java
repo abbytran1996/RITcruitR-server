@@ -178,7 +178,7 @@ public class Match {
     }
     
     public void setMatchedRequiredSkills(Set<Skill> matchedSkills) {
-    	this.matchedRequiredSkills = matchedSkills;
+//    	this.matchedRequiredSkills = matchedSkills;
     }
     
     @NotNull
@@ -188,7 +188,7 @@ public class Match {
     }
     
     public void setMatchedRecommendedSkills(Set<Skill> matchedSkills) {
-    	this.matchedRecommendedSkills = matchedSkills;
+//    	this.matchedRecommendedSkills = matchedSkills;
     }
     
     @NotNull
@@ -198,7 +198,7 @@ public class Match {
     }
     
     public void setMatchedLocations(Set<String> matchedLocations) {
-    	this.matchedLocations = matchedLocations;
+//    	this.matchedLocations = matchedLocations;
     }
     
     @NotNull
@@ -208,7 +208,7 @@ public class Match {
     }
     
     public void setMatchedIndustries(Set<Industry> matchedIndustries) {
-    	this.matchedIndustries = matchedIndustries;
+//    	this.matchedIndustries = matchedIndustries;
     }
 
     public boolean getViewedSinceLastUpdate(){
