@@ -25,17 +25,15 @@ public class RecruiterController {
     private CompanyDAO companyDAO;
     private RoleDAO roleDAO;
     private SecurityService securityService;
-    private UserDAO userDAO;
 
 
     @Autowired
-    public RecruiterController(RecruiterDAO recruiterDAO, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService, UserDAO userDAO){
+    public RecruiterController(RecruiterDAO recruiterDAO, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService){
         this.recruiterRepo = recruiterDAO;
         this.userService = userService;
         this.companyDAO = companyDAO;
         this.roleDAO = roleDAO;
         this.securityService = securityService;
-        this.userDAO = userDAO;
     }
 
     // ================================================================================================================
