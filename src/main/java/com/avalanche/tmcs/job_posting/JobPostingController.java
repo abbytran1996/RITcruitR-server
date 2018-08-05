@@ -3,6 +3,7 @@ package com.avalanche.tmcs.job_posting;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.matching.Skill;
+import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
@@ -29,18 +30,20 @@ public class JobPostingController {
     private RecruiterDAO recruiterRepo;
     private JobPresentationLinkDAO presentationLinkDAO;
     private CompanyDAO companyDAO;
+    private SkillDAO skillDAO;
 
     private MatchingService matchingService;
 
     @Autowired
     public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, JobPostingExpirationChecker expirationChecker,
-                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO){
+                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, SkillDAO skillDAO){
         this.jobPostingDAO = jobPostingDAO;
         this.expirationChecker = expirationChecker;
         this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = recruiterDAO;
         this.companyDAO = companyDAO;
+        this.skillDAO = skillDAO;
     }
 
     // ================================================================================================================
@@ -78,6 +81,17 @@ public class JobPostingController {
             newJobPosting.setRecruiter(recruiter);
             JobPosting savedJobPosting = jobPostingDAO.save(newJobPosting.toJobPosting());
 
+            // Updates the usage score for each required and recommended skill
+            for (Skill skill : newJobPosting.getRequiredSkills()) {
+                skill.setUsageScore(skill.getUsageScore() + 2);
+                skillDAO.save(skill);
+            }
+
+            for (Skill skill : newJobPosting.getRecommendedSkills()) {
+                skill.setUsageScore(skill.getUsageScore() + 1);
+                skillDAO.save(skill);
+            }
+
             // Create presentation links
             for (JobPresentationLink link : newJobPosting.getPresentationLinks()) {
                 link.setJob(savedJobPosting);
@@ -104,6 +118,22 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateJobPosting(@PathVariable long id, @RequestBody JobPosting updatedJobPosting) {
         JobPosting jobPosting = jobPostingDAO.findOne(id);
+
+        // Updates the usage score for each required and recommended skill
+        for (Skill skill : jobPosting.getRequiredSkills()) {
+            if (!updatedJobPosting.getRequiredSkills().contains(skill)) {
+                skill.setUsageScore(skill.getUsageScore() - 2);
+                skillDAO.save(skill);
+            }
+        }
+
+        for (Skill skill : jobPosting.getRecommendedSkills()) {
+            if (!updatedJobPosting.getRecommendedSkills().contains(skill)) {
+                skill.setUsageScore(skill.getUsageScore() - 1);
+                skillDAO.save(skill);
+            }
+        }
+
         jobPosting.setStatus(updatedJobPosting.getStatus());
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());
@@ -174,6 +204,18 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
+
+        // Updates the usage score for each required and recommended skill
+        for (Skill skill : toDelete.getRequiredSkills()) {
+            skill.setUsageScore(skill.getUsageScore() - 2);
+            skillDAO.save(skill);
+        }
+
+        for (Skill skill : toDelete.getRecommendedSkills()) {
+            skill.setUsageScore(skill.getUsageScore() - 1);
+            skillDAO.save(skill);
+        }
+
         toDelete.setStatus(JobPosting.Status.ARCHIVED);
         jobPostingDAO.save(toDelete);
 
