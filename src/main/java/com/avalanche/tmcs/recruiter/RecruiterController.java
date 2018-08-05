@@ -1,11 +1,7 @@
 package com.avalanche.tmcs.recruiter;
 
-import com.avalanche.tmcs.auth.Role;
+import com.avalanche.tmcs.auth.*;
 import com.avalanche.tmcs.auth.Role.RoleName;
-import com.avalanche.tmcs.auth.RoleDAO;
-import com.avalanche.tmcs.auth.SecurityService;
-import com.avalanche.tmcs.auth.User;
-import com.avalanche.tmcs.auth.UserService;
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +25,17 @@ public class RecruiterController {
     private CompanyDAO companyDAO;
     private RoleDAO roleDAO;
     private SecurityService securityService;
+    private UserDAO userDAO;
 
 
     @Autowired
-    public RecruiterController(RecruiterDAO recruiterDAO, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService){
+    public RecruiterController(RecruiterDAO recruiterDAO, UserService userService, CompanyDAO companyDAO, RoleDAO roleDAO, SecurityService securityService, UserDAO userDAO){
         this.recruiterRepo = recruiterDAO;
         this.userService = userService;
         this.companyDAO = companyDAO;
         this.roleDAO = roleDAO;
         this.securityService = securityService;
+        this.userDAO = userDAO;
     }
 
     // ================================================================================================================
@@ -87,7 +85,7 @@ public class RecruiterController {
     // ================================================================================================================
     @RequestMapping(value = "/{id}/primary", method = RequestMethod.PATCH)
     public ResponseEntity<?> updateRecruiterToPrimary(@PathVariable long id, @RequestBody User currentUser){
-        if (currentUser.getRoles().contains(RoleName.PrimaryRecruiter)) {
+        if (!currentUser.getRoles().contains(new Role(Role.RoleName.PrimaryRecruiter.name().toLowerCase()))) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
