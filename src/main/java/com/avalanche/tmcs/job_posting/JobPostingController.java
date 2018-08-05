@@ -118,40 +118,6 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateJobPosting(@PathVariable long id, @RequestBody JobPosting updatedJobPosting) {
         JobPosting jobPosting = jobPostingDAO.findOne(id);
-        Set<Skill> oldRequiredSkills = jobPosting.getRequiredSkills();
-        Set<Skill> oldRecommendedSkills = jobPosting.getRecommendedSkills();
-        Set<Skill> newRequiredSkills = updatedJobPosting.getRequiredSkills();
-        Set<Skill> newRecommendedSkills = updatedJobPosting.getRecommendedSkills();
-
-        // Update the usage score for every removed/added required and recommended skill
-        for (Skill skill : oldRequiredSkills) {
-            if (!newRequiredSkills.contains(skill)) {
-                skill.setUsageScore(skill.getUsageScore() - 2);
-                skillDAO.save(skill);
-            }
-        }
-
-        for (Skill skill : oldRecommendedSkills) {
-            if (!newRecommendedSkills.contains(skill)) {
-                skill.setUsageScore(skill.getUsageScore() - 1);
-                skillDAO.save(skill);
-            }
-        }
-
-        for (Skill skill : newRequiredSkills) {
-            if (!oldRequiredSkills.contains(skill)) {
-                skill.setUsageScore(skill.getUsageScore() + 2);
-                skillDAO.save(skill);
-            }
-        }
-
-        for (Skill skill : newRecommendedSkills) {
-            if (!oldRecommendedSkills.contains(skill)) {
-                skill.setUsageScore(skill.getUsageScore() + 1);
-                skillDAO.save(skill);
-            }
-        }
-
         jobPosting.setStatus(updatedJobPosting.getStatus());
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());
@@ -222,18 +188,6 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteJobPosting(@PathVariable long id){
         JobPosting toDelete = jobPostingDAO.findOne(id);
-
-        // Updates the usage score for each required and recommended skill
-        for (Skill skill : toDelete.getRequiredSkills()) {
-            skill.setUsageScore(skill.getUsageScore() - 2);
-            skillDAO.save(skill);
-        }
-
-        for (Skill skill : toDelete.getRecommendedSkills()) {
-            skill.setUsageScore(skill.getUsageScore() - 1);
-            skillDAO.save(skill);
-        }
-
         toDelete.setStatus(JobPosting.Status.ARCHIVED);
         jobPostingDAO.save(toDelete);
 
