@@ -85,9 +85,18 @@ public class RecruiterController {
     // ================================================================================================================
     // * UPDATE RECRUITER TO PRIMARY [PUT]                                                                            *
     // ================================================================================================================
-    @RequestMapping(value = "/{id}/primary", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateRecruiterToPrimary(@PathVariable long id){
+    @RequestMapping(value = "/{id}/primary", method = RequestMethod.PATCH)
+    public ResponseEntity<?> updateRecruiterToPrimary(@PathVariable long id, @RequestBody User currentUser){
+        if (currentUser.getRoles().contains(RoleName.PrimaryRecruiter)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Recruiter requestedUser = recruiterRepo.findByEmail(currentUser.getUsername());
         Recruiter recruiter = recruiterRepo.findOne(id);
+        if (requestedUser.getCompany().getId() != recruiter.getCompany().getId()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
         User user = recruiter.getUser();
         user = userService.removeRole(user, RoleName.Recruiter);
         user = userService.addRole(user, RoleName.PrimaryRecruiter);
