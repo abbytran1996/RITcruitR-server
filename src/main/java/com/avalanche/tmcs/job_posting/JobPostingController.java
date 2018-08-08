@@ -2,6 +2,7 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
+import com.avalanche.tmcs.data.DataController;
 import com.avalanche.tmcs.data.Skill;
 import com.avalanche.tmcs.data.SkillDAO;
 import com.avalanche.tmcs.recruiter.Recruiter;
@@ -30,20 +31,20 @@ public class JobPostingController {
     private RecruiterDAO recruiterRepo;
     private JobPresentationLinkDAO presentationLinkDAO;
     private CompanyDAO companyDAO;
-    private SkillDAO skillDAO;
+    private DataController dataController;
 
     private MatchingService matchingService;
 
     @Autowired
     public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, JobPostingExpirationChecker expirationChecker,
-                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, SkillDAO skillDAO){
+                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, DataController dataController){
         this.jobPostingDAO = jobPostingDAO;
         this.expirationChecker = expirationChecker;
         this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = recruiterDAO;
         this.companyDAO = companyDAO;
-        this.skillDAO = skillDAO;
+        this.dataController = dataController;
     }
 
     // ================================================================================================================
@@ -79,19 +80,9 @@ public class JobPostingController {
         else {
             newJobPosting.setCompany(company);
             newJobPosting.setRecruiter(recruiter);
+            dataController.updateUsageScoreData(newJobPosting);
+
             JobPosting savedJobPosting = jobPostingDAO.save(newJobPosting.toJobPosting());
-
-            // Updates the usage score for each required and recommended skill
-            for (Skill skill : newJobPosting.getRequiredSkills()) {
-                skill.setUsageScore(skill.getUsageScore() + 2);
-                skillDAO.save(skill);
-            }
-
-            for (Skill skill : newJobPosting.getRecommendedSkills()) {
-                skill.setUsageScore(skill.getUsageScore() + 1);
-                skillDAO.save(skill);
-            }
-
             // Create presentation links
             for (JobPresentationLink link : newJobPosting.getPresentationLinks()) {
                 link.setJob(savedJobPosting);

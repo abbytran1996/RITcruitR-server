@@ -1,5 +1,7 @@
 package com.avalanche.tmcs.data;
 
+import com.avalanche.tmcs.job_posting.NewJobPosting;
+import com.avalanche.tmcs.students.NewStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +54,50 @@ public class DataController {
     @RequestMapping(value = "/locations", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Location>> getLocations() {
         return ResponseEntity.ok(locationDAO.findAllOrOrderByCount());
+    }
+
+    public void updateUsageScoreData(NewJobPosting newJobPosting){
+        for (Skill skill : newJobPosting.getRequiredSkills()) {
+            skill.setUsageScore(skill.getUsageScore() + 2);
+            skillDAO.save(skill);
+        }
+
+        for (Skill skill : newJobPosting.getRecommendedSkills()) {
+            skill.setUsageScore(skill.getUsageScore() + 1);
+            skillDAO.save(skill);
+        }
+
+        for (String locationStr: newJobPosting.getLocations()){
+            Location location = locationDAO.findFirstByName(locationStr);
+            location.setUsageScore(location.getUsageScore() + 1);
+            locationDAO.save(location);
+        }
+    }
+
+    public void updateUsageScoreData(NewStudent newStudent){
+        for(Skill skill : newStudent.getSkills()){
+            skill.setUsageScore(skill.getUsageScore() + 1);
+            skillDAO.save(skill);
+        }
+
+        for(String locationStr: newStudent.getPreferredLocations()){
+            Location location = locationDAO.findFirstByName(locationStr);
+            location.setUsageScore(location.getUsageScore() + 1);
+            locationDAO.save(location);
+        }
+
+        for(Industry industry : newStudent.getPreferredIndustries()){
+            industry.setUsageScore(industry.getUsageScore() + 1);
+            industryDAO.save(industry);
+        }
+
+        Major major = newStudent.getMajor();
+        major.setUsageScore(major.getUsageScore() + 1);
+        majorDAO.save(major);
+
+        University university = newStudent.getSchool();
+        university.setUsageScore(university.getUsageScore() + 1);
+        universityDAO.save(university);
     }
 
 }

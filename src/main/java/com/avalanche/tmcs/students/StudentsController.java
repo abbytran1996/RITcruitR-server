@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.auth.*;
+import com.avalanche.tmcs.data.DataController;
 import com.avalanche.tmcs.data.Skill;
 import com.avalanche.tmcs.exceptions.ResourceNotFound;
 import com.avalanche.tmcs.matching.*;
@@ -31,18 +32,20 @@ public class StudentsController {
     private StudentDAO studentDAO;
     private PresentationLinkDAO presentationLinkDAO;
     private ProblemStatementDAO problemStatementDAO;
+    private DataController dataController;
 
     private UserService userService;
-
     private SecurityService securityService;
-
     private MatchingService matchingService;
 
     @Autowired
-    public StudentsController(StudentDAO studentDAO, PresentationLinkDAO presentationLinkDAO, ProblemStatementDAO problemStatementDAO, UserService userService, SecurityService securityService, MatchingService matchingService) {
+    public StudentsController(StudentDAO studentDAO, PresentationLinkDAO presentationLinkDAO, ProblemStatementDAO problemStatementDAO, DataController dataController,
+                              UserService userService, SecurityService securityService, MatchingService matchingService) {
         this.studentDAO = studentDAO;
         this.presentationLinkDAO = presentationLinkDAO;
         this.problemStatementDAO = problemStatementDAO;
+        this.dataController = dataController;
+
         this.userService = userService;
         this.securityService = securityService;
         this.matchingService = matchingService;
@@ -85,8 +88,9 @@ public class StudentsController {
         newUser = userService.save(newUser, Role.RoleName.Student);
         if(securityService.login(newUser.getUsername(), newUser.getPasswordConfirm())) {
             newStudent.setUser(newUser);
-            Student savedStudent = studentDAO.save(newStudent.toStudent());
+            dataController.updateUsageScoreData(newStudent);
 
+            Student savedStudent = studentDAO.save(newStudent.toStudent());
             matchingService.registerStudent(savedStudent);
 
             URI location = ServletUriComponentsBuilder
