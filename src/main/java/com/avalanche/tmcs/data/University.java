@@ -11,7 +11,7 @@ public class University {
 	
 	private long id;
 	private String name;
-	private int count;
+	private int usageScore;
 	
 	public University() {}
 	
@@ -36,5 +36,13 @@ public class University {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getUsageScore() {
+        return usageScore;
+    }
+
+    public void setUsageScore(int usageScore) {
+        this.usageScore = usageScore;
     }
 }

@@ -11,7 +11,7 @@ public class Major {
 	
 	private long id;
 	private String name;
-	private int count = 0;
+	private int usageScore = 0;
 	
 	public Major() {}
 	
@@ -36,5 +36,13 @@ public class Major {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getUsageScore() {
+        return usageScore;
+    }
+
+    public void setUsageScore(int usageScore) {
+        this.usageScore = usageScore;
     }
 }

@@ -16,6 +16,8 @@ public class Skill {
     private String name;
     private int count = 0;
 
+    private int usage_score;
+
     public Skill(){}
 
     public Skill(String name){
@@ -39,6 +41,14 @@ public class Skill {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getUsageScore() {
+        return usage_score;
+    }
+
+    public void setUsageScore(int usage_score) {
+        this.usage_score = usage_score;
     }
 
     @Override
