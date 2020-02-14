@@ -1,0 +1,3 @@
+name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/7555c8d8-e2f7-4c20-81fa-13f1e264a239"
+display_name: "Facebook"
+external_id: "facebook123"

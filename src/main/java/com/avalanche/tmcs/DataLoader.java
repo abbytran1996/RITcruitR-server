@@ -1,5 +1,7 @@
 package com.avalanche.tmcs;
 
+import com.avalanche.tmcs.JobSearchCreateCompany;
+
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import com.avalanche.tmcs.auth.Role;
@@ -55,6 +57,7 @@ import java.util.TimerTask;
  */
 @Component
 public class DataLoader implements ApplicationRunner {
+
     private static final Logger LOG = LoggerFactory.getLogger(DataLoader.class);
     private final boolean addTestData;
 
@@ -71,6 +74,8 @@ public class DataLoader implements ApplicationRunner {
     private UniversityDAO universityDAO;
     private UserService userService;
     private MatchingService matchingService;
+    private JobSearchCreateCompany jobSearchCreateCompany;
+    private JobSearchCreateJob jobSearchCreateJob;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
@@ -91,7 +96,14 @@ public class DataLoader implements ApplicationRunner {
         this.matchingService = matchingService;
     }
 
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws IOException {
+        this.jobSearchCreateCompany = new JobSearchCreateCompany();
+        String PROJECT_ID = "recruitrtest-256719";
+        String facebookCompanyName = "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/7555c8d8-e2f7-4c20-81fa-13f1e264a239";
+        String languageCode = "en-US";
+
+        jobSearchCreateCompany.sampleCreateCompany(PROJECT_ID,"Facebook", "facebook123");
+        jobSearchCreateJob.sampleCreateJob(PROJECT_ID, facebookCompanyName, "jobPost1", "Software Developer", "Create a website for the company", "www.facebook.com/careers", "New York, NY", "San Francisco, CA", languageCode);
         LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
             roleDAO.save(new Role("student"));
