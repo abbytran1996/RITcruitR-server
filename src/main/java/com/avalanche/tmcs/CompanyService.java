@@ -7,7 +7,7 @@ import com.google.api.gax.core.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class JobSearchCreateCompany {
+public class CompanyService {
     public static void sampleCreateCompany(
             String projectId, String displayName, String externalId) throws IOException {
         String jsonPath = "/Users/abigail_tran/Documents/SeniorProject/RecruitRv3-python/GoogleAPI/service_account_key/credentials.json";
@@ -24,14 +24,14 @@ public class JobSearchCreateCompany {
             // externalId = "Identifier of this company in my system";
 
             String parent = "projects/" + projectId;
-            Company company =
-                    Company.newBuilder().setDisplayName(displayName).setExternalId(externalId).build();
+            com.google.cloud.talent.v4beta1.Company company =
+                    com.google.cloud.talent.v4beta1.Company.newBuilder().setDisplayName(displayName).setExternalId(externalId).build();
             CreateCompanyRequest request =
                     CreateCompanyRequest.newBuilder()
                             .setParent(parent)
                             .setCompany(company)
                             .build();
-            Company response = companyServiceClient.createCompany(request);
+            com.google.cloud.talent.v4beta1.Company response = companyServiceClient.createCompany(request);
             System.out.println("Created Company");
             System.out.printf("Name: %s\n", response.getName());
             System.out.printf("Display Name: %s\n", response.getDisplayName());

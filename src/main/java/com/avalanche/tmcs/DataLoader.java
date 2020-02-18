@@ -1,14 +1,11 @@
 package com.avalanche.tmcs;
 
-import com.avalanche.tmcs.JobSearchCreateCompany;
-
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
-import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
@@ -24,7 +21,6 @@ import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.matching.University;
 import com.avalanche.tmcs.matching.UniversityDAO;
-import com.avalanche.tmcs.students.NewStudent;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
 import com.github.javafaker.Faker;
@@ -74,8 +70,8 @@ public class DataLoader implements ApplicationRunner {
     private UniversityDAO universityDAO;
     private UserService userService;
     private MatchingService matchingService;
-    private JobSearchCreateCompany jobSearchCreateCompany;
-    private JobSearchCreateJob jobSearchCreateJob;
+    private CompanyService companyService;
+    private JobService jobService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
@@ -97,13 +93,17 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) throws IOException {
-        this.jobSearchCreateCompany = new JobSearchCreateCompany();
+        this.companyService = new CompanyService();
         String PROJECT_ID = "recruitrtest-256719";
         String facebookCompanyName = "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/7555c8d8-e2f7-4c20-81fa-13f1e264a239";
         String languageCode = "en-US";
+        String SAMPLE_COMPANY_ID = "075e3c6b-df00-0000-0000-00fbd63c7ae0";
+        String SAMPLE_JOB_ID = "136747347917841094";
 
-        jobSearchCreateCompany.sampleCreateCompany(PROJECT_ID,"Facebook", "facebook123");
-        jobSearchCreateJob.sampleCreateJob(PROJECT_ID, facebookCompanyName, "jobPost1", "Software Developer", "Create a website for the company", "www.facebook.com/careers", "New York, NY", "San Francisco, CA", languageCode);
+        //jobSearchCreateCompany.sampleCreateCompany(PROJECT_ID,"Facebook", "facebook123");
+        //jobSearchCreateJob.sampleCreateJob(PROJECT_ID, facebookCompanyName, "jobPost2", "Software Developer", "Create a website for the company", "www.facebook.com/careers", "New York, NY", "San Francisco, CA", languageCode);
+        //jobService.sampleGetJob(PROJECT_ID, SAMPLE_COMPANY_ID, SAMPLE_JOB_ID);
+        jobService.sampleListJobs(PROJECT_ID, "companyName=\"projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/7555c8d8-e2f7-4c20-81fa-13f1e264a239\"");
         LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
             roleDAO.save(new Role("student"));
@@ -257,7 +257,7 @@ public class DataLoader implements ApplicationRunner {
                 //company
                 JSONObject companyObject = (JSONObject) job.get("company");
                 String companyName = (String) companyObject.get("companyName");
-                Company company = companyDAO.findByCompanyName(companyName);
+                com.avalanche.tmcs.company.Company company = companyDAO.findByCompanyName(companyName);
                 
                 //recruiter
                 JSONObject recruiterObject = (JSONObject) job.get("recruiter");
@@ -484,7 +484,7 @@ public class DataLoader implements ApplicationRunner {
         return stud;
     }
 
-    private Recruiter newTestRecruiter(Faker faker,User user,Company comp){
+    private Recruiter newTestRecruiter(Faker faker, User user, com.avalanche.tmcs.company.Company comp){
         Recruiter rec = new Recruiter();
         rec.setFirstName(faker.name().firstName());
         rec.setLastName(faker.name().lastName());
@@ -496,8 +496,8 @@ public class DataLoader implements ApplicationRunner {
         return rec;
     }
 
-    private Company.Size randomSize(Faker faker){
-        List<Company.Size> sizes= Arrays.asList(Company.Size.values());
+    private com.avalanche.tmcs.company.Company.Size randomSize(Faker faker){
+        List<com.avalanche.tmcs.company.Company.Size> sizes= Arrays.asList(com.avalanche.tmcs.company.Company.Size.values());
         return sizes.get(faker.number().numberBetween(0,sizes.size()));
     }
 
