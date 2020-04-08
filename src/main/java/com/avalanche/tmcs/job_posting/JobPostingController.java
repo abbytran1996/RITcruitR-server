@@ -2,17 +2,22 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
+import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
+import com.avalanche.tmcs.JobService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -55,7 +60,7 @@ public class JobPostingController {
     // * ADD NEW JOB [POST]                                                                                           *
     // ================================================================================================================
     @RequestMapping(value = "/{company_id}", method=RequestMethod.POST)
-    public ResponseEntity<?> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting){
+    public ResponseEntity<?> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting) throws IOException {
         Company company = companyDAO.findOne(company_id);
         Recruiter recruiter = recruiterRepo.findOne(newJobPosting.getRecruiterId());
 
@@ -81,9 +86,41 @@ public class JobPostingController {
             // Create presentation links
             for (JobPresentationLink link : newJobPosting.getPresentationLinks()) {
                 link.setJob(savedJobPosting);
+                presentationLinkDAO.save(link);
             }
             savedJobPosting.setPresentationLinks(newJobPosting.getPresentationLinks());
             savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
+            jobPostingDAO.save(savedJobPosting);
+
+            //Add job posting to Google Cloud
+            String PROJECT_ID = "recruitrtest-256719";
+            String companyName = savedJobPosting.getCompany().getGoogleCloudName();
+            Long requisitionId = savedJobPosting.getId();
+            String title = savedJobPosting.getPositionTitle();
+            String description = savedJobPosting.getDescription();
+            List<String> addresses = new ArrayList<>(savedJobPosting.getLocations());
+            Set<Skill> recSkills = savedJobPosting.getRecommendedSkills();
+            ArrayList<String> recommendedSkills = new ArrayList<>();
+            for (Skill s : recSkills ) {
+                recommendedSkills.add(s.getName());
+            }
+            Set<Skill> reqSkills = savedJobPosting.getRequiredSkills();
+            ArrayList<String> requiredSkills = new ArrayList<>();
+            for (Skill s : reqSkills ) {
+                requiredSkills.add(s.getName());
+            }
+            Boolean workExperience = savedJobPosting.getHasWorkExperience();
+            List<JobPresentationLink> links = new ArrayList<>(savedJobPosting.getPresentationLinks());
+            String presentationLinkString =  links.get(0).getLink();
+            String problemStatementString = savedJobPosting.getProblemStatement();
+            String videoURLString = savedJobPosting.getVideo();
+            String recruiterEmailString = savedJobPosting.getRecruiter().getEmail();
+            double minimumGPA = savedJobPosting.getMinGPA();
+            String jobApplicationUrl = savedJobPosting.getCompany().getWebsiteURL();
+            String languageCode = "en-US";
+
+            String googleCloudJobName = JobService.sampleCreateJob(PROJECT_ID, companyName, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, videoURLString, recruiterEmailString, minimumGPA, jobApplicationUrl, languageCode);
+            savedJobPosting.setGoogleCloudJobName(googleCloudJobName);
             jobPostingDAO.save(savedJobPosting);
 
             matchingService.registerJobPosting(savedJobPosting);
@@ -104,6 +141,7 @@ public class JobPostingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateJobPosting(@PathVariable long id, @RequestBody JobPosting updatedJobPosting) {
         JobPosting jobPosting = jobPostingDAO.findOne(id);
+        jobPosting.setGoogleCloudJobName(updatedJobPosting.getGoogleCloudJobName());
         jobPosting.setStatus(updatedJobPosting.getStatus());
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());

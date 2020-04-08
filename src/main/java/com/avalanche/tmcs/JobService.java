@@ -8,9 +8,13 @@ import com.google.common.collect.Lists;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class JobService {
     /**
@@ -19,15 +23,22 @@ public class JobService {
      * @param projectId Your Google Cloud Project ID
      */
 
-    public static void sampleCreateJob(
+    public static String sampleCreateJob(
             String projectId,
             String companyName,
-            String requisitionId,
+            String requisitionId, //Job Posting ID on AWS
             String title,
             String description,
+            List<String> addresses,
+            List<String> recommendedSkills,
+            List<String> requiredSkills,
+            Boolean workExperience,
+            String presentationLinkString,
+            String problemStatementString,
+            String videoURLString,
+            String recruiterEmailString,
+            double minimumGPA,
             String jobApplicationUrl,
-            String addressOne,
-            String addressTwo,
             String languageCode) throws IOException {
         // [START job_search_create_job_core]
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
@@ -35,25 +46,30 @@ public class JobService {
         JobServiceSettings settings = JobServiceSettings.newBuilder()
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();
+        String googleName = "";
         try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
             // projectId = "Your Google Cloud Project ID";
             // companyName = "Company name, e.g. projects/your-project/companies/company-id";
             // requisitionId = "Job requisition ID, aka Posting ID. Unique per job.";
-            // title = "Software Engineer";
-            // description = "This is a description of this <i>wonderful</i> job!";
-            // jobApplicationUrl = "https://www.example.org/job-posting/123";
-            // addressOne = "1600 Amphitheatre Parkway, Mountain View, CA 94043";
-            // addressTwo = "111 8th Avenue, New York, NY 10011";
             // languageCode = "en-US";
             String parent = "projects/" + projectId;
 
             List<String> uris = Arrays.asList(jobApplicationUrl);
             ApplicationInfo applicationInfo =
                     com.google.cloud.talent.v4beta1.Job.ApplicationInfo.newBuilder().addAllUris(uris).build();
-            List<String> addresses = Arrays.asList(addressOne, addressTwo);
 
             //CustomAttributes:
-            CustomAttribute gpa = CustomAttribute.newBuilder().addStringValues("3.5").setFilterable(true).build();
+            String delim = ", ";
+
+            String qualifications = String.join(delim, recommendedSkills);
+            CustomAttribute gpa = CustomAttribute.newBuilder().addStringValues(String.valueOf(minimumGPA)).setFilterable(true).build();
+            CustomAttribute mininumGpa = CustomAttribute.newBuilder().addLongValues((long)minimumGPA).setFilterable(true).build();
+            CustomAttribute hasWorkExperience = CustomAttribute.newBuilder().addStringValues(workExperience.toString()).setFilterable(true).build();
+            CustomAttribute presentationLink = CustomAttribute.newBuilder().addStringValues(presentationLinkString).setFilterable(true).build();
+            //CustomAttribute problemStatement = CustomAttribute.newBuilder().addStringValues(problemStatementString).setFilterable(true).build();
+            //CustomAttribute videoURL = CustomAttribute.newBuilder().addStringValues(videoURLString).setFilterable(true).build();
+            CustomAttribute recruiterEmail = CustomAttribute.newBuilder().addStringValues(recruiterEmailString).setFilterable(true).build();
+            //CustomAttribute recSkills = CustomAttribute.newBuilder().addStringValues(qualifications).setFilterable(true).build();
 
             com.google.cloud.talent.v4beta1.Job job =
                     com.google.cloud.talent.v4beta1.Job.newBuilder()
@@ -61,18 +77,28 @@ public class JobService {
                             .setRequisitionId(requisitionId)
                             .setTitle(title)
                             .setDescription(description)
+                            .setQualifications(qualifications)
                             .setApplicationInfo(applicationInfo)
                             .addAllAddresses(addresses)
                             .setLanguageCode(languageCode)
-                            .putCustomAttributes("gpa", gpa )
+                            .putCustomAttributes("gpa", gpa)
+                            .putCustomAttributes("minimumGpa", mininumGpa)
+                            .putCustomAttributes("hasWorkExperience", hasWorkExperience)
+                            .putCustomAttributes("presentationLink", presentationLink)
+                            //.putCustomAttributes("problemStatement", problemStatement)
+                            //.putCustomAttributes("videoURL", videoURL)
+                            .putCustomAttributes("recruiterEmail", recruiterEmail)
+                            //.putCustomAttributes("recommendedSkills", recSkills)
                             .build();
             CreateJobRequest request =
                     CreateJobRequest.newBuilder().setParent(parent).setJob(job).build();
             com.google.cloud.talent.v4beta1.Job response = jobServiceClient.createJob(request);
             System.out.printf("Created job: %s\n", response.getName());
+            googleName = response.getName();
         } catch (Exception exception) {
             System.err.println("Failed to create the client due to: " + exception);
         }
+        return googleName;
         // [END job_search_create_job_core]
     }
 
@@ -120,12 +146,22 @@ public class JobService {
             // filter = "companyName=projects/my-project/companies/company-id";
             String parent = "projects/" + projectId;
             ListJobsRequest request = ListJobsRequest.newBuilder().setParent(parent).setFilter(filter).build();
-            //ListJobsRequest request = ListJobsRequest.newBuilder().setParent(parent).build();
+            List<Job> jobs = new ArrayList<>();
             for (Job responseItem : jobServiceClient.listJobs(request).iterateAll()) {
+                jobs.add(responseItem);
                 System.out.printf("Job name: %s\n", responseItem.getName());
                 System.out.printf("Job requisition ID: %s\n", responseItem.getRequisitionId());
                 System.out.printf("Job title: %s\n", responseItem.getTitle());
                 System.out.printf("Job description: %s\n", responseItem.getDescription());
+            }
+            try {
+                FileWriter myWriter = new FileWriter("created_jobs.txt");
+                myWriter.write(jobs.toString());
+                myWriter.close();
+                System.out.println("Successfully wrote to the file.");
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
             }
         } catch (Exception exception) {
             System.err.println("Failed to create the client due to: " + exception);
@@ -158,7 +194,7 @@ public class JobService {
      * @param query Histogram query More info on histogram facets, constants, and built-in functions:
      *     https://godoc.org/google.golang.org/genproto/googleapis/cloud/talent/v4beta1#SearchJobsRequest
      */
-    public static void sampleSearchJobs(String projectId, String query) throws IOException {
+    public static List<SearchJobsResponse.MatchingJob> sampleSearchJobs(String projectId, String query) throws IOException {
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         JobServiceSettings settings = JobServiceSettings.newBuilder()
@@ -178,25 +214,26 @@ public class JobService {
                             .setSessionId(sessionId)
                             .setUserId(userId)
                             .build();
-            HistogramQuery histogramQueriesElement =
-                    HistogramQuery.newBuilder().setHistogramQuery(query).build();
-            List<HistogramQuery> histogramQueries = Arrays.asList(histogramQueriesElement);
+            JobQuery jobQuery = JobQuery.newBuilder()
+                            .setQuery(query)
+                            .build();
             SearchJobsRequest request =
                     SearchJobsRequest.newBuilder()
-                            .setParent(parent.toString())
+                            .setParent(parent)
                             .setRequestMetadata(requestMetadata)
-                            .addAllHistogramQueries(histogramQueries)
+                            .setJobQuery(jobQuery)
+                            .setOrderBy("relevance desc")
                             .build();
+            List<SearchJobsResponse.MatchingJob> jobs = new ArrayList<>();
             for (SearchJobsResponse.MatchingJob responseItem :
                     jobServiceClient.searchJobs(request).iterateAll()) {
-                System.out.printf("Job summary: %s\n", responseItem.getJobSummary());
-                System.out.printf("Job title snippet: %s\n", responseItem.getJobTitleSnippet());
+                jobs.add(responseItem);
                 Job job = responseItem.getJob();
-                System.out.printf("Job name: %s\n", job.getName());
-                System.out.printf("Job title: %s\n", job.getTitle());
             }
+            return jobs;
         } catch (Exception exception) {
             System.err.println("Failed to create the client due to: " + exception);
         }
+        return null;
     }
 }

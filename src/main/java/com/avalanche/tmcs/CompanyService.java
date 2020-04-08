@@ -6,10 +6,13 @@ import com.google.common.collect.Lists;
 import com.google.api.gax.core.*;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.FileWriter;
 
 public class CompanyService {
-    public static void sampleCreateCompany(
-            String projectId, String displayName, String externalId) throws IOException {
+    public static String sampleCreateCompany(
+            String projectId, String displayName, String externalId, String headquartersAddress, String size, String webURL) throws IOException {
         String jsonPath = "/Users/abigail_tran/Documents/SeniorProject/RecruitRv3-python/GoogleAPI/service_account_key/credentials.json";
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
@@ -17,15 +20,48 @@ public class CompanyService {
                 CompanyServiceSettings.newBuilder()
                         .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                         .build();
+        String name = "";
         try (CompanyServiceClient companyServiceClient = CompanyServiceClient.create(companyServiceSettings)) {
             // projectId = "Your Google Cloud Project ID";
-            // tenantId = "Your Tenant ID (using tenancy is optional)";
             // displayName = "My Company Name";
             // externalId = "Identifier of this company in my system";
 
             String parent = "projects/" + projectId;
+            CompanySize companySize = CompanySize.COMPANY_SIZE_UNSPECIFIED;
+            //DONT_CARE, STARTUP, SMALL, MEDIUM, LARGE, HUGE
+            switch(size) {
+                case "DONT_CARE":
+                    companySize = CompanySize.COMPANY_SIZE_UNSPECIFIED;
+                    break;
+                case "STARTUP":
+                    companySize = CompanySize.MINI;
+                    break;
+                case "SMALL":
+                    companySize = CompanySize.SMALL;
+                    break;
+                case "MEDIUM":
+                    companySize = CompanySize.MEDIUM;
+                    break;
+                case "LARGE":
+                    companySize = CompanySize.BIG;
+                    break;
+                case "HUGE":
+                    companySize = CompanySize.GIANT;
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + size);
+            }
+
             com.google.cloud.talent.v4beta1.Company company =
-                    com.google.cloud.talent.v4beta1.Company.newBuilder().setDisplayName(displayName).setExternalId(externalId).build();
+                    com.google.cloud.talent.v4beta1.Company.newBuilder()
+                            .setDisplayName(displayName)
+                            .setExternalId(externalId)
+                            .setHeadquartersAddress(headquartersAddress)
+                            .setSize(companySize)
+                            .setWebsiteUri(webURL)
+                            .addKeywordSearchableJobCustomAttributes("recommendedSkills")
+                            .build();
+
             CreateCompanyRequest request =
                     CreateCompanyRequest.newBuilder()
                             .setParent(parent)
@@ -36,8 +72,67 @@ public class CompanyService {
             System.out.printf("Name: %s\n", response.getName());
             System.out.printf("Display Name: %s\n", response.getDisplayName());
             System.out.printf("External ID: %s\n", response.getExternalId());
+            name = response.getName();
         } catch (Exception exception) {
             System.err.println("Failed to create the client due to: " + exception);
+        }
+        return name;
+    }
+
+    public static void sampleListCompanies(String projectId) throws IOException {
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
+                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        CompanyServiceSettings companyServiceSettings =
+                CompanyServiceSettings.newBuilder()
+                        .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+                        .build();
+        try (CompanyServiceClient companyServiceClient = CompanyServiceClient.create(companyServiceSettings)) {
+
+            String parent = "projects/" + projectId;
+            ListCompaniesRequest request = ListCompaniesRequest.newBuilder().setParent(parent).build();
+            CompanyServiceClient.ListCompaniesPage results = companyServiceClient.listCompanies(request).getPage();
+            List<Company> companies = new ArrayList<>();
+            for (Company responseItem : companyServiceClient.listCompanies(request).iterateAll()) {
+                if (responseItem.getWebsiteUri().equals("")) {
+                    deleteCompany(responseItem.getName());
+                } else {
+                    companies.add(responseItem);
+                    System.out.printf("Company Name: %s\n", responseItem.getSize());
+                    System.out.printf("Display Name: %s\n", responseItem.getDisplayName());
+                    System.out.printf("External ID: %s\n", responseItem.getExternalId());
+                }
+            }
+            try {
+                FileWriter myWriter = new FileWriter("created_companies.txt");
+                myWriter.write(companies.toString());
+                myWriter.close();
+                System.out.println("Successfully wrote to the file.");
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        } catch (Exception exception) {
+            System.err.println("Failed to create the client due to: " + exception);
+        }
+    }
+
+    // Delete Company.
+    public static void deleteCompany(String companyName)
+            throws IOException {
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
+                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        CompanyServiceSettings companyServiceSettings =
+                CompanyServiceSettings.newBuilder()
+                        .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+                        .build();
+
+        try (CompanyServiceClient companyServiceClient = CompanyServiceClient.create(companyServiceSettings)) {
+
+            DeleteCompanyRequest request =
+                    DeleteCompanyRequest.newBuilder().setName(companyName).build();
+
+            companyServiceClient.deleteCompany(request);
+            System.out.println("Deleted company");
         }
     }
     ///com.google.api.gax.rpc.PermissionDeniedException: io.grpc.StatusRuntimeException: PERMISSION_DENIED:

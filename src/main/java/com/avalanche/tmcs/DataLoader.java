@@ -95,15 +95,18 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws IOException {
         this.companyService = new CompanyService();
         String PROJECT_ID = "recruitrtest-256719";
-        String facebookCompanyName = "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/7555c8d8-e2f7-4c20-81fa-13f1e264a239";
+        String microsoftName = "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/95040b83-b531-40b4-81a3-caccbf92ca80";
         String languageCode = "en-US";
         String SAMPLE_COMPANY_ID = "075e3c6b-df00-0000-0000-00fbd63c7ae0";
         String SAMPLE_JOB_ID = "136747347917841094";
 
-        //jobSearchCreateCompany.sampleCreateCompany(PROJECT_ID,"Facebook", "facebook123");
-        //jobSearchCreateJob.sampleCreateJob(PROJECT_ID, facebookCompanyName, "jobPost2", "Software Developer", "Create a website for the company", "www.facebook.com/careers", "New York, NY", "San Francisco, CA", languageCode);
+        CompanyService.sampleListCompanies(PROJECT_ID);
+
+        //jobService.sampleCreateJob(PROJECT_ID, microsoftName, "110", "Software Developer", "Create a website for the company", Arrays.asList("New York, NY", "San Francisco, CA"), Arrays.asList("Java,Python"), Arrays.asList("Java,Python"),false, "www.microsoft.com", "Software Developer", "","recruiter@microsoft.com",3.5,"www.microsoft.com", languageCode);
         //jobService.sampleGetJob(PROJECT_ID, SAMPLE_COMPANY_ID, SAMPLE_JOB_ID);
-        jobService.sampleListJobs(PROJECT_ID, "companyName=\"projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/7555c8d8-e2f7-4c20-81fa-13f1e264a239\"");
+        jobService.sampleListJobs(PROJECT_ID, "companyName=\"projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/95040b83-b531-40b4-81a3-caccbf92ca80\"");
+        jobService.sampleSearchJobs(PROJECT_ID, "Software Engineer");
+
         LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
             roleDAO.save(new Role("student"));

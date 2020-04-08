@@ -1,19 +1,25 @@
 package com.avalanche.tmcs.company;
 
+import com.avalanche.tmcs.CompanyService;
 import com.avalanche.tmcs.auth.*;
+import com.avalanche.tmcs.company.Company.Size;
 import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.NewRecruiter;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
+import com.avalanche.tmcs.JobService;
 
+import com.google.cloud.talent.v4beta1.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -82,8 +88,17 @@ public class CompanyController {
     // * ADD NEW COMPANY [POST]                                                                                       *
     // ================================================================================================================
     @RequestMapping(value = "", method=RequestMethod.POST)
-    public ResponseEntity<Company> addCompany(@RequestBody NewCompany newCompany) {
+    public ResponseEntity<Company> addCompany(@RequestBody NewCompany newCompany) throws IOException {
         Company savedCompany = companyDAO.save(newCompany.toCompany());
+        String PROJECT_ID = "recruitrtest-256719";
+        List<String> locations = new ArrayList<>(savedCompany.getLocations());
+        String size = savedCompany.getSize().name();
+        //Create company on Google Cloud
+        String googleCloudName = CompanyService.sampleCreateCompany(PROJECT_ID, savedCompany.getCompanyName(), Long.toString(savedCompany.getId()), locations.get(0), size, savedCompany.getWebsiteURL());
+        if (googleCloudName != "") {
+            savedCompany.setGoogleCloudName(googleCloudName);
+            companyDAO.save(savedCompany);
+        }
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -91,7 +106,8 @@ public class CompanyController {
                 .buildAndExpand(savedCompany.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(savedCompany);
+        ResponseEntity<Company> comp =  ResponseEntity.created(location).body(savedCompany);
+        return comp;
     }
 
     // ================================================================================================================
@@ -107,6 +123,7 @@ public class CompanyController {
         company.setStatus(updateCompany.getStatus());
         company.setCompanyDescription(updateCompany.getCompanyDescription());
         company.setWebsiteURL(updateCompany.getWebsiteURL());
+        company.setGoogleCloudName(updateCompany.getGoogleCloudName());
         companyDAO.save(company);
 
         return ResponseEntity.ok().build();

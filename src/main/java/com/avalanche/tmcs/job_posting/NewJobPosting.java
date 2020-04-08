@@ -8,8 +8,8 @@ import java.util.Set;
  */
 public class NewJobPosting extends JobPosting {
     private long recruiterId;
-
     private Set<JobPresentationLink> presentationLinks;
+
 
     public long getRecruiterId() {
         return recruiterId;
@@ -30,6 +30,7 @@ public class NewJobPosting extends JobPosting {
     public JobPosting toJobPosting() {
         JobPosting job = new JobPosting();
 
+        job.setGoogleCloudJobName("");
         job.setStatus(Status.ACTIVE);
         job.setPositionTitle(getPositionTitle());
         job.setDescription(getDescription());
@@ -45,6 +46,7 @@ public class NewJobPosting extends JobPosting {
         job.setVideo("");
         job.setCompany(getCompany());
         job.setRecruiter(getRecruiter());
+        job.setPresentationLinks(this.getPresentationLinks());
 
         return job;
     }

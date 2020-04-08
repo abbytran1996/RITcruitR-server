@@ -128,6 +128,7 @@ public class StudentsController {
         student.setPreferredIndustriesWeight(updatedStudent.getPreferredIndustriesWeight());
         student.setPreferredCompanySizeWeight(updatedStudent.getPreferredCompanySizeWeight());
         studentDAO.save(student);
+        matchingService.registerStudent(student);
 
         return ResponseEntity.ok().build();
     }

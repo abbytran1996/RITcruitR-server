@@ -1,13 +1,18 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.GoogleAPI;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
-
+import com.avalanche.tmcs.JobService;
+import com.avalanche.tmcs.matching.LockMatch;
+import com.google.cloud.talent.v4beta1.Job;
+import com.google.cloud.talent.v4beta1.SearchJobsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,7 +45,8 @@ public class MatchingService {
      */
     public void registerStudent(final Student student) {
         final List<Match> oldMatches = matchDAO.findAllByStudent(student);
-        List<Match> newMatches = generateMatchesForStudent(student);
+        //List<Match> newMatches = generateMatchesForStudent(student);
+        List<Match> newMatches = generateMatchesForStudentFromGoogleAPI(student);
         newMatches = deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches);
         resetAllMatchesForStudent(student, newMatches);
     }
@@ -69,6 +75,52 @@ public class MatchingService {
                 .forEach(matchDAO::save);
     }
 
+    public List<Match> generateMatchesForStudentFromGoogleAPI(final Student student) {
+        String PROJECT_ID = "recruitrtest-256719";
+        List<String> skills = new ArrayList<>();
+        for (Skill s : student.getSkills()) {
+            skills.add(s.getName());
+        }
+        String skillStr = String.join(", ", skills);
+
+
+        List<String> industries = new ArrayList<>();
+        for (Industry i : student.getPreferredIndustries()) {
+            industries.add(i.getName());
+        }
+        String industryStr = String.join(", ", industries);
+        String majorStr = student.getMajor().getName();
+
+        String locationStr = String.join(", ", student.getPreferredLocations());
+
+        String query = majorStr + ", " + skillStr + ", " + locationStr;
+
+        List<Match> matches = new ArrayList<>();
+        try {
+            List<SearchJobsResponse.MatchingJob> jobResults = JobService.sampleSearchJobs(PROJECT_ID, query );
+            for (SearchJobsResponse.MatchingJob r : jobResults) {
+                Job j = r.getJob();
+                JobPosting jp = jobPostingDAO.findOne(Long.parseLong(j.getRequisitionId()));
+
+                int jobTitleScore = LockMatch.lock_match(j.getTitle(), student.getMajor().getName());
+                int skillsScore = LockMatch.lock_match(j.getQualifications(), skillStr);
+                int locationScore = LockMatch.lock_match(j.getAddresses(0), locationStr);
+
+                float avgMatchScore = (float) ((jobTitleScore+skillsScore+locationScore)/3);
+                Match newMatch = new Match();
+                newMatch.setJob(jp);
+                newMatch.setStudent(student);
+                newMatch.setCurrentPhase(Match.CurrentPhase.PROBLEM_WAITING_FOR_STUDENT);
+                newMatch.setApplicationStatus(Match.ApplicationStatus.NEW);
+                newMatch.setMatchStrength(avgMatchScore/100);
+                matches.add(newMatch);
+            }
+            return matches;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public List<Match> generateMatchesForStudent(final Student student) {
         // create new matches for a student from all currently active jobs
         List<Match> matchesToReturn = jobPostingDAO.findAllByStatus(JobPosting.Status.ACTIVE).parallelStream()
@@ -76,6 +128,8 @@ public class MatchingService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
+        List<Match> matchesToReturnFromGoogleAPI = new ArrayList<>();
+
 
         // re-add matches that are already in or past the FINAL stage (even though they weren't re-matched)
         final Set<Match> preexistingFinalMatches = matchDAO.findAllByStudent(student).parallelStream()
@@ -116,6 +170,7 @@ public class MatchingService {
     }
 
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
+
         if(student == null || !student.readyToMatch() ||
                 job == null || !job.readyToMatch()) {
             return Optional.empty();
@@ -128,6 +183,7 @@ public class MatchingService {
         Set<Skill> studentSkills = student.getSkills();
         double requiredSkillsPercentage = calculateAndStoreMatchedRequiredSkills(job.getRequiredSkills(), studentSkills, newMatch);
         double requiredSkillsScore = REQUIRED_SKILL_WEIGHT * requiredSkillsPercentage;
+
 
         double recommendedSkillsWeight = job.getRecommendedSkillsWeight();
         double recommendedSkillsPercentage = calculateAndStoreMatchedRecommendedSkills(job.getRecommendedSkills(), studentSkills, newMatch);

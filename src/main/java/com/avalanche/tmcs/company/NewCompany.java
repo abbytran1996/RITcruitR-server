@@ -9,6 +9,7 @@ import java.util.Set;
  * @since 4/18/17
  */
 public class NewCompany extends Company {
+    //TODO: Add a field for headquartersAddress
     public String companyName;
     public Set<String> locations;
     public Set<Industry> industries;
@@ -62,6 +63,7 @@ public class NewCompany extends Company {
         company.setEmailSuffix("");
         company.setUserId(-1);
         company.setPresentationLinks(getPresentationLinks());
+        company.setGoogleCloudName("");
 
         return company;
     }

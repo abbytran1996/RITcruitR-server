@@ -24,6 +24,7 @@ public class Company {
     }
 
     public enum Size {
+        //COMPANY_SIZE_UNSPECIFIED, MINI, SMALL. MEDIUM, BIG, GIANT
         DONT_CARE, STARTUP, SMALL, MEDIUM, LARGE, HUGE
     }
 
@@ -47,6 +48,8 @@ public class Company {
     private Status status = Status.AWAITING_APPROVAL;
 
     private String companyName;
+
+    private String googleCloudName;
 
     private Set<String> locations;
 
@@ -87,6 +90,14 @@ public class Company {
 
     public void setCompanyName(String companyName){
         this.companyName = companyName;
+    }
+
+    public String getGoogleCloudName(){
+        return googleCloudName;
+    }
+
+    public void setGoogleCloudName(String googleCloudName){
+        this.googleCloudName = googleCloudName;
     }
 
     @NotNull

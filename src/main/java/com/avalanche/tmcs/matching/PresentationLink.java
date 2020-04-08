@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * Created by Ryan Hochmuth on 4/21/2018.
@@ -63,5 +64,18 @@ public class PresentationLink {
         if (!(o instanceof PresentationLink)) return false;
         PresentationLink pLink = (PresentationLink) o;
         return this.link.equals(pLink.link) && this.title.equals(pLink.title);
+    }
+
+    /*
+        Returns true if this element is in the given set of JobPresentationLinks.
+     */
+    public boolean isInSet(Set<PresentationLink> linkSet) {
+        for (PresentationLink inLink : linkSet) {
+            if (inLink.id == this.id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

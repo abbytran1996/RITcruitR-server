@@ -1,0 +1,160 @@
+[name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/0afc0c23-7d4e-47ba-9bad-0d964b5e667f"
+display_name: "ABC"
+external_id: "14"
+size: MEDIUM
+headquarters_address: "Rochester, NY"
+website_uri: "www.abc.com"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "NY"
+      locality: "Rochester"
+      address_lines: "Rochester, NY, USA"
+    }
+    lat_lng {
+      latitude: 43.15657789999999
+      longitude: -77.6088465
+    }
+    radius_miles: 0.005402390622364312
+  }
+}
+, name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/1f755ebd-a6f0-4d89-84d2-33720ed8a337"
+display_name: "GM"
+external_id: "18"
+size: SMALL
+headquarters_address: "Rochester, NY"
+website_uri: "www.gm.com"
+keyword_searchable_job_custom_attributes: "recommendedSkills"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "NY"
+      locality: "Rochester"
+      address_lines: "Rochester, NY, USA"
+    }
+    lat_lng {
+      latitude: 43.15657789999999
+      longitude: -77.6088465
+    }
+    radius_miles: 0.005402390622364312
+  }
+}
+, name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/2202fb14-4c4a-40a7-a696-de8e8d7181f8"
+display_name: "American Greetings"
+external_id: "25"
+size: SMALL
+headquarters_address: "Rochester, NY"
+website_uri: "www.greetings.com"
+keyword_searchable_job_custom_attributes: "recommendedSkills"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "NY"
+      locality: "Rochester"
+      address_lines: "Rochester, NY, USA"
+    }
+    lat_lng {
+      latitude: 43.15657789999999
+      longitude: -77.6088465
+    }
+    radius_miles: 0.005402390622364312
+  }
+}
+, name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/71f2f764-eb25-4111-a9ee-9639e28b7d36"
+display_name: "Kodak"
+external_id: "22"
+size: SMALL
+headquarters_address: "Rochester, NY"
+website_uri: "www.kodak.com"
+keyword_searchable_job_custom_attributes: "recommendedSkills"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "NY"
+      locality: "Rochester"
+      address_lines: "Rochester, NY, USA"
+    }
+    lat_lng {
+      latitude: 43.15657789999999
+      longitude: -77.6088465
+    }
+    radius_miles: 0.005402390622364312
+  }
+}
+, name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/95040b83-b531-40b4-81a3-caccbf92ca80"
+display_name: "Microsoft"
+external_id: "13"
+size: GIANT
+headquarters_address: "Seattle, WA"
+website_uri: "www.microsoft.com"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "WA"
+      locality: "Seattle"
+      address_lines: "Seattle, WA, USA"
+    }
+    lat_lng {
+      latitude: 47.6062095
+      longitude: -122.3320708
+    }
+    radius_miles: 0.006308934455724956
+  }
+}
+, name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/9785d3ca-50e0-40a4-98e6-5b76d43f52c1"
+display_name: "Kodak"
+external_id: "41"
+size: MEDIUM
+headquarters_address: "Rochester, NY"
+website_uri: "www.kodak.com"
+keyword_searchable_job_custom_attributes: "recommendedSkills"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "NY"
+      locality: "Rochester"
+      address_lines: "Rochester, NY, USA"
+    }
+    lat_lng {
+      latitude: 43.15657789999999
+      longitude: -77.6088465
+    }
+    radius_miles: 0.005402390622364312
+  }
+}
+, name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/c0ffa002-f2f9-4bc6-baaf-e0f0db7e6c91"
+display_name: "GM"
+external_id: "19"
+size: BIG
+headquarters_address: "Rochester, NY"
+website_uri: "www.gm.com"
+keyword_searchable_job_custom_attributes: "recommendedSkills"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "NY"
+      locality: "Rochester"
+      address_lines: "Rochester, NY, USA"
+    }
+    lat_lng {
+      latitude: 43.15657789999999
+      longitude: -77.6088465
+    }
+    radius_miles: 0.005402390622364312
+  }
+}
+]
