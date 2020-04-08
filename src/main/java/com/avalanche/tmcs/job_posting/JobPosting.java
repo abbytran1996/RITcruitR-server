@@ -132,7 +132,6 @@ public class JobPosting {
     public Set<Skill> getRequiredSkills() {
         return requiredSkills;
     }
-
     public void setRequiredSkills(Set<Skill> requiredSkills) {
         this.requiredSkills = requiredSkills;
     }

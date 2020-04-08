@@ -146,6 +146,8 @@ public class JobPostingController {
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());
         jobPosting.setLocations(updatedJobPosting.getLocations());
+        jobPosting.setRequiredSkills(updatedJobPosting.getRequiredSkills());
+        jobPosting.setRecommendedSkills(updatedJobPosting.getRecommendedSkills());
         jobPosting.setRecommendedSkillsWeight(updatedJobPosting.getRecommendedSkillsWeight());
         jobPosting.setMinGPA(updatedJobPosting.getMinGPA());
         jobPosting.setHasWorkExperience(updatedJobPosting.getHasWorkExperience());
@@ -172,7 +174,7 @@ public class JobPostingController {
 	        }
         }
 
-        jobPostingDAO.save(jobPosting);
+        jobPostingDAO.save(updatedJobPosting);
         return ResponseEntity.ok().build();
     }
 

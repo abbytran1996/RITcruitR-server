@@ -277,11 +277,11 @@ public class DataLoader implements ApplicationRunner {
                 newJob.setMinGPA(minGPA);
 //                newJob.setNewVideo(newVideo);
                 newJob.setRecommendedSkills(recommendedSkills);
+                newJob.setRequiredSkills(requiredSkills);
 //                newJob.setRecommendedSkillsWeight(recommendedSkillsWeight);
                 newJob.setPositionTitle(jobTitle);
                 newJob.setProblemStatement(problemStatement);
                 newJob.setRecruiter(recruiter);
-                newJob.setRequiredSkills(requiredSkills);
                 newJob.setStatus(JobPosting.Status.ACTIVE);
                 newJob.setVideo(video);
                 System.out.println(newJob.toString());
