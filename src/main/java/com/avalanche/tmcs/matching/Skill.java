@@ -49,7 +49,7 @@ public class Skill {
     public int getUsage_score() {
         return usage_score;
     }
-/
+
     public void setUsage_score(int usage_score) {
         this.usage_score = usage_score;
     }
