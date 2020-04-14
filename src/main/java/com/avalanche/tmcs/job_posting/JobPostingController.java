@@ -2,6 +2,7 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
+import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,16 +34,18 @@ public class JobPostingController {
     private JobPostingDAO jobPostingDAO;
     private JobPostingExpirationChecker expirationChecker;
     private RecruiterDAO recruiterRepo;
-    private JobPresentationLinkDAO presentationLinkDAO;
+    private JobPresentationLinkDAO jobPresentationLinkDAO;
+    private PresentationLinkDAO presentationLinkDAO;
     private CompanyDAO companyDAO;
 
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, JobPostingExpirationChecker expirationChecker,
-                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO jobPresentationLinkDAO, JobPostingExpirationChecker expirationChecker,
+                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO){
         this.jobPostingDAO = jobPostingDAO;
         this.expirationChecker = expirationChecker;
+        this.jobPresentationLinkDAO = jobPresentationLinkDAO;
         this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = recruiterDAO;
@@ -56,6 +60,19 @@ public class JobPostingController {
         return ResponseEntity.ok(jobPostingDAO.findOne(id));
     }
 
+    public Set<JobPresentationLink> createJobPresentationLink(Set<JobPresentationLink> presentationLinks) {
+        Set<JobPresentationLink> newLinks = new HashSet<>();
+        for(JobPresentationLink link : presentationLinks){
+            JobPresentationLink newLink = new JobPresentationLink();
+            PresentationLink jobLink = presentationLinkDAO.findOne(link.getId());
+            newLink.setPresentationLink(jobLink);
+            newLink.setLink(link.getLink());
+            newLink.setTitle(link.getTitle());
+            JobPresentationLink savedLink = jobPresentationLinkDAO.save(newLink);
+            newLinks.add(savedLink);
+        }
+        return newLinks;
+    }
     // ================================================================================================================
     // * ADD NEW JOB [POST]                                                                                           *
     // ================================================================================================================
@@ -81,12 +98,15 @@ public class JobPostingController {
         else {
             newJobPosting.setCompany(company);
             newJobPosting.setRecruiter(recruiter);
+            // Prepare Presentation Links
+            Set<JobPresentationLink> newLinks = createJobPresentationLink(newJobPosting.getPresentationLinks());
+            newJobPosting.setPresentationLinks(newLinks);
             JobPosting savedJobPosting = jobPostingDAO.save(newJobPosting.toJobPosting());
 
             // Create presentation links
             for (JobPresentationLink link : newJobPosting.getPresentationLinks()) {
                 link.setJob(savedJobPosting);
-                presentationLinkDAO.save(link);
+                jobPresentationLinkDAO.save(link);
             }
             savedJobPosting.setPresentationLinks(newJobPosting.getPresentationLinks());
             savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
@@ -119,11 +139,11 @@ public class JobPostingController {
             String jobApplicationUrl = savedJobPosting.getCompany().getWebsiteURL();
             String languageCode = "en-US";
 
-            String googleCloudJobName = JobService.sampleCreateJob(PROJECT_ID, companyName, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, videoURLString, recruiterEmailString, minimumGPA, jobApplicationUrl, languageCode);
+            String googleCloudJobName = JobService.createJobGoogleAPI(PROJECT_ID, companyName, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, minimumGPA, jobApplicationUrl, languageCode);
             savedJobPosting.setGoogleCloudJobName(googleCloudJobName);
             jobPostingDAO.save(savedJobPosting);
 
-            matchingService.registerJobPosting(savedJobPosting);
+//            matchingService.registerJobPosting(savedJobPosting);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -160,7 +180,7 @@ public class JobPostingController {
         for (JobPresentationLink link : jobPosting.getPresentationLinks()) {
             if (updatedJobPosting.getPresentationLinks() != null && !link.isInSet(updatedJobPosting.getPresentationLinks())) {
                 jobPosting.getPresentationLinks().remove(link);
-                presentationLinkDAO.delete(link);
+                jobPresentationLinkDAO.delete(link);
             }
         }
 
@@ -170,11 +190,12 @@ public class JobPostingController {
 	            if (!link.isInSet(jobPosting.getPresentationLinks())) {
 	                link.setJob(jobPosting);
 	                jobPosting.getPresentationLinks().add(link);
+                    jobPresentationLinkDAO.save(link);
 	            }
 	        }
         }
 
-        jobPostingDAO.save(updatedJobPosting);
+        jobPostingDAO.save(jobPosting);
         return ResponseEntity.ok().build();
     }
 

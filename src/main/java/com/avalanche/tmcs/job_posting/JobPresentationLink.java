@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.matching.PresentationLink;
+import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

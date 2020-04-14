@@ -2,15 +2,12 @@ package com.avalanche.tmcs.company;
 
 import com.avalanche.tmcs.CompanyService;
 import com.avalanche.tmcs.auth.*;
-import com.avalanche.tmcs.company.Company.Size;
 import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.NewRecruiter;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
-import com.avalanche.tmcs.JobService;
 
-import com.google.cloud.talent.v4beta1.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,16 +87,6 @@ public class CompanyController {
     @RequestMapping(value = "", method=RequestMethod.POST)
     public ResponseEntity<Company> addCompany(@RequestBody NewCompany newCompany) throws IOException {
         Company savedCompany = companyDAO.save(newCompany.toCompany());
-        String PROJECT_ID = "recruitrtest-256719";
-        List<String> locations = new ArrayList<>(savedCompany.getLocations());
-        String size = savedCompany.getSize().name();
-        //Create company on Google Cloud
-        String googleCloudName = CompanyService.sampleCreateCompany(PROJECT_ID, savedCompany.getCompanyName(), Long.toString(savedCompany.getId()), locations.get(0), size, savedCompany.getWebsiteURL());
-        if (googleCloudName != "") {
-            savedCompany.setGoogleCloudName(googleCloudName);
-            companyDAO.save(savedCompany);
-        }
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -137,6 +124,22 @@ public class CompanyController {
         Company company = companyDAO.findOne(id);
         Company.Status companyStatus = Company.getStatusFromString(status);
         company.setStatus(companyStatus);
+
+        //If the company is approved, create it in Google API
+        //TODO: Make PROJECT_ID dynamic
+        String PROJECT_ID = "recruitrtest-256719";
+        List<String> locations = new ArrayList<>(company.getLocations());
+        String size = company.getSize().name();
+        //Create company on Google Cloud
+        String googleCloudName = null;
+        try {
+            googleCloudName = CompanyService.createCompanyGoogleAPI(PROJECT_ID, company.getCompanyName(), Long.toString(company.getId()), locations.get(0), size, company.getWebsiteURL());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (googleCloudName != "") {
+            company.setGoogleCloudName(googleCloudName);
+        }
         companyDAO.save(company);
         return ResponseEntity.ok().build();
     }

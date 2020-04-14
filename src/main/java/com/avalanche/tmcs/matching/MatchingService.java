@@ -1,12 +1,10 @@
 package com.avalanche.tmcs.matching;
 
-import com.avalanche.tmcs.GoogleAPI;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
 import com.avalanche.tmcs.JobService;
-import com.avalanche.tmcs.matching.LockMatch;
 import com.google.cloud.talent.v4beta1.Job;
 import com.google.cloud.talent.v4beta1.SearchJobsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +76,9 @@ public class MatchingService {
     public List<Match> generateMatchesForStudentFromGoogleAPI(final Student student) {
         String PROJECT_ID = "recruitrtest-256719";
         List<String> skills = new ArrayList<>();
+        if (student.getSkills().isEmpty()) {
+            return new ArrayList();
+        }
         for (Skill s : student.getSkills()) {
             skills.add(s.getName());
         }
@@ -97,7 +98,7 @@ public class MatchingService {
 
         List<Match> matches = new ArrayList<>();
         try {
-            List<SearchJobsResponse.MatchingJob> jobResults = JobService.sampleSearchJobs(PROJECT_ID, query );
+            List<SearchJobsResponse.MatchingJob> jobResults = JobService.searchJobsGoogleAPI(PROJECT_ID, query );
             for (SearchJobsResponse.MatchingJob r : jobResults) {
                 Job j = r.getJob();
                 JobPosting jp = jobPostingDAO.findOne(Long.parseLong(j.getRequisitionId()));

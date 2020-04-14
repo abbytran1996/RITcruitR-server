@@ -11,7 +11,7 @@ import java.util.List;
 import java.io.FileWriter;
 
 public class CompanyService {
-    public static String sampleCreateCompany(
+    public static String createCompanyGoogleAPI(
             String projectId, String displayName, String externalId, String headquartersAddress, String size, String webURL) throws IOException {
         String jsonPath = "/Users/abigail_tran/Documents/SeniorProject/RecruitRv3-python/GoogleAPI/service_account_key/credentials.json";
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
@@ -59,6 +59,7 @@ public class CompanyService {
                             .setHeadquartersAddress(headquartersAddress)
                             .setSize(companySize)
                             .setWebsiteUri(webURL)
+                            .addKeywordSearchableJobCustomAttributes("requiredSkills")
                             .addKeywordSearchableJobCustomAttributes("recommendedSkills")
                             .build();
 
@@ -79,7 +80,7 @@ public class CompanyService {
         return name;
     }
 
-    public static void sampleListCompanies(String projectId) throws IOException {
+    public static void listCompaniesGoogleAPI(String projectId) throws IOException {
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         CompanyServiceSettings companyServiceSettings =
@@ -94,7 +95,7 @@ public class CompanyService {
             List<Company> companies = new ArrayList<>();
             for (Company responseItem : companyServiceClient.listCompanies(request).iterateAll()) {
                 if (responseItem.getWebsiteUri().equals("")) {
-                    deleteCompany(responseItem.getName());
+                    deleteCompanyGoogleAPI(responseItem.getName());
                 } else {
                     companies.add(responseItem);
                     System.out.printf("Company Name: %s\n", responseItem.getSize());
@@ -117,7 +118,7 @@ public class CompanyService {
     }
 
     // Delete Company.
-    public static void deleteCompany(String companyName)
+    public static void deleteCompanyGoogleAPI(String companyName)
             throws IOException {
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));

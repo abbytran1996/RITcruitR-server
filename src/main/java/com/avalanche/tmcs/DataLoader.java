@@ -100,12 +100,12 @@ public class DataLoader implements ApplicationRunner {
         String SAMPLE_COMPANY_ID = "075e3c6b-df00-0000-0000-00fbd63c7ae0";
         String SAMPLE_JOB_ID = "136747347917841094";
 
-        CompanyService.sampleListCompanies(PROJECT_ID);
+        CompanyService.listCompaniesGoogleAPI(PROJECT_ID);
 
         //jobService.sampleCreateJob(PROJECT_ID, microsoftName, "110", "Software Developer", "Create a website for the company", Arrays.asList("New York, NY", "San Francisco, CA"), Arrays.asList("Java,Python"), Arrays.asList("Java,Python"),false, "www.microsoft.com", "Software Developer", "","recruiter@microsoft.com",3.5,"www.microsoft.com", languageCode);
         //jobService.sampleGetJob(PROJECT_ID, SAMPLE_COMPANY_ID, SAMPLE_JOB_ID);
-        jobService.sampleListJobs(PROJECT_ID, "companyName=\"projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/95040b83-b531-40b4-81a3-caccbf92ca80\"");
-        jobService.sampleSearchJobs(PROJECT_ID, "Software Engineer");
+        jobService.listJobsGoogleAPI(PROJECT_ID, "companyName=\"projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/95040b83-b531-40b4-81a3-caccbf92ca80\"");
+        jobService.searchJobsGoogleAPI(PROJECT_ID, "Software Engineer");
 
         LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
@@ -250,7 +250,7 @@ public class DataLoader implements ApplicationRunner {
                 }
                 
                 //recommended to have skills weight ?
-                long minGPA = (long) job.get("minGPA");
+                double minGPA = new Double(job.get("minGPA").toString());
 
                 //match threshold
                 int duration = ((Long) job.get("duration")).intValue();

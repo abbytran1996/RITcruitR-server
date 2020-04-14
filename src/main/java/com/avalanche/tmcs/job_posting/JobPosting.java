@@ -3,6 +3,7 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.matching.PresentationLink;
+import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.students.Student;
@@ -228,17 +229,19 @@ public class JobPosting {
 
     public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
 
-    @OneToMany(mappedBy = "job")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "job")
+//    @OneToMany(mappedBy = "job")
     public Set<JobPresentationLink> getPresentationLinks() {
         return presentationLinks;
     }
 
     public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
-        if (this.presentationLinks == null) {
-            this.presentationLinks = presentationLinks;
-        } else {
-            return;
-        }
+        this.presentationLinks = presentationLinks;
+//        if (this.presentationLinks == null) {
+//            this.presentationLinks = presentationLinks;
+//        } else {
+//            return;
+//        }
     }
 
     public double calculateJobFiltersWeight(){
