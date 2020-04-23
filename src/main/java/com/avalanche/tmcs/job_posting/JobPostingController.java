@@ -112,34 +112,9 @@ public class JobPostingController {
             savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
             jobPostingDAO.save(savedJobPosting);
 
-            //Add job posting to Google Cloud
-            String PROJECT_ID = "recruitrtest-256719";
-            String companyName = savedJobPosting.getCompany().getGoogleCloudName();
-            Long requisitionId = savedJobPosting.getId();
-            String title = savedJobPosting.getPositionTitle();
-            String description = savedJobPosting.getDescription();
-            List<String> addresses = new ArrayList<>(savedJobPosting.getLocations());
-            Set<Skill> recSkills = savedJobPosting.getRecommendedSkills();
-            ArrayList<String> recommendedSkills = new ArrayList<>();
-            for (Skill s : recSkills ) {
-                recommendedSkills.add(s.getName());
-            }
-            Set<Skill> reqSkills = savedJobPosting.getRequiredSkills();
-            ArrayList<String> requiredSkills = new ArrayList<>();
-            for (Skill s : reqSkills ) {
-                requiredSkills.add(s.getName());
-            }
-            Boolean workExperience = savedJobPosting.getHasWorkExperience();
-            List<JobPresentationLink> links = new ArrayList<>(savedJobPosting.getPresentationLinks());
-            String presentationLinkString =  links.get(0).getLink();
-            String problemStatementString = savedJobPosting.getProblemStatement();
-            String videoURLString = savedJobPosting.getVideo();
-            String recruiterEmailString = savedJobPosting.getRecruiter().getEmail();
-            double minimumGPA = savedJobPosting.getMinGPA();
-            String jobApplicationUrl = savedJobPosting.getCompany().getWebsiteURL();
-            String languageCode = "en-US";
 
-            String googleCloudJobName = JobService.createJobGoogleAPI(PROJECT_ID, companyName, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, minimumGPA, jobApplicationUrl, languageCode);
+
+            String googleCloudJobName = addJobPostingToGoogleCloud(savedJobPosting);
             savedJobPosting.setGoogleCloudJobName(googleCloudJobName);
             jobPostingDAO.save(savedJobPosting);
 
@@ -155,13 +130,42 @@ public class JobPostingController {
         }
     }
 
+    public String addJobPostingToGoogleCloud(JobPosting savedJobPosting) throws IOException {
+        //Add job posting to Google Cloud
+        String PROJECT_ID = "recruitrtest-256719";
+        String companyName = savedJobPosting.getCompany().getGoogleCloudName();
+        String companySize = savedJobPosting.getCompany().getSize().toString();
+        Long requisitionId = savedJobPosting.getId();
+        String title = savedJobPosting.getPositionTitle();
+        String description = savedJobPosting.getDescription();
+        List<String> addresses = new ArrayList<>(savedJobPosting.getLocations());
+        Set<Skill> recSkills = savedJobPosting.getRecommendedSkills();
+        ArrayList<String> recommendedSkills = new ArrayList<>();
+        for (Skill s : recSkills ) {
+            recommendedSkills.add(s.getName());
+        }
+        Set<Skill> reqSkills = savedJobPosting.getRequiredSkills();
+        ArrayList<String> requiredSkills = new ArrayList<>();
+        for (Skill s : reqSkills ) {
+            requiredSkills.add(s.getName());
+        }
+        Boolean workExperience = savedJobPosting.getHasWorkExperience();
+        List<JobPresentationLink> links = new ArrayList<>(savedJobPosting.getPresentationLinks());
+        String presentationLinkString =  links.get(0).getLink();
+        String problemStatementString = savedJobPosting.getProblemStatement();
+        double minimumGPA = savedJobPosting.getMinGPA();
+        String jobApplicationUrl = savedJobPosting.getCompany().getWebsiteURL();
+        String languageCode = "en-US";
+
+        return JobService.createJobGoogleAPI(PROJECT_ID, companyName, companySize, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, minimumGPA, jobApplicationUrl, languageCode);
+    }
+
     // ================================================================================================================
     // * UPDATE JOB [PUT]                                                                                             *
     // ================================================================================================================
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateJobPosting(@PathVariable long id, @RequestBody JobPosting updatedJobPosting) {
         JobPosting jobPosting = jobPostingDAO.findOne(id);
-        jobPosting.setGoogleCloudJobName(updatedJobPosting.getGoogleCloudJobName());
         jobPosting.setStatus(updatedJobPosting.getStatus());
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());

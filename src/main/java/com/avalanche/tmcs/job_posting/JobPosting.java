@@ -230,18 +230,12 @@ public class JobPosting {
     public void setRecruiter(Recruiter newRecruiter){this.recruiter = newRecruiter;}
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "job")
-//    @OneToMany(mappedBy = "job")
     public Set<JobPresentationLink> getPresentationLinks() {
         return presentationLinks;
     }
 
     public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
         this.presentationLinks = presentationLinks;
-//        if (this.presentationLinks == null) {
-//            this.presentationLinks = presentationLinks;
-//        } else {
-//            return;
-//        }
     }
 
     public double calculateJobFiltersWeight(){

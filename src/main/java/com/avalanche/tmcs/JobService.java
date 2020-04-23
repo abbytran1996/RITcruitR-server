@@ -23,6 +23,7 @@ public class JobService {
     public static String createJobGoogleAPI(
             String projectId,
             String companyName,
+            String companySize,
             String requisitionId, //Job Posting ID on AWS
             String title,
             String description,
@@ -61,6 +62,7 @@ public class JobService {
 
             String qualifications = String.join(delim, requiredSkills) + ", " + String.join(delim, recommendedSkills);
 
+            CustomAttribute size = CustomAttribute.newBuilder().addStringValues(companySize).setFilterable(true).build();
             CustomAttribute gpa = CustomAttribute.newBuilder().addStringValues(String.valueOf(minimumGPA)).setFilterable(true).build();
             CustomAttribute mininumGpa = CustomAttribute.newBuilder().addLongValues((long)minimumGPA).setFilterable(true).build();
 
@@ -76,13 +78,13 @@ public class JobService {
                             .setRequisitionId(requisitionId)
                             .setTitle(title)
                             .setDescription(description)
-                            .setQualifications(qualifications)
+                            //.setQualifications(qualifications)
                             .setApplicationInfo(applicationInfo)
                             .addAllAddresses(addresses)
                             .setLanguageCode(languageCode)
-                            .putCustomAttributes("gpa", gpa)
-                            .putCustomAttributes("minimumGpa", mininumGpa)
-                            .putCustomAttributes("hasWorkExperience", hasWorkExperience)
+                            .putCustomAttributes("companySize", size)
+//                            .putCustomAttributes("gpa", gpa)
+//                            .putCustomAttributes("minimumGpa", mininumGpa)
                             .putCustomAttributes("presentationLink", presentationLink)
                             .putCustomAttributes("requiredSkills", reqSkills)
                             .putCustomAttributes("recommendedSkills", recSkills)
@@ -191,7 +193,7 @@ public class JobService {
      * @param query Histogram query More info on histogram facets, constants, and built-in functions:
      *     https://godoc.org/google.golang.org/genproto/googleapis/cloud/talent/v4beta1#SearchJobsRequest
      */
-    public static List<SearchJobsResponse.MatchingJob> searchJobsGoogleAPI(String projectId, String query) throws IOException {
+    public static List<SearchJobsResponse.MatchingJob> searchJobsGoogleAPI(String projectId, String query, List<String> locations, List<String> sizes) throws IOException {
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         JobServiceSettings settings = JobServiceSettings.newBuilder()
@@ -211,14 +213,33 @@ public class JobService {
                             .setSessionId(sessionId)
                             .setUserId(userId)
                             .build();
+
+            List<LocationFilter> locationFilters = new ArrayList<>();
+            for (String l : locations) {
+                LocationFilter filter = LocationFilter.newBuilder()
+                        .setAddress(l)
+                        .build();
+                locationFilters.add(filter);
+            }
+
+            String sizeQuery = "";
+            for (String s : sizes) {
+                sizeQuery += "companySize = " + s + " OR ";
+            }
+            sizeQuery = sizeQuery.substring(0, sizeQuery.length() - 4);
+
             JobQuery jobQuery = JobQuery.newBuilder()
                             .setQuery(query)
+                            .addAllLocationFilters(locationFilters)
+                            //.setCustomAttributeFilter(sizeQuery)
                             .build();
             SearchJobsRequest request =
                     SearchJobsRequest.newBuilder()
                             .setParent(parent)
                             .setRequestMetadata(requestMetadata)
                             .setJobQuery(jobQuery)
+                            .setDisableKeywordMatch(true)
+                            .setEnableBroadening(true)
                             .setOrderBy("relevance desc")
                             .build();
             List<SearchJobsResponse.MatchingJob> jobs = new ArrayList<>();

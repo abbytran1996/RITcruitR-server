@@ -110,7 +110,6 @@ public class CompanyController {
         company.setStatus(updateCompany.getStatus());
         company.setCompanyDescription(updateCompany.getCompanyDescription());
         company.setWebsiteURL(updateCompany.getWebsiteURL());
-        company.setGoogleCloudName(updateCompany.getGoogleCloudName());
         companyDAO.save(company);
 
         return ResponseEntity.ok().build();

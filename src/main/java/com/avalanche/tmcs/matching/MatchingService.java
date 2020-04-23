@@ -1,11 +1,14 @@
 package com.avalanche.tmcs.matching;
 
+import com.avalanche.tmcs.CompanyService;
+import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
 import com.avalanche.tmcs.JobService;
-import com.google.cloud.talent.v4beta1.Job;
+import com.google.cloud.talent.v4beta1.*;
 import com.google.cloud.talent.v4beta1.SearchJobsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,14 +29,16 @@ public class MatchingService {
     private MatchDAO matchDAO;
     private StudentDAO studentDAO;
     private JobPostingDAO jobPostingDAO;
+    private CompanyDAO companyDAO;
 
     private final static float REQUIRED_SKILL_WEIGHT = 0.8f;
 
     @Autowired
-    public MatchingService(MatchDAO matchDAO, StudentDAO studentDAO, JobPostingDAO jobPostingDAO) {
+    public MatchingService(MatchDAO matchDAO, StudentDAO studentDAO, JobPostingDAO jobPostingDAO, CompanyDAO companyDAO) {
         this.matchDAO = matchDAO;
         this.studentDAO = studentDAO;
         this.jobPostingDAO = jobPostingDAO;
+        this.companyDAO = companyDAO;
     }
 
     /**
@@ -75,6 +80,10 @@ public class MatchingService {
 
     public List<Match> generateMatchesForStudentFromGoogleAPI(final Student student) {
         String PROJECT_ID = "recruitrtest-256719";
+        String TENANT_ID = "075e3c6b-df00-0000-0000-00fbd63c7ae0";
+
+        //Creating query string
+        // 1.Skills => query strings
         List<String> skills = new ArrayList<>();
         if (student.getSkills().isEmpty()) {
             return new ArrayList();
@@ -83,31 +92,95 @@ public class MatchingService {
             skills.add(s.getName());
         }
         String skillStr = String.join(", ", skills);
+        String query = skillStr;
 
-
+        //2.Industries
         List<String> industries = new ArrayList<>();
         for (Industry i : student.getPreferredIndustries()) {
             industries.add(i.getName());
         }
         String industryStr = String.join(", ", industries);
+
+        //3.Major
         String majorStr = student.getMajor().getName();
 
+        //4.Locations => Location filter
+        List<String> locations = new ArrayList<>();
+        locations.addAll(student.getPreferredLocations());
         String locationStr = String.join(", ", student.getPreferredLocations());
 
-        String query = majorStr + ", " + skillStr + ", " + locationStr;
+        //5. Company size
+        List<String> sizes = new ArrayList<>();
+        for (Company.Size s : student.getPreferredCompanySizes()) {
+            sizes.add(s.toString());
+        }
+        String sizeStr = String.join(", ", sizes);
 
         List<Match> matches = new ArrayList<>();
         try {
-            List<SearchJobsResponse.MatchingJob> jobResults = JobService.searchJobsGoogleAPI(PROJECT_ID, query );
+            List<SearchJobsResponse.MatchingJob> jobResults = JobService.searchJobsGoogleAPI(PROJECT_ID, query, locations, sizes);
             for (SearchJobsResponse.MatchingJob r : jobResults) {
+
                 Job j = r.getJob();
+
+                //Get companies' size and industries
+                String companyNameGoogleAPI = j.getCompany();
+                com.google.cloud.talent.v4beta1.Company companyGoogleAPI = CompanyService.getCompany(companyNameGoogleAPI);
+                if (companyGoogleAPI == null) {
+                    continue;
+                }
+                String companyId = companyGoogleAPI.getExternalId();
+
+                Company company = companyDAO.findOne(Long.valueOf(companyId));
+                if (company == null) {
+                    continue;
+                }
+                String size = company.getSize() != null ? company.getSize().name() : "";
+                Set<Industry> companyIndustries =  company.getIndustries();
+
+                String companyIndustriesStr = "";
+                for (Industry i : companyIndustries) {
+                    companyIndustriesStr += i.getName() + ", ";
+                }
+                companyIndustriesStr = companyIndustriesStr.substring(0, companyIndustriesStr.length() - 2);
+
+
                 JobPosting jp = jobPostingDAO.findOne(Long.parseLong(j.getRequisitionId()));
 
-                int jobTitleScore = LockMatch.lock_match(j.getTitle(), student.getMajor().getName());
-                int skillsScore = LockMatch.lock_match(j.getQualifications(), skillStr);
-                int locationScore = LockMatch.lock_match(j.getAddresses(0), locationStr);
+                Set<Skill> recommendedSkills = jp.getRecommendedSkills();
 
-                float avgMatchScore = (float) ((jobTitleScore+skillsScore+locationScore)/3);
+                //Required Skill
+                List<String> requiredSkills = new ArrayList<>();
+                for (Skill s : jp.getRequiredSkills()) {
+                    requiredSkills.add(s.getName());
+                }
+                boolean gotAllRequiredSkills = true;
+                for (String s : requiredSkills) {
+                    if (!skills.contains(s)) {
+                        gotAllRequiredSkills = false;
+                    }
+                }
+                if (gotAllRequiredSkills == false) {
+                    continue;
+                }
+
+                //Recommended Skill
+                String recommendedSkillsStr = "";
+                for (Skill s : recommendedSkills) {
+                    recommendedSkillsStr += s.getName() + ", ";
+                }
+                recommendedSkillsStr = recommendedSkillsStr.substring(0, recommendedSkillsStr.length() - 2);
+
+
+                int recommendedSkillsScore = LockMatch.lock_match(recommendedSkillsStr, skillStr);
+//                int jobTitleScore = LockMatch.lock_match(j.getTitle(), student.getMajor().getName());
+                int locationScore = LockMatch.lock_match(j.getAddresses(0), locationStr);
+                int sizeScore = LockMatch.lock_match(size, sizeStr);
+                int industriesScore = LockMatch.lock_match(companyIndustriesStr, industryStr);
+
+
+
+                float avgMatchScore = (float) ((recommendedSkillsScore + locationScore + sizeScore + industriesScore)/4);
                 Match newMatch = new Match();
                 newMatch.setJob(jp);
                 newMatch.setStudent(student);
@@ -120,7 +193,7 @@ public class MatchingService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return matches;
     }
     public List<Match> generateMatchesForStudent(final Student student) {
         // create new matches for a student from all currently active jobs
@@ -170,6 +243,7 @@ public class MatchingService {
         matchDAO.save(newMatchesForStudent);
     }
 
+    //TODO: Look at this function
     public static Optional<Match> generateMatchForStudentAndJob(final Student student, final JobPosting job){
 
         if(student == null || !student.readyToMatch() ||

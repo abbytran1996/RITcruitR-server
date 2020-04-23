@@ -157,4 +157,29 @@ derived_info {
     radius_miles: 0.005402390622364312
   }
 }
+, name: "projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/f22c39db-d1d7-4163-98d8-392e90c0878a"
+display_name: "Revature"
+external_id: "44"
+size: SMALL
+headquarters_address: "Rochester, NY"
+website_uri: "www.revature.com"
+keyword_searchable_job_custom_attributes: "recommendedSkills"
+keyword_searchable_job_custom_attributes: "requiredSkills"
+keyword_searchable_job_custom_attributes: "companySize"
+derived_info {
+  headquarters_location {
+    location_type: LOCALITY
+    postal_address {
+      region_code: "US"
+      administrative_area: "NY"
+      locality: "Rochester"
+      address_lines: "Rochester, NY, USA"
+    }
+    lat_lng {
+      latitude: 43.15657789999999
+      longitude: -77.6088465
+    }
+    radius_miles: 0.005402390622364312
+  }
+}
 ]

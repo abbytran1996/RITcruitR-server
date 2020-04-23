@@ -61,6 +61,7 @@ public class CompanyService {
                             .setWebsiteUri(webURL)
                             .addKeywordSearchableJobCustomAttributes("requiredSkills")
                             .addKeywordSearchableJobCustomAttributes("recommendedSkills")
+                            .addKeywordSearchableJobCustomAttributes("companySize")
                             .build();
 
             CreateCompanyRequest request =
@@ -78,6 +79,26 @@ public class CompanyService {
             System.err.println("Failed to create the client due to: " + exception);
         }
         return name;
+    }
+
+    // Get Company.
+    public static Company getCompany(String companyName)
+            throws IOException {
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
+                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        CompanyServiceSettings companyServiceSettings =
+                CompanyServiceSettings.newBuilder()
+                        .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+                        .build();
+        try (CompanyServiceClient companyServiceClient = CompanyServiceClient.create(companyServiceSettings)) {
+            GetCompanyRequest request = GetCompanyRequest.newBuilder().setName(companyName).build();
+
+            Company response = companyServiceClient.getCompany(request);
+            return response;
+        } catch (Exception exception) {
+            System.err.println("Failed to get the company due to: " + exception);
+        }
+        return null;
     }
 
     public static void listCompaniesGoogleAPI(String projectId) throws IOException {
