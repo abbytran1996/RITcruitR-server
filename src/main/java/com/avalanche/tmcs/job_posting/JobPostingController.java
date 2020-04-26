@@ -10,6 +10,7 @@ import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
 import com.avalanche.tmcs.JobService;
 
+import com.google.cloud.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Maxwell Hadley
@@ -101,6 +99,7 @@ public class JobPostingController {
             // Prepare Presentation Links
             Set<JobPresentationLink> newLinks = createJobPresentationLink(newJobPosting.getPresentationLinks());
             newJobPosting.setPresentationLinks(newLinks);
+
             JobPosting savedJobPosting = jobPostingDAO.save(newJobPosting.toJobPosting());
 
             // Create presentation links
@@ -157,7 +156,13 @@ public class JobPostingController {
         String jobApplicationUrl = savedJobPosting.getCompany().getWebsiteURL();
         String languageCode = "en-US";
 
-        return JobService.createJobGoogleAPI(PROJECT_ID, companyName, companySize, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, minimumGPA, jobApplicationUrl, languageCode);
+        Calendar cal = Calendar.getInstance();
+        //Number of Days to add
+        cal.add(Calendar.DATE, savedJobPosting.getDuration());
+
+        Timestamp expireTime =Timestamp.of(cal.getTime());
+
+        return JobService.createJobGoogleAPI(PROJECT_ID, companyName, companySize, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, minimumGPA, jobApplicationUrl, languageCode, expireTime);
     }
 
     // ================================================================================================================

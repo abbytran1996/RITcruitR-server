@@ -181,6 +181,9 @@ public class MatchingService {
 
 
                 float avgMatchScore = (float) ((recommendedSkillsScore + locationScore + sizeScore + industriesScore)/4);
+                if (avgMatchScore < jp.getMatchThreshold()) {
+                    continue;
+                }
                 Match newMatch = new Match();
                 newMatch.setJob(jp);
                 newMatch.setStudent(student);
@@ -189,6 +192,8 @@ public class MatchingService {
                 newMatch.setMatchStrength(avgMatchScore/100);
                 matches.add(newMatch);
             }
+
+            Collections.sort(matches, Collections.reverseOrder());
             return matches;
         } catch (IOException e) {
             e.printStackTrace();
@@ -301,22 +306,22 @@ public class MatchingService {
     }
 
     private static List<Match> deduplicateMatchListPreservingMatchStatus(List<Match> newMatches, List<Match> oldMatches){
-        // get list of duplicate matches
-        List<Match> duplicateOldMatches = oldMatches.parallelStream()
-                .filter(newMatches::contains)
-                .collect(Collectors.toList());
-
         // preserve the ApplicationStatus and CurrentPhase of the oldMatch when replacing it with its newer one
-        int dupedNewMatchLocation;
-        for(Match oldDuplicate: duplicateOldMatches){
-            dupedNewMatchLocation = newMatches.indexOf(oldDuplicate);
-            if(dupedNewMatchLocation != -1){ // -1 catches any mistaken duplicates
-                Match newMatch = newMatches.get(dupedNewMatchLocation);
-                newMatch.setApplicationStatus(oldDuplicate.getApplicationStatus());
-                newMatch.setCurrentPhase(oldDuplicate.getCurrentPhase());
-                newMatches.set(dupedNewMatchLocation, newMatch);
+        for (Match old : oldMatches) {
+            for (Match n : newMatches) {
+                if (old.getJob().getId() == n.getJob().getId()) {
+                    int dupedNewMatchLocation = newMatches.indexOf(n);
+                    if(dupedNewMatchLocation != -1){ // -1 catches any mistaken duplicates
+                        Match newMatch = newMatches.get(dupedNewMatchLocation);
+                        newMatch.setApplicationStatus(old.getApplicationStatus());
+                        newMatch.setCurrentPhase(old.getCurrentPhase());
+                        newMatches.set(dupedNewMatchLocation, newMatch);
+                    }
+                }
             }
         }
+
+
         return newMatches;
     }
 

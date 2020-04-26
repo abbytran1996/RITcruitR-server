@@ -2,6 +2,7 @@ package com.avalanche.tmcs;
 
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.Timestamp;
 import com.google.cloud.talent.v4beta1.*;
 import com.google.cloud.talent.v4beta1.Job.ApplicationInfo;
 import com.google.common.collect.Lists;
@@ -35,7 +36,8 @@ public class JobService {
             String problemStatementString,
             double minimumGPA,
             String jobApplicationUrl,
-            String languageCode) throws IOException {
+            String languageCode,
+            Timestamp expireTime) throws IOException {
 
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
@@ -82,6 +84,8 @@ public class JobService {
                             .setApplicationInfo(applicationInfo)
                             .addAllAddresses(addresses)
                             .setLanguageCode(languageCode)
+                            .setPostingPublishTime(Timestamp.now().toProto())
+                            .setPostingExpireTime(expireTime.toProto())
                             .putCustomAttributes("companySize", size)
 //                            .putCustomAttributes("gpa", gpa)
 //                            .putCustomAttributes("minimumGpa", mininumGpa)
@@ -167,6 +171,28 @@ public class JobService {
         }
     }
 
+    /**  Update */
+//    public static void updateJobGoogleAPI(String projectId, String companyId, String jobId) throws IOException {
+//        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
+//                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+//        JobServiceSettings settings = JobServiceSettings.newBuilder()
+//                .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+//                .build();
+//        try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
+//            // projectId = "Your Google Cloud Project ID";
+//            // tenantId = "Your Tenant ID (using tenancy is optional)";
+//            // jobId = "Company ID";
+//            String name = "projects/" + projectId + "/tenants/" + companyId + "/jobs/" + jobId;
+//            UpdateJobRequest request = UpdateJobRequest.newBuilder()
+//                                        .set
+//                                        .build();
+//            jobServiceClient.updateJob(request);
+//            System.out.println("Deleted job.");
+//        } catch (Exception exception) {
+//            System.err.println("Failed to create the client due to: " + exception);
+//        }
+//    }
+
     /** Delete Job */
     public static void deleteJobGoogleAPI(String projectId, String companyId, String jobId) throws IOException {
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
@@ -238,8 +264,10 @@ public class JobService {
                             .setParent(parent)
                             .setRequestMetadata(requestMetadata)
                             .setJobQuery(jobQuery)
-                            .setDisableKeywordMatch(true)
+                            .setDisableKeywordMatch(false)
                             .setEnableBroadening(true)
+                            .setDiversificationLevel(SearchJobsRequest.DiversificationLevel.DISABLED)
+                            .setJobView(JobView.JOB_VIEW_FULL)
                             .setOrderBy("relevance desc")
                             .build();
             List<SearchJobsResponse.MatchingJob> jobs = new ArrayList<>();

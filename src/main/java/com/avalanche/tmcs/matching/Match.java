@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="matches")
-public class Match {
+public class Match implements Comparable<Match>{
     public enum ApplicationStatus {
         // The Match has been generated but the student hasn't interacted with it
         NEW,
@@ -89,6 +89,14 @@ public class Match {
         setMatchedIndustries(new HashSet<>());
         setMatchedLocations(new HashSet<>());
         setMatchStrength(0.0f);
+    }
+
+    public int compareTo(Match other) {
+        if(this.getMatchStrength() > other.getMatchStrength())
+            return 1;
+        else if (this.getMatchStrength() == other.getMatchStrength())
+            return 0 ;
+        return -1 ;
     }
 
     @Id
