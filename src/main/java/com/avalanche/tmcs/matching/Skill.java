@@ -15,10 +15,16 @@ public class Skill {
 
     private String name;
 
+    private int usage_score;
+
+    private String type;
+
     public Skill(){}
 
-    public Skill(String name){
+    public Skill(String name, int usage_score, String type){
         this.name = name;
+        this.usage_score = usage_score;
+        this.type = type;
     }
 
     @Id
@@ -38,6 +44,22 @@ public class Skill {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getUsage_score() {
+        return usage_score;
+    }
+
+    public void setUsage_score(int usage_score) {
+        this.usage_score = usage_score;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

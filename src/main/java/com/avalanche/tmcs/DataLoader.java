@@ -128,6 +128,7 @@ public class DataLoader implements ApplicationRunner {
             try {
                 LOG.info("Adding test data...");
                 String skillFilePath = new File("skills.json").getAbsolutePath();
+                String toolFilePath = new File("tools.json").getAbsolutePath();
                 String jobFilePath = new File("jobs.json").getAbsolutePath();
                 String locationsFilePath = new File("locations.json").getAbsolutePath();
                 String majorsFilePath = new File("majors.json").getAbsolutePath();
@@ -235,7 +236,9 @@ public class DataLoader implements ApplicationRunner {
                 for (Object requiredSkillObject : requiredSkillsList) {
                 	JSONObject requiredSkill = (JSONObject) requiredSkillObject;
                 	String skillName = (String) requiredSkill.get("name");
-                	Skill newSkill = new Skill(skillName);
+                    String skillType = (String) requiredSkill.get("type");
+
+                	Skill newSkill = new Skill(skillName, 0, skillType);
                 	requiredSkills.add(newSkill);
                 }
                 
@@ -245,7 +248,9 @@ public class DataLoader implements ApplicationRunner {
                 for (Object recommendedSkillObject : recommendedSkillsList) {
                 	JSONObject recommendedSkill = (JSONObject) recommendedSkillObject;
                 	String skillName = (String) recommendedSkill.get("name");
-                	Skill newSkill = new Skill(skillName);
+                    String skillType = (String) recommendedSkill.get("type");
+
+                	Skill newSkill = new Skill(skillName, 0, skillType);
                     recommendedSkills.add(newSkill);
                 }
                 
@@ -434,7 +439,9 @@ public class DataLoader implements ApplicationRunner {
             for (Object skillObject : arr) {
                 JSONObject skill = (JSONObject) skillObject;
                 String newSkillName = (String) skill.get("name");
-                Skill newSkill = new Skill(newSkillName);
+                String newSkillType = (String) skill.get("type");
+
+                Skill newSkill = new Skill(newSkillName,0,newSkillType);
 
                 // ensure there aren't any duplicates
                 if(!skillsToSave.contains(newSkill))
@@ -519,7 +526,9 @@ public class DataLoader implements ApplicationRunner {
 	            for (Object skillObject : arr) {
 	                JSONObject skill = (JSONObject) skillObject;
 	                String newSkillName = (String) skill.get("name");
-	                Skill newSkill = new Skill(newSkillName);
+                    String newSkillType = (String) skill.get("type");
+
+	                Skill newSkill = new Skill(newSkillName, 0, newSkillType);
 
 	                // ensure there aren't any duplicates
 	                boolean dbContainsSkill = false;
