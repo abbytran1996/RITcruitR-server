@@ -24,13 +24,10 @@ public class CompanyService {
                         .build();
         String name = "";
         try (CompanyServiceClient companyServiceClient = CompanyServiceClient.create(companyServiceSettings)) {
-            // projectId = "Your Google Cloud Project ID";
-            // displayName = "My Company Name";
-            // externalId = "Identifier of this company in my system";
 
             String parent = "projects/" + projectId;
-            CompanySize companySize = CompanySize.COMPANY_SIZE_UNSPECIFIED;
-            //DONT_CARE, STARTUP, SMALL, MEDIUM, LARGE, HUGE
+            CompanySize companySize;
+
             switch(size) {
                 case "DONT_CARE":
                     companySize = CompanySize.COMPANY_SIZE_UNSPECIFIED;
@@ -162,8 +159,4 @@ public class CompanyService {
             System.out.println("Deleted company");
         }
     }
-    ///com.google.api.gax.rpc.PermissionDeniedException: io.grpc.StatusRuntimeException: PERMISSION_DENIED:
-    // Your application has authenticated using end user credentials from the Google Cloud SDK or Google Cloud Shell which are not supported by the jobs.googleapis.com.
-    // We recommend configuring the billing/quota_project setting in gcloud or using a service account through the auth/impersonate_service_account setting.
-    // For more information about service accounts and how to use them in your application, see https://cloud.google.com/docs/authentication/.
 }

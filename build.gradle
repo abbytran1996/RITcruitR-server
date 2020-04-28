@@ -53,8 +53,6 @@ dependencies {
     //Cloud Storage Client Libraries
     compile 'com.google.cloud:google-cloud-storage:1.103.1'
     compile 'com.google.auth:google-auth-library-oauth2-http:0.20.0'
-//    compile 'com.google.api-client:google-api-client:1.30.8'
-//    compile 'com.google.apis:google-api-services-jobs:v3-rev20200109-1.30.3'
     compile 'com.google.apis:google-api-services-jobs:v2-rev20191030-1.30.3'
     compile 'com.google.cloud:google-cloud-talent:0.35.1-beta'
 

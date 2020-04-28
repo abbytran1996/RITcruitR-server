@@ -48,10 +48,6 @@ public class JobService {
                 .build();
         String googleName = "";
         try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
-            // projectId = "Your Google Cloud Project ID";
-            // companyName = "Company name, e.g. projects/your-project/companies/company-id";
-            // requisitionId = "Job requisition ID, aka Posting ID. Unique per job.";
-            // languageCode = "en-US";
             String parent = "projects/" + projectId;
 
             List<String> uris = Arrays.asList(jobApplicationUrl);
