@@ -4,6 +4,8 @@ import com.google.cloud.talent.v4beta1.*;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.common.collect.Lists;
 import com.google.api.gax.core.*;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,9 +15,9 @@ import java.io.FileWriter;
 public class CompanyService {
     public static String createCompanyGoogleAPI(
             String projectId, String displayName, String externalId, String headquartersAddress, String size, String webURL) throws IOException {
-        String jsonPath = "/Users/abigail_tran/Documents/SeniorProject/RecruitRv3-python/GoogleAPI/service_account_key/credentials.json";
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         CompanyServiceSettings companyServiceSettings =
                 CompanyServiceSettings.newBuilder()
                         .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
@@ -84,8 +86,9 @@ public class CompanyService {
     // Get Company.
     public static Company getCompany(String companyName)
             throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         CompanyServiceSettings companyServiceSettings =
                 CompanyServiceSettings.newBuilder()
                         .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
@@ -102,8 +105,9 @@ public class CompanyService {
     }
 
     public static void listCompaniesGoogleAPI(String projectId) throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         CompanyServiceSettings companyServiceSettings =
                 CompanyServiceSettings.newBuilder()
                         .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
@@ -141,8 +145,9 @@ public class CompanyService {
     // Delete Company.
     public static void deleteCompanyGoogleAPI(String companyName)
             throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         CompanyServiceSettings companyServiceSettings =
                 CompanyServiceSettings.newBuilder()
                         .setCredentialsProvider(FixedCredentialsProvider.create(credentials))

@@ -180,15 +180,15 @@ public class MatchingServiceTest {
 
     private static Set<Skill> makeRequiredSkills(){
         Set<Skill> requiredSkills = new HashSet<>();
-        requiredSkills.add(new Skill("Bash"));
-        requiredSkills.add(new Skill("C"));
+        requiredSkills.add(new Skill("Bash", 0, null));
+        requiredSkills.add(new Skill("C", 0, null));
         return requiredSkills;
     }
 
     private static Set<Skill> makeRecommendedSkills(){
         Set<Skill> recommendedSkills = new HashSet<>();
-        recommendedSkills.add(new Skill("Linux"));
-        recommendedSkills.add(new Skill("Perl"));
+        recommendedSkills.add(new Skill("Linux", 0, null));
+        recommendedSkills.add(new Skill("Perl", 0, null));
         return recommendedSkills;
     }
 

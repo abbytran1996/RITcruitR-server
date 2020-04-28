@@ -7,6 +7,7 @@ import com.google.cloud.talent.v4beta1.*;
 import com.google.cloud.talent.v4beta1.Job.ApplicationInfo;
 import com.google.common.collect.Lists;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,8 +40,9 @@ public class JobService {
             String languageCode,
             Timestamp expireTime) throws IOException {
 
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         JobServiceSettings settings = JobServiceSettings.newBuilder()
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();
@@ -100,6 +102,7 @@ public class JobService {
             googleName = response.getName();
         } catch (Exception exception) {
             System.err.println("Failed to create the client due to: " + exception);
+            googleName = exception.toString();
         }
         return googleName;
         // [END job_search_create_job_core]
@@ -107,8 +110,9 @@ public class JobService {
 
     /** Get Job */
     public static void getJobGoogleAPI(String projectId, String companyId, String jobId) throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         JobServiceSettings settings = JobServiceSettings.newBuilder()
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();
@@ -139,8 +143,9 @@ public class JobService {
     }
 
     public static void listJobsGoogleAPI(String projectId, String filter) throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         JobServiceSettings settings = JobServiceSettings.newBuilder()
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();
@@ -195,8 +200,9 @@ public class JobService {
 
     /** Delete Job */
     public static void deleteJobGoogleAPI(String projectId, String companyId, String jobId) throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         JobServiceSettings settings = JobServiceSettings.newBuilder()
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();
@@ -220,8 +226,9 @@ public class JobService {
      *     https://godoc.org/google.golang.org/genproto/googleapis/cloud/talent/v4beta1#SearchJobsRequest
      */
     public static List<SearchJobsResponse.MatchingJob> searchJobsGoogleAPI(String projectId, String query, List<String> locations, List<String> sizes) throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(GoogleAPI.jsonPath))
-                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         JobServiceSettings settings = JobServiceSettings.newBuilder()
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();

@@ -1,4 +1,9 @@
+credentials.json
+recruiter-dev.pem
+ritcruitr-east.pem
+ritcruitrv3.pem
 .project
+
 # Created by https://www.gitignore.io/api/intellij,visualstudio,java,gradle,xamarinstudio,vim,sublimetext,visualstudiocode
 
 ### Intellij ###
