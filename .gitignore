@@ -1,4 +1,13 @@
+
+#credentials.json need to be in the root folder (RecruitRs-server) because that's the way we set up in the folder too.
+#TODO: make the Google API cedentials as local default parameters so that you don't have to load this file everytime you want to use Google API
+credentials.json
+
+#SSH key pair of the server
+ritcruitr-east.pem
+
 .project
+
 # Created by https://www.gitignore.io/api/intellij,visualstudio,java,gradle,xamarinstudio,vim,sublimetext,visualstudiocode
 
 ### Intellij ###

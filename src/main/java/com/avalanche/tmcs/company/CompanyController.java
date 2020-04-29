@@ -1,5 +1,6 @@
 package com.avalanche.tmcs.company;
 
+import com.avalanche.tmcs.CompanyService;
 import com.avalanche.tmcs.auth.*;
 import com.avalanche.tmcs.matching.PresentationLink;
 import com.avalanche.tmcs.matching.PresentationLinkDAO;
@@ -13,13 +14,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 /**
  * @author Zane Grasso
  * @since 4/18/17
+ * @author Abigail My Tran
  */
 
 @RestController
@@ -82,16 +86,16 @@ public class CompanyController {
     // * ADD NEW COMPANY [POST]                                                                                       *
     // ================================================================================================================
     @RequestMapping(value = "", method=RequestMethod.POST)
-    public ResponseEntity<Company> addCompany(@RequestBody NewCompany newCompany) {
+    public ResponseEntity<Company> addCompany(@RequestBody NewCompany newCompany) throws IOException {
         Company savedCompany = companyDAO.save(newCompany.toCompany());
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedCompany.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(savedCompany);
+        ResponseEntity<Company> comp =  ResponseEntity.created(location).body(savedCompany);
+        return comp;
     }
 
     // ================================================================================================================
@@ -120,6 +124,21 @@ public class CompanyController {
         Company company = companyDAO.findOne(id);
         Company.Status companyStatus = Company.getStatusFromString(status);
         company.setStatus(companyStatus);
+
+        //If the company is approved, create it in Google API
+        String PROJECT_ID = "recruitrtest-256719";
+        List<String> locations = new ArrayList<>(company.getLocations());
+        String size = company.getSize().name();
+        //Create company on Google Cloud
+        String googleCloudName = null;
+        try {
+            googleCloudName = CompanyService.createCompanyGoogleAPI(PROJECT_ID, company.getCompanyName(), Long.toString(company.getId()), locations.get(0), size, company.getWebsiteURL());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (googleCloudName != "") {
+            company.setGoogleCloudName(googleCloudName);
+        }
         companyDAO.save(company);
         return ResponseEntity.ok().build();
     }
