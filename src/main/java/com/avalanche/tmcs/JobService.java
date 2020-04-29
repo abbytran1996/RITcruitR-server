@@ -158,6 +158,7 @@ public class JobService {
                 System.out.printf("Job title: %s\n", responseItem.getTitle());
                 System.out.printf("Job description: %s\n", responseItem.getDescription());
             }
+
             try {
                 FileWriter myWriter = new FileWriter("created_jobs.txt");
                 myWriter.write(jobs.toString());
@@ -170,6 +171,7 @@ public class JobService {
         } catch (Exception exception) {
             System.err.println("Failed to create the client due to: " + exception);
         }
+
     }
 
     /**  Update */
@@ -195,7 +197,7 @@ public class JobService {
 //    }
 
     /** Delete Job */
-    public static void deleteJobGoogleAPI(String projectId, String companyId, String jobId) throws IOException {
+    public static void deleteJobGoogleAPI(String name) throws IOException {
         String strFilePath = "credentials.json";
         File file = new File(strFilePath);
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
@@ -206,7 +208,7 @@ public class JobService {
             // projectId = "Your Google Cloud Project ID";
             // tenantId = "Your Tenant ID (using tenancy is optional)";
             // jobId = "Company ID";
-            String name = "projects/" + projectId + "/tenants/" + companyId + "/jobs/" + jobId;
+//            String name = "projects/" + projectId + "/tenants/" + companyId + "/jobs/" + jobId;
             DeleteJobRequest request = DeleteJobRequest.newBuilder().setName(name).build();
             jobServiceClient.deleteJob(request);
             System.out.println("Deleted job.");

@@ -87,8 +87,12 @@ public class DataLoader implements ApplicationRunner {
         this.companyService = new CompanyService();
         String PROJECT_ID = "recruitrtest-256719";
 
-        //Use this method to check the list of companies that are stored in Google Cloud
         //CompanyService.listCompaniesGoogleAPI(PROJECT_ID);
+
+        //jobService.sampleCreateJob(PROJECT_ID, microsoftName, "110", "Software Developer", "Create a website for the company", Arrays.asList("New York, NY", "San Francisco, CA"), Arrays.asList("Java,Python"), Arrays.asList("Java,Python"),false, "www.microsoft.com", "Software Developer", "","recruiter@microsoft.com",3.5,"www.microsoft.com", languageCode);
+        //jobService.sampleGetJob(PROJECT_ID, SAMPLE_COMPANY_ID, SAMPLE_JOB_ID);
+        //JobService.listJobsGoogleAPI(PROJECT_ID, "companyName=\"projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/f22c39db-d1d7-4163-98d8-392e90c0878a\"");
+//        jobService.searchJobsGoogleAPI(PROJECT_ID, "Software Engineer");
 
         LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
