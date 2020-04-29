@@ -14,6 +14,7 @@ import java.util.Set;
  *
  * @author David Dubois
  * @since 16-Apr-17.
+ * @author Abigail My Tran
  */
 @Entity
 @Table(name="matches")

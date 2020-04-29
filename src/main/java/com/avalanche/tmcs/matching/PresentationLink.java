@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- * Created by Ryan Hochmuth on 4/21/2018.
- * <p>
+ * @author Ryan Hochmuth on 4/21/2018.
+ * @author Abigail My Tran
  */
 @Entity
 public class PresentationLink {
@@ -75,7 +75,6 @@ public class PresentationLink {
                 return true;
             }
         }
-
         return false;
     }
 }

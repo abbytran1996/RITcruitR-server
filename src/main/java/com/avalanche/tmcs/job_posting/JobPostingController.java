@@ -24,6 +24,7 @@ import java.util.*;
 /**
  * @author Maxwell Hadley
  * @since 4/20/17
+ * @author Abigail My Tran
  */
 @RestController
 @RequestMapping("/jobposting")
@@ -111,13 +112,13 @@ public class JobPostingController {
             savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
             jobPostingDAO.save(savedJobPosting);
 
-
-
+            //Also add this job posting to Google Cloud
             String googleCloudJobName = addJobPostingToGoogleCloud(savedJobPosting);
             savedJobPosting.setGoogleCloudJobName(googleCloudJobName);
             jobPostingDAO.save(savedJobPosting);
 
-//            matchingService.registerJobPosting(savedJobPosting);
+            //TODO: Looking for matches for the company when a job posting is posted / updated
+            //matchingService.registerJobPosting(savedJobPosting);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -132,34 +133,38 @@ public class JobPostingController {
     public String addJobPostingToGoogleCloud(JobPosting savedJobPosting) throws IOException {
         //Add job posting to Google Cloud
         String PROJECT_ID = "recruitrtest-256719";
+
         String companyName = savedJobPosting.getCompany().getGoogleCloudName();
         String companySize = savedJobPosting.getCompany().getSize().toString();
         Long requisitionId = savedJobPosting.getId();
         String title = savedJobPosting.getPositionTitle();
         String description = savedJobPosting.getDescription();
         List<String> addresses = new ArrayList<>(savedJobPosting.getLocations());
+
         Set<Skill> recSkills = savedJobPosting.getRecommendedSkills();
         ArrayList<String> recommendedSkills = new ArrayList<>();
         for (Skill s : recSkills ) {
             recommendedSkills.add(s.getName());
         }
+
         Set<Skill> reqSkills = savedJobPosting.getRequiredSkills();
         ArrayList<String> requiredSkills = new ArrayList<>();
         for (Skill s : reqSkills ) {
             requiredSkills.add(s.getName());
         }
+
         Boolean workExperience = savedJobPosting.getHasWorkExperience();
+
         List<JobPresentationLink> links = new ArrayList<>(savedJobPosting.getPresentationLinks());
         String presentationLinkString =  links.get(0).getLink();
+
         String problemStatementString = savedJobPosting.getProblemStatement();
         double minimumGPA = savedJobPosting.getMinGPA();
         String jobApplicationUrl = savedJobPosting.getCompany().getWebsiteURL();
         String languageCode = "en-US";
 
         Calendar cal = Calendar.getInstance();
-        //Number of Days to add
         cal.add(Calendar.DATE, savedJobPosting.getDuration());
-
         Timestamp expireTime =Timestamp.of(cal.getTime());
 
         return JobService.createJobGoogleAPI(PROJECT_ID, companyName, companySize, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, minimumGPA, jobApplicationUrl, languageCode, expireTime);

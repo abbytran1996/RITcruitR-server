@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  *
  * @author David Dubois
  * @since 16-Apr-17.
+ * @author Abigail My Tran
  */
 @Service
 public class MatchingService {
@@ -48,6 +49,7 @@ public class MatchingService {
      */
     public void registerStudent(final Student student) {
         final List<Match> oldMatches = matchDAO.findAllByStudent(student);
+        //This is the old way of matching
         //List<Match> newMatches = generateMatchesForStudent(student);
         List<Match> newMatches = generateMatchesForStudentFromGoogleAPI(student);
         newMatches = deduplicateMatchListPreservingMatchStatus(newMatches, oldMatches);
@@ -59,6 +61,7 @@ public class MatchingService {
      * <p>This calculates the best matches for this job posting</p>
      * @param posting The job posting to register
      */
+    //TODO: Use Google Cloud Talent Solution to implement matching for this
     public void registerJobPosting(final JobPosting posting) {
         final List<Match> oldMatches = matchDAO.findAllByJob(posting);
         List<Match> newMatches = generateMatchesForJob(posting);
@@ -79,6 +82,7 @@ public class MatchingService {
     }
 
     public List<Match> generateMatchesForStudentFromGoogleAPI(final Student student) {
+        //TODO: These credentials need to be stored in a separated file
         String PROJECT_ID = "recruitrtest-256719";
         String TENANT_ID = "075e3c6b-df00-0000-0000-00fbd63c7ae0";
 
@@ -94,14 +98,14 @@ public class MatchingService {
         String skillStr = String.join(", ", skills);
         String query = skillStr;
 
-        //2.Industries
+        //2.Industries -> currently not used
         List<String> industries = new ArrayList<>();
         for (Industry i : student.getPreferredIndustries()) {
             industries.add(i.getName());
         }
         String industryStr = String.join(", ", industries);
 
-        //3.Major
+        //3.Major -> currently not used
         String majorStr = student.getMajor().getName();
 
         //4.Locations => Location filter
@@ -149,7 +153,7 @@ public class MatchingService {
 
                 Set<Skill> recommendedSkills = jp.getRecommendedSkills();
 
-                //Required Skill
+                //Check Required Skills
                 List<String> requiredSkills = new ArrayList<>();
                 for (Skill s : jp.getRequiredSkills()) {
                     requiredSkills.add(s.getName());
@@ -171,16 +175,15 @@ public class MatchingService {
                 }
                 recommendedSkillsStr = recommendedSkillsStr.substring(0, recommendedSkillsStr.length() - 2);
 
-
+                //Calculate all scores
                 int recommendedSkillsScore = LockMatch.lock_match(recommendedSkillsStr, skillStr);
-//                int jobTitleScore = LockMatch.lock_match(j.getTitle(), student.getMajor().getName());
                 int locationScore = LockMatch.lock_match(j.getAddresses(0), locationStr);
                 int sizeScore = LockMatch.lock_match(size, sizeStr);
-                int industriesScore = LockMatch.lock_match(companyIndustriesStr, industryStr);
+                //int industriesScore = LockMatch.lock_match(companyIndustriesStr, industryStr);
 
 
 
-                float avgMatchScore = (float) ((recommendedSkillsScore + locationScore + sizeScore + industriesScore)/4);
+                float avgMatchScore = (float) ((recommendedSkillsScore + locationScore + sizeScore)/3);
                 if (avgMatchScore < jp.getMatchThreshold()) {
                     continue;
                 }

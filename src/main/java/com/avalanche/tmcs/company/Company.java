@@ -15,6 +15,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 /**
  * @author Zane Grasso
  * @since 4/18/17
+ * @author Abigail My Tran
  */
 @Entity
 @Table(name="company")
@@ -24,7 +25,6 @@ public class Company {
     }
 
     public enum Size {
-        //COMPANY_SIZE_UNSPECIFIED, MINI, SMALL. MEDIUM, BIG, GIANT
         DONT_CARE, STARTUP, SMALL, MEDIUM, LARGE, HUGE
     }
 

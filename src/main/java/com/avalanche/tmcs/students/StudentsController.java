@@ -21,6 +21,7 @@ import java.net.URI;
  *
  * @author ddubois
  * @since 05-Apr-17.
+ * @author Abigail My Tran
  */
 @RestController
 @RequestMapping("/students")

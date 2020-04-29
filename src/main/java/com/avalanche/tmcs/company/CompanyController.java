@@ -23,6 +23,7 @@ import java.util.Set;
 /**
  * @author Zane Grasso
  * @since 4/18/17
+ * @author Abigail My Tran
  */
 
 @RestController
@@ -125,7 +126,6 @@ public class CompanyController {
         company.setStatus(companyStatus);
 
         //If the company is approved, create it in Google API
-        //TODO: Make PROJECT_ID dynamic
         String PROJECT_ID = "recruitrtest-256719";
         List<String> locations = new ArrayList<>(company.getLocations());
         String size = company.getSize().name();

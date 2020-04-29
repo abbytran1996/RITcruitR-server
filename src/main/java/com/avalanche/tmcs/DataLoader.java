@@ -66,7 +66,6 @@ public class DataLoader implements ApplicationRunner {
     private MajorDAO majorDAO;
     private IndustryDAO industryDAO;
     private UniversityDAO universityDAO;
-    private CompanyService companyService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
@@ -84,15 +83,6 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) throws IOException {
-        this.companyService = new CompanyService();
-        String PROJECT_ID = "recruitrtest-256719";
-
-        //CompanyService.listCompaniesGoogleAPI(PROJECT_ID);
-
-        //jobService.sampleCreateJob(PROJECT_ID, microsoftName, "110", "Software Developer", "Create a website for the company", Arrays.asList("New York, NY", "San Francisco, CA"), Arrays.asList("Java,Python"), Arrays.asList("Java,Python"),false, "www.microsoft.com", "Software Developer", "","recruiter@microsoft.com",3.5,"www.microsoft.com", languageCode);
-        //jobService.sampleGetJob(PROJECT_ID, SAMPLE_COMPANY_ID, SAMPLE_JOB_ID);
-        //JobService.listJobsGoogleAPI(PROJECT_ID, "companyName=\"projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/companies/f22c39db-d1d7-4163-98d8-392e90c0878a\"");
-//        jobService.searchJobsGoogleAPI(PROJECT_ID, "Software Engineer");
 
         LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
@@ -114,6 +104,7 @@ public class DataLoader implements ApplicationRunner {
         if(addTestData) {
             try {
                 LOG.info("Adding test data...");
+                // I had to comment this out because it somehow slowed down my app starting
 //                String skillFilePath = new File("skills.json").getPath();
                 String jobFilePath = new File("jobs.json").getPath();
                 String locationsFilePath = new File("locations.json").getPath();

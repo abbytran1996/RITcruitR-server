@@ -2,8 +2,6 @@ package com.avalanche.tmcs.job_posting;
 
 
 import com.avalanche.tmcs.company.Company;
-import com.avalanche.tmcs.matching.PresentationLink;
-import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.students.Student;
@@ -11,13 +9,12 @@ import com.avalanche.tmcs.students.Student;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
 
 /**
  * @author Maxwell Hadley
  * @since 4/17/17.
+ * @author Abigail My Tran
  */
 @Entity
 @Table(name="job_posting")

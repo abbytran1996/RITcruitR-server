@@ -15,11 +15,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Abigail My Tran
+ * @since 02/18/20
+ */
+
 public class JobService {
     /**
-     * Create Job
+     * Create Job Posting with Google Cloud Talent Solution (CTS) API.
+     *Not all of the fields in the JobPosting object are saved, only the ones that we thought are helpful for job matching
      *
-     * @param projectId Your Google Cloud Project ID
+     * @param projectId the Google API's project ID. Check the project in CTS's console for the ID
+     * @param companyName the company's name created from CTS. This is not the display name
+     * @param requiredSkills the job's ID from the AWS database
      */
 
     public static String createJobGoogleAPI(
@@ -57,18 +65,17 @@ public class JobService {
             //Because Problem Statement is too long and cannot be added as a custom attribute -> Adding it to description
             //...so that job search can match against this information too.
             description += ". " + problemStatementString;
+
             //CustomAttributes:
             String delim = ", ";
 
+            //TODO: Use these fields in search
             String qualifications = String.join(delim, requiredSkills) + ", " + String.join(delim, recommendedSkills);
+            CustomAttribute mininumGpa = CustomAttribute.newBuilder().addLongValues((long)minimumGPA).setFilterable(true).build();
+            CustomAttribute hasWorkExperience = CustomAttribute.newBuilder().addStringValues(workExperience.toString()).setFilterable(true).build();
 
             CustomAttribute size = CustomAttribute.newBuilder().addStringValues(companySize).setFilterable(true).build();
-            CustomAttribute gpa = CustomAttribute.newBuilder().addStringValues(String.valueOf(minimumGPA)).setFilterable(true).build();
-            CustomAttribute mininumGpa = CustomAttribute.newBuilder().addLongValues((long)minimumGPA).setFilterable(true).build();
-
-            CustomAttribute hasWorkExperience = CustomAttribute.newBuilder().addStringValues(workExperience.toString()).setFilterable(true).build();
             CustomAttribute presentationLink = CustomAttribute.newBuilder().addStringValues(presentationLinkString).setFilterable(true).build();
-
             CustomAttribute reqSkills = CustomAttribute.newBuilder().addAllStringValues(requiredSkills).setFilterable(true).build();
             CustomAttribute recSkills = CustomAttribute.newBuilder().addAllStringValues(recommendedSkills).setFilterable(true).build();
 
@@ -78,18 +85,17 @@ public class JobService {
                             .setRequisitionId(requisitionId)
                             .setTitle(title)
                             .setDescription(description)
-                            //.setQualifications(qualifications)
                             .setApplicationInfo(applicationInfo)
                             .addAllAddresses(addresses)
                             .setLanguageCode(languageCode)
                             .setPostingPublishTime(Timestamp.now().toProto())
                             .setPostingExpireTime(expireTime.toProto())
                             .putCustomAttributes("companySize", size)
-//                            .putCustomAttributes("gpa", gpa)
-//                            .putCustomAttributes("minimumGpa", mininumGpa)
                             .putCustomAttributes("presentationLink", presentationLink)
                             .putCustomAttributes("requiredSkills", reqSkills)
                             .putCustomAttributes("recommendedSkills", recSkills)
+                            //.setQualifications(qualifications)
+                            //.putCustomAttributes("minimumGpa", mininumGpa)
                             .build();
             CreateJobRequest request =
                     CreateJobRequest.newBuilder().setParent(parent).setJob(job).build();
@@ -101,11 +107,17 @@ public class JobService {
             googleName = exception.toString();
         }
         return googleName;
-        // [END job_search_create_job_core]
     }
 
-    /** Get Job */
-    public static void getJobGoogleAPI(String projectId, String companyId, String jobId) throws IOException {
+    /**
+     * Get a Job Posting with Google Cloud Talent Solution (CTS) API.
+     *Not all of the fields in the JobPosting object are saved, only the ones that we thought are helpful for job matching
+     *
+     * @param name the job's name created from CTS. This is not the display name
+     * Example: projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/jobs/134479777856660166
+     */
+
+    public static void getJobGoogleAPI(String name) throws IOException {
         String strFilePath = "credentials.json";
         File file = new File(strFilePath);
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
@@ -114,9 +126,6 @@ public class JobService {
                 .build();
 
         try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
-            // projectId = "Your Google Cloud Project ID";
-            // jobId = "Job ID";
-            String name = "projects/" + projectId + "/tenants/" + companyId + "/jobs/" + jobId;
             GetJobRequest request = GetJobRequest.newBuilder().setName(name).build();
             com.google.cloud.talent.v4beta1.Job response = jobServiceClient.getJob(request);
             System.out.printf("Job name: %s\n", response.getName());
@@ -138,6 +147,14 @@ public class JobService {
         }
     }
 
+    /**
+     * List all Job Postings under the given project with Google Cloud Talent Solution (CTS) API.
+     *Not all of the fields in the JobPosting object are saved, only the ones that we thought are helpful for job matching
+     *
+     * @param projectId the Google API's project ID. Check the project in CTS's console for the ID
+     * @param filter "companyName=[Insert CTS' Company Name]"
+     */
+
     public static void listJobsGoogleAPI(String projectId, String filter) throws IOException {
         String strFilePath = "credentials.json";
         File file = new File(strFilePath);
@@ -146,8 +163,6 @@ public class JobService {
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();
         try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
-            // projectId = "Your Google Cloud Project ID";
-            // filter = "companyName=projects/my-project/companies/company-id";
             String parent = "projects/" + projectId;
             ListJobsRequest request = ListJobsRequest.newBuilder().setParent(parent).setFilter(filter).build();
             List<Job> jobs = new ArrayList<>();
@@ -158,7 +173,8 @@ public class JobService {
                 System.out.printf("Job title: %s\n", responseItem.getTitle());
                 System.out.printf("Job description: %s\n", responseItem.getDescription());
             }
-
+            //This is for testing purpose, so you can check what jobs are under the given company.
+            //Currently, there is no other way to check this using CTS console.
             try {
                 FileWriter myWriter = new FileWriter("created_jobs.txt");
                 myWriter.write(jobs.toString());
@@ -172,6 +188,29 @@ public class JobService {
             System.err.println("Failed to create the client due to: " + exception);
         }
 
+    }
+
+    /**
+     * Delete a Job Posting with Google Cloud Talent Solution (CTS) API.
+     *Not all of the fields in the JobPosting object are saved, only the ones that we thought are helpful for job matching
+     *
+     * @param name the job's name created from CTS. This is not the display name
+     * Example: projects/recruitrtest-256719/tenants/075e3c6b-df00-0000-0000-00fbd63c7ae0/jobs/134479777856660166
+     */
+    public static void deleteJobGoogleAPI(String name) throws IOException {
+        String strFilePath = "credentials.json";
+        File file = new File(strFilePath);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        JobServiceSettings settings = JobServiceSettings.newBuilder()
+                .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+                .build();
+        try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
+            DeleteJobRequest request = DeleteJobRequest.newBuilder().setName(name).build();
+            jobServiceClient.deleteJob(request);
+            System.out.println("Deleted job.");
+        } catch (Exception exception) {
+            System.err.println("Failed to create the client due to: " + exception);
+        }
     }
 
     /**  Update */
@@ -196,31 +235,12 @@ public class JobService {
 //        }
 //    }
 
-    /** Delete Job */
-    public static void deleteJobGoogleAPI(String name) throws IOException {
-        String strFilePath = "credentials.json";
-        File file = new File(strFilePath);
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(file.getAbsolutePath())).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
-        JobServiceSettings settings = JobServiceSettings.newBuilder()
-                .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
-                .build();
-        try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
-            // projectId = "Your Google Cloud Project ID";
-            // tenantId = "Your Tenant ID (using tenancy is optional)";
-            // jobId = "Company ID";
-//            String name = "projects/" + projectId + "/tenants/" + companyId + "/jobs/" + jobId;
-            DeleteJobRequest request = DeleteJobRequest.newBuilder().setName(name).build();
-            jobServiceClient.deleteJob(request);
-            System.out.println("Deleted job.");
-        } catch (Exception exception) {
-            System.err.println("Failed to create the client due to: " + exception);
-        }
-    }
+
 
     /**
-     * Search Jobs with histogram queries
+     * Search Jobs with Google Cloud Talent Solution (CTS) API
      *
-     * @param query Histogram query More info on histogram facets, constants, and built-in functions:
+     * @param query Search query. More info on histogram facets, constants, and built-in functions:
      *     https://godoc.org/google.golang.org/genproto/googleapis/cloud/talent/v4beta1#SearchJobsRequest
      */
     public static List<SearchJobsResponse.MatchingJob> searchJobsGoogleAPI(String projectId, String query, List<String> locations, List<String> sizes) throws IOException {
@@ -231,9 +251,7 @@ public class JobService {
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build();
         try (JobServiceClient jobServiceClient = JobServiceClient.create(settings)) {
-            // projectId = "Your Google Cloud Project ID";
-            // tenantId = "Your Tenant ID (using tenancy is optional)";
-            // query = "count(base_compensation, [bucket(12, 20)])";
+            //TODO: This requestMetadata needs to be unique
             String parent = "projects/" + projectId;
             String domain = "www.example.com";
             String sessionId = "Hashed session identifier";
@@ -253,6 +271,10 @@ public class JobService {
                 locationFilters.add(filter);
             }
 
+            /*
+            This field was stored as a custom attribute in Job Posting.
+            We planned to use CustomAttributeFilter here but the filter is not supported yet
+             */
             String sizeQuery = "";
             for (String s : sizes) {
                 sizeQuery += "companySize = " + s + " OR ";
@@ -279,7 +301,6 @@ public class JobService {
             for (SearchJobsResponse.MatchingJob responseItem :
                     jobServiceClient.searchJobs(request).iterateAll()) {
                 jobs.add(responseItem);
-                Job job = responseItem.getJob();
             }
             return jobs;
         } catch (Exception exception) {

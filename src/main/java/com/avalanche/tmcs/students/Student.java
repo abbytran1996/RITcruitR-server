@@ -22,6 +22,7 @@ import static com.avalanche.tmcs.matching.MatchingService.getIndustrySetIntersec
  *
  * @author David Dubois
  * @since 05-Apr-17.
+ * @author Abigail My Tran
  */
 @Entity
 @Table(name="students")

@@ -7,6 +7,7 @@ import java.util.Set;
 /**
  * @author Zane Grasso
  * @since 4/18/17
+ * @author Abigail My Tran
  */
 public class NewCompany extends Company {
     //TODO: Add a field for headquartersAddress

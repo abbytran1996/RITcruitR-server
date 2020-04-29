@@ -10,8 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- * Created by Ryan Hochmuth on 4/21/2018.
- * <p>
+ * @autho Ryan Hochmuth
+ * @since 4/21/2018
+ * @author Abigail My Tran
  */
 @Entity
 public class JobPresentationLink {

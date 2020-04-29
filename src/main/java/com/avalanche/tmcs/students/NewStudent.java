@@ -10,6 +10,7 @@ import java.util.Set;
 /**
  * @author David Dubois
  * @since 17-Apr-17.
+ * @author Abigail My Tran
  */
 public class NewStudent extends Student {
     private String password;
