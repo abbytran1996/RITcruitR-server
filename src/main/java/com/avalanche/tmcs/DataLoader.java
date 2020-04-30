@@ -104,14 +104,15 @@ public class DataLoader implements ApplicationRunner {
         if(addTestData) {
             try {
                 LOG.info("Adding test data...");
-                // I had to comment this out because it somehow slowed down my app starting
-//                String skillFilePath = new File("skills.json").getPath();
+
+                String skillFilePath = new File("skills.json").getPath();
                 String jobFilePath = new File("jobs.json").getPath();
                 String locationsFilePath = new File("locations.json").getPath();
                 String majorsFilePath = new File("majors.json").getPath();
                 String universitiesFilePath = new File("universities.json").getPath();
                 String industriesFilePath = new File("industries.json").getPath();
-//                loadSkills(skillFilePath);
+                loadSkills(skillFilePath);
+
                 loadJobs(jobFilePath);
                 loadLocations(locationsFilePath);
                 loadMajors(majorsFilePath);
@@ -211,19 +212,24 @@ public class DataLoader implements ApplicationRunner {
                 Set<Skill> requiredSkills = new HashSet<Skill>();
                 JSONArray requiredSkillsList = (JSONArray) job.get("requiredSkills");
                 for (Object requiredSkillObject : requiredSkillsList) {
-                	JSONObject requiredSkill = (JSONObject) requiredSkillObject;
-                	String skillName = (String) requiredSkill.get("name");
-                    Skill newSkill = new Skill(skillName, 0, "");
-                	requiredSkills.add(newSkill);
+                    JSONObject requiredSkill = (JSONObject) requiredSkillObject;
+                    String skillName = (String) requiredSkill.get("name");
+                    String skillType = (String) requiredSkill.get("type");
+
+                    Skill newSkill = new Skill(skillName, 0, skillType);
+                    requiredSkills.add(newSkill);
+
                 }
-                
+
                 //recommended to have skills
                 Set<Skill> recommendedSkills = new HashSet<Skill>();
                 JSONArray recommendedSkillsList = (JSONArray) job.get("recommendedSkills");
                 for (Object recommendedSkillObject : recommendedSkillsList) {
-                	JSONObject recommendedSkill = (JSONObject) recommendedSkillObject;
-                	String skillName = (String) recommendedSkill.get("name");
-                    Skill newSkill = new Skill(skillName, 0, "");
+                    JSONObject recommendedSkill = (JSONObject) recommendedSkillObject;
+                    String skillName = (String) recommendedSkill.get("name");
+                    String skillType = (String) recommendedSkill.get("type");
+
+                    Skill newSkill = new Skill(skillName, 0, skillType);
                     recommendedSkills.add(newSkill);
                 }
                 
@@ -399,7 +405,7 @@ public class DataLoader implements ApplicationRunner {
             LOG.warn(e.getMessage());
         }
     }
-    
+
     private void loadSkills (String fileName) throws IOException {
         try {
             // populate list of skills to save with those already in the database
@@ -484,39 +490,41 @@ public class DataLoader implements ApplicationRunner {
 
     class PortfoliumSkillsUpdater extends TimerTask{
 
-		@Override
-		public void run() {
-	        try {
-	        	List<Skill> savedSkills = new ArrayList<>();
-	            List<Skill> skillsToSave = new ArrayList<>();
-	            skillDAO.findAll().forEach(savedSkills::add);
+        @Override
+        public void run() {
+            try {
+                List<Skill> savedSkills = new ArrayList<>();
+                List<Skill> skillsToSave = new ArrayList<>();
+                skillDAO.findAll().forEach(savedSkills::add);
 
-	            String portfoliumSkillsResponse = "";
-	            JSONParser jsonParser = new JSONParser();
-	            JSONArray arr = (JSONArray) jsonParser.parse(portfoliumSkillsResponse);
-	            for (Object skillObject : arr) {
-	                JSONObject skill = (JSONObject) skillObject;
-	                String newSkillName = (String) skill.get("name");
-                    Skill newSkill = new Skill(newSkillName, 0, "");
+                String portfoliumSkillsResponse = "";
+                JSONParser jsonParser = new JSONParser();
+                JSONArray arr = (JSONArray) jsonParser.parse(portfoliumSkillsResponse);
+                for (Object skillObject : arr) {
+                    JSONObject skill = (JSONObject) skillObject;
+                    String newSkillName = (String) skill.get("name");
+                    String newSkillType = (String) skill.get("type");
 
-	                // ensure there aren't any duplicates
-	                boolean dbContainsSkill = false;
-	                for (Skill savedSkill : savedSkills) {
-	                	if (savedSkill.getName().equalsIgnoreCase(newSkill.getName())) {
-	                		dbContainsSkill = true;
-	                		break;
-	                	}
-	                }
-	                if (!dbContainsSkill) {
-	                	skillsToSave.add(newSkill);
-	                }
-	            }
+                    Skill newSkill = new Skill(newSkillName, 0, newSkillType);
 
-	            skillDAO.save(skillsToSave);
-	        } catch (ParseException e) {
-	            LOG.warn("Unable to parse/retrieve trending skills from Portfolium", e);
-	        }
-		}
+                    // ensure there aren't any duplicates
+                    boolean dbContainsSkill = false;
+                    for (Skill savedSkill : savedSkills) {
+                        if (savedSkill.getName().equalsIgnoreCase(newSkill.getName())) {
+                            dbContainsSkill = true;
+                            break;
+                        }
+                    }
+                    if (!dbContainsSkill) {
+                        skillsToSave.add(newSkill);
+                    }
+                }
+
+                skillDAO.save(skillsToSave);
+            } catch (ParseException e) {
+                LOG.warn("Unable to parse/retrieve trending skills from Portfolium", e);
+            }
+        }
 
     }
 }
