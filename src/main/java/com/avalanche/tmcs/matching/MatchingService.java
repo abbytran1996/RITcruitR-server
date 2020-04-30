@@ -150,6 +150,9 @@ public class MatchingService {
 
 
                 JobPosting jp = jobPostingDAO.findOne(Long.parseLong(j.getRequisitionId()));
+                if (jp == null) {
+                    continue;
+                }
 
                 Set<Skill> recommendedSkills = jp.getRecommendedSkills();
 
