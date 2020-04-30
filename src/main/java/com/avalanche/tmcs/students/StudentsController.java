@@ -21,6 +21,7 @@ import java.net.URI;
  *
  * @author ddubois
  * @since 05-Apr-17.
+ * @author Abigail My Tran
  */
 @RestController
 @RequestMapping("/students")
@@ -128,6 +129,7 @@ public class StudentsController {
         student.setPreferredIndustriesWeight(updatedStudent.getPreferredIndustriesWeight());
         student.setPreferredCompanySizeWeight(updatedStudent.getPreferredCompanySizeWeight());
         studentDAO.save(student);
+        matchingService.registerStudent(student);
 
         return ResponseEntity.ok().build();
     }

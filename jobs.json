@@ -29,7 +29,7 @@
         }
     ],
     "recommendedSkillsWeight": 0.003,
-    "minGPA": 0,
+    "minGPA": 3.5,
     "hasWorkExperience": false,
     "matchThreshold": 0.005,
     "duration": 4,

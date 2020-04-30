@@ -2,23 +2,29 @@ package com.avalanche.tmcs.job_posting;
 
 import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
+import com.avalanche.tmcs.matching.PresentationLink;
+import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.recruiter.Recruiter;
 import com.avalanche.tmcs.matching.MatchingService;
 import com.avalanche.tmcs.recruiter.RecruiterDAO;
+import com.avalanche.tmcs.JobService;
+
+import com.google.cloud.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Maxwell Hadley
  * @since 4/20/17
+ * @author Abigail My Tran
  */
 @RestController
 @RequestMapping("/jobposting")
@@ -27,16 +33,18 @@ public class JobPostingController {
     private JobPostingDAO jobPostingDAO;
     private JobPostingExpirationChecker expirationChecker;
     private RecruiterDAO recruiterRepo;
-    private JobPresentationLinkDAO presentationLinkDAO;
+    private JobPresentationLinkDAO jobPresentationLinkDAO;
+    private PresentationLinkDAO presentationLinkDAO;
     private CompanyDAO companyDAO;
 
     private MatchingService matchingService;
 
     @Autowired
-    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO presentationLinkDAO, JobPostingExpirationChecker expirationChecker,
-                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO){
+    public JobPostingController(JobPostingDAO jobPostingDAO, JobPresentationLinkDAO jobPresentationLinkDAO, JobPostingExpirationChecker expirationChecker,
+                                MatchingService matchingService, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, PresentationLinkDAO presentationLinkDAO){
         this.jobPostingDAO = jobPostingDAO;
         this.expirationChecker = expirationChecker;
+        this.jobPresentationLinkDAO = jobPresentationLinkDAO;
         this.presentationLinkDAO = presentationLinkDAO;
         this.matchingService = matchingService;
         this.recruiterRepo = recruiterDAO;
@@ -51,11 +59,24 @@ public class JobPostingController {
         return ResponseEntity.ok(jobPostingDAO.findOne(id));
     }
 
+    public Set<JobPresentationLink> createJobPresentationLink(Set<JobPresentationLink> presentationLinks) {
+        Set<JobPresentationLink> newLinks = new HashSet<>();
+        for(JobPresentationLink link : presentationLinks){
+            JobPresentationLink newLink = new JobPresentationLink();
+            PresentationLink jobLink = presentationLinkDAO.findOne(link.getId());
+            newLink.setPresentationLink(jobLink);
+            newLink.setLink(link.getLink());
+            newLink.setTitle(link.getTitle());
+            JobPresentationLink savedLink = jobPresentationLinkDAO.save(newLink);
+            newLinks.add(savedLink);
+        }
+        return newLinks;
+    }
     // ================================================================================================================
     // * ADD NEW JOB [POST]                                                                                           *
     // ================================================================================================================
     @RequestMapping(value = "/{company_id}", method=RequestMethod.POST)
-    public ResponseEntity<?> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting){
+    public ResponseEntity<?> addJobPosting(@PathVariable long company_id, @RequestBody NewJobPosting newJobPosting) throws IOException {
         Company company = companyDAO.findOne(company_id);
         Recruiter recruiter = recruiterRepo.findOne(newJobPosting.getRecruiterId());
 
@@ -76,17 +97,28 @@ public class JobPostingController {
         else {
             newJobPosting.setCompany(company);
             newJobPosting.setRecruiter(recruiter);
+            // Prepare Presentation Links
+            Set<JobPresentationLink> newLinks = createJobPresentationLink(newJobPosting.getPresentationLinks());
+            newJobPosting.setPresentationLinks(newLinks);
+
             JobPosting savedJobPosting = jobPostingDAO.save(newJobPosting.toJobPosting());
 
             // Create presentation links
             for (JobPresentationLink link : newJobPosting.getPresentationLinks()) {
                 link.setJob(savedJobPosting);
+                jobPresentationLinkDAO.save(link);
             }
             savedJobPosting.setPresentationLinks(newJobPosting.getPresentationLinks());
             savedJobPosting.setNumDaysRemaining(savedJobPosting.getDuration());
             jobPostingDAO.save(savedJobPosting);
 
-            matchingService.registerJobPosting(savedJobPosting);
+            //Also add this job posting to Google Cloud
+            String googleCloudJobName = addJobPostingToGoogleCloud(savedJobPosting);
+            savedJobPosting.setGoogleCloudJobName(googleCloudJobName);
+            jobPostingDAO.save(savedJobPosting);
+
+            //TODO: Looking for matches for the company when a job posting is posted / updated
+            //matchingService.registerJobPosting(savedJobPosting);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -96,6 +128,46 @@ public class JobPostingController {
 
             return ResponseEntity.created(location).body(savedJobPosting);
         }
+    }
+
+    public String addJobPostingToGoogleCloud(JobPosting savedJobPosting) throws IOException {
+        //Add job posting to Google Cloud
+        String PROJECT_ID = "recruitrtest-256719";
+
+        String companyName = savedJobPosting.getCompany().getGoogleCloudName();
+        String companySize = savedJobPosting.getCompany().getSize().toString();
+        Long requisitionId = savedJobPosting.getId();
+        String title = savedJobPosting.getPositionTitle();
+        String description = savedJobPosting.getDescription();
+        List<String> addresses = new ArrayList<>(savedJobPosting.getLocations());
+
+        Set<Skill> recSkills = savedJobPosting.getRecommendedSkills();
+        ArrayList<String> recommendedSkills = new ArrayList<>();
+        for (Skill s : recSkills ) {
+            recommendedSkills.add(s.getName());
+        }
+
+        Set<Skill> reqSkills = savedJobPosting.getRequiredSkills();
+        ArrayList<String> requiredSkills = new ArrayList<>();
+        for (Skill s : reqSkills ) {
+            requiredSkills.add(s.getName());
+        }
+
+        Boolean workExperience = savedJobPosting.getHasWorkExperience();
+
+        List<JobPresentationLink> links = new ArrayList<>(savedJobPosting.getPresentationLinks());
+        String presentationLinkString =  links.get(0).getLink();
+
+        String problemStatementString = savedJobPosting.getProblemStatement();
+        double minimumGPA = savedJobPosting.getMinGPA();
+        String jobApplicationUrl = savedJobPosting.getCompany().getWebsiteURL();
+        String languageCode = "en-US";
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, savedJobPosting.getDuration());
+        Timestamp expireTime =Timestamp.of(cal.getTime());
+
+        return JobService.createJobGoogleAPI(PROJECT_ID, companyName, companySize, Long.toString(requisitionId), title, description, addresses, recommendedSkills, requiredSkills, workExperience, presentationLinkString, problemStatementString, minimumGPA, jobApplicationUrl, languageCode, expireTime);
     }
 
     // ================================================================================================================
@@ -108,6 +180,8 @@ public class JobPostingController {
         jobPosting.setPositionTitle(updatedJobPosting.getPositionTitle());
         jobPosting.setDescription(updatedJobPosting.getDescription());
         jobPosting.setLocations(updatedJobPosting.getLocations());
+        jobPosting.setRequiredSkills(updatedJobPosting.getRequiredSkills());
+        jobPosting.setRecommendedSkills(updatedJobPosting.getRecommendedSkills());
         jobPosting.setRecommendedSkillsWeight(updatedJobPosting.getRecommendedSkillsWeight());
         jobPosting.setMinGPA(updatedJobPosting.getMinGPA());
         jobPosting.setHasWorkExperience(updatedJobPosting.getHasWorkExperience());
@@ -120,7 +194,7 @@ public class JobPostingController {
         for (JobPresentationLink link : jobPosting.getPresentationLinks()) {
             if (updatedJobPosting.getPresentationLinks() != null && !link.isInSet(updatedJobPosting.getPresentationLinks())) {
                 jobPosting.getPresentationLinks().remove(link);
-                presentationLinkDAO.delete(link);
+                jobPresentationLinkDAO.delete(link);
             }
         }
 
@@ -130,6 +204,7 @@ public class JobPostingController {
 	            if (!link.isInSet(jobPosting.getPresentationLinks())) {
 	                link.setJob(jobPosting);
 	                jobPosting.getPresentationLinks().add(link);
+                    jobPresentationLinkDAO.save(link);
 	            }
 	        }
         }

@@ -6,7 +6,6 @@ import com.avalanche.tmcs.auth.Role;
 import com.avalanche.tmcs.auth.RoleDAO;
 import com.avalanche.tmcs.auth.User;
 import com.avalanche.tmcs.auth.UserService;
-import com.avalanche.tmcs.company.Company;
 import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
@@ -22,7 +21,6 @@ import com.avalanche.tmcs.matching.Skill;
 import com.avalanche.tmcs.matching.SkillDAO;
 import com.avalanche.tmcs.matching.University;
 import com.avalanche.tmcs.matching.UniversityDAO;
-import com.avalanche.tmcs.students.NewStudent;
 import com.avalanche.tmcs.students.Student;
 import com.avalanche.tmcs.students.StudentDAO;
 import com.github.javafaker.Faker;
@@ -55,6 +53,7 @@ import java.util.TimerTask;
  */
 @Component
 public class DataLoader implements ApplicationRunner {
+
     private static final Logger LOG = LoggerFactory.getLogger(DataLoader.class);
     private final boolean addTestData;
 
@@ -62,15 +61,11 @@ public class DataLoader implements ApplicationRunner {
 
     private RecruiterDAO recruiterDAO;
     private CompanyDAO companyDAO;
-    private JobPostingDAO jobPostingDAO;
-    private StudentDAO studentDAO;
     private SkillDAO skillDAO;
     private LocationDAO locationDAO;
     private MajorDAO majorDAO;
     private IndustryDAO industryDAO;
     private UniversityDAO universityDAO;
-    private UserService userService;
-    private MatchingService matchingService;
 
     @Autowired
     public DataLoader(RoleDAO roleDAO, RecruiterDAO recruiterDAO, CompanyDAO companyDAO, JobPostingDAO jobPostingDAO, StudentDAO studentDAO,
@@ -79,19 +74,16 @@ public class DataLoader implements ApplicationRunner {
         this.roleDAO = roleDAO;
         this.recruiterDAO = recruiterDAO;
         this.companyDAO = companyDAO;
-        this.jobPostingDAO = jobPostingDAO;
-        this.studentDAO = studentDAO;
         this.addTestData = addTestData;
-        this.userService = userService;
         this.skillDAO = skillDAO;
         this.locationDAO = locationDAO;
         this.majorDAO = majorDAO;
         this.industryDAO = industryDAO;
         this.universityDAO = universityDAO;
-        this.matchingService = matchingService;
     }
 
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws IOException {
+
         LOG.info("Adding role definitions...");
         if(roleDAO.findByName("student") == null) {
             roleDAO.save(new Role("student"));
@@ -112,14 +104,14 @@ public class DataLoader implements ApplicationRunner {
         if(addTestData) {
             try {
                 LOG.info("Adding test data...");
-                String skillFilePath = new File("skills.json").getAbsolutePath();
-                String toolFilePath = new File("tools.json").getAbsolutePath();
-                String jobFilePath = new File("jobs.json").getAbsolutePath();
-                String locationsFilePath = new File("locations.json").getAbsolutePath();
-                String majorsFilePath = new File("majors.json").getAbsolutePath();
-                String universitiesFilePath = new File("universities.json").getAbsolutePath();
-                String industriesFilePath = new File("industries.json").getAbsolutePath();
-                loadSkills(skillFilePath);
+                // I had to comment this out because it somehow slowed down my app starting
+//                String skillFilePath = new File("skills.json").getPath();
+                String jobFilePath = new File("jobs.json").getPath();
+                String locationsFilePath = new File("locations.json").getPath();
+                String majorsFilePath = new File("majors.json").getPath();
+                String universitiesFilePath = new File("universities.json").getPath();
+                String industriesFilePath = new File("industries.json").getPath();
+//                loadSkills(skillFilePath);
                 loadJobs(jobFilePath);
                 loadLocations(locationsFilePath);
                 loadMajors(majorsFilePath);
@@ -221,9 +213,7 @@ public class DataLoader implements ApplicationRunner {
                 for (Object requiredSkillObject : requiredSkillsList) {
                 	JSONObject requiredSkill = (JSONObject) requiredSkillObject;
                 	String skillName = (String) requiredSkill.get("name");
-                    String skillType = (String) requiredSkill.get("type");
-
-                	Skill newSkill = new Skill(skillName, 0, skillType);
+                    Skill newSkill = new Skill(skillName, 0, "");
                 	requiredSkills.add(newSkill);
                 }
                 
@@ -233,14 +223,12 @@ public class DataLoader implements ApplicationRunner {
                 for (Object recommendedSkillObject : recommendedSkillsList) {
                 	JSONObject recommendedSkill = (JSONObject) recommendedSkillObject;
                 	String skillName = (String) recommendedSkill.get("name");
-                    String skillType = (String) recommendedSkill.get("type");
-
-                	Skill newSkill = new Skill(skillName, 0, skillType);
+                    Skill newSkill = new Skill(skillName, 0, "");
                     recommendedSkills.add(newSkill);
                 }
                 
                 //recommended to have skills weight ?
-                long minGPA = (long) job.get("minGPA");
+                double minGPA = new Double(job.get("minGPA").toString());
 
                 //match threshold
                 int duration = ((Long) job.get("duration")).intValue();
@@ -250,7 +238,7 @@ public class DataLoader implements ApplicationRunner {
                 //company
                 JSONObject companyObject = (JSONObject) job.get("company");
                 String companyName = (String) companyObject.get("companyName");
-                Company company = companyDAO.findByCompanyName(companyName);
+                com.avalanche.tmcs.company.Company company = companyDAO.findByCompanyName(companyName);
                 
                 //recruiter
                 JSONObject recruiterObject = (JSONObject) job.get("recruiter");
@@ -267,11 +255,11 @@ public class DataLoader implements ApplicationRunner {
                 newJob.setMinGPA(minGPA);
 //                newJob.setNewVideo(newVideo);
                 newJob.setRecommendedSkills(recommendedSkills);
+                newJob.setRequiredSkills(requiredSkills);
 //                newJob.setRecommendedSkillsWeight(recommendedSkillsWeight);
                 newJob.setPositionTitle(jobTitle);
                 newJob.setProblemStatement(problemStatement);
                 newJob.setRecruiter(recruiter);
-                newJob.setRequiredSkills(requiredSkills);
                 newJob.setStatus(JobPosting.Status.ACTIVE);
                 newJob.setVideo(video);
                 System.out.println(newJob.toString());
@@ -424,9 +412,7 @@ public class DataLoader implements ApplicationRunner {
             for (Object skillObject : arr) {
                 JSONObject skill = (JSONObject) skillObject;
                 String newSkillName = (String) skill.get("name");
-                String newSkillType = (String) skill.get("type");
-
-                Skill newSkill = new Skill(newSkillName,0,newSkillType);
+                Skill newSkill = new Skill(newSkillName, 0, "");
 
                 // ensure there aren't any duplicates
                 if(!skillsToSave.contains(newSkill))
@@ -479,7 +465,7 @@ public class DataLoader implements ApplicationRunner {
         return stud;
     }
 
-    private Recruiter newTestRecruiter(Faker faker,User user,Company comp){
+    private Recruiter newTestRecruiter(Faker faker, User user, com.avalanche.tmcs.company.Company comp){
         Recruiter rec = new Recruiter();
         rec.setFirstName(faker.name().firstName());
         rec.setLastName(faker.name().lastName());
@@ -491,8 +477,8 @@ public class DataLoader implements ApplicationRunner {
         return rec;
     }
 
-    private Company.Size randomSize(Faker faker){
-        List<Company.Size> sizes= Arrays.asList(Company.Size.values());
+    private com.avalanche.tmcs.company.Company.Size randomSize(Faker faker){
+        List<com.avalanche.tmcs.company.Company.Size> sizes= Arrays.asList(com.avalanche.tmcs.company.Company.Size.values());
         return sizes.get(faker.number().numberBetween(0,sizes.size()));
     }
 
@@ -511,9 +497,7 @@ public class DataLoader implements ApplicationRunner {
 	            for (Object skillObject : arr) {
 	                JSONObject skill = (JSONObject) skillObject;
 	                String newSkillName = (String) skill.get("name");
-                    String newSkillType = (String) skill.get("type");
-
-	                Skill newSkill = new Skill(newSkillName, 0, newSkillType);
+                    Skill newSkill = new Skill(newSkillName, 0, "");
 
 	                // ensure there aren't any duplicates
 	                boolean dbContainsSkill = false;

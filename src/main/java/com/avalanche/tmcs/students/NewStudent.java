@@ -1,12 +1,16 @@
 package com.avalanche.tmcs.students;
 
 import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.matching.Skill;
 
 import java.sql.Date;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author David Dubois
  * @since 17-Apr-17.
+ * @author Abigail My Tran
  */
 public class NewStudent extends Student {
     private String password;
@@ -46,6 +50,7 @@ public class NewStudent extends Student {
         student.setUser(getUser());
         student.setPresentationLinks(getPresentationLinks());
         student.setProblemStatements(getProblemStatements());
+        student.setSkills(getSkills());
         student.setPreferredLocationsWeight(0.4f);
         student.setPreferredIndustriesWeight(0.3f);
         student.setPreferredCompanySizeWeight(0.2f);

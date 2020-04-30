@@ -1,5 +1,7 @@
 package com.avalanche.tmcs.job_posting;
 
+import com.avalanche.tmcs.matching.PresentationLink;
+import com.avalanche.tmcs.matching.PresentationLinkDAO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -8,8 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- * Created by Ryan Hochmuth on 4/21/2018.
- * <p>
+ * @autho Ryan Hochmuth
+ * @since 4/21/2018
+ * @author Abigail My Tran
  */
 @Entity
 public class JobPresentationLink {
@@ -22,6 +25,8 @@ public class JobPresentationLink {
     private JobPosting job;
     
     private String description = "";
+
+    private PresentationLink presentationLink;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,7 +66,18 @@ public class JobPresentationLink {
     public void setJob(JobPosting job) {
         this.job = job;
     }
-    
+
+    @ManyToOne
+    @JoinColumn(name = "presentationLink_id")
+    @JsonIgnore
+    public PresentationLink getPresentationLink() {
+        return presentationLink;
+    }
+
+    public void setPresentationLink(PresentationLink presentationLink) {
+        this.presentationLink = presentationLink;
+    }
+
     @NotNull
     public String getDescription() {
     	return description;
