@@ -104,7 +104,7 @@ public class DataLoader implements ApplicationRunner {
         if(addTestData) {
             try {
                 LOG.info("Adding test data...");
-                // I had to comment this out because it somehow slowed down my app starting
+
                 String skillFilePath = new File("skills.json").getPath();
                 String jobFilePath = new File("jobs.json").getPath();
                 String locationsFilePath = new File("locations.json").getPath();
@@ -112,6 +112,7 @@ public class DataLoader implements ApplicationRunner {
                 String universitiesFilePath = new File("universities.json").getPath();
                 String industriesFilePath = new File("industries.json").getPath();
                 loadSkills(skillFilePath);
+
                 loadJobs(jobFilePath);
                 loadLocations(locationsFilePath);
                 loadMajors(majorsFilePath);
@@ -217,6 +218,7 @@ public class DataLoader implements ApplicationRunner {
 
                     Skill newSkill = new Skill(skillName, 0, skillType);
                     requiredSkills.add(newSkill);
+
                 }
 
                 //recommended to have skills
@@ -416,9 +418,7 @@ public class DataLoader implements ApplicationRunner {
             for (Object skillObject : arr) {
                 JSONObject skill = (JSONObject) skillObject;
                 String newSkillName = (String) skill.get("name");
-                String newSkillType = (String) skill.get("type");
-
-                Skill newSkill = new Skill(newSkillName,0,newSkillType);
+                Skill newSkill = new Skill(newSkillName, 0, "");
 
                 // ensure there aren't any duplicates
                 if(!skillsToSave.contains(newSkill))
