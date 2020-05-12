@@ -1,4 +1,9 @@
+#Credential files
+credentials.json
+ritcruitr-east.pem
+
 .project
+
 # Created by https://www.gitignore.io/api/intellij,visualstudio,java,gradle,xamarinstudio,vim,sublimetext,visualstudiocode
 
 ### Intellij ###
