@@ -5,11 +5,11 @@ import java.util.Set;
 /**
  * Created by Ryan Hochmuth on 4/10/2018.
  * <p>
+ * @author Abigail My Tran
  */
 public class NewJobPosting extends JobPosting {
     private long recruiterId;
 
-    private Set<JobPresentationLink> presentationLinks;
 
     public long getRecruiterId() {
         return recruiterId;
@@ -19,17 +19,11 @@ public class NewJobPosting extends JobPosting {
         this.recruiterId = recruiterId;
     }
 
-    public Set<JobPresentationLink> getPresentationLinks() {
-        return presentationLinks;
-    }
-
-    public void setPresentationLinks(Set<JobPresentationLink> presentationLinks) {
-        this.presentationLinks = presentationLinks;
-    }
 
     public JobPosting toJobPosting() {
         JobPosting job = new JobPosting();
 
+        job.setGoogleCloudJobName("");
         job.setStatus(Status.ACTIVE);
         job.setPositionTitle(getPositionTitle());
         job.setDescription(getDescription());

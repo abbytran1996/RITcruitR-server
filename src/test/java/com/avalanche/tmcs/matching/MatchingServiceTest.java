@@ -1,6 +1,7 @@
 package com.avalanche.tmcs.matching;
 
 import com.avalanche.tmcs.company.Company;
+import com.avalanche.tmcs.company.CompanyDAO;
 import com.avalanche.tmcs.job_posting.JobPosting;
 import com.avalanche.tmcs.job_posting.JobPostingDAO;
 import com.avalanche.tmcs.students.Student;
@@ -33,7 +34,8 @@ public class MatchingServiceTest {
         MatchDAO matchDAO = makeMockMatchDAO();
         StudentDAO studentDAO = makeMockStudentDAO();
         JobPostingDAO jobPostingDAO = makeMockJobPostingDAO();
-        matchingService = new MatchingService(matchDAO, studentDAO, jobPostingDAO);
+        CompanyDAO companyDAO = makeMockCompanyDAO();
+        matchingService = new MatchingService(matchDAO, studentDAO, jobPostingDAO, companyDAO);
 
         requiredSkills = makeRequiredSkills();
         recommendedSkills = makeRecommendedSkills();
@@ -116,6 +118,12 @@ public class MatchingServiceTest {
         return jobPostingDAO;
     }
 
+    private CompanyDAO makeMockCompanyDAO() {
+        CompanyDAO companyDAO = mock(CompanyDAO.class);
+        when(companyDAO.findAll()).thenReturn(makeCompanies());
+        return companyDAO;
+    }
+
     private static Set<Student> makeStudents() {
         Set<Student> allStudents = new HashSet<>();
         Student marx = new Student();
@@ -136,17 +144,51 @@ public class MatchingServiceTest {
         return allStudents;
     }
 
+    private static Set<Company> makeCompanies() {
+        Set<Company> allCompanies = new HashSet<>();
+        Company facebook = new Company();
+        facebook.setCompanyName("Facebook");
+        facebook.setLocations(new HashSet<>());
+        facebook.setIndustries(new HashSet<>());
+        facebook.setSize(Company.Size.LARGE);
+        facebook.setWebsiteURL("");
+        facebook.setStatus(Company.Status.AWAITING_APPROVAL);
+        facebook.setPresentation("");
+        facebook.setCompanyDescription("");
+        facebook.setEmailSuffix("");
+        facebook.setUserId(-1);
+        facebook.setPresentationLinks(new HashSet<>());
+        facebook.setGoogleCloudName("");
+        allCompanies.add(facebook);
+
+        Company amazon = new Company();
+        amazon.setCompanyName("Amazon");
+        amazon.setLocations(new HashSet<>());
+        amazon.setIndustries(new HashSet<>());
+        amazon.setSize(Company.Size.LARGE);
+        amazon.setWebsiteURL("");
+        amazon.setStatus(Company.Status.AWAITING_APPROVAL);
+        amazon.setPresentation("");
+        amazon.setCompanyDescription("");
+        amazon.setEmailSuffix("");
+        amazon.setUserId(-1);
+        amazon.setPresentationLinks(new HashSet<>());
+        amazon.setGoogleCloudName("");
+        allCompanies.add(amazon);
+        return allCompanies;
+    }
+
     private static Set<Skill> makeRequiredSkills(){
         Set<Skill> requiredSkills = new HashSet<>();
-        requiredSkills.add(new Skill("Bash"));
-        requiredSkills.add(new Skill("C"));
+        requiredSkills.add(new Skill("Bash", 0, null));
+        requiredSkills.add(new Skill("C", 0, null));
         return requiredSkills;
     }
 
     private static Set<Skill> makeRecommendedSkills(){
         Set<Skill> recommendedSkills = new HashSet<>();
-        recommendedSkills.add(new Skill("Linux"));
-        recommendedSkills.add(new Skill("Perl"));
+        recommendedSkills.add(new Skill("Linux", 0, null));
+        recommendedSkills.add(new Skill("Perl", 0, null));
         return recommendedSkills;
     }
 

@@ -14,6 +14,7 @@ import java.util.Set;
 /**
  * @author Maxwell Hadley
  * @since 4/17/17.
+ * @author Abigail My Tran
  */
 @Entity
 @Table(name="job_posting")
@@ -26,6 +27,8 @@ public class JobPosting {
     }
 
     private long id;
+
+    private String googleCloudJobName;
 
     private Status status;
 
@@ -76,6 +79,14 @@ public class JobPosting {
         this.id = id;
     }
 
+    public String getGoogleCloudJobName() {
+        return googleCloudJobName;
+    }
+
+    public void setGoogleCloudJobName(String googleCloudJobName) {
+        this.googleCloudJobName = googleCloudJobName;
+    }
+
     @NotNull
     public Status getStatus() {
         return status;
@@ -119,7 +130,6 @@ public class JobPosting {
     public Set<Skill> getRequiredSkills() {
         return requiredSkills;
     }
-
     public void setRequiredSkills(Set<Skill> requiredSkills) {
         this.requiredSkills = requiredSkills;
     }
@@ -127,9 +137,8 @@ public class JobPosting {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     public Set<Skill> getRecommendedSkills() {
-        return recommendedSkills;
+        return this.recommendedSkills;
     }
-
     public void setRecommendedSkills(Set<Skill> recommendedSkills) {
         this.recommendedSkills = recommendedSkills;
     }

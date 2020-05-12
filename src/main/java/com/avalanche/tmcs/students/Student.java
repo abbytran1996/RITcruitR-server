@@ -22,6 +22,7 @@ import static com.avalanche.tmcs.matching.MatchingService.getIndustrySetIntersec
  *
  * @author David Dubois
  * @since 05-Apr-17.
+ * @author Abigail My Tran
  */
 @Entity
 @Table(name="students")
@@ -30,8 +31,6 @@ public class Student {
 
     private String firstName;
     private String lastName;
-
-    private Set<Skill> skills;
 
     private String email;
 
@@ -51,10 +50,12 @@ public class Student {
 
     private String website; // TODO: Remove field
 
-    private Set<String> preferredLocations = new HashSet<>();
+    private Set<Skill> skills;
+
+    private Set<String> preferredLocations;
     private double preferredLocationsWeight = 0.4f;
 
-    private Set<Industry> preferredIndustries = new HashSet<>();
+    private Set<Industry> preferredIndustries;
     private double preferredIndustriesWeight = 0.3f;
 
     private Set<Company.Size> preferredCompanySizes = new HashSet<>();
@@ -74,6 +75,8 @@ public class Student {
         this.email = "";
         this.gpa = 0;
         this.preferredIndustries = new HashSet<>();
+        this.skills = new HashSet<>();
+        this.preferredCompanySizes = new HashSet<>();
     }
 
     public boolean readyToMatch(){

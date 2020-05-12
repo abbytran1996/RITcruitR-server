@@ -15,6 +15,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 /**
  * @author Zane Grasso
  * @since 4/18/17
+ * @author Abigail My Tran
  */
 @Entity
 @Table(name="company")
@@ -47,6 +48,8 @@ public class Company {
     private Status status = Status.AWAITING_APPROVAL;
 
     private String companyName;
+
+    private String googleCloudName;
 
     private Set<String> locations;
 
@@ -87,6 +90,14 @@ public class Company {
 
     public void setCompanyName(String companyName){
         this.companyName = companyName;
+    }
+
+    public String getGoogleCloudName(){
+        return googleCloudName;
+    }
+
+    public void setGoogleCloudName(String googleCloudName){
+        this.googleCloudName = googleCloudName;
     }
 
     @NotNull
